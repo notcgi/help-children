@@ -1,4 +1,6 @@
 /.idea/
+/composer.phar
+/project.iml
 
 ###> symfony/framework-bundle ###
 /.env.local
