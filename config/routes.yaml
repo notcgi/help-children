@@ -5,3 +5,7 @@ index:
 user_controller:
     path: /user
     controller: App\Controller\UserController::index
+
+child_view:
+    path: /child/view
+    controller: App\Controller\ChildController::view
