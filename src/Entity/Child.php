@@ -1,0 +1,142 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ChildRepository")
+ */
+class Child
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=120)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthdate;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $body = [];
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $collected;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $goal;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(?\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    public function setBody($body): self
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    public function getCollected()
+    {
+        return $this->collected;
+    }
+
+    public function setCollected($collected): self
+    {
+        $this->collected = $collected;
+
+        return $this;
+    }
+
+    public function getGoal()
+    {
+        return $this->goal;
+    }
+
+    public function setGoal($goal): self
+    {
+        $this->goal = $goal;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+}
