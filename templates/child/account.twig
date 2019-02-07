@@ -1,0 +1,94 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-large">
+            <div class="container">
+                <h1 class="hero-large__title">Личный кабинет</h1>
+                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
+            </div>
+        </section>
+        <div class="bg-purple-line"></div>
+        <section class="section account section-with-bghearts">
+            <div class="container container--small">
+                <div class="account-wrapper">
+                    <div class="account-nav">
+                        <nav class="account-navbar">
+                            <ul class="account-links">
+                                <li class="account-links__item account-links__item--active">
+                                    <a href="/dist/account.html" class="account-links__item-link">Главная</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/my-account.html" class="account-links__item-link">Мой аккаунт</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/history.html" class="account-links__item-link">Мои пожертвования</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/referrals.html" class="account-links__item-link">Реферальная программа</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/recurrents.html" class="account-links__item-link">Регулярные платежи</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="account-content fast-access">
+                        <h1 class="account-content__title">Быстрый доступ</h1>
+                        <div class="fast-access-cards">
+                            <div class="fast-access-cards__item fast-access-card">
+                                <div class="fast-access-card__title">Добавить регулярный платеж</div>
+                                <div class="fast-access-card__content">
+                                    Регулярное пожертвование — это пожертвование, которое оформляется однажды и затем каждый месяц
+                                    автоматически списывается с вашей карты
+                                </div>
+                                <div class="fast-access-card__action">
+                                    <button class="fast-access-card__action-button btn btn-orange">Добавить</button>
+                                </div>
+                                <div
+                                    class="fast-access-card__bgicon"
+                                    style="background-image: url('/images/card-refresh-gray.png');"
+                                ></div>
+                            </div>
+                            <div class="fast-access-cards__item fast-access-card">
+                                <div class="fast-access-card__title">Список регулярных платежей</div>
+                                <div class="fast-access-card__content">
+                                    Посмотрите полный список ваших регулярных пожертвований. Регулярное пожертвование легко отключить,
+                                    если у вас изменятся обстоятельства.
+                                </div>
+                                <div class="fast-access-card__action">
+                                    <button class="fast-access-card__action-button btn">Посмотреть</button>
+                                </div>
+                                <div class="fast-access-card__bgicon" style="background-image: url('/images/card-list.png');"></div>
+                            </div>
+                            <div class="fast-access-cards__item fast-access-card">
+                                <div class="fast-access-card__title">Заполните ваши данные</div>
+                                <div class="fast-access-card__content">
+                                    Для быстрой помощи заполнить личные данные. Для быстрой помощи заполнить личные данные. Для быстрой
+                                    помощи заполнить личные данные.
+                                </div>
+                                <div class="fast-access-card__action">
+                                    <button class="fast-access-card__action-button btn">Заполнить</button>
+                                </div>
+                                <div class="fast-access-card__bgicon" style="background-image: url('/images/card-user.png');"></div>
+                            </div>
+                            <div class="fast-access-cards__item fast-access-card">
+                                <div class="fast-access-card__title">Дети</div>
+                                <div class="fast-access-card__content">
+                                    Мы - Благотворительный фон для детей больных ДЦП. Помогаем им от начала и сопровождаем их в течение
+                                    жизни.Мы производим сбор средств только при оплате электронными способами.
+                                </div>
+                                <div class="fast-access-card__action">
+                                    <button class="fast-access-card__action-button btn">Посмотреть</button>
+                                </div>
+                                <div class="fast-access-card__bgicon" style="background-image: url('/images/card-kids.png');"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero">
+            <div class="container page-padding">
+                <div class="hero-row">
+                    <div class="hero-col">
+                        <img
+                            class="hero__title img-responsive"
+                            src="/images/main-title.png"
+                            alt="Помоги детям сейчас, безопасно"
+                        />
+                        <div class="hero-col__col">
+                            <p class="hero__notice">
+                                Преимущественным отличием Фонда является программа долгосрочной опеки, которая предусматривает оплату
+                                и прохождение нескольких курсов реабилитаций. <br />
+                                <br />
+                                Сбор средств осуществляется только электронными способами приема платежей для обеспечения полной
+                                прозрачности деятельности Фонда.
+                            </p>
+                            <a class="btn btn--big hero-programs-button" href="/dist/kids.html">Программы помощи</a>
+                        </div>
+                    </div>
+                    <div class="hero-col hero-col__right">
+                        <img class="img-responsive" src="/images/children.png" alt="Дети" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section donate">
+            <div class="container container--small">
+                <div class="donate-form-wrapper">
+                    <form action="/dist/online-help.html" method="GET" class="donate-form">
+                        <div class="donate-form-row">
+                            <div class="donate-form-row__col donate-form-title">Я хочу пожертвовать</div>
+                            <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
+                                <label class="donate-sum-fieldgroup__label toggle-field">
+                                    <input class="toggle-field__input" type="radio" name="sum" value="100" checked />
+                                    <div class="toggle-field__text">100 Р</div>
+                                </label>
+                                <label class="donate-sum-fieldgroup__label toggle-field">
+                                    <input class="toggle-field__input" type="radio" name="sum" value="100" />
+                                    <div class="toggle-field__text">500 Р</div>
+                                </label>
+                                <label class="donate-sum-fieldgroup__label">
+                                    <input class="donate-text-field" type="text" name="sum-other" value="" placeholder="Другая сумма" />
+                                </label>
+                            </div>
+                            <button class="donate-form-row__col btn btn-dark donate-form-submit js-donate-form-submit">
+                                <span class="donate-form-submit__text">Пожертвовать</span> <span class="icon icon-arrow-right"></span>
+                            </button>
+                        </div>
+                        <div class="donate-form-row">
+                            <div class="donate-form-payment-systems">
+                                <div class="donate-form-payment-systems__cards">
+                                    <span class="donate-form-payment-systems__cards-title">Оплата с карты</span>
+                                    <ul class="payment-system-list">
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-mastercard" src="/images/mastercard.png" alt="Mastercard" width="20" />
+                                        </li>
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-visa" src="/images/visa.png" alt="visa" width="24" />
+                                        </li>
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-mir" src="/images/mir.png" alt="mir" width="24" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="donate-form-payment-systems__notice">
+                                    <div class="icon-wrapper"><span class="icon icon-lock"></span></div>
+                                    <span>
+                      Все сделки защищены SSL, PSI DSS, <br />
+                      Персональные данные конфиденциальны.
+                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section class="section mission" id="section-mission">
+            <div class="container container--small">
+                <h2 class="mission-title section-title">Миссия нашего фонда</h2>
+                <div class="mission-description">
+                    <div class="mission-description-col mission-description-col-left">
+                        <p class="mission-description-text">
+                            В действующем законодательстве не регламентируются правила сбора наличных денежных средств. Отсутствие
+                            правового регулирования и контроля движения денежных средств являются основными причинами роста
+                            мошенничества в сфере благотворительности и как следствие низким уровнем доверия граждан к
+                            благотворительным организациям.
+                        </p>
+                        <p class="mission-description-text">
+                            В России лишь 11% респондентов* безоговорочно доверяют благотворителям, при этом 59% из тех, кто
+                            совершал пожертвования, заявляли о готовности жертвовать больше, если точно будут знать на что будут
+                            потрачены их средства.
+                        </p>
+                        <p class="mission-description-notice">
+                            *- По данным Центра исследований гражданского общества и некоммерческого сектора НИУ "Высшая школа
+                            экономики”
+                        </p>
+                    </div>
+                    <div class="mission-description-col mission-description-col-image">
+                        <img src="/images/child-stats.png" width="275" alt="6-8 случаев из 1000 новорожденных" />
+                    </div>
+                    <div class="mission-description-col mission-description-col-right">
+                        <p class="mission-description-text">
+                            Именно поэтому в целях обеспечения полной прозрачности деятельности Фонда привлечение денежных средств
+                            осуществляется только электронными способами приема платежей. Данная технология работы позволяет
+                            обеспечить рост доверия граждан к благотворительным организациям и расширить участие граждан в
+                            благотворительной и добровольческой деятельности.
+                        </p>
+                        <p class="mission-description-text">
+                            Сейчас это особенно необходимо, так как статистика ДЦП в Российской Федерации по данным Всемирной
+                            организации здравоохранения демонстрирует повышенный процент больных детей и оценивается в размере 6-8
+                            случаев на 1000 новорожденных. Предоставление постоянной помощи как можно большему количеству детей с
+                            диагнозом ДЦП в Российской Федерации является главной миссией Благотворительного фонда “Помогите детям".
+                        </p>
+                    </div>
+                </div>
+                <ul class="mission-list">
+                    <li class="mission-list__item bg-circle">
+                        <h3 class="mission-list__item-title">Задача</h3>
+                        <p class="mission-list__item-notice">
+                            Адресный сбор средств для оказания материальной помощи по устранению ограниченных возможностей детей с
+                            ДЦП.
+                        </p>
+                    </li>
+                    <li class="mission-list__item bg-heart">
+                        <h3 class="mission-list__item-title">Принцип</h3>
+                        <p class="mission-list__item-notice">
+                            Электронный способ приема платежей - ваше спокойствие, наша прозрачность.
+                        </p>
+                    </li>
+                    <li class="mission-list__item bg-plus">
+                        <h3 class="mission-list__item-title">Цель</h3>
+                        <p class="mission-list__item-notice">
+                            Долгосрочное оказание помощи детям с ДЦП, предусматривающее прохождение нескольких курсов реабилитаций.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="section how">
+            <div class="container">
+                <div class="how-row">
+                    <div class="how-col how-col-project">
+                        <p class="how-col-project__notice">
+                            Фандрайзер - специалист<br />по привлечению денежных<br />средств. Анна - 25 лет
+                        </p>
+                        <div class="how-col-project__image-container">
+                            <img class="how-col-project__image-container-image" src="/images/fandrajzer.png" alt="Фандрайзер" />
+                        </div>
+                    </div>
+                    <div class="how-col">
+                        <h2 class="how-title section-title">ФАНДРАЙЗИНГ</h2>
+                        <div class="how-notice">
+                            <p class="how-notice-indent">
+                                Благотворительный фонд “Помогите детям" привлекает спонсорскую и благотворительную помощь от
+                                юридических и физических лиц. Основным способом привлечения денежных средств является метод прямого
+                                диалога по технологии “Face-2-Face”. Наших фандрайзеров вы можете встретить на улицах города, в
+                                торговых и офисных центрах. Фандрайзерам категорически запрещено брать наличные денежные средства. У
+                                каждого фандрайзера в обязательном порядке имеется индивидуальный бейдж, договор и доверенность от
+                                имени Благотворительного фонда, а также электронный планшет, благодаря которому можно оформить
+                                подписку на пожертвование, как на регулярной, так и на единоразовой основе, через персональный QR-код.
+                            </p>
+                            <p class="how-notice-indent">
+                                Пожертвования на регулярной основе позволяют своевременно проходить курсы реабилитации и добиваться
+                                значительно лучших результатов.
+                            </p>
+                        </div>
+                        <div class="how-view-children-wrapper">
+                            <a class="btn btn-light view-children-button" href="/dist/kids.html">
+                                <span class="view-children-button__text">Смотреть детей</span>
+                                <span class="icon icon-arrow-right-dark"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section partners-main">
+            <div class="container partners-main-container">
+                <h2 class="partners-main-title section-title">Наши партнеры</h2>
+                <ul class="partners-main-list">
+                    <li class="partners-main-list__item">
+                        <img src="/images/logo-sg.png" width="136" alt="Логотип партнера SGroup" />
+                    </li>
+                    <li class="partners-main-list__item">
+                        <img src="/images/logo-yt.png" width="136" alt="Логотип партнера" />
+                    </li>
+                    <li class="partners-main-list__item">
+                        <img src="/images/logo-sg.png" width="136" alt="Логотип партнера SGroup" />
+                    </li>
+                    <li class="partners-main-list__item">
+                        <img src="/images/logo-ocaml.png" width="136" alt="Логотип партнера" />
+                    </li>
+                    <li class="partners-main-list__item">
+                        <img src="/images/logo-sg.png" width="136" alt="Логотип партнера SGroup" />
+                    </li>
+                </ul>
+            </div>
+            <div class="partners-main-button">
+                <a class="btn btn-dark partners-main-button__btn" href="/dist/partners.html">Подробнее о наших партнерах</a>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

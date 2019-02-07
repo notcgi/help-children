@@ -1,0 +1,94 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-medium">
+            <div class="container news-detail-container">
+                <h1 class="hero-medium__title">Новости</h1>
+                <a class="link-back" href="/dist/news.html"
+                ><span class="icon icon-arrow-angle-right"></span>К списку новостей</a
+                >
+            </div>
+        </section>
+        <section class="section news-detail section-with-bghearts">
+            <div class="container news-detail-container">
+                <div class="news-detail-wrapper">
+                    <div class="card-news-detail-wrapper">
+                        <h2 class="news-detail__title">Наша первая новость!</h2>
+                        <p class="news-detail__pubdate">12.12.2018</p>
+                        <div class="news-detail__banner">
+                            <img class="img-responsive news-detail__banner-img" src="/images/news-banner.png" alt="Конгресс" />
+                        </div>
+                        <div class="news-detail__content">
+                            IPhone — серия смартфонов, разработанных корпорацией Apple. Работают под управлением операционной
+                            системы iOS, представляющей собой упрощённую и оптимизированную для функционирования на мобильном
+                            устройстве версию macOS. <br />
+                            Впервые iPhone был анонсирован Стивом Джобсом на конференции Macworld Expo 9 января 2007 года. Название
+                            iPhone образовано от англ. phone (телефон) добавлением буквы i; на презентации Джобс заявил, что это
+                            сокращение слова Internet (Интернет), а также сказал, что «эта буква означает для нас и другие вещи» и
+                            показал слайд со словами individual, instruct, inform, inspire («личный; обучать; сообщать;
+                            вдохновлять»). В продажу аппарат поступил 29 июня 2007 года вместе с iPhone OS и быстро завоевал
+                            существенную часть рынка смартфонов в США. Популярность iPhone OS поддержал вышедший в продажу в
+                            сентябре того же года iPod touch, обладавший, однако, заметно урезанной функциональностью по сравнению с
+                            iPhone. <br />
+                            10 июня 2008 года на конференции WWDC 2008 была представлена новая модель — iPhone 3G, более совершенная
+                            и лишённая многих аппаратных и программных недостатков предшественника.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container--small">
+                <div class="donate-form-wrapper news-detail-donate-form-wrapper">
+                    <form action="/dist/online-help.html" method="GET" class="donate-form">
+                        <div class="donate-form-row">
+                            <div class="donate-form-row__col donate-form-title">Я хочу пожертвовать</div>
+                            <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
+                                <label class="donate-sum-fieldgroup__label toggle-field">
+                                    <input class="toggle-field__input" type="radio" name="sum" value="100" checked />
+                                    <div class="toggle-field__text">100 Р</div>
+                                </label>
+                                <label class="donate-sum-fieldgroup__label toggle-field">
+                                    <input class="toggle-field__input" type="radio" name="sum" value="100" />
+                                    <div class="toggle-field__text">500 Р</div>
+                                </label>
+                                <label class="donate-sum-fieldgroup__label">
+                                    <input class="donate-text-field" type="text" name="sum-other" value="" placeholder="Другая сумма" />
+                                </label>
+                            </div>
+                            <button class="donate-form-row__col btn btn-dark donate-form-submit js-donate-form-submit">
+                                <span class="donate-form-submit__text">Пожертвовать</span> <span class="icon icon-arrow-right"></span>
+                            </button>
+                        </div>
+                        <div class="donate-form-row">
+                            <div class="donate-form-payment-systems">
+                                <div class="donate-form-payment-systems__cards">
+                                    <span class="donate-form-payment-systems__cards-title">Оплата с карты</span>
+                                    <ul class="payment-system-list">
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-mastercard" src="/images/mastercard.png" alt="Mastercard" width="20" />
+                                        </li>
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-visa" src="/images/visa.png" alt="visa" width="24" />
+                                        </li>
+                                        <li class="payment-system-list__item">
+                                            <img class="ps-mir" src="/images/mir.png" alt="mir" width="24" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="donate-form-payment-systems__notice">
+                                    <div class="icon-wrapper"><span class="icon icon-lock"></span></div>
+                                    <span>
+                      Все сделки защищены SSL, PSI DSS, <br />
+                      Персональные данные конфиденциальны.
+                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

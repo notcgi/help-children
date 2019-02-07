@@ -1,0 +1,88 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-large">
+            <div class="container">
+                <h1 class="hero-large__title">Личный кабинет</h1>
+                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
+            </div>
+        </section>
+        <div class="bg-purple-line"></div>
+        <section class="section account section-with-bghearts">
+            <div class="container container--small">
+                <div class="account-wrapper">
+                    <div class="account-nav">
+                        <nav class="account-navbar">
+                            <ul class="account-links">
+                                <li class="account-links__item">
+                                    <a href="/dist/account.html" class="account-links__item-link">Главная</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/my-account.html" class="account-links__item-link">Мой аккаунт</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/history.html" class="account-links__item-link">Мои пожертвования</a>
+                                </li>
+                                <li class="account-links__item account-links__item--active">
+                                    <a href="/dist/referrals.html" class="account-links__item-link">Реферальная программа</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/recurrents.html" class="account-links__item-link">Регулярные платежи</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="account-content referrals">
+                        <h1 class="account-content__title referrals-title account-content-padding">Мои приглашенные</h1>
+                        <div class="referrals-wrapper account-content-padding">
+                            <div class="referrals-statistics">
+                                <div class="referrals-statistics__notice">
+                                    <p class="referrals-statistics__notice-text">
+                                        Мы сделали благотворительность проще и доступнее. Теперь помочь всем не сложнее, чем пополнить
+                                        телефон. Мы сделали благотворительность проще и доступнее. Теперь помочь всем не сложнее, чем
+                                        пополнить телефон. Мы сделали благотворительность проще и доступнее. Теперь помочь всем не
+                                        сложнее, чем пополнить телефон.
+                                    </p>
+                                </div>
+                                <div class="referrals-statistics__balance">
+                                    <h2 class="referrals-statistics__balance-title">Баланс</h2>
+                                    <div class="referrals-statistics__balance-sum">2 510 руб.</div>
+                                    <button class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
+                                        Вывести
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="referrals-list-wrapper">
+                                <h2 class="referrals-list-title">Список приглашеных</h2>
+                                <table class="referrals-list-table">
+                                    <thead class="referrals-list-table__head">
+                                    <tr>
+                                        <th class="referrals-list-table__head-col">Почта</th>
+                                        <th class="referrals-list-table__head-col">Дата регистрации</th>
+                                        <th class="referrals-list-table__head-col">Начислено</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="referrals-list-table__body">
+                                    <tr class="referrals-list-table__row">
+                                        <td class="referrals-list-table__body-col">ivan@mail.ru</td>
+                                        <td class="referrals-list-table__body-col">18.11.2018</td>
+                                        <td class="referrals-list-table__body-col">2 000 руб.</td>
+                                    </tr>
+                                    <tr class="referrals-list-table__row">
+                                        <td class="referrals-list-table__body-col">ivan@mail.ru</td>
+                                        <td class="referrals-list-table__body-col">18.11.2018</td>
+                                        <td class="referrals-list-table__body-col">510 руб.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

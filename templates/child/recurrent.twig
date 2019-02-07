@@ -1,0 +1,90 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-large">
+            <div class="container">
+                <h1 class="hero-large__title">Личный кабинет</h1>
+                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
+            </div>
+        </section>
+        <div class="bg-purple-line"></div>
+        <section class="section account section-with-bghearts">
+            <div class="container container--small">
+                <div class="account-wrapper">
+                    <div class="account-nav">
+                        <nav class="account-navbar">
+                            <ul class="account-links">
+                                <li class="account-links__item">
+                                    <a href="/dist/account.html" class="account-links__item-link">Главная</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/my-account.html" class="account-links__item-link">Мой аккаунт</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/history.html" class="account-links__item-link">Мои пожертвования</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/referrals.html" class="account-links__item-link">Реферальная программа</a>
+                                </li>
+                                <li class="account-links__item account-links__item--active">
+                                    <a href="/dist/recurrents.html" class="account-links__item-link">Регулярные платежи</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="account-content recurrents">
+                        <h1 class="account-content__title recurrents-title">Регулярные платежи</h1>
+                        <div class="recurrents-wrapper account-content-padding">
+                            <div class="fast-access-cards recurrents-cards">
+                                <div class="fast-access-cards__item fast-access-card recurrents-card">
+                                    <div class="fast-access-card__title">Регулярное пожертвование фонду</div>
+                                    <div class="fast-access-card__content recurrents-card__content">
+                                        Регулярные пожертвования дают нам возможность рассчитывать наши силы и регулярно помогать детям.
+                                    </div>
+                                    <div class="recurrents-card__sum">2 000 руб.</div>
+                                    <div class="recurrents-card__paymentcard">
+                                        <span class="card-suffix recurrents-card__paymentcard-suffix">*8888</span>
+                                        <img
+                                            class="ps-mastercard recurrents-card__paymentcard-type"
+                                            src="/images/visa.png"
+                                            alt="Visa"
+                                            width="30"
+                                        />
+                                    </div>
+                                    <div
+                                        class="fast-access-card__bgicon"
+                                        style="background-image: url('/images/card-refresh.png');"
+                                    ></div>
+                                </div>
+                                <div class="fast-access-cards__item fast-access-card">
+                                    <div class="fast-access-card__title">Регулярное пожертвование фонду</div>
+                                    <div class="fast-access-card__content recurrents-card__content">
+                                        Регулярные пожертвования дают нам возможность рассчитывать наши силы и регулярно помогать детям.
+                                    </div>
+                                    <div class="recurrents-card__sum">11 994 руб.</div>
+                                    <div class="recurrents-card__paymentcard">
+                                        <span class="card-suffix recurrents-card__paymentcard-suffix">*7575</span>
+                                        <img
+                                            class="ps-mastercard recurrents-card__paymentcard-type"
+                                            src="/images/mastercard.png"
+                                            alt="Mastercard"
+                                            width="20"
+                                        />
+                                    </div>
+                                    <div
+                                        class="fast-access-card__bgicon"
+                                        style="background-image: url('/images/card-refresh.png');"
+                                    ></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark btn--big add-recurrents-button js-add-recurrents">Добавить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

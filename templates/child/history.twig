@@ -1,0 +1,80 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-large">
+            <div class="container">
+                <h1 class="hero-large__title">Личный кабинет</h1>
+                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
+            </div>
+        </section>
+        <div class="bg-purple-line"></div>
+        <section class="section account section-with-bghearts">
+            <div class="container container--small">
+                <div class="account-wrapper">
+                    <div class="account-nav">
+                        <nav class="account-navbar">
+                            <ul class="account-links">
+                                <li class="account-links__item">
+                                    <a href="/dist/account.html" class="account-links__item-link">Главная</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/my-account.html" class="account-links__item-link">Мой аккаунт</a>
+                                </li>
+                                <li class="account-links__item account-links__item--active">
+                                    <a href="/dist/history.html" class="account-links__item-link">Мои пожертвования</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/referrals.html" class="account-links__item-link">Реферальная программа</a>
+                                </li>
+                                <li class="account-links__item">
+                                    <a href="/dist/recurrents.html" class="account-links__item-link">Регулярные платежи</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="account-content donation-history">
+                        <h1 class="account-content__title donation-history-title account-content-padding">
+                            Список моих пожертвований
+                        </h1>
+                        <div class="donation-list account-content-padding">
+                            <table class="donation-list-table">
+                                <thead class="donation-list-table__head">
+                                <tr>
+                                    <th class="donation-list-table__head-col">Название</th>
+                                    <th class="donation-list-table__head-col">Сумма</th>
+                                    <th class="donation-list-table__head-col">Дата</th>
+                                </tr>
+                                </thead>
+                                <tbody class="donation-list-table__body">
+                                <tr class="donation-list-table__row">
+                                    <td class="donation-list-table__body-col">Регулярное пожертвование фонду</td>
+                                    <td class="donation-list-table__body-col">2 000 руб.</td>
+                                    <td class="donation-list-table__body-col">18.12.2018</td>
+                                </tr>
+                                <tr class="donation-list-table__row">
+                                    <td class="donation-list-table__body-col">Пожертвование Ване Иванову</td>
+                                    <td class="donation-list-table__body-col">800 руб.</td>
+                                    <td class="donation-list-table__body-col">18.12.2018</td>
+                                </tr>
+                                <tr class="donation-list-table__row">
+                                    <td class="donation-list-table__body-col">Регулярное пожертвование фонду</td>
+                                    <td class="donation-list-table__body-col">2 000 руб.</td>
+                                    <td class="donation-list-table__body-col">18.12.2018</td>
+                                </tr>
+                                <tr class="donation-list-table__row">
+                                    <td class="donation-list-table__body-col">Пожертвование Ване Иванову</td>
+                                    <td class="donation-list-table__body-col">800 руб.</td>
+                                    <td class="donation-list-table__body-col">18.12.2018</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

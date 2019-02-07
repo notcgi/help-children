@@ -1,0 +1,153 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <main>
+        <section class="section hero-small">
+            <div class="container">
+                <h1 class="hero-small__title">Отчеты фонда</h1>
+                <p class="hero-small__subtitle">Благодарим Вас за помощь детям!</p>
+            </div>
+        </section>
+        <section class="section reports">
+            <div class="container container-pagecontent-padding">
+                <h2 class="section-title">Финансовые помесячные отчёты</h2>
+                <p class="section-subtitle">Каждый месяц мы публикуем наши финансовые отчёты по расходам</p>
+                <div class="reports-content">
+                    <ul class="report-list">
+                        <li class="report-list__item">
+                            <div class="report">
+                                <div class="report-doc">
+                                    <img
+                                        class="report-doc__image"
+                                        src="/images/doc-example.png"
+                                        alt="Документ"
+                                        width="208"
+                                        height="250"
+                                    />
+                                    <a class="show-doc-button" href="#">
+                                        <span class="show-doc-button__circle"> <span class="icon icon-doc"></span> </span>
+                                    </a>
+                                </div>
+                                <div class="report-description">
+                                    <h3 class="report-description__title">Финансовый отчёт по расходам за Июль</h3>
+                                    <p class="report-description__date">1 июля 2018 г.</p>
+                                    <div class="report-description__download">
+                                        <a class="report-description__download-link" href="#">Скачать</a>
+                                    </div>
+                                    <div class="report-description__size">143 кб.</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="report-list__item">
+                            <div class="report">
+                                <div class="report-doc">
+                                    <img
+                                        class="report-doc__image"
+                                        src="/images/doc-example.png"
+                                        alt="Документ"
+                                        width="208"
+                                        height="250"
+                                    />
+                                    <a class="show-doc-button" href="#">
+                                        <span class="show-doc-button__circle"> <span class="icon icon-doc"></span> </span>
+                                    </a>
+                                </div>
+                                <div class="report-description">
+                                    <h3 class="report-description__title">Финансовый отчёт по расходам за Июль</h3>
+                                    <p class="report-description__date">1 июля 2018 г.</p>
+                                    <div class="report-description__download">
+                                        <a class="report-description__download-link" href="#">Скачать</a>
+                                    </div>
+                                    <div class="report-description__size">143 кб.</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="report-list__item">
+                            <div class="report">
+                                <div class="report-doc">
+                                    <img
+                                        class="report-doc__image"
+                                        src="/images/doc-example.png"
+                                        alt="Документ"
+                                        width="208"
+                                        height="250"
+                                    />
+                                    <a class="show-doc-button" href="#">
+                                        <span class="show-doc-button__circle"> <span class="icon icon-doc"></span> </span>
+                                    </a>
+                                </div>
+                                <div class="report-description">
+                                    <h3 class="report-description__title">Финансовый отчёт по расходам за Июль</h3>
+                                    <p class="report-description__date">1 июля 2018 г.</p>
+                                    <div class="report-description__download">
+                                        <a class="report-description__download-link" href="#">Скачать</a>
+                                    </div>
+                                    <div class="report-description__size">143 кб.</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="container container--small">
+                    <div class="donate-form-wrapper reports-donate-form-wrapper">
+                        <form action="/dist/online-help.html" method="GET" class="donate-form">
+                            <div class="donate-form-row">
+                                <div class="donate-form-row__col donate-form-title">Я хочу пожертвовать</div>
+                                <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
+                                    <label class="donate-sum-fieldgroup__label toggle-field">
+                                        <input class="toggle-field__input" type="radio" name="sum" value="100" checked />
+                                        <div class="toggle-field__text">100 Р</div>
+                                    </label>
+                                    <label class="donate-sum-fieldgroup__label toggle-field">
+                                        <input class="toggle-field__input" type="radio" name="sum" value="100" />
+                                        <div class="toggle-field__text">500 Р</div>
+                                    </label>
+                                    <label class="donate-sum-fieldgroup__label">
+                                        <input
+                                            class="donate-text-field"
+                                            type="text"
+                                            name="sum-other"
+                                            value=""
+                                            placeholder="Другая сумма"
+                                        />
+                                    </label>
+                                </div>
+                                <button class="donate-form-row__col btn btn-dark donate-form-submit js-donate-form-submit">
+                                    <span class="donate-form-submit__text">Пожертвовать</span>
+                                    <span class="icon icon-arrow-right"></span>
+                                </button>
+                            </div>
+                            <div class="donate-form-row">
+                                <div class="donate-form-payment-systems">
+                                    <div class="donate-form-payment-systems__cards">
+                                        <span class="donate-form-payment-systems__cards-title">Оплата с карты</span>
+                                        <ul class="payment-system-list">
+                                            <li class="payment-system-list__item">
+                                                <img class="ps-mastercard" src="/images/mastercard.png" alt="Mastercard" width="20" />
+                                            </li>
+                                            <li class="payment-system-list__item">
+                                                <img class="ps-visa" src="/images/visa.png" alt="visa" width="24" />
+                                            </li>
+                                            <li class="payment-system-list__item">
+                                                <img class="ps-mir" src="/images/mir.png" alt="mir" width="24" />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="donate-form-payment-systems__notice">
+                                        <div class="icon-wrapper"><span class="icon icon-lock"></span></div>
+                                        <span>
+                        Все сделки защищены SSL, PSI DSS, <br />
+                        Персональные данные конфиденциальны.
+                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

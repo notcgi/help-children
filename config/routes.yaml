@@ -13,3 +13,72 @@ child_view:
 child_registration:
     path: /child/registration
     controller: App\Controller\ChildController::registration
+
+child_contacts:
+    path: /child/contacts
+    controller: App\Controller\ChildController::contacts
+
+child_docs:
+    path: /child/docs
+    controller: App\Controller\ChildController::docs
+
+child_help:
+    path: /child/help
+    controller: App\Controller\ChildController::help
+
+child_main:
+    path: /child/main
+    controller: App\Controller\ChildController::main
+
+child_kids:
+    path: /child/kids
+    controller: App\Controller\ChildController::kids
+
+child_login:
+    path: /child/login
+    controller: App\Controller\ChildController::login
+
+child_newscards:
+    path: /child/newscards
+    controller: App\Controller\ChildController::newscards
+
+child_news:
+    path: /child/news
+    controller: App\Controller\ChildController::newsdetail
+
+child_newsdetail:
+    path: /child/newsdetail
+    controller: App\Controller\ChildController::newsdetail
+
+child_onlinehelp:
+    path: /child/onlinehelp
+    controller: App\Controller\ChildController::onlinehelp
+
+child_partners:
+    path: /child/partners
+    controller: App\Controller\ChildController::partners
+
+child_reports:
+    path: /child/reports
+    controller: App\Controller\ChildController::reports
+
+
+child_account:
+    path: /account/account
+    controller: App\Controller\AccountController::account
+
+child_myaccount:
+    path: /account/myaccount
+    controller: App\Controller\AccountController::myaccount
+
+child_history:
+    path: /account/history
+    controller: App\Controller\AccountController::history
+
+child_referrals:
+    path: /account/referrals
+    controller: App\Controller\AccountController::referrals
+
+child_recurrent:
+    path: /account/recurrent
+    controller: App\Controller\AccountController::recurrent
