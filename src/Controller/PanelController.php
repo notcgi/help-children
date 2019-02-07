@@ -52,9 +52,9 @@ class PanelController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        /*if ($form->isSubmitted()) {
             var_dump($form->getErrors(true, true)[0]->getMessage());
-        }
+        }*/
 
         return $this->render(
             'panel/auth.twig',
