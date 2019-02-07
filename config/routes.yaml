@@ -82,3 +82,11 @@ child_referrals:
 child_recurrent:
     path: /account/recurrent
     controller: App\Controller\AccountController::recurrent
+
+panel_auth:
+    path: /panel/auth
+    controller: App\Controller\PanelController::auth
+
+panel_users:
+    path: /panel/users
+    controller: App\Controller\PanelController::users
