@@ -10,9 +10,9 @@ child_view:
     path: /child/view
     controller: App\Controller\ChildController::view
 
-child_registration:
-    path: /child/registration
-    controller: App\Controller\ChildController::registration
+registration:
+    path: /registration
+    controller: App\Controller\RegistrationController::index
 
 child_contacts:
     path: /child/contacts
