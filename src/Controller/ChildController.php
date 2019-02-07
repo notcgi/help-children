@@ -11,4 +11,9 @@ class ChildController extends AbstractController
     {
         return $this->render('child/view.twig');
     }
+
+    public function registration()
+    {
+        return $this->render('child/registration.twig');
+    }
 }

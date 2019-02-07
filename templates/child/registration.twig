@@ -1,0 +1,54 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+<main>
+    <section class="section hero-login">
+        <div class="container">
+            <div class="login-wrapper">
+                <form class="login-form registration-form js-registration-form" action="#" method="POST">
+                    <div class="login-form__title">Регистрация</div>
+                    <div class="login-form-row">
+                        <input class="input-rounded" type="text" name="login" placeholder="Введите логин" />
+                    </div>
+                    <div class="login-form-row login-form-group">
+                        <div class="login-form-group__item">
+                            <input class="input-rounded" type="password" name="password" placeholder="Введите пароль" />
+                        </div>
+                        <div class="login-form-group__item">
+                            <input class="input-rounded" type="password" name="password-confirm" placeholder="Повторите пароль" />
+                        </div>
+                    </div>
+                    <div class="login-form-row">
+                        <button class="btn btn--big btn-dark registration-form-submit">Зарегистрироваться</button>
+                    </div>
+                </form>
+                <div class="another-way-auth">
+                    <div class="another-way-auth__col">
+                        <p>Вход через соцсеть</p>
+                        <ul class="socialbar-links">
+                            <li class="socialbar-links__item">
+                                <a href="https://vk.com/fond.detyam" target="_blank" class="socialbar-links__item-link">
+                                    <span class="icon icon-vk"></span>
+                                </a>
+                            </li>
+                            <li class="socialbar-links__item">
+                                <a href="#" class="socialbar-links__item-link"> <span class="icon icon-facebook"></span> </a>
+                            </li>
+                            <li class="socialbar-links__item">
+                                <a href="https://www.instagram.com/fond.detyam/" target="_blank" class="socialbar-links__item-link">
+                                    <span class="icon icon-instagram"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="another-way-auth__col">
+                        <p>или</p>
+                        <div><a href="/dist/login.html" class="auth-link">Войти</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

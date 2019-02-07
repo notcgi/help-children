@@ -9,3 +9,7 @@ user_controller:
 child_view:
     path: /child/view
     controller: App\Controller\ChildController::view
+
+child_registration:
+    path: /child/registration
+    controller: App\Controller\ChildController::registration
