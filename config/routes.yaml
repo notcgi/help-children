@@ -14,6 +14,9 @@ registration:
     path: /registration
     controller: App\Controller\RegistrationController::index
 
+app_logout:
+    path: /logout
+
 child_contacts:
     path: /child/contacts
     controller: App\Controller\ChildController::contacts
