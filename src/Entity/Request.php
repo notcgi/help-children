@@ -18,24 +18,15 @@ class Request
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $email;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $userId;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $identity;
+    private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -43,12 +34,12 @@ class Request
     private $value;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $changedAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
@@ -57,21 +48,9 @@ class Request
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getUser(): ?User
     {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
+        return $this->user;
     }
 
     public function setUserId(?int $userId): self
@@ -81,26 +60,13 @@ class Request
         return $this;
     }
 
-    public function getName(): ?string
+    public function getDescription(): string
     {
-        return $this->name;
+        return $this->description;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getIdentity(): ?string
-    {
-        return $this->identity;
-    }
-
-    public function setIdentity(string $identity): self
-    {
-        $this->identity = $identity;
+    public function setDescription(string $description): self {
+        $this->description = $description;
 
         return $this;
     }

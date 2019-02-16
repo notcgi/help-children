@@ -29,7 +29,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $pass;
 
@@ -63,6 +63,11 @@ class User implements UserInterface
      * @ORM\JoinColumn(name="referrer_id", referencedColumnName="id")
      */
     private $referrals;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Request", mappedBy="user")
+     */
+    private $requests;
 
     public function getId(): ?int
     {
@@ -198,6 +203,17 @@ class User implements UserInterface
     public function setReferrals(array $referrals): self
     {
         $this->referrals = $referrals;
+
+        return $this;
+    }
+
+    public function getRequests(): array
+    {
+        return $this->requests;
+    }
+
+    public function setRequests(array $requests): self {
+        $this->requests = $requests;
 
         return $this;
     }
