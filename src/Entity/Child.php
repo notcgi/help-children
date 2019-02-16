@@ -48,9 +48,14 @@ class Child
     private $deletedAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -81,14 +86,50 @@ class Child
         return $this;
     }
 
-    public function getBody()
+    public function getBody(): array
     {
         return $this->body;
     }
 
-    public function setBody($body): self
+    public function setBody(array $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getDiagnosis(): string
+    {
+        return $this->body['diagnosis'] ?? '';
+    }
+
+    public function setDiagnosis(string $diagnosis): self
+    {
+        $this->body['diagnosis'] = $diagnosis;
+
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return $this->body['img'] ?? [];
+    }
+
+    public function setImages(array $images): self
+    {
+        $this->body['img'] = $images;
+
+        return $this;
+    }
+
+    public function getComment(): string
+    {
+        return $this->body['comment'] ?? '';
+    }
+
+    public function setComment(string $comment): self
+    {
+        $this->body['comment'] = $comment;
 
         return $this;
     }

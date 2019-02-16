@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190216083940 extends AbstractMigration
+final class Version20190216224126 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,7 @@ final class Version20190216083940 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE children (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(120) NOT NULL, birthdate DATETIME DEFAULT NULL, body JSON NOT NULL, collected NUMERIC(10, 2) DEFAULT NULL, goal NUMERIC(10, 2) DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE children (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(120) NOT NULL, birthdate DATETIME DEFAULT NULL, body JSON NOT NULL, collected NUMERIC(10, 2) DEFAULT NULL, goal NUMERIC(10, 2) DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE payment_requests (id INT AUTO_INCREMENT NOT NULL, user_id INT UNSIGNED DEFAULT NULL, description VARCHAR(255) NOT NULL, value NUMERIC(10, 2) NOT NULL, changed_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_3B439439A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE users (id INT UNSIGNED AUTO_INCREMENT NOT NULL, referrer_id INT UNSIGNED DEFAULT NULL, roles JSON NOT NULL, email VARCHAR(180) NOT NULL, pass VARCHAR(100) DEFAULT NULL, ref_code VARCHAR(6) DEFAULT NULL, meta JSON NOT NULL, deleted_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', UNIQUE INDEX UNIQ_1483A5E9E7927C74 (email), INDEX IDX_1483A5E9798C22DB (referrer_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE payment_requests ADD CONSTRAINT FK_3B439439A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');

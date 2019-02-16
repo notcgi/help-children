@@ -16,11 +16,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationController extends AbstractController
 {
-    public function template()
-    {
-        return $this->render('child/registration.twig');
-    }
-
     public function index(Request $request)
     {
         // creates a task and gives it some dummy data for this example
@@ -28,7 +23,7 @@ class RegistrationController extends AbstractController
 
         $form = $this->createFormBuilder($user)
             ->add(
-                'surname',
+                'lastName',
                 TextType::class,
                 [
                     'constraints' => [
@@ -37,7 +32,7 @@ class RegistrationController extends AbstractController
                 ]
             )
             ->add(
-                'name',
+                'firstName',
                 TextType::class,
                 [
                     'constraints' => [
@@ -106,7 +101,7 @@ class RegistrationController extends AbstractController
         }*/
 
         return $this->render(
-            'child/registration.twig',
+            'user/registration.twig',
             [
                 'form' => $form->createView(),
             ]

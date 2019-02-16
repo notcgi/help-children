@@ -19,34 +19,14 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $surname;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $age;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $phone;
-
-    /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = ['ROLE_USER'];
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private $email = '';
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -89,6 +69,11 @@ class User implements UserInterface
      */
     private $requests;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,55 +108,55 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): string
     {
-        return $this->name;
+        return $this->meta['firstName'] ?? '';
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->name = $name;
+        $this->meta['firstName'] = $firstName;
 
         return $this;
     }
 
-    public function getSurname(): ?string
+    public function getLastName(): string
     {
-        return $this->surname;
+        return $this->meta['lastName'] ?? '';
     }
 
-    public function setSurname(string $surname): self
+    public function setLastName(string $lastName): self
     {
-        $this->surname = $surname;
+        $this->meta['lastName'] = $lastName;
 
         return $this;
     }
 
     public function getAge(): ?string
     {
-        return $this->age;
+        return $this->meta['age']??0;
     }
 
     public function setAge(string $age): self
     {
-        $this->age = $age;
+        $this->meta['age'] = $age;
 
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): string
     {
-        return $this->phone;
+        return $this->meta['phone'] ?? '';
     }
 
     public function setPhone(string $phone): self
     {
-        $this->phone = $phone;
+        $this->meta['phone'] = $phone;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
