@@ -1,0 +1,77 @@
+{% extends 'base_client_wrapper.twig' %}
+
+{% block content %}
+
+    <style>
+        #form div{
+            margin: auto;
+        }
+    </style>
+
+    <main>
+        <section class="section hero-login">
+            <div class="container">
+                <div class="login-wrapper registration-wrapper">
+                    {{ form_start(form, {'attr':{'class':'login-form registration-form js-registration-form'}}) }}
+                        <div class="login-form__title">Регистрация</div>
+                        {% block form_row %}
+                            {{ form_errors(form.surname) }}
+                            {{ form_errors(form.name) }}
+                            {{ form_errors(form.age) }}
+                            {{ form_errors(form.phone) }}
+                            {{ form_errors(form.email) }}
+                            {{ form_errors(form.password) }}
+                        {% endblock form_row %}
+                        <div class="login-form-row registration-form-row">
+                            {{ form_widget(form.surname, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
+                        </div>
+                        <div class="login-form-row registration-form-row">
+                            {{ form_widget(form.age, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш возраст'}}) }}
+                            <label class="registration-form-field registration-form-phone">
+                                {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded', 'placeholder': 'Введите номер телефона', 'data-type':'phone'}}) }}
+                            </label>
+                        </div>
+                        <div class="login-form-row registration-form-row">
+                            {{ form_widget(form.email, {'attr': {'class':'input-rounded registration-form-input', 'required':'required', 'placeholder': 'Ваша почта'}}) }}
+                        </div>
+                        <div class="login-form-row registration-form-row login-form-group">
+                            {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
+                            {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
+                        </div>
+                    {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
+                    {{ form_end(form) }}
+                    <div class="another-way-auth">
+                        <div class="another-way-auth__col">
+                            <p>Вход через соцсеть</p>
+                            <ul class="socialbar-links">
+                                <li class="socialbar-links__item">
+                                    <a href="https://vk.com/fond.detyam" target="_blank" class="socialbar-links__item-link">
+                                        <span class="icon icon-vk"></span>
+                                    </a>
+                                </li>
+                                <li class="socialbar-links__item">
+                                    <a href="#" class="socialbar-links__item-link">
+                                        <span class="icon icon-facebook"></span>
+                                    </a>
+                                </li>
+                                <li class="socialbar-links__item">
+                                    <a href="https://www.instagram.com/fond.detyam/" target="_blank" class="socialbar-links__item-link">
+                                        <span class="icon icon-instagram"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="another-way-auth__col">
+                            <p>или</p>
+                            <div>
+                                <a href="/dist/login.html" class="auth-link">Войти</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

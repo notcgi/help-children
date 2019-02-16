@@ -19,6 +19,26 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $surname;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $phone;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -99,6 +119,54 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getAge(): ?string
+    {
+        return $this->age;
+    }
+
+    public function setAge(string $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }

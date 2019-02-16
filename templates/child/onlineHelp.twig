@@ -30,12 +30,18 @@
                                             <img class="toggle-field__text-image" src="/images/visa.png" width="40" />
                                         </div>
                                     </label>
-                                    <label class="payment-type-fieldgroup__label toggle-field">
-                                        <input class="toggle-field__input" type="radio" name="payment-type" value="internet-services" />
+                                    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+                                        <input
+                                            class="toggle-field__input"
+                                            type="radio"
+                                            name="payment-type"
+                                            value="internet-services"
+                                            disabled
+                                        />
                                         <div class="toggle-field__text">Интернет сервисы</div>
                                     </label>
-                                    <label class="payment-type-fieldgroup__label toggle-field">
-                                        <input class="toggle-field__input" type="radio" name="payment-type" value="sms" />
+                                    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+                                        <input class="toggle-field__input" type="radio" name="payment-type" value="sms" disabled />
                                         <div class="toggle-field__text">Sms оплата</div>
                                     </label>
                                     <label class="payment-type-fieldgroup__label toggle-field">
@@ -133,11 +139,11 @@
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
                                     <div class="input-checkbox payment-count-field">
                                         <label class="input-checkbox__label">
-                                            <input class="input-checkbox__input" type="checkbox" name="agreements" value="yes" />
+                                            <input class="input-checkbox__input" type="checkbox" name="agreements" value="yes" checked />
                                             <span class="input-checkbox__checkmark"></span>
                                             <span class="input-checkbox__label"
                                             >Я согласен с
-                          <a class="link--purple" href="/docs/Публичная оферта.pdf" target="_blank"
+                          <a class="link--purple" href="docs/Public_offer.pdf" target="_blank"
                           >договором оферты</a
                           ></span
                                             >
@@ -181,7 +187,8 @@
                             Вы можете произвести пожертвование с помощью предложенных методов оплат через платежный сервис компании
                             Uniteller. После подтверждения Вы будете перенаправлены на защищенную платежную страницу Uniteller, где
                             необходимо будет ввести данные для оплаты. После успешной оплаты на указанную в форме оплаты электронную
-                            почту будет направлен электронный чек с информацией об успешном совершении пожертвования. <br /><br />
+                            почту будет направлен электронный чек с информацией об успешном совершении пожертвования.
+                            <br /><br />
                             <b>Гарантии безопасности</b><br />
                             Безопасность процессинга Uniteller подтверждена сертификатом стандарта безопасности данных индустрии
                             платежных карт PCI DSS. Надежность сервиса обеспечивается интеллектуальной системой мониторинга
@@ -190,7 +197,8 @@
                             <br /><br />
                             Передача информации в процессинговую компанию Uniteller происходит с применением технологии шифрования
                             TLS. Дальнейшая передача информации осуществляется по закрытым банковским каналам, имеющим наивысший
-                            уровень надежности. Uniteller не передает данные Вашей карты магазину и иным третьим лицам! <br />
+                            уровень надежности. Uniteller не передает данные Вашей карты магазину и иным третьим лицам!
+                            <br />
                             Если Ваша карта поддерживает технологию 3D Secure, для осуществления платежа, Вам необходимо будет
                             пройти дополнительную проверку пользователя в банке-эмитенте (банк, который выпустил Вашу карту). Для
                             этого Вы будете направлены на страницу банка, выдавшего карту. Вид проверки зависит от банка. Как
@@ -202,7 +210,8 @@
                         <p class="help-notice-description-text">
                             <b>Если у Вас возникли вопросы</b> по совершенному платежу, <br />Вы можете обратиться в службу
                             технической поддержки процессингового центра Uniteller: <br /><br /><b>support@uniteller.ru</b>
-                            <br />или по телефону <b>8 800 707 67 19</b>
+                            <br />или по телефону
+                            <b>8 800 707 67 19</b>
                         </p>
                     </div>
                 </div>
