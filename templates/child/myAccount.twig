@@ -13,27 +13,7 @@
         <section class="section account section-with-bghearts">
             <div class="container container--small">
                 <div class="account-wrapper">
-                    <div class="account-nav">
-                        <nav class="account-navbar">
-                            <ul class="account-links">
-                                <li class="account-links__item">
-                                    <a href="/account" class="account-links__item-link">Главная</a>
-                                </li>
-                                <li class="account-links__item account-links__item--active">
-                                    <a href="/account/myaccount" class="account-links__item-link">Мой аккаунт</a>
-                                </li>
-                                <li class="account-links__item">
-                                    <a href="/account/history" class="account-links__item-link">Мои пожертвования</a>
-                                </li>
-                                <li class="account-links__item">
-                                    <a href="/account/referrals" class="account-links__item-link">Реферальная программа</a>
-                                </li>
-                                <li class="account-links__item">
-                                    <a href="/account/recurrent" class="account-links__item-link">Регулярные платежи</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                    {% include 'components/account_nav.twig' %}
                     <div class="account-content my-account">
                         <h1 class="account-content__title my-account-title account-content-padding">Мой аккаунт</h1>
                         <div class="my-account-form-wrapper account-content-padding">
