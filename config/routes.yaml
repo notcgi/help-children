@@ -18,15 +18,17 @@ child_kids:
     controller: App\Controller\ChildController::kids
 
 child_view:
-    path: /kids/detail
+    path: /kids/{id}
     controller: App\Controller\ChildController::view
+    requirements:
+        id: '\d+'
 
 child_newscards:
     path: /news
     controller: App\Controller\ChildController::newscards
 
 child_newsdetail:
-    path: /news/newsdetail
+    path: /news/detail
     controller: App\Controller\ChildController::newsdetail
 
 child_partners:

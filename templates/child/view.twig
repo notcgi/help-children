@@ -18,79 +18,56 @@
                             <div class="card-child__col">
                                 <div class="card-child-photos">
                                     <div class="card-child-photos__main">
-                                        <img class="img-responsive" src="/images/card-child-big.png" alt="Ваня Иванов"
+                                        <img class="img-responsive" src="{{ child.images[0] }}" alt="Ваня Иванов"
                                              width="382"/>
                                     </div>
                                     <div class="card-child-photos__list photo-gallery">
-                                        <img
-                                            class="photo-gallery__item photo-gallery__item--active img-responsive"
-                                            src="/images/card-child-small.png"
-                                            alt="Ваня Иванов"
-                                            width="59"
-                                        />
-                                        <img
-                                            class="photo-gallery__item img-responsive"
-                                            src="/images/card-child-small.png"
-                                            alt="Ваня Иванов"
-                                            width="59"
-                                        />
-                                        <img
-                                            class="photo-gallery__item img-responsive"
-                                            src="/images/card-child-small.png"
-                                            alt="Ваня Иванов"
-                                            width="59"
-                                        />
+                                        {% for image in child.images %}
+                                            <img
+                                                class="photo-gallery__item photo-gallery__item--active img-responsive"
+                                                src="{{ image }}"
+                                                alt="Ваня Иванов"
+                                                width="59"
+                                            />
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <div class="card-child__col card-child-description">
-                                <div class="card-child-name">Ваня Иванов</div>
+                                <div class="card-child-name">{{ child.name }}</div>
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Возраст:</div>
-                                    <div class="card-child-field__value">6 лет</div>
+                                    <div class="card-child-field__value">{{ ageChildren }} лет</div>
                                 </div>
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Диагноз:</div>
                                     <div class="card-child-field__value card-child-field__value--full">
-                                        Детский церебральный паралич.
-                                        <br/>
-                                        Спастический тетрапарез.
+                                        {{ child.diagnosis }}
                                     </div>
                                 </div>
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Комментарий:</div>
                                     <div class="card-child-field__value card-child-field__value--full">
-                                        Здравствуйте! Меня зовут Фамилия Имя, мне 25 лет. В 2016 году в нашей семье
-                                        произошла беда. Моему
-                                        сыну в год поставили страшный диагноз ДЦП, спастическая диплегия,
-                                        гипоксически-ишемический генез,
-                                        расходящееся косоглазие. Сопуствующим заболеванием является бронхиальная астма.
-                                        Сейчас ему 2 года,
-                                        он сам практически не сидит и не ходит. Ваню я воспитываю одна, папы у нас нет.
-                                        (бросил нас, когда
-                                        сын еще не родился). После первого посещения в РЦ Больница г.Россия он начал сам
-                                        переворачиваться.
-                                        Это уже достижение для нас. Если интенсивно лечиться и не запускать, то врачи
-                                        прогнозируют нам
-                                        выздоровление. Я очень надеюсь, что с вашей помощью мой сынок встанет на ножки!
+                                        {{ child.comment }}
                                     </div>
                                 </div>
                                 <div class="card-child-collected collected-resources">
                                     <div class="collected-resources-left">
                                         <span class="collected-resources-left__title">Необходимо собрать:</span>
-                                        <span class="collected-resources-left__value">20 000 руб.</span>
+                                        <span class="collected-resources-left__value">{{ child.goal }} руб.</span>
                                     </div>
                                     <div class="collected-resources__slider">
-                                        <div class="collected-resources__slider-filled"></div>
+                                        <div class="collected-resources__slider-filled" style="width: {{ statusGoal }}%"></div>
                                     </div>
                                     <div class="collected-resources__sum">
                                         <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                        <span class="collected-resources__sum-value">9 000 руб.</span>
+                                        <span class="collected-resources__sum-value">{{ leftGoal }} руб.</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <form class="child-help-form" action="/dist/online-help.html" method="GET">
+                            <input type="hidden" name="childrenId" value="{{ child.id }}">
                             <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
                             <div class="child-help-form-row">
                                 <div
