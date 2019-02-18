@@ -9,47 +9,53 @@ registration:
     path: /registration
     controller: App\Controller\RegistrationController::index
 
-child_main:
+main:
     path: /
-    controller: App\Controller\ChildController::main
+    controller: App\Controller\MainController::main
 
-child_kids:
-    path: /kids
-    controller: App\Controller\ChildController::kids
+children_list:
+    path: /children
+    controller: App\Controller\ChildController::list
 
-child_view:
-    path: /kids/{id}
-    controller: App\Controller\ChildController::view
+children_detail:
+    path: /children/{id}
+    controller: App\Controller\ChildController::detail
     requirements:
         id: '\d+'
 
-child_newscards:
+news_list:
     path: /news
-    controller: App\Controller\ChildController::newscards
+    controller: App\Controller\NewsController::list
+
+news_cards:
+    path: /news/cards
+    controller: App\Controller\NewsController::cards
 
 child_newsdetail:
-    path: /news/detail
-    controller: App\Controller\ChildController::newsdetail
+    path: /news/{id}
+    controller: App\Controller\NewsController::detail
+    requirements:
+        id: '\d+'
 
 child_partners:
     path: /partners
     controller: App\Controller\ChildController::partners
 
-child_docs:
+docs:
     path: /docs
-    controller: App\Controller\ChildController::docs
+    controller: App\Controller\MainController::docs
 
 child_reports:
     path: /reports
     controller: App\Controller\ChildController::reports
 
-child_contacts:
+contacts:
     path: /contacts
-    controller: App\Controller\ChildController::contacts
+    controller: App\Controller\MainController::contacts
 
-child_help:
+help:
     path: /help
-    controller: App\Controller\ChildController::help
+    controller: App\Controller\MainController::help
 
 child_onlinehelp:
     path: /onlinehelp
@@ -82,10 +88,6 @@ panel_auth:
 panel_users:
     path: /panel/users
     controller: App\Controller\PanelController::users
-
-
-
-
 
 user_controller:
     path: /user

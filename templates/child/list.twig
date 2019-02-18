@@ -12,7 +12,7 @@
                 <h2 class="section-title">Долгосрочная опека</h2>
                 <p class="section-subtitle">Вы можете помочь этим детям</p>
                 <ul class="aid-list">
-                    {% for child in kids %}
+                    {% for child in children %}
                         <li class="aid-list__item">
                             <div class="aid-card">
                                 <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
@@ -25,14 +25,12 @@
                                         </div>
                                         <div class="collected-resources__sum">
                                             <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                            <span
-                                                class="collected-resources__sum-value">{{ child.collected }} руб.</span>
+                                            <span class="collected-resources__sum-value">{{ child.collected }} руб.</span>
                                         </div>
                                     </div>
                                     <p class="aid-card__description-more">
-                                        <a class="aid-card__description-more__link js-card-link" href="/kids/{{ child.id }}"
-                                        >Узнать подробнее</a
-                                        >
+                                        <a class="aid-card__description-more__link js-card-link"
+                                            href="{{ path('children_detail', {'id': child.id}) }}">Узнать подробнее</a>
                                     </p>
                                 </div>
                             </div>
@@ -62,9 +60,8 @@
                                     </div>
                                 </div>
                                 <p class="aid-card__description-more">
-                                    <a class="aid-card__description-more__link js-card-link" href="/dist/child.html"
-                                    >Узнать подробнее</a
-                                    >
+                                    <a class="aid-card__description-more__link js-card-link" href="/dist/child.html">Узнать
+                                        подробнее</a>
                                 </p>
                             </div>
                         </div>

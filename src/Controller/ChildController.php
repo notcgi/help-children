@@ -15,7 +15,7 @@ class ChildController extends AbstractController
      * @throws \LogicException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function view(int $id)
+    public function detail(int $id)
     {
         $child = $this->getDoctrine()
             ->getRepository(Child::class)
@@ -23,80 +23,37 @@ class ChildController extends AbstractController
 
         if (!$child) {
             throw $this->createNotFoundException(
-                'Нет ребенка с id ' . $id
+                'Нет ребенка с id '.$id
             );
         }
 
         return $this->render(
-            'child/view.twig',
+            'child/detail.twig',
             [
-                'child' => $child
+                'child' => $child,
+
             ]
         );
     }
 
-    public function ageChildren($birthDate, $todayDate)
-    {
-        if ($birthDate >= $todayDate) {
-            return 0;
-        }
-
-        $ageChildren = date_diff($birthDate, $todayDate);
-
-        return $ageChildren->y;
-    }
-
-    public function registration()
-    {
-        return $this->render('child/registration.twig');
-    }
-
-    public function contacts()
-    {
-        return $this->render('child/contacts.twig');
-    }
-
-    public function docs()
-    {
-        return $this->render('child/docs.twig');
-    }
-
-    public function help()
-    {
-        return $this->render('child/help.twig');
-    }
-
-    public function main()
-    {
-        return $this->render('child/main.twig');
-    }
-
-    public function kids()
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     */
+    public function list()
     {
         return $this->render(
-            'child/kids.twig',
-            ['kids' => $this->getDoctrine()->getRepository(Child::class)->findAll()]
+            'child/list.twig',
+            [
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll(),
+            ]
         );
     }
 
     public function login()
     {
         return $this->render('child/login.twig');
-    }
-
-    public function news()
-    {
-        return $this->render('child/news.twig');
-    }
-
-    public function newscards()
-    {
-        return $this->render('child/newsCards.twig');
-    }
-
-    public function newsdetail()
-    {
-        return $this->render('child/newsdetail.twig');
     }
 
     public function onlinehelp()

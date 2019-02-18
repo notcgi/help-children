@@ -5,7 +5,7 @@
         <section class="section hero-medium">
             <div class="container child-container">
                 <h1 class="hero-medium__title">Дети</h1>
-                <a class="link-back" href="/dist/kids.html"><span class="icon icon-arrow-angle-right"></span>К списку
+                <a class="link-back" href="{{ path('main') }}"><span class="icon icon-arrow-angle-right"></span>К списку
                     детей</a>
             </div>
         </section>
@@ -56,7 +56,7 @@
                                 <div class="card-child-collected collected-resources">
                                     <div class="collected-resources-left">
                                         <span class="collected-resources-left__title">Необходимо собрать:</span>
-                                        <span class="collected-resources-left__value">{{ child.goal }} руб.</span>
+                                        <span class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                     <div class="collected-resources__slider">
                                         <div class="collected-resources__slider-filled"
@@ -64,13 +64,13 @@
                                     </div>
                                     <div class="collected-resources__sum">
                                         <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                        <span class="collected-resources__sum-value">{{ child.leftGoal }} руб.</span>
+                                        <span class="collected-resources__sum-value">{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <form class="child-help-form" action="/dist/online-help.html" method="GET">
+                        <form class="child-help-form" action="/donate" method="GET">
                             <input type="hidden" name="childrenId" value="{{ child.id }}">
                             <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
                             <div class="child-help-form-row">
@@ -96,10 +96,10 @@
                                             <input class="toggle-field__input"
                                                 type="radio"
                                                 name="payment-type"
-                                                value="internet-services">
+                                                value="internet-services" disabled>
                                             <div class="toggle-field__text">Интернет сервисы</div>
                                         </label>
-                                        <label class="payment-type-fieldgroup__label toggle-field">
+                                        {# <label class="payment-type-fieldgroup__label toggle-field">
                                             <input class="toggle-field__input"
                                                 type="radio"
                                                 name="payment-type"
@@ -112,7 +112,7 @@
                                                 name="payment-type"
                                                 value="account">
                                             <div class="toggle-field__text">Выставление счета</div>
-                                        </label>
+                                        </label> #}
                                     </div>
                                 </div>
                             </div>
