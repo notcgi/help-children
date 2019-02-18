@@ -45,7 +45,7 @@ class UserFixtures extends Fixture
             );
         $user = new Child();
         $user
-            ->setBirthdate(new \DateTime())
+            ->setBirthdate((new \DateTime())->sub(new \DateInterval('P3Y')))
             ->setDiagnosis('Детский церебральный паралич. Спастический тетрапарез.')
             ->setImages(['https://sun1-13.userapi.com/c852024/v852024162/bd56b/X4T2yr0NFW0.jpg'])
             ->setComment(

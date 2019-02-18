@@ -23,6 +23,8 @@ class Child
     private $name;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $birthdate;
@@ -52,6 +54,11 @@ class Child
      */
     private $createdAt;
 
+    /**
+     * Child constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -180,5 +187,27 @@ class Child
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getLeftGoal(): float
+    {
+        $left = $this->goal - $this->collected;
+
+        return 0 < $left ? $left : 0;
+    }
+
+    /**
+     * @return int
+     *
+     * @throws \Exception
+     */
+    public function getAge(): int
+    {
+        return (new \DateTime())->diff($this->birthdate)->y;
+    }
+
+    public function getGoalRatio(): float
+    {
+        return 0 === $this->goal ? 0 : $this->collected / $this->goal;
     }
 }

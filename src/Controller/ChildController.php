@@ -7,7 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ChildController extends AbstractController
 {
-    public function view($id)
+    /**
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function view(int $id)
     {
         $child = $this->getDoctrine()
             ->getRepository(Child::class)
@@ -19,17 +27,10 @@ class ChildController extends AbstractController
             );
         }
 
-        $leftGoal = $child->getGoal() - $child->getCollected();
-        $statusGoal = $this->statusGoal($child->getCollected(), $child->getGoal());
-        $ageChildren = $this->ageChildren($child->getBirthdate(), date_create(date('Y-m-d')));
-
         return $this->render(
             'child/view.twig',
             [
-                'child' => $child,
-                'ageChildren' => $ageChildren,
-                'leftGoal' => $leftGoal > 0 ? $leftGoal : 0,
-                'statusGoal' => $statusGoal
+                'child' => $child
             ]
         );
     }
@@ -43,22 +44,6 @@ class ChildController extends AbstractController
         $ageChildren = date_diff($birthDate, $todayDate);
 
         return $ageChildren->y;
-    }
-
-    public function statusGoal($collected = 0, $goal = 0)
-    {
-        if ($collected < 0) {
-            return 0;
-        }
-
-        if ($goal <= 0) {
-            return 0;
-        }
-        if ($collected > $goal) {
-            return 100;
-        }
-
-        return 100 * $collected / $goal;
     }
 
     public function registration()

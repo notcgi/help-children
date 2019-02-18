@@ -5,11 +5,11 @@
         <section class="section hero-medium">
             <div class="container child-container">
                 <h1 class="hero-medium__title">Дети</h1>
-                <a class="link-back" href="/dist/kids.html"
-                ><span class="icon icon-arrow-angle-right"></span>К списку детей</a
-                >
+                <a class="link-back" href="/dist/kids.html"><span class="icon icon-arrow-angle-right"></span>К списку
+                    детей</a>
             </div>
         </section>
+
         <section class="section child section-with-bghearts">
             <div class="container child-container">
                 <div class="child-wrapper">
@@ -18,26 +18,28 @@
                             <div class="card-child__col">
                                 <div class="card-child-photos">
                                     <div class="card-child-photos__main">
-                                        <img class="img-responsive" src="{{ child.images[0] }}" alt="Ваня Иванов"
-                                             width="382"/>
+                                        <img class="img-responsive"
+                                            src="{{ child.images[0] }}"
+                                            alt="{{ child.name }}"
+                                            width="382">
                                     </div>
+
                                     <div class="card-child-photos__list photo-gallery">
                                         {% for image in child.images %}
-                                            <img
-                                                class="photo-gallery__item photo-gallery__item--active img-responsive"
+                                            <img class="photo-gallery__item photo-gallery__item--active img-responsive"
                                                 src="{{ image }}"
-                                                alt="Ваня Иванов"
-                                                width="59"
-                                            />
+                                                alt="{{ child.name }}"
+                                                width="59">
                                         {% endfor %}
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card-child__col card-child-description">
                                 <div class="card-child-name">{{ child.name }}</div>
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Возраст:</div>
-                                    <div class="card-child-field__value">{{ ageChildren }} лет</div>
+                                    <div class="card-child-field__value">{{ child.age }} лет</div>
                                 </div>
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Диагноз:</div>
@@ -57,48 +59,58 @@
                                         <span class="collected-resources-left__value">{{ child.goal }} руб.</span>
                                     </div>
                                     <div class="collected-resources__slider">
-                                        <div class="collected-resources__slider-filled" style="width: {{ statusGoal }}%"></div>
+                                        <div class="collected-resources__slider-filled"
+                                            style="width: {{ child.goalRatio * 100 }}%"></div>
                                     </div>
                                     <div class="collected-resources__sum">
                                         <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                        <span class="collected-resources__sum-value">{{ leftGoal }} руб.</span>
+                                        <span class="collected-resources__sum-value">{{ child.leftGoal }} руб.</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <form class="child-help-form" action="/dist/online-help.html" method="GET">
                             <input type="hidden" name="childrenId" value="{{ child.id }}">
                             <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
                             <div class="child-help-form-row">
-                                <div
-                                    class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
+                                <div class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
                                     Выберите способ оплаты
                                 </div>
                                 <div class="child-help-form__col child-help-form__col-input ohf-col-input">
                                     <div class="payment-type-fieldgroup toggle-fieldgroup toggle-fieldgroup--white">
                                         <label class="payment-type-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="payment-type"
-                                                   value="visa" checked=""/>
+                                            <input class="toggle-field__input"
+                                                type="radio"
+                                                name="payment-type"
+                                                value="visa"
+                                                checked>
                                             <div class="toggle-field__text">
-                                                <img class="toggle-field__text-image" src="/images/mastercard.png"
-                                                     width="30"/>
-                                                <img class="toggle-field__text-image" src="/images/visa.png"
-                                                     width="40"/>
+                                                <img class="toggle-field__text-image"
+                                                    src="/images/mastercard.png"
+                                                    width="30">
+                                                <img class="toggle-field__text-image" src="/images/visa.png" width="40">
                                             </div>
                                         </label>
                                         <label class="payment-type-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="payment-type"
-                                                   value="internet-services"/>
+                                            <input class="toggle-field__input"
+                                                type="radio"
+                                                name="payment-type"
+                                                value="internet-services">
                                             <div class="toggle-field__text">Интернет сервисы</div>
                                         </label>
                                         <label class="payment-type-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="payment-type"
-                                                   value="sms"/>
+                                            <input class="toggle-field__input"
+                                                type="radio"
+                                                name="payment-type"
+                                                value="sms">
                                             <div class="toggle-field__text">Sms оплата</div>
                                         </label>
                                         <label class="payment-type-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="payment-type"
-                                                   value="account"/>
+                                            <input class="toggle-field__input"
+                                                type="radio"
+                                                name="payment-type"
+                                                value="account">
                                             <div class="toggle-field__text">Выставление счета</div>
                                         </label>
                                     </div>
@@ -114,10 +126,8 @@
                                 </div>
                             </div>
                             <div class="child-help-form__buttons">
-                                <button
-                                    class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit"
-                                    type="submit"
-                                >
+                                <button class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit"
+                                    type="submit">
                                     Далее
                                 </button>
                             </div>
@@ -125,14 +135,15 @@
                     </div>
                     <div class="child-contacts">
                         <div class="contacts-details__row child-contacts__row">
-                            <div class="contacts-details__row-name child-contacts-title">Прямые реквизиты для помощи
+                            <div class="contacts-details__row-name child-contacts-title">
+                                Прямые реквизиты для помощи
                             </div>
                             <div class="contacts-details__row-value child-contacts-value">
-                                Чувашское отделение №8613<br/>
-                                ПАО СБЕРБАНК г. Чебоксары<br/>
-                                К/С: 30101810300000000609<br/>
-                                БИК: 049706609<br/>
-                                Счет: 40703810675000000543<br/>
+                                Чувашское отделение №8613<br>
+                                ПАО СБЕРБАНК г. Чебоксары<br>
+                                К/С: 30101810300000000609<br>
+                                БИК: 049706609<br>
+                                Счет: 40703810675000000543<br>
                             </div>
                         </div>
                         <div class="contacts-details__row child-contacts__row">
@@ -140,11 +151,11 @@
                                 Контакты для связи если у вас возникли вопросы
                             </div>
                             <div class="contacts-details__row-value child-contacts-value">
-                                Телефон Фамилия Имя (мама):<br/>
-                                8 (999) 999 99 99<br/>
-                                <br/>
-                                Телефон горячей линии:<br/>
-                                8 (800) 600 09 06<br/>
+                                Телефон Фамилия Имя (мама):<br>
+                                8 (999) 999 99 99<br>
+                                <br>
+                                Телефон горячей линии:<br>
+                                8 (800) 600 09 06<br>
                             </div>
                         </div>
                     </div>
