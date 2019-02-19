@@ -2,6 +2,10 @@ login:
     path: /login
     controller: App\Controller\SecurityController::login
 
+pass_recovery:
+    path: /passwordRecovery
+    controller: App\Controller\SecurityController::recovery
+
 app_logout:
     path: /logout
 
@@ -85,9 +89,21 @@ panel_auth:
     path: /panel/auth
     controller: App\Controller\PanelController::auth
 
+panel_main:
+    path: /panel/main
+    controller: App\Controller\PanelController::main
+
 panel_users:
     path: /panel/users
     controller: App\Controller\PanelController::users
+
+panel_requests:
+    path: /panel/requests
+    controller: App\Controller\PanelController::requests
+
+panel_payments:
+    path: /panel/payments
+    controller: App\Controller\PanelController::payments
 
 user_controller:
     path: /user
