@@ -3,102 +3,62 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\RegistrationFormType;
+use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
-    public function index(Request $request)
+    /**
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler    $guardHandler
+     * @param LoginFormAuthenticator       $authenticator
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \Symfony\Component\Form\Exception\LogicException
+     */
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $authenticator
+    ): Response
     {
-        // creates a task and gives it some dummy data for this example
         $user = new User();
-
-        $form = $this->createFormBuilder($user)
-            ->add(
-                'lastName',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'firstName',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'age',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ],
-                ]
-            )
-            ->add(
-                'phone',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'email',
-                EmailType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Email(),
-                    ],
-                ]
-            )
-            ->add(
-                'password',
-                RepeatedType::class,
-                [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'Поля пароля должны совпадать.',
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
-                    'first_options'  => ['label' => 'Введите пароль'],
-                    'second_options' => ['label' => 'Повторите пароль'],
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 6, 'max' => 32]),
-                    ],
-                ]
-            )
-            ->add(
-                'save',
-                SubmitType::class,
-                [
-                    'label' => 'Зарегистрироваться',
-                    'attr' => ['class' => 'btn btn--big btn-dark registration-form-submit'],
-                ]
-            )
-            ->getForm();
-
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        /*if ($form->isSubmitted()) {
-            var_dump($form->getErrors(true, true)[0]->getMessage());
-        }*/
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPass(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // do anything else you need here, like send an email
+
+            return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );
+        }
 
         return $this->render(
             'auth/registration.twig',
