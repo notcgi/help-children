@@ -1,7 +1,6 @@
 {% extends 'base_client_wrapper.twig' %}
 
 {% block content %}
-
     <main>
         <section class="section hero-large">
             <div class="container">
@@ -21,58 +20,49 @@
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваше ФИО</div>
-                                        <input
-                                            class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="fio"
-                                            value="Иванов Иван Иванович"
-                                        />
+                                            value="Иванов Иван Иванович"/>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-phone">
                                         <div class="my-account-form-field__label label-text">Ваш номер телефона</div>
-                                        <input
-                                            class="my-account-form-input input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="text"
                                             name="phone"
                                             placeholder="Введите номер телефона"
-                                            data-type="phone"
-                                        />
+                                            data-type="phone"/>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-email">
                                         <div class="my-account-form-field__label label-text">Ваша почта</div>
-                                        <input
-                                            class="my-account-form-input input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="email"
                                             name="email"
-                                            value="ivan@mail.ru"
-                                        />
+                                            value="ivan@mail.ru"/>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-reflink">
-                                        <div class="my-account-form-field__label label-text">Ваша реферальная ссылка</div>
-                                        <input
-                                            class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <div class="my-account-form-field__label label-text">Ваша реферальная ссылка
+                                        </div>
+                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="reflink"
-                                            value="http://помогитедетям.рф/rwWsesd"
-                                        />
+                                            value="http://помогитедетям.рф/rwWsesd"/>
                                         <span class="icon icon-copy my-account-form-reflink__copy"></span>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
                                         <div class="my-account-form-field__label label-text">Пароль</div>
-                                        <input
-                                            class="my-account-form-input input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="password"
                                             name="password"
-                                            placeholder="Ваш старый пароль"
-                                        />
+                                            placeholder="Ваш старый пароль"/>
                                     </label>
                                     <button class="btn btn-link" type="button">Изменить</button>
                                 </div>
@@ -83,5 +73,4 @@
             </div>
         </section>
     </main>
-
 {% endblock %}

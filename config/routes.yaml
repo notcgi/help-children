@@ -35,23 +35,23 @@ news_cards:
     path: /news/cards
     controller: App\Controller\NewsController::cards
 
-child_newsdetail:
+news_detail:
     path: /news/{id}
     controller: App\Controller\NewsController::detail
     requirements:
         id: '\d+'
 
-child_partners:
+partners:
     path: /partners
-    controller: App\Controller\ChildController::partners
+    controller: App\Controller\MainController::partners
 
 docs:
     path: /docs
     controller: App\Controller\MainController::docs
 
-child_reports:
+reports:
     path: /reports
-    controller: App\Controller\ChildController::reports
+    controller: App\Controller\MainController::reports
 
 contacts:
     path: /contacts
@@ -61,27 +61,27 @@ help:
     path: /help
     controller: App\Controller\MainController::help
 
-child_onlinehelp:
-    path: /onlinehelp
-    controller: App\Controller\ChildController::onlinehelp
+donate:
+    path: /donate
+    controller: App\Controller\MainController::donate
 
-child_account:
+account_main:
     path: /account
-    controller: App\Controller\AccountController::account
+    controller: App\Controller\AccountController::main
 
-child_myaccount:
+account_myaccount:
     path: /account/myaccount
     controller: App\Controller\AccountController::myaccount
 
-child_history:
+account_history:
     path: /account/history
     controller: App\Controller\AccountController::history
 
-child_referrals:
+account_referrals:
     path: /account/referrals
     controller: App\Controller\AccountController::referrals
 
-child_recurrent:
+account_recurrent:
     path: /account/recurrent
     controller: App\Controller\AccountController::recurrent
 
@@ -108,7 +108,3 @@ panel_payments:
 user_controller:
     path: /user
     controller: App\Controller\UserController::index
-
-child_login:
-    path: /child/login
-    controller: App\Controller\ChildController::login

@@ -10,7 +10,7 @@
             <div class="header-inner">
                 <div class="header-right">
                     <div class="header__logo logo-wrapper">
-                        <a href="/">
+                        <a href="{{ path('main') }}">
                             <img src="/images/logo.png" alt="Помогите детям">
                         </a>
                     </div>
@@ -23,29 +23,30 @@
                                 <a class="nav-links__item-link" href="{{ path('children_list') }}">Дети</a>
                             </li>
                             <li class="nav-links__item dropdown">
-                                <a class="nav-links__item-link dropdown-link" href="#">О Фонде</a>
+                                <a class="nav-links__item-link dropdown-link" href="{{ path('main') }}#section-mission">О Фонде</a>
                                 <div class="dropdown-content">
                                     <ul class="nav-links-submenu dropdown-menu">
                                         <li class="nav-links-submenu__item">
                                             <a href="{{ path('news_list') }}" class="nav-links-submenu__item-link">Новости</a>
                                         </li>
                                         <li class="nav-links-submenu__item">
-                                            <a href="/partners" class="nav-links-submenu__item-link">Партнёры</a>
+                                            <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
                                         </li>
                                         <li class="nav-links-submenu__item">
-                                            <a href="/docs" class="nav-links-submenu__item-link">Документация</a>
+                                            <a href="{{ path('docs') }}" class="nav-links-submenu__item-link">Документация</a>
                                         </li>
                                         <li class="nav-links-submenu__item">
-                                            <a href="/reports" class="nav-links-submenu__item-link">Отчеты</a>
+                                            <a href="{{ path('reports') }}"
+                                                class="nav-links-submenu__item-link">Отчеты</a>
                                         </li>
                                         <li class="nav-links-submenu__item">
-                                            <a href="/contacts" class="nav-links-submenu__item-link">Реквизиты</a>
+                                            <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-links__item">
-                                <a class="nav-links__item-link" href="/contacts">Контакты</a>
+                                <a class="nav-links__item-link" href="{{ path('contacts') }}">Контакты</a>
                             </li>
                         </ul>
                     </nav>
@@ -57,7 +58,7 @@
                             </li>
                             <li class="user-menu-links__item">
                                 <span class="icon icon-user"></span>
-                                <a class="user-menu-links__item-link" href="/login">Вход в кабинет</a>
+                                <a class="user-menu-links__item-link" href="{{ path('login') }}">Вход в кабинет</a>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +75,9 @@
                                 </a>
                             </li>
                             <li class="socialbar-links__item">
-                                <a href="https://www.instagram.com/fond.detyam/" target="_blank" class="socialbar-links__item-link">
+                                <a href="https://www.instagram.com/fond.detyam/"
+                                    target="_blank"
+                                    class="socialbar-links__item-link">
                                     <span class="icon icon-instagram"></span>
                                 </a>
                             </li>
@@ -84,11 +87,11 @@
                         <a class="phone-number" href="tel:88006000906">8 800 600 09 06</a>
                     </div>
                     <div class="header__buttons">
-                        <a class="btn btn-light help-button need-help-button" href="/help">
+                        <a class="btn btn-light help-button need-help-button" href="{{ path('help') }}">
                             <span class="icon icon-heart"></span>
                             <span>Нужна помощь</span>
                         </a>
-                        <a class="btn btn-dark help-button" href="/onlinehelp">Хочу помочь</a>
+                        <a class="btn btn-dark help-button" href="{{ path('donate') }}">Хочу помочь</a>
                     </div>
                 </div>
             </div>
@@ -102,7 +105,7 @@
             <div class="footer-inner">
                 <div class="footer-right">
                     <div class="footer__logo logo-wrapper">
-                        <img src="/images/logo-gray.png" alt="Помогите детям" />
+                        <img src="/images/logo-gray.png" alt="Помогите детям">
                     </div>
                 </div>
                 <div class="footer-left">
@@ -112,16 +115,16 @@
                             <a class="phone-number phone-number--gray" href="tel:88006000906">8 800 600 09 06</a>
                         </div>
                         <div class="footer-contacts__email">
-                            <a class="footer-contacts__email-link" href="mailto:fond.detyam@mail.ru">fond.detyam@mail.ru</a>
+                            <a class="footer-contacts__email-link"
+                                href="mailto:fond.detyam@mail.ru">fond.detyam@mail.ru</a>
                         </div>
                         <p class="footer-terms">
-                            Все права защищены.<br />
-                            Разрешено копирование<br />
-                            информации с писменного<br />
-                            разрещения<br />
-                            администрации ресурса.<br />
-                            БФ “Помогите Детям”
-                        </p>
+                            Все права защищены.<br>
+                            Разрешено копирование<br>
+                            информации с писменного<br>
+                            разрещения<br>
+                            администрации ресурса.<br>
+                            БФ “Помогите Детям” </p>
                         <div class="footer-socials">
                             <ul class="socialbar-links">
                                 <li class="socialbar-links__item">
@@ -145,9 +148,9 @@
                     <div class="footer-menu">
                         <div class="footer-menu__column">
                             <div class="footer-menu-category">
-                                <a class="footer-menu-category__link" href="/dist/kids.html" class="footernav-links__item-link"
-                                >Программы помощи</a
-                                >
+                                <a class="footer-menu-category__link"
+                                    href="{{ path('children_list') }}"
+                                    class="footernav-links__item-link">Программы помощи</a>
                             </div>
                         </div>
                         <div class="footer-menu__column">
@@ -155,19 +158,19 @@
                             <nav class="footer-menu-nav">
                                 <ul class="footernav-links">
                                     <li class="footernav-links__item">
-                                        <a href="/dist/partners.html" class="footernav-links__item-link">Партнеры</a>
+                                        <a href="{{ path('partners') }}" class="footernav-links__item-link">Партнеры</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="/" class="footernav-links__item-link">Новости</a>
+                                        <a href="{{ path('news_list') }}" class="footernav-links__item-link">Новости</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="/dist/docs.html" class="footernav-links__item-link">Документация</a>
+                                        <a href="{{ path('docs') }}" class="footernav-links__item-link">Документация</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="/dist/reports.html" class="footernav-links__item-link">Отчеты</a>
+                                        <a href="{{ path('reports') }}" class="footernav-links__item-link">Отчеты</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="/dist/contacts.html" class="footernav-links__item-link">Реквизиты</a>
+                                        <a href="{{ path('contacts') }}" class="footernav-links__item-link">Реквизиты</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -177,13 +180,13 @@
                             <nav class="footer-menu-nav">
                                 <ul class="footernav-links">
                                     <li class="footernav-links__item">
-                                        <a href="#" class="footernav-links__item-link">Войти в ЛК</a>
+                                        <a href="{{ path('login') }}" class="footernav-links__item-link">Войти в ЛК</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="#" class="footernav-links__item-link">Зарегистрироваться</a>
+                                        <a href="{{ path('registration') }}" class="footernav-links__item-link">Зарегистрироваться</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="#" class="footernav-links__item-link">Восстановить пароль</a>
+                                        <a href="{{ path('pass_recovery') }}" class="footernav-links__item-link">Восстановить пароль</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -191,12 +194,11 @@
                         <div class="footer-menu__column">
                             <div class="footer-menu-category">Реквизиты фонда</div>
                             <p class="mailing-address">
-                                Россия, Чувашская Республика,<br />
-                                г. Новочебоксарск,<br />
-                                ул. 10-й Пятилетки, владение 17И<br />
-                                ОГРН 1132100001054<br />
-                                ИНН/КПП 2124999727/212401001
-                            </p>
+                                Россия, Чувашская Республика,<br/>
+                                г. Новочебоксарск,<br/>
+                                ул. 10-й Пятилетки, владение 17И<br/>
+                                ОГРН 1132100001054<br/>
+                                ИНН/КПП 2124999727/212401001 </p>
                         </div>
                     </div>
                 </div>

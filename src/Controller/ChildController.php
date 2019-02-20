@@ -30,8 +30,7 @@ class ChildController extends AbstractController
         return $this->render(
             'child/detail.twig',
             [
-                'child' => $child,
-
+                'child' => $child
             ]
         );
     }
@@ -46,28 +45,8 @@ class ChildController extends AbstractController
         return $this->render(
             'child/list.twig',
             [
-                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll(),
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
             ]
         );
-    }
-
-    public function login()
-    {
-        return $this->render('child/login.twig');
-    }
-
-    public function onlinehelp()
-    {
-        return $this->render('child/onlineHelp.twig');
-    }
-
-    public function partners()
-    {
-        return $this->render('child/partners.twig');
-    }
-
-    public function reports()
-    {
-        return $this->render('child/reports.twig');
     }
 }

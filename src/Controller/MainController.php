@@ -24,7 +24,7 @@ class MainController extends AbstractController
      */
     public function contacts()
     {
-        return $this->render('pages/child/contacts.twig');
+        return $this->render('pages/contacts.twig');
     }
 
     /**
@@ -45,5 +45,35 @@ class MainController extends AbstractController
     public function help()
     {
         return $this->render('pages/help.twig');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     */
+    public function partners()
+    {
+        return $this->render('pages/partners.twig');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     */
+    public function reports()
+    {
+        return $this->render('pages/reports.twig');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     */
+    public function donate()
+    {
+        return $this->render('pages/donate.twig');
     }
 }

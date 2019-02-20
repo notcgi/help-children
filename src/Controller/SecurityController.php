@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('auth/login.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     public function recovery(AuthenticationUtils $authenticationUtils): Response
@@ -25,6 +25,6 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/passwordRecovery.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('auth/passwordRecovery.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 }
