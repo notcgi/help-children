@@ -75,7 +75,7 @@ class PanelController extends AbstractController
     public function users()
     {
         return $this->render(
-            'panel/users.twig',
+            'panel/users/users.twig',
             ['users' => $this->getDoctrine()->getRepository(User::class)->findAll()]
         );
     }

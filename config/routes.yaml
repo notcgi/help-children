@@ -97,6 +97,12 @@ panel_users:
     path: /panel/users
     controller: App\Controller\PanelController::users
 
+panel_user_edit:
+    path: /panel/users/{id}
+    controller: App\Controller\UserController::userEdit
+    requirements:
+        id: '\d+'
+
 panel_requests:
     path: /panel/requests
     controller: App\Controller\PanelController::requests

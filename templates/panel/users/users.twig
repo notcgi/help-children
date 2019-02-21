@@ -17,7 +17,6 @@
                         <th scope="col">Телефон</th>
                         <th scope="col">Дата регистрации</th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,8 +29,7 @@
                             <td>{{ user.age }}</td>
                             <td>{{ user.Phone }}</td>
                             <td>{{ user.CreatedAt|date('Y.m.d') }}</td>
-                            <td><a href="#">Изменить</a></td>
-                            <td><a href="#">Удалить</a></td>
+                            <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
