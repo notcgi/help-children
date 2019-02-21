@@ -99,7 +99,7 @@ panel_users:
 
 panel_user_edit:
     path: /panel/users/{id}
-    controller: App\Controller\UserController::userEdit
+    controller: App\Controller\UserController::edit
     requirements:
         id: '\d+'
 
