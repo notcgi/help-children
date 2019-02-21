@@ -11,7 +11,7 @@ app_logout:
 
 registration:
     path: /registration
-    controller: App\Controller\RegistrationController::index
+    controller: App\Controller\RegistrationController::register
 
 main:
     path: /
