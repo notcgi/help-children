@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -28,8 +30,15 @@ class UserController extends AbstractController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function userEdit(int $id, Request $request)
+    public function edit(int $id, Request $request)
     {
         $userData = $this->getDoctrine()
             ->getRepository(User::class)
@@ -41,10 +50,17 @@ class UserController extends AbstractController
             );
         }
 
-        // creates a task and gives it some dummy data for this example
-        $user = new User();
-
-        $form = $this->createFormBuilder($user)
+        $form = $this->createFormBuilder($userData)
+            ->add(
+                'id',
+                HiddenType::class,
+                [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
             ->add(
                 'firstName',
                 TextType::class,
@@ -83,6 +99,16 @@ class UserController extends AbstractController
                 ]
             )
             ->add(
+                'roles',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        ['ROLE_ADMIN' => 'ROLE_ADMIN', 'ROLE_USER' => 'ROLE_USER'],
+                    ],
+                    'multiple' => true,
+                ]
+            )
+            ->add(
                 'save',
                 SubmitType::class,
                 [
@@ -94,22 +120,17 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $userAdd = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $user = $entityManager->getRepository(User::class)->find($id);
-            $user->setFirstName($userAdd->getFirstName());
-            $user->setLastName($userAdd->getLastName());
-            $user->setAge($userAdd->getAge());
-            $user->setEmail($userAdd->getEmail());
+            $entityManager->persist($userData);
             $entityManager->flush();
         }
 
         return $this->render(
-            'panel/users/userEdit.twig',
+            'panel/users/edit.twig',
             [
                 'user' => $userData,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]
         );
     }
