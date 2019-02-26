@@ -141,7 +141,7 @@ class User implements UserInterface
 
     public function getAge(): ?string
     {
-        return $this->meta['age']??0;
+        return $this->meta['age'] ?? 0;
     }
 
     public function setAge(string $age): self
@@ -272,7 +272,8 @@ class User implements UserInterface
         return $this->requests;
     }
 
-    public function setRequests(array $requests): self {
+    public function setRequests(array $requests): self
+    {
         $this->requests = $requests;
 
         return $this;

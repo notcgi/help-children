@@ -43,7 +43,7 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'Поля пароля должны совпадать.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Введите пароль'],
+                'first_options' => ['label' => 'Введите пароль'],
                 'second_options' => ['label' => 'Повторите пароль'],
                 'constraints' => [
                     new NotBlank([

@@ -52,7 +52,6 @@ class Requests
      */
     private $createdAt;
 
-
     public function getId(): ?int
     {
         return $this->id;

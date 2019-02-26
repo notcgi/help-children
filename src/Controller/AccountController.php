@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
 {
@@ -56,5 +55,4 @@ class AccountController extends AbstractController
     {
         return $this->render('account/recurrent.twig');
     }
-
 }
