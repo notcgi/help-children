@@ -6,16 +6,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RequestRepository")
- * @ORM\Table(name="payment_requests")
+ * @ORM\Table(name="requests")
  */
 class Request
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
+     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
+     */
+    private $child;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
@@ -24,19 +30,24 @@ class Request
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
-
-    /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $value;
+    private $sum = .0;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="smallint", options={"unsigned":true})
      */
-    private $changedAt;
+    private $status = 0;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $recurent = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -48,49 +59,74 @@ class Request
         return $this->id;
     }
 
+    public function getChild(): ?Child
+    {
+        return $this->child;
+    }
+
+    public function setChildID(?Child $child): self
+    {
+        $this->child = $child;
+
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?int $userId): self
+    public function setUserID(User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getDescription(): string
+    public function getSum(): float
     {
-        return $this->description;
+        return $this->sum;
     }
 
-    public function setDescription(string $description): self {
-        $this->description = $description;
+    public function setSum(float $sum): self
+    {
+        $this->sum = $sum;
 
         return $this;
     }
 
-    public function getValue()
+    public function getStatus(): ?int
     {
-        return $this->value;
+        return $this->status;
     }
 
-    public function setValue($value): self
+    public function setStatus(int $status): self
     {
-        $this->value = $value;
+        $this->status = $status;
 
         return $this;
     }
 
-    public function getChangedAt(): ?\DateTimeInterface
+    public function isRecurent(): ?bool
     {
-        return $this->changedAt;
+        return $this->recurent;
     }
 
-    public function setChangedAt(\DateTimeInterface $changedAt): self
+    public function setRecurent(bool $recurent): self
     {
-        $this->changedAt = $changedAt;
+        $this->recurent = $recurent;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -5,27 +5,28 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RefferalsHistoryRepository")
- * @ORM\Table(name="referrals_histroy")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferralHistoryRepository")
+ * @ORM\Table(name="referral_history")
  */
 class ReferralsHistory
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ReferralsHistory", inversedBy="users", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userID;
+    private $user;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $sum;
+    private $sum = .0;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -37,14 +38,14 @@ class ReferralsHistory
         return $this->id;
     }
 
-    public function getUserID(): ?int
+    public function getUser(): ?User
     {
-        return $this->userID;
+        return $this->user;
     }
 
-    public function setUserID(int $userID): self
+    public function setUser(User $user): self
     {
-        $this->userID = $userID;
+        $this->user = $user;
 
         return $this;
     }

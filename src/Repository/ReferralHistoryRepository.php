@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ChildHistory;
+use App\Entity\ReferralHistory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method ChildHistory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ChildHistory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ChildHistory[]    findAll()
- * @method ChildHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ReferralHistory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ReferralHistory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ReferralHistory[]    findAll()
+ * @method ReferralHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ChildHistoryRepository extends ServiceEntityRepository
+class ReferralHistoryRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ChildHistory::class);
+        parent::__construct($registry, ReferralHistory::class);
     }
 
     // /**
-    //  * @return ChildHistory[] Returns an array of Child objects
+    //  * @return ReferralHistory[] Returns an array of Child objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ChildHistoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ChildHistory
+    public function findOneBySomeField($value): ?ReferralHistory
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

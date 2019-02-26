@@ -6,21 +6,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChildHistoryRepository")
- * @ORM\Table(name="child_histroy")
+ * @ORM\Table(name="child_history")
  */
 class ChildHistory
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ChildHistory", inversedBy="children", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
+     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
      */
-    private $childID;
+    private $child;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -37,24 +38,24 @@ class ChildHistory
         return $this->id;
     }
 
-    public function getChildID(): ?int
+    public function getChildId(): ?Child
     {
-        return $this->childID;
+        return $this->child;
     }
 
-    public function setChildID(int $childID): self
+    public function setChildID(Child $child): self
     {
-        $this->childID = $childID;
+        $this->child = $child;
 
         return $this;
     }
 
-    public function getSun()
+    public function getSun(): float
     {
         return $this->sun;
     }
 
-    public function setSun($sun): self
+    public function setSun(float $sun): self
     {
         $this->sun = $sun;
 
