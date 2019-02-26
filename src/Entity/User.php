@@ -127,6 +127,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getMiddleName(): string
+    {
+        return $this->meta['middleName'] ?? '';
+    }
+
+    public function setMiddleName(string $middleName): self
+    {
+        $this->meta['middleName'] = $middleName;
+
+        return $this;
+    }
+
     public function getLastName(): string
     {
         return $this->meta['lastName'] ?? '';

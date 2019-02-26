@@ -70,8 +70,8 @@
                             </div>
                         </div>
 
-                        <form class="child-help-form" action="/donate" method="GET">
-                            <input type="hidden" name="childrenId" value="{{ child.id }}">
+                        <form class="child-help-form" action="{{ path('donate') }}" method="POST">
+                            <input type="hidden" name="child_id" value="{{ child.id }}">
                             <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
                             <div class="child-help-form-row">
                                 <div class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
@@ -92,7 +92,7 @@
                                                 <img class="toggle-field__text-image" src="/images/visa.png" width="40">
                                             </div>
                                         </label>
-                                        <label class="payment-type-fieldgroup__label toggle-field">
+                                        <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                             <input class="toggle-field__input"
                                                 type="radio"
                                                 name="payment-type"
@@ -100,20 +100,22 @@
                                                 disabled>
                                             <div class="toggle-field__text">Интернет сервисы</div>
                                         </label>
-                                        {# <label class="payment-type-fieldgroup__label toggle-field">
+                                        <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                             <input class="toggle-field__input"
                                                 type="radio"
                                                 name="payment-type"
-                                                value="sms">
+                                                value="sms"
+                                                disabled>
                                             <div class="toggle-field__text">Sms оплата</div>
                                         </label>
-                                        <label class="payment-type-fieldgroup__label toggle-field">
+                                        <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                             <input class="toggle-field__input"
                                                 type="radio"
                                                 name="payment-type"
-                                                value="account">
+                                                value="account"
+                                                disabled>
                                             <div class="toggle-field__text">Выставление счета</div>
-                                        </label> #}
+                                        </label>
                                     </div>
                                 </div>
                             </div>

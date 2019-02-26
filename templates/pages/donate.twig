@@ -12,7 +12,10 @@
         <section class="section online-help section-with-bghearts">
             <div class="container container--small">
                 <div class="online-help-wrapper">
-                    <form class="online-help-form ohf" method="GET">
+                    <form class="online-help-form ohf" method="POST">
+                        <input type="hidden"
+                            name="child_id"
+                            value="{{ form.child_id ?: '' }}">
                         <div class="ohf-row">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">1</div>
@@ -26,7 +29,7 @@
                                     <label class="payment-type-fieldgroup__label toggle-field">
                                         <input class="toggle-field__input"
                                             type="radio"
-                                            name="payment-type"
+                                            name="payment"
                                             value="visa"
                                             checked>
                                         <div class="toggle-field__text">
@@ -39,7 +42,7 @@
                                     <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                         <input class="toggle-field__input"
                                             type="radio"
-                                            name="payment-type"
+                                            name="payment"
                                             value="internet-services"
                                             disabled>
                                         <div class="toggle-field__text">Интернет сервисы</div>
@@ -47,16 +50,17 @@
                                     <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                         <input class="toggle-field__input"
                                             type="radio"
-                                            name="payment-type"
+                                            name="payment"
                                             value="sms"
                                             disabled>
                                         <div class="toggle-field__text">Sms оплата</div>
                                     </label>
-                                    <label class="payment-type-fieldgroup__label toggle-field">
+                                    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
                                         <input class="toggle-field__input"
                                             type="radio"
-                                            name="payment-type"
-                                            value="account"/>
+                                            name="payment"
+                                            value="account"
+                                            disabled>
                                         <div class="toggle-field__text">Выставление счета</div>
                                     </label>
                                 </div>
@@ -74,19 +78,22 @@
                                 <div class="ohf-col-input__row">
                                     <input class="input-rounded input-fullwidth"
                                         type="text"
-                                        name="name"
-                                        placeholder="Введите Ваше ФИО">
+                                        name="fullName"
+                                        placeholder="Введите Ваше ФИО"
+                                        value="{{ form.fullName }}">
                                 </div>
                                 <div class="ohf-col-input__row">
                                     <input class="input-rounded ohf-col-input__row-item"
                                         type="text"
                                         name="phone"
                                         placeholder="Введите номер телефона"
-                                        data-type="phone">
+                                        data-type="phone"
+                                        value="{{ form.phone }}">
                                     <input class="input-rounded ohf-col-input__row-item ohf-col-input__row-item__notfirst"
                                         type="email"
                                         name="email"
-                                        placeholder="Введите E-mail">
+                                        placeholder="Введите E-mail"
+                                        value="{{ form.email }}">
                                 </div>
                             </div>
                         </div>
@@ -102,22 +109,22 @@
                                 <div class="ohf-col-input__row">
                                     <div class="donate-sum-fieldgroup toggle-fieldgroup">
                                         <label class="donate-sum-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input"
-                                                type="radio"
-                                                name="sum"
-                                                value="100"
-                                                checked>
+                                            <input class="toggle-field__input" type="radio" name="sum" value="100"
+                                                {{ 100 == form.sum ? 'checked' }}>
                                             <div class="toggle-field__text">100 Р</div>
                                         </label>
                                         <label class="donate-sum-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="sum" value="100"/>
+                                            <input class="toggle-field__input"
+                                                type="radio"
+                                                name="sum"
+                                                value="500" {{ 500 == form.sum ? 'checked' }}>
                                             <div class="toggle-field__text">500 Р</div>
                                         </label>
                                         <label class="donate-sum-fieldgroup__label">
                                             <input class="donate-text-field"
                                                 type="text"
-                                                name="sum-other"
-                                                value=""
+                                                name="sumOther"
+                                                value="{{ form.sumOther ?: '' }}"
                                                 placeholder="Другая сумма">
                                         </label>
                                     </div>
@@ -127,9 +134,9 @@
                                         <label class="input-radio__label">
                                             <input class="input-radio__input"
                                                 type="radio"
-                                                name="payment-count"
-                                                value="regular"
-                                                checked/>
+                                                name="recurent"
+                                                value="true"
+                                                {{ form.recurent ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Регулярная оплата</span>
                                         </label>
@@ -138,8 +145,8 @@
                                         <label class="input-radio__label">
                                             <input class="input-radio__input"
                                                 type="radio"
-                                                name="payment-count"
-                                                value="single"/>
+                                                name="recurent"
+                                                {{ not form.recurent ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Единоразовая оплата</span>
                                         </label>
@@ -157,12 +164,10 @@
                                                 type="checkbox"
                                                 name="agreements"
                                                 value="yes"
-                                                checked/>
+                                                {{ form.agree ? 'checked' }}>
                                             <span class="input-checkbox__checkmark"></span>
                                             <span class="input-checkbox__label">Я согласен с
-                                                <a class="link--purple"
-                                                    href="docs/Public_offer.pdf"
-                                                    target="_blank">договором оферты</a>
+                                                <a class="link--purple" href="docs/Public_offer.pdf" target="_blank">договором оферты</a>
                                             </span>
                                         </label>
                                     </div>
@@ -172,11 +177,11 @@
                                         type="submit">
                                         Пожертвовать
                                     </button>
-                                    <span class="online-help-form__or">или</span>
+                                    {# <span class="online-help-form__or">или</span>
                                     <button class="btn btn-black btn--big btn-withicon online-help-form__applepay js-online-help-button-applepay"
                                         type="button">
                                         <span class="icon icon-apple"></span> <span>Оплатить</span>
-                                    </button>
+                                    </button> #}
                                 </div>
                                 <div class="donate-form-payment-systems__notice online-help-form-payment-systems__notice">
                                     <div class="icon-wrapper"><span class="icon icon-lock"></span></div>
