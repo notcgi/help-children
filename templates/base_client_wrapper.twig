@@ -11,7 +11,7 @@
                 <div class="header-right">
                     <div class="header__logo logo-wrapper">
                         <a href="{{ path('main') }}">
-                            <img src="/images/logo.png" alt="Помогите детям">
+                            <img class="header__logo-image" src="/images/logo.png" alt="Помогите детям">
                         </a>
                     </div>
                 </div>
@@ -54,11 +54,15 @@
                     <div class="header__user-menu">
                         <ul class="user-menu-links">
                             <li class="user-menu-links__item">
-                                <span class="icon icon-placemark"></span>
+                                <span class="user-menu-links__item-icon">
+                                    <span class="icon icon-placemark"></span>
+                                </span>
                                 <a class="user-menu-links__item-link" href="#">Чебоксары</a>
                             </li>
                             <li class="user-menu-links__item">
-                                <span class="icon icon-user"></span>
+                                <span class="user-menu-links__item-icon">
+                                    <span class="icon icon-user"></span>
+                                </span>
                                 <a class="user-menu-links__item-link" href="{{ path('login') }}">Вход в кабинет</a>
                             </li>
                         </ul>
@@ -95,6 +99,92 @@
                         <a class="btn btn-dark help-button" href="{{ path('donate') }}">Хочу помочь</a>
                     </div>
                 </div>
+            </div>
+            <div class="header-mobile">
+                <button class="header-mobile__button js-mobile-menu-button">
+                    <span class="icon icon-menu"></span>
+                </button>
+                <div class="header-mobile__center">
+                    <div class="header-mobile__logo">
+                        <a class="header-mobile__logo-link" href="/">
+                            <img class="header__logo-image img-responsive" src="/images/logo.png" alt="Помогите детям">
+                        </a>
+                    </div>
+                    <span class="header-mobile__notice">Благотворительный фонд помощи детям с ДЦП</span>
+                </div>
+                <a class="header-mobile__lk" href="#">
+                    <span class="icon icon-user"></span>
+                </a>
+
+                <div class="header-mobile__menu js-mobile-menu">
+                    <nav class="header__navbar header-mobile__menu-navbar">
+                        <ul class="nav-links">
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('children_list') }}">Дети</a>
+                            </li>
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('main') }}#section-mission">О Фонде</a>
+                                <ul class="nav-links-submenu">
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('news_list') }}" class="nav-links-submenu__item-link">Новости</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('docs') }}" class="nav-links-submenu__item-link">Документация</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('reports') }}" class="nav-links-submenu__item-link">Отчеты</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('contacts') }}">Контакты</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="header__buttons header-mobile__help-buttons">
+                        <a class="btn btn-light help-button need-help-button header-mobile__help-button" href="{{ path('help') }}">
+                            <span class="icon icon-heart"></span>
+                            <span>Нужна помощь</span>
+                        </a>
+                        <a class="btn btn-dark help-button header-mobile__help-button" href="{{ path('donate') }}">Хочу помочь</a>
+                    </div>
+                    <div class="header__socialbar">
+                        <ul class="socialbar-links">
+                            <li class="socialbar-links__item">
+                                <a href="https://vk.com/fond.detyam" target="_blank" class="socialbar-links__item-link">
+                                    <span class="icon icon-vk"></span>
+                                </a>
+                            </li>
+                            <li class="socialbar-links__item">
+                                <a href="#" class="socialbar-links__item-link">
+                                    <span class="icon icon-facebook"></span>
+                                </a>
+                            </li>
+                            <li class="socialbar-links__item">
+                                <a href="https://www.instagram.com/fond.detyam/" target="_blank" class="socialbar-links__item-link">
+                                    <span class="icon icon-instagram"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="header__user-menu">
+                        <ul class="user-menu-links">
+                            <li class="user-menu-links__item">
+                  <span class="user-menu-links__item-icon">
+                    <span class="icon icon-placemark"></span>
+                  </span>
+                                <a class="user-menu-links__item-link" href="#">Чебоксары</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="header-mobile__menu-shadow"></div>
             </div>
         </div>
     </header>
