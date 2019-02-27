@@ -14,7 +14,7 @@ registration:
     controller: App\Controller\RegistrationController::register
 
 referral:
-    path: /refferal/fand{id}
+    path: /fand{id}
     controller: App\Controller\ReferralController::devourer
     requirements:
         refferal: '\d+'

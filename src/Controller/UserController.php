@@ -47,7 +47,7 @@ class UserController extends AbstractController
 
         if (!$userData) {
             throw $this->createNotFoundException(
-                'Нет пользователя с id '.$id
+                'Нет пользователя с id ' . $id
             );
         }
 
@@ -134,33 +134,5 @@ class UserController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
-    }
-
-    public function add($email, SessionInterface $session)
-    {
-        $userData = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['email' => $email]);
-
-        if ($userData) {
-            return false;
-        }
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $user = new User();
-        $user->setEmail($email);
-        $user->setRoles(["ROLE_USER"]);
-
-        if($session->has('referral')){
-            $refCode = (int) $session->get('referral');
-            $user->setRefCode($refCode);
-            $session->remove('referral');
-        }
-
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return true;
     }
 }
