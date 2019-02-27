@@ -13,6 +13,12 @@ registration:
     path: /registration
     controller: App\Controller\RegistrationController::register
 
+referral:
+    path: /refferal/fand{id}
+    controller: App\Controller\ReferralController::devourer
+    requirements:
+        refferal: '\d+'
+
 main:
     path: /
     controller: App\Controller\MainController::main

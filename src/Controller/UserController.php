@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserController extends AbstractController
 {
@@ -133,5 +134,33 @@ class UserController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    public function add($email, SessionInterface $session)
+    {
+        $userData = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
+
+        if ($userData) {
+            return false;
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = new User();
+        $user->setEmail($email);
+        $user->setRoles(["ROLE_USER"]);
+
+        if($session->has('referral')){
+            $refCode = (int) $session->get('referral');
+            $user->setRefCode($refCode);
+            $session->remove('referral');
+        }
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return true;
     }
 }
