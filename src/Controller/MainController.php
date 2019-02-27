@@ -98,23 +98,11 @@ class MainController extends AbstractController
                 );
 
                 if (!$user) {
-                    $user = new User();
-                    $names = explode(' ', $form['fullName']);
-                    $names_count = count($names);
-
-                    if (2 == $names_count) {
-                        $user->setFirstName(trim($names[1]));
-                    }
-
-                    if (3 == $names_count) {
-                        $user->setMiddleName(trim($names[2]));
-                    }
-
-                    $user->setLastName(trim($names[0]))->setEmail($form['email'])->setPhone($form['phone']);
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($user);
-                    $entityManager->flush();
+                    // @TODO: Получить или создать пользователя через сервис UsersServices::findOrCreate()
                 }
+
+                // @TODO: Создать заявку
+                // @TODO: Вывести пустую страницу с формой которая сделает редирект на латёжку
             }
         }
 
