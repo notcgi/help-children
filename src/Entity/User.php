@@ -72,6 +72,12 @@ class User implements UserInterface
     private $requests;
 
     /**
+     * @ORM\OneToMany(targetEntity="RecurringPayments", mappedBy="user", fetch="LAZY")
+     * @ORM\JoinColumn(name="recurring_payments_id", referencedColumnName="id")
+     */
+    private $recurrentPayment;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -263,6 +269,18 @@ class User implements UserInterface
     public function setReferrer(User $referrer): self
     {
         $this->referrer = $referrer;
+
+        return $this;
+    }
+
+    public function getRecurrentPayment(): array
+    {
+        return $this->recurrentPayment;
+    }
+
+    public function setRecurrentPayment(array $recurrentPayment): self
+    {
+        $this->recurrentPayment = $recurrentPayment;
 
         return $this;
     }
