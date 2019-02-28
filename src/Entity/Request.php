@@ -64,7 +64,7 @@ class Request
         return $this->child;
     }
 
-    public function setChildID(?Child $child): self
+    public function setChild(Child $child): self
     {
         $this->child = $child;
 
@@ -76,7 +76,7 @@ class Request
         return $this->user;
     }
 
-    public function setUserID(User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
