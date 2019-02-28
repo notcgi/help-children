@@ -19,7 +19,7 @@ class ChildHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
-     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="child_id", referencedColumnName="id", nullable=false)
      */
     private $child;
 
@@ -50,9 +50,9 @@ class ChildHistory
         return $this;
     }
 
-    public function getSun(): float
+    public function getSum(): float
     {
-        return $this->sun;
+        return $this->sum;
     }
 
     public function setSum(float $sum): self

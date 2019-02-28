@@ -72,10 +72,9 @@ class User implements UserInterface
     private $requests;
 
     /**
-     * @ORM\OneToMany(targetEntity="RecurringPayments", mappedBy="user", fetch="LAZY")
-     * @ORM\JoinColumn(name="recurring_payments_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="RecurringPayment", mappedBy="user", fetch="LAZY")
      */
-    private $recurrentPayment;
+    private $recurrentPayments;
 
     /**
      * User constructor.
@@ -273,14 +272,22 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return RecurringPayment[]
+     */
     public function getRecurrentPayment(): array
     {
-        return $this->recurrentPayment;
+        return $this->recurrentPayments;
     }
 
-    public function setRecurrentPayment(array $recurrentPayment): self
+    /**
+     * @param RecurringPayment[] $recurrentPayments
+     *
+     * @return User
+     */
+    public function setRecurrentPayment(array $recurrentPayments): self
     {
-        $this->recurrentPayment = $recurrentPayment;
+        $this->recurrentPayments = $recurrentPayments;
 
         return $this;
     }

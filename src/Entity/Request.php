@@ -25,7 +25,7 @@ class Request
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 

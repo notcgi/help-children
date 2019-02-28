@@ -6,19 +6,25 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecurringPaymentsRepository")
+ * @ORM\Table(name="recurring_payments")
  */
-class RecurringPayments
+class RecurringPayment
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
 
     /**
+     * @ORM\OneToOne(targetEntity="Request", fetch="LAZY")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    private $request;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="requestsPayments")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
@@ -28,7 +34,7 @@ class RecurringPayments
     private $withdrawalAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
@@ -37,12 +43,24 @@ class RecurringPayments
         return $this->id;
     }
 
-    public function getUser(): ?int
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    public function setRequest(Request $request): self
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
