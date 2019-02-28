@@ -47,7 +47,8 @@ class DonateController extends AbstractController
      * @param UnitellerService $unitellerService
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
+     * @throws \Exception
+     * @throws \RuntimeException
      * @throws \RuntimeException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
@@ -66,7 +67,7 @@ class DonateController extends AbstractController
             'email' => trim($request->request->get('email', '')),
             'sum' => (int) $request->request->filter('sum', 100, FILTER_VALIDATE_INT),
             'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
-            'recurent' => (bool) $request->request->get('recurent', true),
+            'recurent' => (bool) $request->request->get('recurent', false),
             'agree' => (bool) $request->request->get('agree', true),
         ];
 
@@ -83,11 +84,11 @@ class DonateController extends AbstractController
                 $entityManager->persist($req);
                 $entityManager->flush();
 
-                return $this->render('pages/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
+                return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
         }
 
-        return $this->render('pages/donate.twig', ['form' => $form, 'formErrors' => $form_errors]);
+        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors]);
     }
 
     /**

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<form action="https://wpay.uniteller.ru/pay/" method="POST">
+    {% for key, value in fields %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+
+    <input type="submit" name="Submit" value="Оплатить">
+</form>
+{% endblock %}

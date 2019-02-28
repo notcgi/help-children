@@ -72,15 +72,15 @@ donate:
     controller: App\Controller\DonateController::main
 
 donate_ok:
-    path: /donate
+    path: /donate/ok
     controller: App\Controller\DonateController::ok
 
 donate_no:
-    path: /donate
+    path: /donate/no
     controller: App\Controller\DonateController::no
 
 donate_status:
-    path: /donate
+    path: /donate/status
     controller: App\Controller\DonateController::status
 
 account_main:
