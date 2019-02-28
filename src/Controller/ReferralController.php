@@ -7,19 +7,19 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ReferralController extends AbstractController
 {
-
     /**
      * @param int              $id
      * @param SessionInterface $session
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
      */
-
     public function devourer(int $id, SessionInterface $session)
     {
-        if($id > 0){
+        if ($id > 0) {
             $session->set('referral', $id);
         }
+
         return $this->render('pages/main.twig');
     }
 }

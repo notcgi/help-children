@@ -3,9 +3,9 @@
 namespace App\Service;
 
 use App\Entity\User;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class UsersService
 {
@@ -17,7 +17,6 @@ class UsersService
      * @return User
      * @throws \RuntimeException
      */
-
     public $doctrine;
 
     public $session;
@@ -31,6 +30,13 @@ class UsersService
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return User
+     * @throws \Exception
+     * @throws \RuntimeException
+     */
     public function findOrCreateUser(
         array $data
     ): User {
@@ -39,6 +45,7 @@ class UsersService
         }
 
         $userRepository = $this->doctrine->getRepository(User::class);
+        /** @var User $user */
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
         if ($user) {
@@ -62,6 +69,7 @@ class UsersService
 
         if ($this->session->has('referral')) {
             $referrerId = (int) $this->session->get('referral');
+            /** @var User $referrer */
             $referrer = $userRepository->find($referrerId);
 
             if ($referrer) {

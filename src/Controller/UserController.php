@@ -14,10 +14,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserController extends AbstractController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
     public function index()
     {
         return $this->render(
@@ -47,7 +50,7 @@ class UserController extends AbstractController
 
         if (!$userData) {
             throw $this->createNotFoundException(
-                'Нет пользователя с id ' . $id
+                'Нет пользователя с id '.$id
             );
         }
 
