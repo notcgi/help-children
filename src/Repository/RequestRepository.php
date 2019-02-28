@@ -14,9 +14,24 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class RequestRepository extends ServiceEntityRepository
 {
+    /**
+     * RequestRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     *
+     * @throws \LogicException
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Request::class);
+    }
+
+    /**
+     * @return Request[]
+     */
+    public function getRequestsWithUsers()
+    {
+        return $this->createQueryBuilder('r')->leftJoin('r.user', 'u')->getQuery()->getResult();
     }
 
     // /**
