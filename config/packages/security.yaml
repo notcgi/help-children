@@ -17,7 +17,7 @@ security:
         main:
             anonymous: true
             logout:
-                path:   app_logout
+                path: app_logout
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
@@ -32,5 +32,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/panel, roles: ROLE_ADMIN }
+        - { path: ^/account, roles: ROLE_USER }
