@@ -69,7 +69,19 @@ help:
 
 donate:
     path: /donate
-    controller: App\Controller\MainController::donate
+    controller: App\Controller\DonateController::main
+
+donate_ok:
+    path: /donate
+    controller: App\Controller\DonateController::ok
+
+donate_no:
+    path: /donate
+    controller: App\Controller\DonateController::no
+
+donate_status:
+    path: /donate
+    controller: App\Controller\DonateController::status
 
 account_main:
     path: /account
