@@ -26,7 +26,7 @@ class ChildHistory
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $sun;
+    private $sum;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -55,9 +55,9 @@ class ChildHistory
         return $this->sun;
     }
 
-    public function setSun(float $sun): self
+    public function setSum(float $sum): self
     {
-        $this->sun = $sun;
+        $this->sum = $sum;
 
         return $this;
     }
