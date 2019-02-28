@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\RequestRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\UsersService;
 
 class MainController extends AbstractController
 {
@@ -66,20 +65,18 @@ class MainController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Request                      $request
+     * @param UsersService                 $usersService
+     * @param SessionInterface             $session
+     * @param UserPasswordEncoderInterface $passwordEncoder
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
-     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
-     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
-     * @throws \UnexpectedValueException
      */
-    public function donate(Request $request)
+    public function donate(Request $request, UsersService $usersService)
     {
         $form_errors = [];
         $form = [
-            'child_id' => trim($request->request->filter('child_id', null, FILTER_VALIDATE_INT)),
+            'child_id' => trim($request->request->filter('child_id', 0, FILTER_VALIDATE_INT)),
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->get('email', '')),
@@ -93,16 +90,35 @@ class MainController extends AbstractController
             $form_errors = $this->validate($form);
 
             if (!count($form_errors)) {
-                $user = $this->getDoctrine()->getRepository(RequestRepository::class)->findBy(
-                    ['email' => $form['email']]
-                );
 
-                if (!$user) {
-                    // @TODO: Получить или создать пользователя через сервис UsersServices::findOrCreate()
-                }
+                $user = $usersService->findOrCreateUser($form);
 
-                // @TODO: Создать заявку
-                // @TODO: Вывести пустую страницу с формой которая сделает редирект на латёжку
+                $req = new \App\Entity\Request();
+                $req->setSum($form['sum'])
+                    ->setRecurent($form['recurent'] ?? 'false')
+                    ->setUserID($user->getUser());
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($req);
+                $entityManager->flush();
+
+                $fields = [
+                    'Shop_IDP' => 4996,
+                    'Order_IDP' => $req->getId(),
+                    'Subtotal_P' => $req->getSum(),
+                    'MeanType' => '',
+                    'EMoneyType'=> '',
+                    'Lifetime' => 3600,
+                    'Customer_IDP' => $req->getUser(),
+                    'Card_IDP' => '', // Будем ли мы карты регистрировать?? Для реккурентных платжей они нужны?
+                    'IData' => '',
+                    'PT_Code' => '',
+                    'password' => 'IzOb37ygmN9xAUdKFtLcVt82x2ir1ycGSXkTch03dblOPsLOGAyADKHC3WWVfcXNAOwLdxb2LaWa4vWH'
+                ];
+
+                $fields['Signature'] = $this->getSignature($fields);
+
+                return $this->render('pages/paymentForm.twig', ['fields' => $fields]);
             }
         }
 
@@ -132,6 +148,22 @@ class MainController extends AbstractController
                     'recurent' => new Assert\Type(['type' => 'boolean']),
                     'agree' => new Assert\IsTrue(),
                 ]
+            )
+        );
+    }
+
+    private function getSignature(array $data) {
+        return strtoupper(
+            md5(
+                md5($data['Shop_IDP']) . "&" .
+                md5($data['Order_IDP']) . "&" .
+                md5($data['Subtotal_P']) . "&" .
+                md5($data['MeanType']) . "&" .
+                md5($data['EMoneyType']) . "&" .
+                md5($data['Lifetime']) . "&" .
+                md5($data['Customer_IDP']) . "&" .
+                //md5($data['Card_IDP']) . "&" .
+                md5($data['password'])
             )
         );
     }

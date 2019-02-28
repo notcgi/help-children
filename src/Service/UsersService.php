@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class UsersService
 {
@@ -16,16 +17,28 @@ class UsersService
      * @return User
      * @throws \RuntimeException
      */
+
+    public $doctrine;
+
+    public $session;
+
+    public $passwordEncoder;
+
+    public function __construct(ManagerRegistry $doctrine, SessionInterface $session, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->doctrine = $doctrine;
+        $this->session = $session;
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
     public function findOrCreateUser(
-        array $data,
-        SessionInterface $session,
-        UserPasswordEncoderInterface $passwordEncoder
+        array $data
     ): User {
         if (!isset($data['email'])) {
             throw new \RuntimeException('Email undefined');
         }
 
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $userRepository = $this->doctrine->getRepository(User::class);
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
         if ($user) {
@@ -40,24 +53,24 @@ class UsersService
 
         if (isset($data['pass'])) {
             $user->setPass(
-                $passwordEncoder->encodePassword(
+                $this->passwordEncoder->encodePassword(
                     $user,
                     $data['pass']
                 )
             );
         }
 
-        if ($session->has('referral')) {
-            $referrerId = (int) $session->get('referral');
+        if ($this->session->has('referral')) {
+            $referrerId = (int) $this->session->get('referral');
             $referrer = $userRepository->find($referrerId);
 
             if ($referrer) {
                 $user->setReferrer($referrer);
-                $session->remove('referral');
+                $this->session->remove('referral');
             }
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->doctrine->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
 

@@ -1,0 +1,13 @@
+<form action="https://wpay.uniteller.ru/pay/" method="POST">
+    <input type="hidden" name="Shop_IDP" value="{{ fields.Shop_IDP }}">
+    <input type="hidden" name="Order_IDP" value="{{ fields.Order_IDP }}">
+    <input type="hidden" name="Subtotal_P" value="{{ fields.Subtotal_P }}">
+    <input type="hidden" name="Signature" value="{{ fields.Signature }}">
+    <input type="hidden" name="MeanType" value="{{ fields.MeanType }}">
+    <input type="hidden" name="EMoneyType" value="{{ fields.MeanType }}">
+    <input type="hidden" name="Lifetime" value="{{ fields.Lifetime }}">
+    <input type="hidden" name="IsRecurrentStart" value="{{ fields.IsRecurrentStart ?: '' }}">
+    <input type="submit" name="Submit" value="Оплатить">
+    <input type="hidden" name="URL_RETURN_OK" value="/pay/ok/">
+    <input type="hidden" name="URL_RETURN_NO" value="/pay/fail/">
+</form>
