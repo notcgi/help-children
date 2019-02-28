@@ -22,7 +22,7 @@
                             <th scope="row">{{ req.id }}</th>
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.status }}</td>
-                            <td>{{ req.sum }}</td>
+                            <td>{{ req.sum|number_format(2, '.', ' ') }}</td>
                             <td>{{ req.createdAt|date('d m Y') }}</td>
                         </tr>
                     {% endfor %}
