@@ -191,7 +191,7 @@ class DonateController extends AbstractController
             'recurent' => (bool) $request->request->get('recurent', false),
             'agree' => (bool) $request->request->get('agree', true),
         ];
-var_dump($request->request->get('recurent'));
+
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
             var_dump($form);
@@ -221,7 +221,8 @@ var_dump($request->request->get('recurent'));
      * @throws \LogicException
      * @throws \Exception
      */
-    private function refHistory(User $user, float $sum): bool {
+    private function refHistory(User $user, float $sum): bool
+    {
         if ($user->getReferrer() === null) {
             return false;
         }

@@ -46,6 +46,11 @@ class User implements UserInterface
     private $meta = [];
 
     /**
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     */
+    private $rewardSum = 0;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $deletedAt;
@@ -234,6 +239,34 @@ class User implements UserInterface
         $this->meta = $meta;
 
         return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRewardSUm()
+    {
+        return $this->rewardSum;
+    }
+
+    /**
+     * @param float $rewardSum
+     *
+     * @return User
+     */
+    public function setRewardSum(float $rewardSum): self
+    {
+        $this->rewardSum = $rewardSum;
+
+        return $this;
+    }
+
+    /**
+     * @return RecurringPayment[]
+     */
+    public function getRecurrentPayments(): array
+    {
+        return $this->recurrentPayments;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
