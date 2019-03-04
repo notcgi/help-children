@@ -18,7 +18,13 @@ class ReferralsHistory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Request", inversedBy="referalHistory", fetch="LAZY")
+     * @ORM\JoinColumn(name="request_id", referencedColumnName="id", nullable=false)
+     */
+    private $request;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="referalHistory", fetch="LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -46,6 +52,26 @@ class ReferralsHistory
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return ReferralsHistory
+     */
+    public function setRequest(Request $request): self
+    {
+        $this->request = $request;
+
+        return $this;
     }
 
     public function getUser(): ?User
