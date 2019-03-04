@@ -11,11 +11,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UnitellerService
 {
-    const SHOP_IDP = 4996;
+    const SHOP_IDP = 00016117;
 
     const LIFE_TIME = 300;
 
-    const SECRET_KEY = 'IzOb37ygmN9xAUdKFtLcVt82x2ir1ycGSXkTch03dblOPsLOGAyADKHC3WWVfcXNAOwLdxb2LaWa4vWH';
+    const SECRET_KEY = 'PrrKymMnW06gAaFH4VcnqrhS0Sb7vfuAxIWK6OSxP98rgOSTRBTHkb94vIhr0l4VZgtdm4GRwgsYA0Lg';
 
     private $router;
 
@@ -97,5 +97,19 @@ class UnitellerService
         }
 
         return strtoupper(md5(implode('&', $arr)));
+    }
+
+    /**
+     * @param array $form
+     *
+     * @return string
+     */
+    public function signatureVerification(array $form)
+    {
+        return strtoupper(
+            md5(
+                $form['Order_ID'].$form['Status'].self::SECRET_KEY
+            )
+        );
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +13,9 @@ use Symfony\Component\Validator\Validation;
 
 class DonateController extends AbstractController
 {
+
+    const REF_RATE = 6;
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      *
@@ -32,13 +37,84 @@ class DonateController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request          $request
+     * @param UnitellerService $unitellerService
      *
-     * @throws \LogicException
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function status()
+    public function status(Request $request, UnitellerService $unitellerService)
     {
+        if ($request->isMethod('post')) {
+            $form = [
+                'Order_ID' => $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
+                // Status может принимать основные значения: authorized, paid, canceled, waiting
+                'Status' => $request->request->get('Status', ''),
+                'Signature' => $request->request->get('Signature', '')
+            ];
+
+            $checkSignature = $unitellerService->signatureVerification($form);
+            if ($form['Signature'] == $checkSignature) {
+
+                if ($form['Status'] == 'paid') {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+
+                    if ($req) {
+                        $req->setStatus(2);
+                        $entityManager->flush();
+
+                        $this->refHistory($req->getUser(), $req->getSum());
+
+                        // Add child history
+                        $childHistory = new \App\Entity\ChildHistory();
+                        $childHistory->setSum($req->getSum())
+                            ->setChildID($req->getChild());
+
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($childHistory);
+                        $entityManager->flush();
+                    }
+                }
+
+                if ($form['Status'] != '') {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+                    if ($req) {
+                        $req->setStatus(1);
+                        $entityManager->flush();
+                    }
+                }
+            }
+        }
+
         return $this->render('account/history.twig');
+    }
+
+    /**
+     * @param int   $userID
+     * @param float $sum
+     *
+     * @throws \Exception
+     */
+    private function refHistory(int $userID, float $sum)
+    {
+        $users = $this->getDoctrine()->getRepository(User::class);
+
+        $user = $users->find($userID);
+
+        if ($user && $user->getReferrer() != null) {
+            $refSum = $sum * self::REF_RATE / 100;
+
+            // Add referral
+            $refHistory = new \App\Entity\ReferralsHistory();
+            $refHistory->setSum($refSum)
+                ->setUser($user->getId());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($refHistory);
+            $entityManager->flush();
+        }
     }
 
     /**
@@ -65,10 +141,10 @@ class DonateController extends AbstractController
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->get('email', '')),
-            'sum' => (int) $request->request->filter('sum', 100, FILTER_VALIDATE_INT),
-            'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
-            'recurent' => (bool) $request->request->get('recurent', false),
-            'agree' => (bool) $request->request->get('agree', true),
+            'sum' => (int)$request->request->filter('sum', 100, FILTER_VALIDATE_INT),
+            'sumOther' => (int)$request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
+            'recurent' => (bool)$request->request->get('recurent', false),
+            'agree' => (bool)$request->request->get('agree', true),
         ];
 
         if ($request->isMethod('post')) {
