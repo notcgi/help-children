@@ -7,113 +7,156 @@ use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
 class DonateController extends AbstractController
 {
-
     const REF_RATE = .06;
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request          $request
+     * @param UnitellerService $unitellerService
      *
+     * @return Response
+     * @throws \InvalidArgumentException
      * @throws \LogicException
+     * @throws \Exception
      */
-    public function ok()
+    public function ok(Request $request, UnitellerService $unitellerService)
     {
-        return $this->render('account/main.twig');
-    }
+        $form = [
+            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
+            // Status может принимать основные значения: authorized, paid, canceled, waiting
+            'Status' => $request->request->get('Status', ''),
+            'Signature' => $request->request->get('Signature', ''),
+        ];
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \LogicException
-     */
-    public function no()
-    {
-        return $this->render('account/myAccount.twig');
+        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
+            return $this->render('account/history.twig');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+
+        if (!$req) {
+            return new Response('', 404);
+        }
+
+        if ($form['Status'] == 'paid') {
+            $req->setStatus(2);
+            $this->refHistory($req->getUser(), $req->getSum());
+
+            // Add child history
+            $childHistory = new \App\Entity\ChildHistory();
+            $childHistory->setSum($req->getSum())
+                ->setChild($req->getChild());
+            $entityManager->persist($childHistory);
+        } elseif ($form['Status'] != '') {
+            $req->setStatus(1);
+        }
+
+        $entityManager->persist($req);
+        $entityManager->flush();
+
+        return new Response('OK');
     }
 
     /**
      * @param Request          $request
      * @param UnitellerService $unitellerService
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    public function no(Request $request, UnitellerService $unitellerService)
+    {
+        $form = [
+            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
+            // Status может принимать основные значения: authorized, paid, canceled, waiting
+            'Status' => $request->request->get('Status', ''),
+            'Signature' => $request->request->get('Signature', ''),
+        ];
+
+        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
+            return $this->render('account/history.twig');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+
+        if (!$req) {
+            return new Response('', 404);
+        }
+
+        if ($form['Status'] == 'paid') {
+            $req->setStatus(2);
+            $this->refHistory($req->getUser(), $req->getSum());
+
+            // Add child history
+            $childHistory = new \App\Entity\ChildHistory();
+            $childHistory->setSum($req->getSum())
+                ->setChild($req->getChild());
+            $entityManager->persist($childHistory);
+        } elseif ($form['Status'] != '') {
+            $req->setStatus(1);
+        }
+
+        $entityManager->persist($req);
+        $entityManager->flush();
+
+        return new Response('OK');
+    }
+
+    /**
+     * @param Request          $request
+     * @param UnitellerService $unitellerService
+     *
+     * @return Response
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
      * @throws \Exception
      */
     public function status(Request $request, UnitellerService $unitellerService)
     {
-        if ($request->isMethod('post')) {
-            $form = [
-                'Order_ID' => $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
-                // Status может принимать основные значения: authorized, paid, canceled, waiting
-                'Status' => $request->request->get('Status', ''),
-                'Signature' => $request->request->get('Signature', '')
-            ];
+        $form = [
+            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
+            // Status может принимать основные значения: authorized, paid, canceled, waiting
+            'Status' => $request->request->get('Status', ''),
+            'Signature' => $request->request->get('Signature', ''),
+        ];
 
-            $checkSignature = $unitellerService->signatureVerification($form);
-            if ($form['Signature'] == $checkSignature) {
-
-                if ($form['Status'] == 'paid') {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
-
-                    if ($req) {
-                        $req->setStatus(2);
-                        $entityManager->flush();
-
-                        $this->refHistory($req->getUser(), $req->getSum());
-
-                        // Add child history
-                        $childHistory = new \App\Entity\ChildHistory();
-                        $childHistory->setSum($req->getSum())
-                            ->setChildID($req->getChild());
-
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($childHistory);
-                        $entityManager->flush();
-                    }
-                }
-
-                if ($form['Status'] != '') {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
-                    if ($req) {
-                        $req->setStatus(1);
-                        $entityManager->flush();
-                    }
-                }
-            }
+        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
+            return $this->render('account/history.twig');
         }
 
-        return $this->render('account/history.twig');
-    }
+        $entityManager = $this->getDoctrine()->getManager();
+        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
 
-    /**
-     * @param int   $userID
-     * @param float $sum
-     *
-     * @throws \Exception
-     */
-    private function refHistory(int $userID, float $sum)
-    {
-        $users = $this->getDoctrine()->getRepository(User::class);
-
-        $user = $users->find($userID);
-
-        if ($user && $user->getReferrer() != null) {
-            $refSum = $sum * self::REF_RATE;
-
-            // Add referral
-            $refHistory = new \App\Entity\ReferralsHistory();
-            $refHistory->setSum($refSum)
-                ->setUser($user->getId());
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($refHistory);
-            $entityManager->flush();
+        if (!$req) {
+            return new Response('', 404);
         }
+
+        if ($form['Status'] == 'paid') {
+            $req->setStatus(2);
+            $this->refHistory($req->getUser(), $req->getSum());
+
+            // Add child history
+            $childHistory = new \App\Entity\ChildHistory();
+            $childHistory->setSum($req->getSum())
+                ->setChild($req->getChild());
+            $entityManager->persist($childHistory);
+        } elseif ($form['Status'] != '') {
+            $req->setStatus(1);
+        }
+
+        $entityManager->persist($req);
+        $entityManager->flush();
+
+        return new Response('OK');
     }
 
     /**
@@ -132,24 +175,28 @@ class DonateController extends AbstractController
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function main(Request $request, UsersService $usersService, UnitellerService $unitellerService)
-    {
+    public function main(
+        Request $request,
+        UsersService $usersService,
+        UnitellerService $unitellerService
+    ) {
         $form_errors = [];
         $form = [
             'child_id' => trim($request->request->filter('child_id', null, FILTER_VALIDATE_INT)),
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
-            'email' => trim($request->request->get('email', '')),
-            'sum' => (int)$request->request->filter('sum', 100, FILTER_VALIDATE_INT),
-            'sumOther' => (int)$request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
-            'recurent' => (bool)$request->request->get('recurent', false),
-            'agree' => (bool)$request->request->get('agree', true),
+            'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
+            'sum' => (int) $request->request->filter('sum', 100, FILTER_VALIDATE_INT),
+            'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
+            'recurent' => (bool) $request->request->get('recurent', false),
+            'agree' => (bool) $request->request->get('agree', true),
         ];
-
+var_dump($request->request->get('recurent'));
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
+            var_dump($form);
 
-            if (!count($form_errors)) {
+            if (0 === count($form_errors)) {
                 $req = new \App\Entity\Request();
                 $req->setSum(round($form['sum'], 2))
                     ->setRecurent($form['recurent'])
@@ -167,6 +214,30 @@ class DonateController extends AbstractController
     }
 
     /**
+     * @param User  $user
+     * @param float $sum
+     *
+     * @return bool
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    private function refHistory(User $user, float $sum): bool {
+        if ($user->getReferrer() === null) {
+            return false;
+        }
+
+        $refSum = $sum * self::REF_RATE;
+
+        // Add referral
+        $refHistory = new \App\Entity\ReferralsHistory();
+        $refHistory->setSum($refSum)
+            ->setUser($user);
+        $this->getDoctrine()->getManager()->persist($refHistory);
+
+        return true;
+    }
+
+    /**
      * @param array $data
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
@@ -181,9 +252,9 @@ class DonateController extends AbstractController
             new Assert\Collection(
                 [
                     'child_id' => new Assert\GreaterThan(['value' => 0]),
-                    'fullName' => new Assert\Length(['min' => 8, 'max' => 256]),
-                    'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
-                    'email' => new Assert\Email(),
+                    'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
+                    'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
+                    'email' => [new Assert\NotBlank(), new Assert\Email()],
                     'sum' => new Assert\Choice([100, 500]),
                     'sumOther' => new Assert\Range(['min' => 0, 'max' => 1000000]),
                     'recurent' => new Assert\Type(['type' => 'boolean']),

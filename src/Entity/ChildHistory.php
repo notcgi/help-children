@@ -48,12 +48,12 @@ class ChildHistory
         return $this->id;
     }
 
-    public function getChildId(): ?Child
+    public function getChild(): ?Child
     {
         return $this->child;
     }
 
-    public function setChildID(Child $child): self
+    public function setChild(Child $child): self
     {
         $this->child = $child;
 

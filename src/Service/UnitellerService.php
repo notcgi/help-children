@@ -17,11 +17,11 @@ class UnitellerService
 
     const SECRET_KEY = 'PrrKymMnW06gAaFH4VcnqrhS0Sb7vfuAxIWK6OSxP98rgOSTRBTHkb94vIhr0l4VZgtdm4GRwgsYA0Lg';
 
-    private $router;
+    private $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $router)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -46,9 +46,9 @@ class UnitellerService
             'Card_IDP' => '',
             'IData' => '',
             'PT_Code' => '',
-            'URL_RETURN' => $this->router->generate('donate_status'),
-            'URL_RETURN_OK' => $this->router->generate('donate_ok'),
-            'URL_RETURN_NO' => $this->router->generate('donate_no'),
+            'URL_RETURN' => $this->urlGenerator->generate('donate_status'),
+            'URL_RETURN_OK' => $this->urlGenerator->generate('donate_ok'),
+            'URL_RETURN_NO' => $this->urlGenerator->generate('donate_no'),
             'Email' => $user->getEmail(),
             'CallbackFormat' => 'json',
             'LastName' => $user->getLastName(),
@@ -64,6 +64,20 @@ class UnitellerService
         $fields['Signature'] = $this->getSignature($fields);
 
         return $fields;
+    }
+
+    /**
+     * @param array $form
+     *
+     * @return string
+     */
+    public function signatureVerification(array $form)
+    {
+        return strtoupper(
+            md5(
+                $form['Order_ID'].$form['Status'].self::SECRET_KEY
+            )
+        );
     }
 
     /**
@@ -97,19 +111,5 @@ class UnitellerService
         }
 
         return strtoupper(md5(implode('&', $arr)));
-    }
-
-    /**
-     * @param array $form
-     *
-     * @return string
-     */
-    public function signatureVerification(array $form)
-    {
-        return strtoupper(
-            md5(
-                $form['Order_ID'].$form['Status'].self::SECRET_KEY
-            )
-        );
     }
 }
