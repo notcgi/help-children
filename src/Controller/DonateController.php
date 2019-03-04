@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +13,7 @@ use Symfony\Component\Validator\Validation;
 class DonateController extends AbstractController
 {
 
-    const REF_RATE = 6;
+    const REF_RATE = .06;
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
@@ -104,7 +103,7 @@ class DonateController extends AbstractController
         $user = $users->find($userID);
 
         if ($user && $user->getReferrer() != null) {
-            $refSum = $sum * self::REF_RATE / 100;
+            $refSum = $sum * self::REF_RATE;
 
             // Add referral
             $refHistory = new \App\Entity\ReferralsHistory();
