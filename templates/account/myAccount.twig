@@ -1,6 +1,11 @@
 {% extends 'base_client_wrapper.twig' %}
 
 {% block content %}
+    <ul>
+        {% for error in formErrors %}
+            <li> * {{ error }}</li>
+        {% endfor %}
+    </ul>
     <main>
         <section class="section hero-large">
             <div class="container">
@@ -16,14 +21,23 @@
                     <div class="account-content my-account">
                         <h1 class="account-content__title my-account-title account-content-padding">Мой аккаунт</h1>
                         <div class="my-account-form-wrapper account-content-padding">
-                            <form class="my-account-form js-my-account-form" action="#" method="GET">
+                            <form class="my-account-form js-my-account-form" method="POST">
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
-                                        <div class="my-account-form-field__label label-text">Ваше ФИО</div>
+                                        <div class="my-account-form-field__label label-text">Ваше Имя</div>
                                         <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
-                                            name="fio"
-                                            value="Иванов Иван Иванович"/>
+                                            name="firstName"
+                                            value="{{ userData.firstName }}"/>
+                                    </label>
+                                </div>
+                                <div class="my-account-row">
+                                    <label class="my-account-form-field my-account-form-fio">
+                                        <div class="my-account-form-field__label label-text">Ваше Фамилия</div>
+                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                               type="text"
+                                               name="lastName"
+                                               value="{{ userData.lastName }}"/>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
@@ -32,6 +46,7 @@
                                         <input class="my-account-form-input input-rounded"
                                             type="text"
                                             name="phone"
+                                               value="{{ userData.phone }}"
                                             placeholder="Введите номер телефона"
                                             data-type="phone"/>
                                     </label>
@@ -42,14 +57,14 @@
                                         <input class="my-account-form-input input-rounded"
                                             type="email"
                                             name="email"
-                                            value="ivan@mail.ru"/>
+                                            value="{{ userData.email }}"/>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-reflink">
                                         <div class="my-account-form-field__label label-text">Ваша реферальная ссылка
                                         </div>
-                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <input disabled class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="reflink"
                                             value="http://помогитедетям.рф/rwWsesd"/>
@@ -58,13 +73,31 @@
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
-                                        <div class="my-account-form-field__label label-text">Пароль</div>
+                                        <div class="my-account-form-field__label label-text">Старый пароль</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
-                                            name="password"
+                                            name="oldPassword"
                                             placeholder="Ваш старый пароль"/>
                                     </label>
-                                    <button class="btn btn-link" type="button">Изменить</button>
+                                </div>
+                                <div class="my-account-row">
+                                    <label class="my-account-form-field my-account-form-password">
+                                        <div class="my-account-form-field__label label-text">Новый пароль</div>
+                                        <input class="my-account-form-input input-rounded"
+                                               type="password"
+                                               name="password"
+                                               placeholder="Ваш старый пароль"/>
+                                    </label>
+                                </div>
+                                <div class="my-account-row">
+                                    <label class="my-account-form-field my-account-form-password">
+                                        <div class="my-account-form-field__label label-text">Новый пароль еще раз</div>
+                                        <input class="my-account-form-input input-rounded"
+                                               type="password"
+                                               name="retypePassword"
+                                               placeholder="Ваш старый пароль"/>
+                                    </label>
+                                    <button class="btn btn-link" type="submit">Изменить</button>
                                 </div>
                             </form>
                         </div>

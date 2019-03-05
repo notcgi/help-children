@@ -34,6 +34,15 @@ class RequestRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')->leftJoin('r.user', 'u')->getQuery()->getResult();
     }
 
+    /**
+     * @return Request[]
+     */
+    public function findRequestsDonateWithUser()
+    {
+        return $this->createQueryBuilder('r')->where('r.status = 2')->leftJoin('r.user', 'u')->leftJoin('r.child', 'id')->getQuery()->getResult();
+    }
+
+
     // /**
     //  * @return Request[] Returns an array of Request objects
     //  */

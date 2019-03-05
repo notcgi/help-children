@@ -19,6 +19,11 @@ class ReferralHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferralHistory::class);
     }
 
+    public function findReferralsWithUser()
+    {
+        return $this->createQueryBuilder('r')->leftJoin('r.user', 'u')->getQuery()->getResult();
+    }
+
     // /**
     //  * @return ReferralHistory[] Returns an array of Child objects
     //  */

@@ -26,26 +26,15 @@
                                 </tr>
                                 </thead>
                                 <tbody class="donation-list-table__body">
-                                <tr class="donation-list-table__row">
-                                    <td class="donation-list-table__body-col">Регулярное пожертвование фонду</td>
-                                    <td class="donation-list-table__body-col">2 000 руб.</td>
-                                    <td class="donation-list-table__body-col">18.12.2018</td>
-                                </tr>
-                                <tr class="donation-list-table__row">
-                                    <td class="donation-list-table__body-col">Пожертвование Ване Иванову</td>
-                                    <td class="donation-list-table__body-col">800 руб.</td>
-                                    <td class="donation-list-table__body-col">18.12.2018</td>
-                                </tr>
-                                <tr class="donation-list-table__row">
-                                    <td class="donation-list-table__body-col">Регулярное пожертвование фонду</td>
-                                    <td class="donation-list-table__body-col">2 000 руб.</td>
-                                    <td class="donation-list-table__body-col">18.12.2018</td>
-                                </tr>
-                                <tr class="donation-list-table__row">
-                                    <td class="donation-list-table__body-col">Пожертвование Ване Иванову</td>
-                                    <td class="donation-list-table__body-col">800 руб.</td>
-                                    <td class="donation-list-table__body-col">18.12.2018</td>
-                                </tr>
+                                {% for req in entities %}
+                                    <tr class="donation-list-table__row">
+                                        <td class="donation-list-table__body-col">{% if req.child == null %} Регулярное пожертвование фонду {% else %} {{ req.child.name }} {% endif %}</td>
+                                        <td class="donation-list-table__body-col">{{ req.sum|number_format(2, '.', ' ') }}
+                                            руб.
+                                        </td>
+                                        <td class="donation-list-table__body-col">{{ req.createdAt|date('d m Y') }}</td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
