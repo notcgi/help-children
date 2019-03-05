@@ -24,6 +24,12 @@ class ChildHistory
     private $child;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="childHistory", fetch="LAZY")
+     * @ORM\JoinColumn(name="donator_id", referencedColumnName="id", nullable=false)
+     */
+    private $donator;
+
+    /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private $sum;
@@ -56,6 +62,26 @@ class ChildHistory
     public function setChild(Child $child): self
     {
         $this->child = $child;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getDonator(): User
+    {
+        return $this->donator;
+    }
+
+    /**
+     * @param User $donator
+     *
+     * @return ChildHistory
+     */
+    public function setDonator(User $donator): self
+    {
+        $this->donator = $donator;
 
         return $this;
     }

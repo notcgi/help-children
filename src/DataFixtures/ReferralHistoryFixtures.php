@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Request;
-use App\Entity\ReferralsHistory;
+use App\Entity\ReferralHistory;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -43,8 +43,8 @@ class ReferralHistoryFixtures extends Fixture
             ->setStatus(2)
             ->setUpdatedAt(new \DateTime());
         $manager->persist($req);
-        $rh = new ReferralsHistory();
-        $rh->setSum(10)->setUser($user)->setRequest($req);
+        $rh = new ReferralHistory();
+        $rh->setSum(10)->setUser($user)->setRequest($req)->setDonator($user);
         $manager->persist($rh);
         $manager->flush();
     }

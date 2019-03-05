@@ -23,7 +23,7 @@ class RecurringPayment
     private $request;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="requestsPayments")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="recurring_payments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;

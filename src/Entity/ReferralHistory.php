@@ -18,16 +18,22 @@ class ReferralHistory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Request", inversedBy="referalHistory", fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="Request", inversedBy="referral_history", fetch="LAZY")
      * @ORM\JoinColumn(name="request_id", referencedColumnName="id", nullable=false)
      */
     private $request;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="referalHistory", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="referral_history", fetch="LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="donate_history", fetch="LAZY")
+     * @ORM\JoinColumn(name="donator_id", referencedColumnName="id", nullable=false)
+     */
+    private $donator;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -65,7 +71,7 @@ class ReferralHistory
     /**
      * @param Request $request
      *
-     * @return ReferralsHistory
+     * @return ReferralHistory
      */
     public function setRequest(Request $request): self
     {
@@ -74,7 +80,7 @@ class ReferralHistory
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -82,6 +88,26 @@ class ReferralHistory
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getDonator(): User
+    {
+        return $this->donator;
+    }
+
+    /**
+     * @param User $donator
+     *
+     * @return ReferralHistory
+     */
+    public function setDonator(User $donator): self
+    {
+        $this->donator = $donator;
 
         return $this;
     }

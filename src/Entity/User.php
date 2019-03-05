@@ -61,25 +61,35 @@ class User implements UserInterface
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="children", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="referrals", fetch="LAZY")
+     * @ORM\JoinColumn(name="referrer_id", referencedColumnName="id")
      */
     private $referrer;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="referrer", fetch="LAZY")
-     * @ORM\JoinColumn(name="referrer_id", referencedColumnName="id")
      */
     private $referrals;
 
     /**
-     * @ORM\OneToMany(targetEntity="Request", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ReferralHistory", mappedBy="user", fetch="LAZY")
+     */
+    private $referral_history;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ReferralHistory", mappedBy="donator", fetch="LAZY")
+     */
+    private $donate_history;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Request", mappedBy="user", fetch="LAZY")
      */
     private $requests;
 
     /**
      * @ORM\OneToMany(targetEntity="RecurringPayment", mappedBy="user", fetch="LAZY")
      */
-    private $recurrentPayments;
+    private $recurring_payments;
 
     /**
      * User constructor.
@@ -261,14 +271,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return RecurringPayment[]
-     */
-    public function getRecurrentPayments(): array
-    {
-        return $this->recurrentPayments;
-    }
-
     public function getDeletedAt(): ?\DateTimeInterface
     {
         return $this->deletedAt;
@@ -306,21 +308,61 @@ class User implements UserInterface
     }
 
     /**
-     * @return RecurringPayment[]
+     * @return ReferralHistory[]
      */
-    public function getRecurrentPayment(): array
+    public function getReferralHistory()
     {
-        return $this->recurrentPayments;
+        return $this->referral_history;
     }
 
     /**
-     * @param RecurringPayment[] $recurrentPayments
+     * @param ReferralHistory[] $referral_history
      *
      * @return User
      */
-    public function setRecurrentPayment(array $recurrentPayments): self
+    public function setReferralHistory(array $referral_history): self
     {
-        $this->recurrentPayments = $recurrentPayments;
+        $this->referral_history = $referral_history;
+
+        return $this;
+    }
+
+    /**
+     * @return ReferralHistory[]
+     */
+    public function getDonateHistory()
+    {
+        return $this->donate_history;
+    }
+
+    /**
+     * @param ReferralHistory[] $donate_history
+     *
+     * @return User
+     */
+    public function setDonateHistory(array $donate_history): self
+    {
+        $this->donate_history = $donate_history;
+
+        return $this;
+    }
+
+    /**
+     * @return RecurringPayment[]
+     */
+    public function getRecurringPayments(): array
+    {
+        return $this->recurring_payments;
+    }
+
+    /**
+     * @param RecurringPayment[] $recurring_payments
+     *
+     * @return User
+     */
+    public function setRecurringPayments(array $recurring_payments): self
+    {
+        $this->recurring_payments = $recurring_payments;
 
         return $this;
     }

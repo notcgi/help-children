@@ -55,6 +55,11 @@ class Request
     private $createdAt;
 
     /**
+     * @ORM\OneToOne(targetEntity="ReferralHistory", mappedBy="request", fetch="LAZY")
+     */
+    private $referral_history;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -149,6 +154,26 @@ class Request
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return ReferralHistory
+     */
+    public function getReferralHistory(): ?ReferralHistory
+    {
+        return $this->referral_history;
+    }
+
+    /**
+     * @param ReferralHistory $referral_history
+     *
+     * @return Request
+     */
+    public function setReferralHistory(ReferralHistory $referral_history): self
+    {
+        $this->referral_history = $referral_history;
 
         return $this;
     }

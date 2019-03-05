@@ -55,6 +55,11 @@ class Child
     private $createdAt;
 
     /**
+     * @ORM\OneToMany(targetEntity="ChildHistory", mappedBy="child", fetch="LAZY")
+     */
+    private $history;
+
+    /**
      * Child constructor.
      *
      * @throws \Exception
@@ -209,5 +214,25 @@ class Child
     public function getGoalRatio(): float
     {
         return 0 === $this->goal ? 0 : $this->collected / $this->goal;
+    }
+
+    /**
+     * @return ChildHistory[]
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param ChildHistory[] $history
+     *
+     * @return $this
+     */
+    public function setHistory(array $history): self
+    {
+        $this->history = $history;
+
+        return $this;
     }
 }
