@@ -82,6 +82,11 @@ class User implements UserInterface
     private $donate_history;
 
     /**
+     * @ORM\OneToMany (targetEntity="ChildHistory", mappedBy="donator", fetch="LAZY")
+     */
+    private $child_history;
+
+    /**
      * @ORM\OneToMany(targetEntity="Request", mappedBy="user", fetch="LAZY")
      */
     private $requests;
@@ -247,6 +252,19 @@ class User implements UserInterface
     public function setMeta(array $meta): self
     {
         $this->meta = $meta;
+
+        return $this;
+    }
+
+
+    public function getChildHistory(): ?string
+    {
+        return $this->child_history;
+    }
+
+    public function setChildHistory(?string $child_history): self
+    {
+        $this->child_histroy = $child_history;
 
         return $this;
     }

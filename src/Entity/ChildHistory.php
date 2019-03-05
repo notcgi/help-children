@@ -24,7 +24,7 @@ class ChildHistory
     private $child;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="childHistory", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="child_history", fetch="LAZY")
      * @ORM\JoinColumn(name="donator_id", referencedColumnName="id", nullable=false)
      */
     private $donator;
