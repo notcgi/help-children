@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Repository\ReferralHistoryRepository;
+use App\Entity\User;
 use App\Repository\RequestRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -70,9 +71,11 @@ class AccountController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function history()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /** @var RequestRepository $repository */
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
 
@@ -87,16 +90,18 @@ class AccountController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function referrals()
     {
-        /** @var ReferralHistoryRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(\App\Entity\ReferralsHistory::class);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
 
         return $this->render(
             'account/referrals.twig',
             [
-                'entities' => $repository->findReferralsWithUser(),
+                'entities' => $repository->findReferralsWithHistory($this->getUser()),
             ]
         );
     }
