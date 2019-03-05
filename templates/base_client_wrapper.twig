@@ -63,7 +63,11 @@
                                 <span class="user-menu-links__item-icon">
                                     <span class="icon icon-user"></span>
                                 </span>
-                                <a class="user-menu-links__item-link" href="{{ path('app_login') }}">Вход в кабинет</a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <a class="user-menu-links__item-link" href="{{ path('app_logout') }}">Выход из кабинета</a>
+                                {% else %}
+                                    <a class="user-menu-links__item-link" href="{{ path('app_login') }}">Вход в кабинет</a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>
