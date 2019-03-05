@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ReferralHistoryRepository")
  * @ORM\Table(name="referral_history")
  */
-class ReferralsHistory
+class ReferralHistory
 {
     /**
      * @ORM\Id()

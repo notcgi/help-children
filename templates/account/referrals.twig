@@ -47,11 +47,11 @@
                                     </thead>
                                     <tbody class="referrals-list-table__body">
                                     {% for req in entities %}
-                                    <tr class="referrals-list-table__row">
-                                        <td class="referrals-list-table__body-col">{{ req.user.email }}</td>
-                                        <td class="referrals-list-table__body-col">{{ req.user.createdAt|date('d m Y') }}</td>
-                                        <td class="referrals-list-table__body-col">2 000 руб.</td>
-                                    </tr>
+                                        <tr class="referrals-list-table__row">
+                                            <td class="referrals-list-table__body-col">{{ req.user.email }}</td>
+                                            <td class="referrals-list-table__body-col">{{ req.user.createdAt|date('d m Y') }}</td>
+                                            <td class="referrals-list-table__body-col">2 000 руб.</td>
+                                        </tr>
                                     {% endfor %}
                                     <tr class="referrals-list-table__row">
                                         <td class="referrals-list-table__body-col">ivan@mail.ru</td>

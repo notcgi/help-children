@@ -14,6 +14,13 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ReferralHistoryRepository extends ServiceEntityRepository
 {
+    /**
+     * ReferralHistoryRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     *
+     * @throws \LogicException
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ReferralHistory::class);

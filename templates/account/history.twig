@@ -28,9 +28,11 @@
                                 <tbody class="donation-list-table__body">
                                 {% for req in entities %}
                                     <tr class="donation-list-table__row">
-                                        <td class="donation-list-table__body-col">{% if req.child == null %} Регулярное пожертвование фонду {% else %} {{ req.child.name }} {% endif %}</td>
-                                        <td class="donation-list-table__body-col">{{ req.sum|number_format(2, '.', ' ') }}
-                                            руб.
+                                        <td class="donation-list-table__body-col">
+                                            {{ req.child is null ? 'Регулярное пожертвование фонду' : req.child.name }}
+                                        </td>
+                                        <td class="donation-list-table__body-col">
+                                            {{ req.sum|number_format(2, '.', ' ') }} руб.
                                         </td>
                                         <td class="donation-list-table__body-col">{{ req.createdAt|date('d m Y') }}</td>
                                     </tr>

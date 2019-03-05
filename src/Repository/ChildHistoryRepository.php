@@ -14,11 +14,17 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ChildHistoryRepository extends ServiceEntityRepository
 {
+    /**
+     * ChildHistoryRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     *
+     * @throws \LogicException
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ChildHistory::class);
     }
-
 
     // /**
     //  * @return ChildHistory[] Returns an array of Child objects

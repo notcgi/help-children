@@ -244,7 +244,7 @@ class User implements UserInterface
     /**
      * @return float
      */
-    public function getRewardSUm()
+    public function getRewardSum()
     {
         return $this->rewardSum;
     }

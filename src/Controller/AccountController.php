@@ -2,20 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\ReferralHistoryRepository;
 use App\Repository\RequestRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 class AccountController extends AbstractController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     *
      * @throws \LogicException
      */
     public function main()
@@ -28,21 +27,16 @@ class AccountController extends AbstractController
      * @param UserPasswordEncoderInterface $encoder
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
     public function myAccount(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $userID = $this->getUser();
-
-        $userData = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($userID);
-
-        if (!$userData) {
-            throw $this->createNotFoundException(
-                'Нет пользователя с id '.$userID
-            );
-        }
+        $user = $this->getUser();
         $form = [
             'firstName' => trim($request->request->get('firstName', '')),
             'lastName' => trim($request->request->get('lastName', '')),
@@ -52,33 +46,68 @@ class AccountController extends AbstractController
             'password' => trim($request->request->filter('Password', '')),
             'retypePassword' => trim($request->request->filter('retypePassword', '')),
         ];
+        $form_errors = [];
 
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
-            if($form['password'] != $form['retypePassword']){
-                //$form_errors['Пароли не совпадают'];
-            }
-            if($form_errors === 0){
-                if(!$encoder->isPasswordValid($userID, $form['oldPassword'])){
-                    //$form_errors['passwordIsNotValid'] = 'Вы ввели неверный пароль';
-                    return $this->render('account/myAccount.twig', ['userData'=>$userData, 'formErrors' => $form_errors]);
-                }
 
-                $encoded = $encoder->encodePassword($userID, $form['password']);
-
-                $userData->setFirstName($form['firstName'])
+            if ($form_errors->count() === 0) {
+                $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
                     ->setPhone($form['phone'])
                     ->setEmail($form['email'])
-                    ->setPassword($encoded);
+                    ->setPassword($encoder->encodePassword($user, $form['password']));
 
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($userData);
+                $entityManager->persist($user);
                 $entityManager->flush();
             }
         }
 
-        return $this->render('account/myAccount.twig', ['userData'=>$userData, 'formErrors' => $form_errors]);
+        return $this->render('account/myAccount.twig', ['userData' => $user, 'formErrors' => $form_errors]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
+    public function history()
+    {
+        /** @var RequestRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+
+        return $this->render(
+            'account/history.twig',
+            [
+                'entities' => $repository->findRequestsDonateWithUser(),
+            ]
+        );
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
+    public function referrals()
+    {
+        /** @var ReferralHistoryRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\ReferralsHistory::class);
+
+        return $this->render(
+            'account/referrals.twig',
+            [
+                'entities' => $repository->findReferralsWithUser(),
+            ]
+        );
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
+    public function recurrent()
+    {
+        return $this->render('account/recurrent.twig');
     }
 
     /**
@@ -97,53 +126,13 @@ class AccountController extends AbstractController
                 [
                     'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
                     'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                    'phone' => [new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
+                    'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                     'email' => [new Assert\NotBlank(), new Assert\Email()],
-                    'oldPassword' => [new Assert\NotBlank()],
-                    'password' => [new Assert\NotBlank()],
+                    'oldPassword' => [new Assert\NotBlank(), new SecurityAssert\UserPassword()],
+                    'password' => [new Assert\NotBlank(), new Assert\EqualTo(['propertyPath' => 'retypePassword'])],
                     'retypePassword' => [new Assert\NotBlank()],
                 ]
             )
         );
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \LogicException
-     */
-    public function history()
-    {
-        /** @var RequestRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
-
-        return $this->render('account/history.twig', [
-            'entities' => $repository->findRequestsDonateWithUser()
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \LogicException
-     */
-    public function referrals()
-    {
-        /** @var ReferralHistoryRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(\App\Entity\ReferralsHistory::class);
-
-        return $this->render('account/referrals.twig', [
-            'entities' => $repository->findReferralsWithUser()
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \LogicException
-     */
-    public function recurrent()
-    {
-        return $this->render('account/recurrent.twig');
     }
 }
