@@ -14,9 +14,30 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * UserRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     *
+     * @throws \LogicException
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function findReferralsWithHistory(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->addSelect('SUM(rh.sum)')
+            ->where('u.referrer = :id')
+            ->leftJoin('u.donate_history', 'rh')
+            ->groupBy('rh.donator')
+            ->setParameters([
+                'id' => $user->getId()
+            ])
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
