@@ -53,10 +53,12 @@ class UsersService
         }
 
         $user = new User();
+        $name = explode(' ', str_replace('  ', ' ', $data['fullName'] ?? ''));
         $user->setEmail($data['email'])
-            ->setFirstName($data['firstName'] ?? '')
-            ->setLastName($data['lastName'] ?? '')
-            ->setMiddleName($data['middleName'] ?? '');
+            ->setFirstName($name[0] ?? '')
+            ->setLastName($name[1] ?? '')
+            ->setMiddleName($name[2] ?? '')
+            ->setPhone($data['phone'] ?? '');
 
         if (isset($data['pass'])) {
             $user->setPass(

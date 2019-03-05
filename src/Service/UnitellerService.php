@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UnitellerService
 {
-    const SHOP_IDP = 00016117;
+    const SHOP_IDP = '00016117';
 
     const LIFE_TIME = 300;
 
@@ -39,16 +39,11 @@ class UnitellerService
             'Shop_IDP' => self::SHOP_IDP,
             'Order_IDP' => $req->getId(),
             'Subtotal_P' => $req->getSum(),
-            'MeanType' => '',
-            'EMoneyType' => '',
             'Lifetime' => self::LIFE_TIME,
             'Customer_IDP' => $user->getId(),
-            'Card_IDP' => '',
-            'IData' => '',
-            'PT_Code' => '',
-            'URL_RETURN' => $this->urlGenerator->generate('donate_status'),
-            'URL_RETURN_OK' => $this->urlGenerator->generate('donate_ok'),
-            'URL_RETURN_NO' => $this->urlGenerator->generate('donate_no'),
+            'URL_RETURN' => $this->urlGenerator->generate('donate_status', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'URL_RETURN_OK' => $this->urlGenerator->generate('donate_ok', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'URL_RETURN_NO' => $this->urlGenerator->generate('donate_no', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'Email' => $user->getEmail(),
             'CallbackFormat' => 'json',
             'LastName' => $user->getLastName(),

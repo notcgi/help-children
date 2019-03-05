@@ -194,7 +194,6 @@ class DonateController extends AbstractController
 
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
-            var_dump($form);
 
             if (0 === count($form_errors)) {
                 $req = new \App\Entity\Request();
@@ -230,7 +229,7 @@ class DonateController extends AbstractController
         $refSum = $sum * self::REF_RATE;
 
         // Add referral
-        $refHistory = new \App\Entity\ReferralsHistory();
+        $refHistory = new \App\Entity\ReferralHistory();
         $refHistory->setSum($refSum)
             ->setUser($user);
         $this->getDoctrine()->getManager()->persist($refHistory);
