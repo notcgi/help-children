@@ -28,7 +28,7 @@ class ReferralHistoryFixtures extends Fixture
         $user = new User();
         $user
             ->setEmail('user2@mail.com')
-            ->setFirstName('Stupid ')
+            ->setFirstName('Stupid 2')
             ->setLastName('User')
             ->setPass(
                 $this->passwordEncoder->encodePassword(
@@ -37,6 +37,19 @@ class ReferralHistoryFixtures extends Fixture
                 )
             );
         $manager->persist($user);
+        $user2 = new User();
+        $user2
+            ->setEmail('user3@mail.com')
+            ->setFirstName('Stupid 3')
+            ->setLastName('User')
+            ->setPass(
+                $this->passwordEncoder->encodePassword(
+                    $user,
+                    'user13'
+                )
+            )
+            ->setReferrer($user);
+        $manager->persist($user2);
         $req = new Request();
         $req->setUser($user)
             ->setSum(300)
@@ -44,7 +57,7 @@ class ReferralHistoryFixtures extends Fixture
             ->setUpdatedAt(new \DateTime());
         $manager->persist($req);
         $rh = new ReferralHistory();
-        $rh->setSum(10)->setUser($user)->setRequest($req)->setDonator($user);
+        $rh->setSum(10)->setUser($user)->setRequest($req)->setDonator($user2);
         $manager->persist($rh);
         $manager->flush();
     }

@@ -45,6 +45,14 @@
                     </div>
                 {% endif %}
                 {{ form_end(form) }}
+
+                {% if user.referrer %}
+                <div>{{ user.referrer.id }} {{ user.referrer.email }}</div>
+                {% endif %}
+
+                {% for referal in user.referrals %}
+                    <div>{{ referal.id }} {{ referal.email }}</div>
+                {% endfor %}
             </div>
         </div>
     </div>

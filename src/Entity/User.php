@@ -256,7 +256,6 @@ class User implements UserInterface
         return $this;
     }
 
-
     public function getChildHistory(): ?string
     {
         return $this->child_history;
@@ -264,7 +263,7 @@ class User implements UserInterface
 
     public function setChildHistory(?string $child_history): self
     {
-        $this->child_histroy = $child_history;
+        $this->child_history = $child_history;
 
         return $this;
     }
@@ -313,7 +312,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getReferrer(): User
+    public function getReferrer(): ?User
     {
         return $this->referrer;
     }
@@ -368,7 +367,7 @@ class User implements UserInterface
     /**
      * @return RecurringPayment[]
      */
-    public function getRecurringPayments(): array
+    public function getRecurringPayments()
     {
         return $this->recurring_payments;
     }
@@ -385,7 +384,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getReferrals(): ?array
+    public function getReferrals()
     {
         return $this->referrals;
     }
@@ -397,7 +396,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRequests(): array
+    public function getRequests()
     {
         return $this->requests;
     }
