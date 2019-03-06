@@ -2,12 +2,7 @@
 
 {% block content %}
     <main>
-        <section class="section hero-large">
-            <div class="container">
-                <h1 class="hero-large__title">Личный кабинет</h1>
-                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
-            </div>
-        </section>
+        {% include 'components/account_title.twig' %}
         <div class="bg-purple-line"></div>
         <section class="section account section-with-bghearts">
             <div class="container container--small">
@@ -29,7 +24,7 @@
                                 </div>
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Баланс</h2>
-                                    <div class="referrals-statistics__balance-sum">2 510 руб.</div>
+                                    <div class="referrals-statistics__balance-sum">{{ dump(sumRef) }} 2 510 руб.</div>
                                     <button class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
                                         Вывести
                                     </button>
@@ -46,13 +41,14 @@
                                     </tr>
                                     </thead>
                                     <tbody class="referrals-list-table__body">
-                                    {% for req in entities %}
+                                    {#{% for req in entities %}
                                         <tr class="referrals-list-table__row">
                                             <td class="referrals-list-table__body-col">{{ req.user.email }}</td>
                                             <td class="referrals-list-table__body-col">{{ req.user.createdAt|date('d m Y') }}</td>
                                             <td class="referrals-list-table__body-col">2 000 руб.</td>
                                         </tr>
-                                    {% endfor %}
+                                    {% endfor %}#}
+                                    {{ dump(entities) }}
                                     <tr class="referrals-list-table__row">
                                         <td class="referrals-list-table__body-col">ivan@mail.ru</td>
                                         <td class="referrals-list-table__body-col">18.11.2018</td>

@@ -2,12 +2,7 @@
 
 {% block content %}
     <main>
-        <section class="section hero-large">
-            <div class="container">
-                <h1 class="hero-large__title">Личный кабинет</h1>
-                <p class="hero-large__subtitle">Добрый день, Иван Иванович!</p>
-            </div>
-        </section>
+        {% include 'components/account_title.twig' %}
         <div class="bg-purple-line"></div>
         <section class="section account section-with-bghearts">
             <div class="container container--small">
@@ -24,7 +19,7 @@
                                     автоматически списывается с вашей карты
                                 </div>
                                 <div class="fast-access-card__action">
-                                    <button class="fast-access-card__action-button btn btn-orange">Добавить</button>
+                                    <a style="text-decoration:none; color: #000; text-align: center;" class="fast-access-card__action-button btn btn-orange" href="{{ path('donate') }}">Добавить</a>
                                 </div>
                                 <div class="fast-access-card__bgicon"
                                     style="background-image: url('/images/card-refresh-gray.png');"></div>
@@ -37,7 +32,7 @@
                                     если у вас изменятся обстоятельства.
                                 </div>
                                 <div class="fast-access-card__action">
-                                    <button class="fast-access-card__action-button btn">Посмотреть</button>
+                                    <a style="text-decoration:none; color: #000; text-align: center;" class="fast-access-card__action-button btn" href="{{ path('account_recurrent') }}" >Посмотреть</a>
                                 </div>
                                 <div class="fast-access-card__bgicon"
                                     style="background-image: url('/images/card-list.png');"></div>
@@ -50,7 +45,7 @@
                                     помощи заполнить личные данные.
                                 </div>
                                 <div class="fast-access-card__action">
-                                    <button class="fast-access-card__action-button btn">Заполнить</button>
+                                   <a style="text-decoration:none; color: #000; text-align: center;" class="fast-access-card__action-button btn" href="{{ path('account_myaccount') }}" >Заполнить</a>
                                 </div>
                                 <div class="fast-access-card__bgicon"
                                     style="background-image: url('/images/card-user.png');"></div>
@@ -63,7 +58,7 @@
                                     жизни.Мы производим сбор средств только при оплате электронными способами.
                                 </div>
                                 <div class="fast-access-card__action">
-                                    <button class="fast-access-card__action-button btn">Посмотреть</button>
+                                    <a style="text-decoration:none; color: #000; text-align: center;" class="fast-access-card__action-button btn" href="{{ path('children_list') }}" >Посмотреть</a>
                                 </div>
                                 <div class="fast-access-card__bgicon"
                                     style="background-image: url('/images/card-kids.png');"></div>

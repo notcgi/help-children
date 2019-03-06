@@ -102,6 +102,7 @@ class AccountController extends AbstractController
             'account/referrals.twig',
             [
                 'entities' => $repository->findReferralsWithHistory($this->getUser()),
+                'sumRef' => $repository->findReferralsWithSum($this->getUser())
             ]
         );
     }

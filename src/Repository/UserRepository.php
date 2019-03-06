@@ -40,6 +40,19 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findReferralsWithSum(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->addSelect('SUM(rh.sum)')
+            ->where('u.referrer = :id')
+            ->leftJoin('u.donate_history', 'rh')
+            ->setParameters([
+                'id' => $user->getId()
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

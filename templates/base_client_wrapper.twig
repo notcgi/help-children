@@ -63,11 +63,10 @@
                                 <span class="user-menu-links__item-icon">
                                     <span class="icon icon-user"></span>
                                 </span>
-                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                    <a class="user-menu-links__item-link" href="{{ path('app_logout') }}">Выход из кабинета</a>
-                                {% else %}
-                                    <a class="user-menu-links__item-link" href="{{ path('app_login') }}">Вход в кабинет</a>
-                                {% endif %}
+                                <a class="user-menu-links__item-link"
+                                   href="{% if is_granted('IS_AUTHENTICATED_FULLY') %} {{ path('account_main') }} {% else %} {{ path('app_login') }} {% endif %}">
+                                    Вход в кабинет
+                                </a>
                             </li>
                         </ul>
                     </div>
