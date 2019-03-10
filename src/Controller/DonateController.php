@@ -223,8 +223,8 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    private function refHistory(User $user, float $sum)
-    : bool {
+    private function refHistory(User $user, float $sum): bool
+    {
         if ($user->getReferrer() === null) {
             return false;
         }
