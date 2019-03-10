@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\RequestSuccessEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -112,45 +114,46 @@ class DonateController extends AbstractController
     }
 
     /**
-     * @param Request          $request
-     * @param UnitellerService $unitellerService
+     * 4000000000002487
+     * UNITELLER TEST
+     *
+     * @param Request                  $request
+     * @param UnitellerService         $unitellerService
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return Response
      * @throws \InvalidArgumentException
      * @throws \LogicException
-     * @throws \Exception
+     * @throws \RuntimeException
      */
-    public function status(Request $request, UnitellerService $unitellerService)
+    public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
-        $form = [
-            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
-            // Status может принимать основные значения: authorized, paid, canceled, waiting
-            'Status' => $request->request->get('Status', ''),
-            'Signature' => $request->request->get('Signature', ''),
-        ];
+        try {
+            $form = json_decode($request->getContent(), true, 2, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            return new Response('invalid json', 400);
+        }
 
-        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
-            return $this->render('account/history.twig');
+        if (!$unitellerService->validateStatusSignature($form)) {
+            return new Response('', 400);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
+        /** @var \App\Entity\Request $req */
         $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
 
         if (!$req) {
             return new Response('', 404);
         }
 
-        if ($form['Status'] == 'paid') {
-            $req->setStatus(2);
-            $this->refHistory($req->getUser(), $req->getSum());
-
-            // Add child history
-            $childHistory = new \App\Entity\ChildHistory();
-            $childHistory->setSum($req->getSum())
-                ->setChild($req->getChild());
-            $entityManager->persist($childHistory);
-        } elseif ($form['Status'] != '') {
-            $req->setStatus(1);
+        switch ($form['Status']) {
+            case 'paid':
+            case 'authorized':
+                $req->setStatus(2);
+                $dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($req));
+                break;
+            case 'canceled':
+                $req->setStatus(1);
         }
 
         $entityManager->persist($req);
@@ -220,8 +223,8 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    private function refHistory(User $user, float $sum): bool
-    {
+    private function refHistory(User $user, float $sum)
+    : bool {
         if ($user->getReferrer() === null) {
             return false;
         }

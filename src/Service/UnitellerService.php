@@ -76,6 +76,22 @@ class UnitellerService
     }
 
     /**
+     * @param array $form
+     *
+     * @return bool
+     * @throws \RuntimeException
+     */
+    public function validateStatusSignature(array $form): bool
+    {
+        if (!isset($form['Signature'])) {
+            throw new \RuntimeException('Signature field not exist');
+        }
+
+        return $form['Signature'] === strtoupper(md5(($form['Order_ID'] ?? '').($form['Status'] ?? '')
+                .self::SECRET_KEY));
+    }
+
+    /**
      * @param array $data
      *
      * @return string
