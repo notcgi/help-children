@@ -142,11 +142,7 @@
                                 Прямые реквизиты для помощи
                             </div>
                             <div class="contacts-details__row-value child-contacts-value">
-                                Чувашское отделение №8613<br>
-                                ПАО СБЕРБАНК г. Чебоксары<br>
-                                К/С: 30101810300000000609<br>
-                                БИК: 049706609<br>
-                                Счет: 40703810675000000543<br>
+                                {{ child.requisites|raw }}
                             </div>
                         </div>
                         <div class="contacts-details__row child-contacts__row">
@@ -154,11 +150,7 @@
                                 Контакты для связи если у вас возникли вопросы
                             </div>
                             <div class="contacts-details__row-value child-contacts-value">
-                                Телефон Фамилия Имя (мама):<br>
-                                8 (999) 999 99 99<br>
-                                <br>
-                                Телефон горячей линии:<br>
-                                8 (800) 600 09 06<br>
+                                {{ child.contacts|raw }}
                             </div>
                         </div>
                     </div>
