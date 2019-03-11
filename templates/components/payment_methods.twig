@@ -1,0 +1,47 @@
+<div class="payment-type-fieldgroup toggle-fieldgroup toggle-fieldgroup--white">
+    <label class="payment-type-fieldgroup__label toggle-field">
+        <input class="toggle-field__input"
+            type="radio"
+            name="payment-type"
+            value="visa"
+            {{ form['payment-type'] == 'visa' ? 'checked' }}>
+        <div class="toggle-field__text">
+            <img class="toggle-field__text-image"
+                src="/images/mastercard.png"
+                width="30">
+            <img class="toggle-field__text-image" src="/images/visa.png" width="40">
+        </div>
+    </label>
+    <label class="payment-type-fieldgroup__label toggle-field">
+        <input class="toggle-field__input"
+            type="radio"
+            name="payment-type"
+            value="requisite-services"
+            {{ form['payment-type'] == 'requisite-services' ? 'checked' }}>
+        <div class="toggle-field__text">Оплата по реквизитам</div>
+    </label>
+    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+        <input class="toggle-field__input"
+            type="radio"
+            name="payment-type"
+            value="internet-services"
+            disabled>
+        <div class="toggle-field__text">Интернет сервисы</div>
+    </label>
+    {# <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+        <input class="toggle-field__input"
+            type="radio"
+            name="payment-type"
+            value="sms"
+            disabled>
+        <div class="toggle-field__text">Sms оплата</div>
+    </label> #}
+    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+        <input class="toggle-field__input"
+            type="radio"
+            name="payment-type"
+            value="account"
+            disabled>
+        <div class="toggle-field__text">Выставление счета</div>
+    </label>
+</div>

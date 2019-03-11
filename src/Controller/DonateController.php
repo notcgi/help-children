@@ -185,6 +185,7 @@ class DonateController extends AbstractController
     ) {
         $form_errors = [];
         $form = [
+            'payment-type' => trim($request->request->get('payment-type', 'visa')),
             'child_id' => trim($request->request->filter('child_id', null, FILTER_VALIDATE_INT)),
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),

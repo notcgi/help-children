@@ -87,6 +87,12 @@ class ChildController extends AbstractController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
     public function edit(int $id, Request $request)
     {
@@ -107,8 +113,8 @@ class ChildController extends AbstractController
                 [
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -116,11 +122,12 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
-            ->add('birthdate',
+            ->add(
+                'birthdate',
                 DateType::class,
                 ['widget' => 'single_text']
             )
@@ -129,7 +136,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -138,7 +145,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )*/
@@ -147,7 +154,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -156,7 +163,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -165,7 +172,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -176,8 +183,8 @@ class ChildController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Range([
-                            'min'        => 1,
-                            'max'        => 10000,
+                            'min' => 1,
+                            'max' => 10000
                         ])
                     ],
                 ]
@@ -189,8 +196,8 @@ class ChildController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Range([
-                            'min'        => 1,
-                            'max'        => 10000,
+                            'min' => 1,
+                            'max' => 10000
                         ])
                     ],
                 ]
@@ -217,7 +224,7 @@ class ChildController extends AbstractController
             'panel/child/edit.twig',
             [
                 'child' => $childData,
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]
         );
     }
