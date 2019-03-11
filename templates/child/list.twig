@@ -1,74 +1,82 @@
 {% extends 'base_client_wrapper.twig' %}
 
-{% block content %}
+{% block content -%}
     <main>
         <section class="section hero-small">
             <div class="container">
                 <h1 class="hero-small__title">Программы помощи</h1>
             </div>
         </section>
-        <section class="section kids section-with-bghearts">
-            <div class="container container-pagecontent-padding">
-                <h2 class="section-title">Долгосрочная опека</h2>
-                <p class="section-subtitle">Вы можете помочь этим детям</p>
-                <ul class="aid-list">
-                    {% for child in children if child.leftGoal is not null %}
-                        <li class="aid-list__item">
-                            <div class="aid-card">
-                                <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
-                                <div class="aid-card__description">
-                                    <p class="aid-card__description-name">{{ child.name }}</p>
-                                    <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
-                                    <div class="aid-card__description-resources collected-resources">
-                                        <div class="collected-resources__slider">
-                                            <div class="collected-resources__slider-filled"></div>
+
+        {% if opened|length -%}
+            <section class="section kids section-with-bghearts">
+                <div class="container container-pagecontent-padding">
+                    <h2 class="section-title">Долгосрочная опека</h2>
+                    <p class="section-subtitle">Вы можете помочь этим детям</p>
+                    <ul class="aid-list">
+                        {% for child in opened -%}
+                            <li class="aid-list__item">
+                                <div class="aid-card">
+                                    <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
+                                    <div class="aid-card__description">
+                                        <p class="aid-card__description-name">{{ child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
+                                        <div class="aid-card__description-resources collected-resources">
+                                            <div class="collected-resources__slider">
+                                                <div class="collected-resources__slider-filled"></div>
+                                            </div>
+                                            <div class="collected-resources__sum">
+                                                <span class="collected-resources__sum-notice">Собрано:</span>
+                                                <span
+                                                    class="collected-resources__sum-value">{{ child.collected|number_format(0, '.', ' ') }} руб.</span>
+                                            </div>
                                         </div>
-                                        <div class="collected-resources__sum">
-                                            <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                            <span class="collected-resources__sum-value">{{ child.collected }} руб.</span>
-                                        </div>
+                                        <p class="aid-card__description-more">
+                                            <a class="aid-card__description-more__link js-card-link"
+                                               href="{{ path('children_detail', {'id': child.id}) }}">Узнать
+                                                подробнее</a>
+                                        </p>
                                     </div>
-                                    <p class="aid-card__description-more">
-                                        <a class="aid-card__description-more__link js-card-link"
-                                            href="{{ path('children_detail', {'id': child.id}) }}">Узнать подробнее</a>
-                                    </p>
                                 </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-        <section class="section kids">
-            <div class="container container-pagecontent-padding">
-                <h2 class="section-title">Закрытые сборы</h2>
-                <ul class="aid-list">
-                    {% for child in children if child.leftGoal is null %}
-                        <li class="aid-list__item">
-                            <div class="aid-card">
-                                <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
-                                <div class="aid-card__description">
-                                    <p class="aid-card__description-name">{{ child.name }}</p>
-                                    <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
-                                    <div class="aid-card__description-resources collected-resources">
-                                        <div class="collected-resources__slider">
-                                            <div class="collected-resources__slider-filled"></div>
+                            </li>
+                        {%- endfor %}
+                    </ul>
+                </div>
+            </section>
+        {%- endif %}
+
+        {% if closed|length -%}
+            <section class="section kids">
+                <div class="container container-pagecontent-padding">
+                    <h2 class="section-title">Закрытые сборы</h2>
+                    <ul class="aid-list">
+                        {% for child in closed -%}
+                            <li class="aid-list__item">
+                                <div class="aid-card">
+                                    <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
+                                    <div class="aid-card__description">
+                                        <p class="aid-card__description-name">{{ child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
+                                        <div class="aid-card__description-resources collected-resources">
+                                            <div class="collected-resources__slider">
+                                                <div class="collected-resources__slider-filled"></div>
+                                            </div>
+                                            <div class="collected-resources__sum">
+                                                <span class="collected-resources__sum-notice">Сбор средств закрыт</span>
+                                            </div>
                                         </div>
-                                        <div class="collected-resources__sum">
-                                            <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                            <span class="collected-resources__sum-value">{{ child.collected }} руб.</span>
-                                        </div>
+                                        <p class="aid-card__description-more">
+                                            <a class="aid-card__description-more__link js-card-link"
+                                               href="{{ path('children_detail', {'id': child.id}) }}">Узнать
+                                                подробнее</a>
+                                        </p>
                                     </div>
-                                    <p class="aid-card__description-more">
-                                        <a class="aid-card__description-more__link js-card-link"
-                                           href="{{ path('children_detail', {'id': child.id}) }}">Узнать подробнее</a>
-                                    </p>
                                 </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
+                            </li>
+                        {%- endfor %}
+                    </ul>
+                </div>
+            </section>
+        {%- endif %}
     </main>
-{% endblock %}
+{%- endblock %}

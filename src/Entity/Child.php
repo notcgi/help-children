@@ -235,6 +235,11 @@ class Child
         return (new \DateTime())->diff($this->birthdate)->y;
     }
 
+    public function isOpened(): bool
+    {
+        return null === $this->goal || $this->goal > $this->collected;
+    }
+
     public function getGoalRatio(): float
     {
         return 0 === $this->goal ? 0 : $this->collected / $this->goal;
