@@ -104,7 +104,7 @@ account_recurrent:
     controller: App\Controller\AccountController::recurrent
 
 panel_main:
-    path: /panel/main
+    path: /panel
     controller: App\Controller\PanelController::main
 
 panel_users:
@@ -129,9 +129,13 @@ user_controller:
     path: /user
     controller: App\Controller\UserController::index
 
-panel_child_list:
+panel_child:
     path: /panel/child
     controller: App\Controller\ChildController::list_panel
+
+panel_child_add:
+    path: /panel/child/add
+    controller: App\Controller\ChildController::add
 
 panel_child_edit:
     path: /panel/child/{id}

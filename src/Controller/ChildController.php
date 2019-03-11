@@ -190,7 +190,7 @@ class ChildController extends AbstractController
                         new NotBlank(),
                         new Range([
                             'min'        => 1,
-                            'max'        => 10000,
+                            'max'        => 10000000,
                         ])
                     ],
                 ]
@@ -217,6 +217,118 @@ class ChildController extends AbstractController
             'panel/child/edit.twig',
             [
                 'child' => $childData,
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function add(Request $request)
+    {
+        $userData = new Child();
+        $form = $this->createFormBuilder($userData)
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add('birthdate',
+                DateType::class,
+                ['widget' => 'single_text']
+            )
+            ->add(
+                'diagnosis',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add(
+                'comment',
+                TextareaType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add(
+                'requisites',
+                TextareaType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add(
+                'contacts',
+                TextareaType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add(
+                'collected',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Range([
+                            'min'        => 1,
+                            'max'        => 10000,
+                        ])
+                    ],
+                ]
+            )
+            ->add(
+                'goal',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Range([
+                            'min'        => 1,
+                            'max'        => 10000000,
+                        ])
+                    ],
+                ]
+            )
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => 'Submit',
+                    'attr' => ['class' => 'btn btn-primary'],
+                ]
+            )
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($userData);
+            $entityManager->flush();
+            return $this->redirect('/panel/child');
+        }
+
+        return $this->render(
+            'panel/child/add.twig',
+            [
                 'form' => $form->createView(),
             ]
         );
