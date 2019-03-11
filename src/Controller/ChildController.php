@@ -42,10 +42,18 @@ class ChildController extends AbstractController
      */
     public function list()
     {
+        $opened = $closed = [];
+
+        /** @var Child $child */
+        foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
+            $child->isOpened() ? $opened[] = $child : $closed[] = $child;
+        }
+
         return $this->render(
             'child/list.twig',
             [
-                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
+                'opened' => $opened,
+                'closed' => $closed
             ]
         );
     }
