@@ -28,6 +28,8 @@ class ChildSubscriber implements EventSubscriberInterface
      */
     public function onRequestSuccess(RequestSuccessEvent $event)
     {
+        return false; // отключенно за ненадобностью
+
         $req = $event->getRequest();
         $child = $req->getChild();
 

@@ -89,7 +89,7 @@ account_main:
 
 account_myaccount:
     path: /account/myaccount
-    controller: App\Controller\AccountController::myaccount
+    controller: App\Controller\AccountController::myAccount
 
 account_history:
     path: /account/history
