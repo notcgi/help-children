@@ -132,3 +132,9 @@ user_controller:
 panel_child_list:
     path: /panel/child
     controller: App\Controller\ChildController::list_panel
+
+panel_child_edit:
+    path: /panel/child/{id}
+    controller: App\Controller\ChildController::edit
+    requirements:
+        id: '\d+'
