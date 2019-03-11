@@ -43,7 +43,7 @@ class ChildFixtures extends Fixture
 Счет: 40817810775041307198<br>
 БИК: 049706609<br>
 К/С: 30101810300000000609')
-            ->setContacts('(Кузьмина Ольга Артемьевна):<br>8 (960) 301 99 72');
+            ->setContacts('Телефон мамы (Кузьмина Ольга Артемьевна):<br>8-960-301-99-72');
         $manager->persist($child);
         $child = new Child();
         $child
@@ -65,7 +65,7 @@ class ChildFixtures extends Fixture
 Счет: 40817810875041301955<br>
 БИК: 049706609<br>
 К/С: 30101810300000000609')
-            ->setContacts('Михайлова Анна Севировна:<br>8 (952) 024 02 70');
+            ->setContacts('Телефон мамы (Михайлова Анна Севировна):<br>8-952-024-02-70');
         $manager->persist($child);
         $child = new Child();
         $child
@@ -88,7 +88,7 @@ class ChildFixtures extends Fixture
 Счет: 40817810575170502145<br>
 БИК: 049706609<br>
 К/С: 30101810300000000609')
-            ->setContacts('Михайлова Анна Севировна:<br>8 (952) 024 02 70');
+            ->setContacts('Телефон мамы (Михайлова Анна Севировна):<br>8-952-024-02-70');
         $manager->persist($child);
         $manager->flush();
     }
