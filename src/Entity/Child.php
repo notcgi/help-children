@@ -146,6 +146,30 @@ class Child
         return $this;
     }
 
+    public function getRequisites(): string
+    {
+        return $this->body['requisites'] ?? '';
+    }
+
+    public function setRequisites(string $requisites): self
+    {
+        $this->body['requisites'] = $requisites;
+
+        return $this;
+    }
+
+    public function getContacts(): string
+    {
+        return $this->body['contacts'] ?? '';
+    }
+
+    public function setContacts(string $contacts): self
+    {
+        $this->body['contacts'] = $contacts;
+
+        return $this;
+    }
+
     public function getCollected()
     {
         return $this->collected;
