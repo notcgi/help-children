@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Child;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -11,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Validator\Constraints\Range;
 
 class ChildController extends AbstractController
 {
@@ -165,6 +166,32 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
+                    ],
+                ]
+            )
+            ->add(
+                'collected',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Range([
+                            'min'        => 1,
+                            'max'        => 10000,
+                        ])
+                    ],
+                ]
+            )
+            ->add(
+                'goal',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Range([
+                            'min'        => 1,
+                            'max'        => 10000,
+                        ])
                     ],
                 ]
             )
