@@ -184,7 +184,7 @@ class ChildController extends AbstractController
                         new NotBlank(),
                         new Range([
                             'min' => 1,
-                            'max' => 10000
+                            'max' => 10000000
                         ])
                     ],
                 ]
@@ -197,7 +197,7 @@ class ChildController extends AbstractController
                         new NotBlank(),
                         new Range([
                             'min' => 1,
-                            'max' => 10000
+                            'max' => 10000000
                         ])
                     ],
                 ]
@@ -244,11 +244,12 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
-            ->add('birthdate',
+            ->add(
+                'birthdate',
                 DateType::class,
                 ['widget' => 'single_text']
             )
@@ -257,16 +258,25 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
+            /*->add(
+                'images',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                ]
+            )*/
             ->add(
                 'comment',
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -275,7 +285,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -284,7 +294,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
+                        new NotBlank()
                     ],
                 ]
             )
@@ -295,8 +305,8 @@ class ChildController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Range([
-                            'min'        => 1,
-                            'max'        => 10000,
+                            'min' => 1,
+                            'max' => 10000000
                         ])
                     ],
                 ]
@@ -308,8 +318,8 @@ class ChildController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Range([
-                            'min'        => 1,
-                            'max'        => 10000000,
+                            'min' => 1,
+                            'max' => 10000000
                         ])
                     ],
                 ]
