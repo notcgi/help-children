@@ -25,7 +25,7 @@
                                         </div>
                                         <div class="collected-resources__sum">
                                             <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                            <span class="collected-resources__sum-value">{{ child.leftGoal }} руб.</span>
+                                            <span class="collected-resources__sum-value">{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                         </div>
                                     </div>
                                     <p class="aid-card__description-more">
