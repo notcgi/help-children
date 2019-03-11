@@ -1,0 +1,36 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Пользователи:</h1>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Дата рождения</th>
+                        <th scope="col">Диагноз</th>
+                        <th scope="col">Дата добавления</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for child in children %}
+                        <tr>
+                            <th scope="row">{{ child.id }}</th>
+                            <td>{{ child.name }}</td>
+                            <td>{{ child.birthdate|date('Y.m.d') }}</td>
+                            <td>{{ child.diagnosis }}</td>
+                            <td>{{ child.CreatedAt|date('Y.m.d') }}</td>
+                            <td><a href="/panel/child/{{ child.id }}">Изменить</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
