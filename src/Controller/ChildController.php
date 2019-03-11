@@ -49,4 +49,19 @@ class ChildController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \LogicException
+     */
+    public function list_panel()
+    {
+        return $this->render(
+            'panel/child/list.twig',
+            [
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
+            ]
+        );
+    }
 }

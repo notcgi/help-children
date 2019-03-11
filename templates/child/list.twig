@@ -12,7 +12,7 @@
                 <h2 class="section-title">Долгосрочная опека</h2>
                 <p class="section-subtitle">Вы можете помочь этим детям</p>
                 <ul class="aid-list">
-                    {% for child in children if child.goal == false %}
+                    {% for child in children if child.leftGoal is not null %}
                         <li class="aid-list__item">
                             <div class="aid-card">
                                 <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
@@ -43,7 +43,7 @@
             <div class="container container-pagecontent-padding">
                 <h2 class="section-title">Закрытые сборы</h2>
                 <ul class="aid-list">
-                    {% for child in children if child.goal == true %}
+                    {% for child in children if child.leftGoal is null %}
                         <li class="aid-list__item">
                             <div class="aid-card">
                                 <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>

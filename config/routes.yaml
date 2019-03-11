@@ -128,3 +128,7 @@ panel_payments:
 user_controller:
     path: /user
     controller: App\Controller\UserController::index
+
+panel_child_list:
+    path: /panel/child
+    controller: App\Controller\ChildController::list_panel
