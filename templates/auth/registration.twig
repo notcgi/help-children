@@ -37,15 +37,16 @@
                         {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
                     </div>
                     {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
+                    <div class="login-form-row">
+                        <button class="btn btn--big btn-dark login-form-submit" type="submit">Зарегистрироваться</button>
+                    </div>
                     {{ form_end(form) }}
                     <div class="another-way-auth">
                         <div class="another-way-auth__col">
                             <p>Вход через соцсеть</p>
                             <ul class="socialbar-links">
                                 <li class="socialbar-links__item">
-                                    <a href="https://vk.com/fond.detyam"
-                                        target="_blank"
-                                        class="socialbar-links__item-link">
+                                    <a href="https://vk.com/fond.detyam" target="_blank" class="socialbar-links__item-link">
                                         <span class="icon icon-vk"></span>
                                     </a>
                                 </li>
@@ -55,9 +56,7 @@
                                     </a>
                                 </li>
                                 <li class="socialbar-links__item">
-                                    <a href="https://www.instagram.com/fond.detyam/"
-                                        target="_blank"
-                                        class="socialbar-links__item-link">
+                                    <a href="https://www.instagram.com/fond.detyam/" target="_blank" class="socialbar-links__item-link">
                                         <span class="icon icon-instagram"></span>
                                     </a>
                                 </li>
@@ -71,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </main>

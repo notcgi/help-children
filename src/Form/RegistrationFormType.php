@@ -30,6 +30,30 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('lastName', TextType::class, [
+                'constraints' => [
+                    new Blank(),
+                    new Length(['min' => 2, 'max' => 32])
+                ]
+            ])
+            ->add('firstName', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 2, 'max' => 32])
+                ]
+            ])
+            ->add('age', NumberType::class, [
+                'constraints' => [
+                    new Blank(),
+                    new Range(['min' => 13, 'max' => 102])
+                ]
+            ])
+            ->add('phone', TextType::class, [
+                'constraints' => [
+                    new Blank(),
+                    new Range(['min' => 10, 'max' => 13])
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -55,39 +79,6 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 256,
                     ])
-                ]
-            ])
-            ->add('lastName', TextType::class, [
-                'constraints' => [
-                    new Blank(),
-                    new Length(['min' => 2, 'max' => 32])
-                ]
-            ])
-            ->add('firstName', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 2, 'max' => 32])
-                ]
-            ])
-            ->add('age', NumberType::class, [
-                'constraints' => [
-                    new Blank(),
-                    new Range(['min' => 13, 'max' => 102])
-                ]
-            ])
-            ->add('phone', TextType::class, [
-                'constraints' => [
-                    new Blank(),
-                    new Range(['min' => 10, 'max' => 13])
-                ]
-            ])
-            ->add('subscribe', CheckboxType::class, [
-                'mapped' => false
-            ])
-            ->add('agree', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank()
                 ]
             ]);
     }
