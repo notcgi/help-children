@@ -259,7 +259,7 @@ class DonateController extends AbstractController
                     'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
                     'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
                     'email' => [new Assert\NotBlank(), new Assert\Email()],
-                    'sum' => new Assert\Choice([100, 500]),
+                    'sum' => new Assert\Choice([300, 500]),
                     'sumOther' => new Assert\Range(['min' => 0, 'max' => 1000000]),
                     'recurent' => new Assert\Type(['type' => 'boolean']),
                     'agree' => new Assert\IsTrue(),
