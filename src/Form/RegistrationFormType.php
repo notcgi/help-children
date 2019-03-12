@@ -6,11 +6,11 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
@@ -31,7 +31,6 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('lastName', TextType::class, [
                 'constraints' => [
-                    new Blank(),
                     new Length(['min' => 2, 'max' => 32])
                 ]
             ])
@@ -43,14 +42,12 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('age', NumberType::class, [
                 'constraints' => [
-                    new Blank(),
                     new Range(['min' => 13, 'max' => 102])
                 ]
             ])
             ->add('phone', TextType::class, [
                 'constraints' => [
-                    new Blank(),
-                    new Range(['min' => 10, 'max' => 13])
+                    new Length(['min' => 10, 'max' => 13])
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -68,6 +65,7 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'first_options' => ['label' => 'Введите пароль'],
                 'second_options' => ['label' => 'Повторите пароль'],
+                'type' => PasswordType::class,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
