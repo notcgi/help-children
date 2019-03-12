@@ -33,7 +33,7 @@
                                 {% include 'components/payment_methods.twig' %}
                             </div>
                         </div>
-                        <div class="ohf-row">
+                        <div class="ohf-row showVISA">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ohf-row">
+                        <div class="ohf-row showVISA">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">3</div>
                                 <div class="ohf-col-label__notice">
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ohf-row">
+                        <div class="ohf-row showVISA">
                             <div class="ohf-row__col ohf-col-label"></div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
@@ -158,6 +158,9 @@
                                     </span>
                                 </div>
                             </div>
+                        </div>
+                        <div id="requisitesContent" class="ohf-row" style="display:none">
+                            {% include 'components/requisites.twig' %}
                         </div>
                     </form>
                 </div>
@@ -215,4 +218,21 @@
             </div>
         </section>
     </main>
+    <script type="text/javascript">
+        var elementsVisa = document.getElementsByClassName('showVISA');
+        var requisitesContent = document.getElementById('requisitesContent');
+        document.getElementById('paymentByRequisites').onclick = function() {
+            requisitesContent.style.display = 'flex';
+            for (var i = 0; i < elementsVisa.length; i++) {
+                elementsVisa[i].style.display = 'none';
+            }
+        };
+
+        document.getElementById('paymentByVisa').onclick = function() {
+            requisitesContent.style.display = 'none';
+            for (var i = 0; i < elementsVisa.length; i++) {
+                elementsVisa[i].style.display = 'flex';
+            }
+        };
+    </script>
 {% endblock %}
