@@ -64,8 +64,12 @@ contacts:
     controller: App\Controller\MainController::contacts
 
 help:
-    path: /help
+    path: /needhelp
     controller: App\Controller\MainController::help
+
+donate_help:
+    path: /help(\.html)?
+    controller: App\Controller\DonateController::main
 
 donate:
     path: /donate
