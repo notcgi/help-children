@@ -17,7 +17,7 @@
                 <div class="form-group">
                     {{ form_label(form.birthdate, 'Дата рождения') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.birthdate) }}</div>
-                    {{ form_widget(form.birthdate, {'attr': {'class':'form-control', 'placeholder': 'Диагноз'}}) }}
+                    {{ form_widget(form.birthdate, {'attr': {'class':'form-control', 'placeholder': 'Дата рождения'}}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.diagnosis, 'Диагноз') }}
@@ -27,7 +27,7 @@
                 <div class="form-group">
                     {{ form_label(form.comment, 'Коменнтарий') }}
                     <label for="exampleFormControlTextarea1">{{ form_errors(form.comment) }}</label>
-                    {{ form_widget(form.comment, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Иван', 'value': child.comment }}) }}
+                    {{ form_widget(form.comment, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Коменнтарий', 'value': child.comment }}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.requisites, 'Реквизиты') }}
@@ -37,7 +37,7 @@
                 <div class="form-group">
                     {{ form_label(form.contacts, 'Контакты') }}
                     <label for="exampleFormControlTextarea1">{{ form_errors(form.contacts) }}</label>
-                    {{ form_widget(form.contacts, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Введите реквизиты', 'value': child.contacts }}) }}
+                    {{ form_widget(form.contacts, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Введите контакты', 'value': child.contacts }}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.collected, 'Собрано средств') }}
