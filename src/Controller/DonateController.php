@@ -192,7 +192,7 @@ class DonateController extends AbstractController
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'sum' => (int) $request->request->filter('sum', 100, FILTER_VALIDATE_INT),
             'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
-            'recurent' => (bool) $request->request->get('recurent', false),
+            'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => (bool) $request->request->get('agree', true),
         ];
 
