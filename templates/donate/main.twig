@@ -18,9 +18,7 @@
             <div class="container container--small">
                 <div class="online-help-wrapper">
                     <form class="online-help-form ohf" method="POST">
-                        <input type="hidden"
-                            name="child_id"
-                            value="{{ form.child_id ?: '' }}">
+                        <input type="hidden" name="child_id" value="{{ form.child_id ?: '' }}">
                         <div class="ohf-row">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">1</div>
@@ -99,10 +97,7 @@
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
-                                            <input class="input-radio__input"
-                                                type="radio"
-                                                name="recurent"
-                                                value="true"
+                                            <input class="input-radio__input" type="radio" name="recurent" value="true"
                                                 {{ form.recurent ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Регулярная оплата</span>
@@ -110,10 +105,7 @@
                                     </div>
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
-                                            <input class="input-radio__input"
-                                                type="radio"
-                                                name="recurent"
-                                                value=""
+                                            <input class="input-radio__input" type="radio" name="recurent" value=""
                                                 {{ not form.recurent ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Единоразовая оплата</span>
@@ -160,7 +152,9 @@
                             </div>
                         </div>
                         <div id="requisitesContent" class="ohf-row" style="display:none">
-                            {% include 'components/requisites.twig' %}
+                            <div class="contacts-details">
+                                {% include 'components/requisites.twig' %}
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -221,14 +215,14 @@
     <script type="text/javascript">
         var elementsVisa = document.getElementsByClassName('showVISA');
         var requisitesContent = document.getElementById('requisitesContent');
-        document.getElementById('paymentByRequisites').onclick = function() {
+        document.getElementById('paymentByRequisites').onclick = function () {
             requisitesContent.style.display = 'flex';
             for (var i = 0; i < elementsVisa.length; i++) {
                 elementsVisa[i].style.display = 'none';
             }
         };
 
-        document.getElementById('paymentByVisa').onclick = function() {
+        document.getElementById('paymentByVisa').onclick = function () {
             requisitesContent.style.display = 'none';
             for (var i = 0; i < elementsVisa.length; i++) {
                 elementsVisa[i].style.display = 'flex';
