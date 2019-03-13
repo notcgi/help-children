@@ -1,12 +1,18 @@
 <div class="row" style="background-color: #fff; padding: 20px;">
     <div class="col-sm">
         <nav class="nav nav-pills flex-column flex-sm-row justify-content-center">
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_main' ? 'active' }}" href="{{ path('panel_main') }}">Главная</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_users' ? 'active' }}" href="{{ path('panel_users') }}">Пользователи</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_child' ? 'active' }}" href="{{ path('panel_child') }}">Дети</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_requests' ? 'active' }}" href="{{ path('panel_requests') }}">Заявки</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_payments' ? 'active' }}" href="{{ path('panel_payments') }}">Платежи</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_recurring' ? 'active' }}" href="{{ path('panel_recurring') }}">Реккурентные платежи</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:10] == 'panel_main' ? 'active' }}"
+                href="{{ path('panel_main') }}">Главная</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:11] == 'panel_users' ? 'active' }}"
+                href="{{ path('panel_users') }}">Пользователи</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:11] == 'panel_child' ? 'active' }}"
+                href="{{ path('panel_child') }}">Дети</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:13] == 'panel_requests' ? 'active' }}"
+                href="{{ path('panel_requests') }}">Заявки</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:14] == 'panel_payments' ? 'active' }}"
+                href="{{ path('panel_payments') }}">Платежи</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:15] == 'panel_recurring' ? 'active' }}"
+                href="{{ path('panel_recurring') }}">Реккурентные платежи</a>
         </nav>
     </div>
 </div>
