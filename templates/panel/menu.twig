@@ -6,6 +6,7 @@
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_child' ? 'active' }}" href="{{ path('panel_child') }}">Дети</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_requests' ? 'active' }}" href="{{ path('panel_requests') }}">Заявки</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_payments' ? 'active' }}" href="{{ path('panel_payments') }}">Платежи</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route') == 'panel_recurring' ? 'active' }}" href="{{ path('panel_recurring') }}">Реккурентные платежи</a>
         </nav>
     </div>
 </div>
