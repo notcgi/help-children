@@ -2,9 +2,9 @@
 
 {% block content %}
     {#<ul>
-    {% for error in formErrors %}
-        <li> * {{ error }}</li>
-    {% endfor %}
+        {% for error in formErrors %}
+            <li> * {{ error }}</li>
+        {% endfor %}
     </ul>#}
     <main>
         <section class="section hero-large">
@@ -31,7 +31,8 @@
                                 {% include 'components/payment_methods.twig' %}
                             </div>
                         </div>
-                        <div class="ohf-row showVISA">
+                        <div class="ohf-row showVISA"
+                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
@@ -62,7 +63,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ohf-row showVISA">
+                        <div class="ohf-row showVISA"
+                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">3</div>
                                 <div class="ohf-col-label__notice">
@@ -114,7 +116,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ohf-row showVISA">
+                        <div class="ohf-row showVISA"
+                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label"></div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
@@ -151,7 +154,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="requisitesContent" class="ohf-row" style="display:none">
+                        <div id="requisitesContent"
+                            class="ohf-row"
+                            style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="contacts-details">
                                 {% include 'components/requisites.twig' %}
                             </div>
@@ -213,40 +218,29 @@
         </section>
     </main>
     <script type="text/javascript">
-        const form = document.getElementsByClassName('showVISA'),
+        const formBlocks = Array.from(document.querySelectorAll('.showVISA')),
             requisites = document.getElementById('requisitesContent'),
-            radiohandler = e => {
-                if ('visa' === e.target.value) {
+            setPaymentMethod = e => {
+                if ('visa' === e) {
                     requisites.style.display = 'none';
-                    for (var i = 0; i < form.length; i++) {
-                        form[i].style.display = 'flex';
+
+                    for (const el of formBlocks) {
+                        el.style.display = 'flex';
                     }
                 } else {
-                    requisites.style.display = 'flex';
-                    for (var i = 0; i < form.length; i++) {
-                        form[i].style.display = 'none';
+                    requisites.style.display = 'block';
+
+                    for (const el of formBlocks) {
+                        el.style.display = 'none';
                     }
                 }
-            };
+            },
+            radioHandler = e => setPaymentMethod(e.target.value);
+
+        setPaymentMethod('{{ form['payment-type'] }}');
 
         for (const el of Array.from(document.forms[0].elements['payment-type'])) {
-            el.addEventListener('change', radiohandler);
+            el.addEventListener('change', radioHandler);
         }
-
-       /* var elementsVisa = document.getElementsByClassName('showVISA');
-        var requisitesContent = document.getElementById('requisitesContent');
-        document.getElementById('paymentByRequisites').onclick = function () {
-            requisitesContent.style.display = 'flex';
-            for (var i = 0; i < elementsVisa.length; i++) {
-                elementsVisa[i].style.display = 'none';
-            }
-        };
-
-        document.getElementById('paymentByVisa').onclick = function () {
-            requisitesContent.style.display = 'none';
-            for (var i = 0; i < elementsVisa.length; i++) {
-                elementsVisa[i].style.display = 'flex';
-            }
-        };*/
     </script>
 {% endblock %}

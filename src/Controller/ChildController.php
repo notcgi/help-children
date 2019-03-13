@@ -20,7 +20,6 @@ class ChildController extends AbstractController
      * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
      * @throws \LogicException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -39,14 +38,14 @@ class ChildController extends AbstractController
         return $this->render(
             'child/detail.twig',
             [
-                'child' => $child
+                'child' => $child,
+                'form' => ['payment-type' => 'visa'],
             ]
         );
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     *
      * @throws \LogicException
      */
     public function list()
@@ -62,14 +61,13 @@ class ChildController extends AbstractController
             'child/list.twig',
             [
                 'opened' => $opened,
-                'closed' => $closed
+                'closed' => $closed,
             ]
         );
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     *
      * @throws \LogicException
      */
     public function list_panel()
@@ -77,7 +75,7 @@ class ChildController extends AbstractController
         return $this->render(
             'panel/child/list.twig',
             [
-                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll(),
             ]
         );
     }
@@ -113,8 +111,8 @@ class ChildController extends AbstractController
                 [
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank()
-                    ]
+                        new NotBlank(),
+                    ],
                 ]
             )
             ->add(
@@ -122,7 +120,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -136,7 +134,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -154,7 +152,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -163,7 +161,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -172,7 +170,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -182,10 +180,12 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
+                        new Range(
+                            [
+                                'min' => 1,
+                                'max' => 10000000,
+                            ]
+                        ),
                     ],
                 ]
             )
@@ -195,10 +195,12 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
+                        new Range(
+                            [
+                                'min' => 1,
+                                'max' => 10000000,
+                            ]
+                        ),
                     ],
                 ]
             )
@@ -224,7 +226,7 @@ class ChildController extends AbstractController
             'panel/child/edit.twig',
             [
                 'child' => $childData,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]
         );
     }
@@ -244,7 +246,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -258,7 +260,7 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -276,7 +278,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -285,7 +287,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -294,7 +296,7 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]
             )
@@ -304,10 +306,12 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
+                        new Range(
+                            [
+                                'min' => 1,
+                                'max' => 10000000,
+                            ]
+                        ),
                     ],
                 ]
             )
@@ -317,10 +321,12 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
+                        new Range(
+                            [
+                                'min' => 1,
+                                'max' => 10000000,
+                            ]
+                        ),
                     ],
                 ]
             )
@@ -340,6 +346,7 @@ class ChildController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($userData);
             $entityManager->flush();
+
             return $this->redirect('/panel/child');
         }
 

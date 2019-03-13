@@ -26,14 +26,18 @@ class RecurringController extends AbstractController
      * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \LogicException
      */
     public function delete(int $id)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $product = $entityManager->getRepository(RecurringPayment::class)->find($id);
-        $entityManager->remove($product);
-        $entityManager->flush();
+
+        if (null !== $product) {
+            $entityManager->remove($product);
+            $entityManager->flush();
+        }
+
         return $this->redirect('/panel/recurring');
     }
-
 }

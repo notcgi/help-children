@@ -26,8 +26,7 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestSuccessEvent $event
-     * @return void
+     * @param  RequestSuccessEvent $event
      * @throws \Exception
      */
     public function onRequestSuccess(RequestSuccessEvent $event): void

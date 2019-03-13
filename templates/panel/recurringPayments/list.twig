@@ -5,8 +5,7 @@
         {% include 'panel/menu.twig' %}
         <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
             <div class="col-sm">
-                <h1>Реккурентные платежи:</h1>
-                <br><br>
+                <h1>Реккурентные платежи:</h1><br><br>
                 <table class="table">
                     <thead>
                     <tr>
@@ -28,7 +27,7 @@
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.withdrawalAt|date('Y.m.d') }}</td>
                             <td>{{ req.CreatedAt|date('Y.m.d') }}</td>
-                            <td><a href="/panel/recurring/{{ req.id }}">Удалить</a></td>
+                            <td><a href="{{ path('panel_child_delete', {id: req.id}) }}">Удалить</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>

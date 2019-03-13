@@ -1,6 +1,7 @@
 <?php
 
 namespace App\DataFixtures;
+
 use App\Entity\User;
 use App\Entity\Request;
 use App\Entity\RecurringPayment;
@@ -43,8 +44,7 @@ class RecurringFixtures extends Fixture
             ->setUpdatedAt(new \DateTime());
         $manager->persist($req);
         $recurring = new RecurringPayment();
-        $recurring->setUser($user)
-            ->setRequest($req);
+        $recurring->setRequest($req);
         $manager->persist($recurring);
         $manager->flush();
     }

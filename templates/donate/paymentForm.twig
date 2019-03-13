@@ -1,16 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<form style="display: none" action="https://wpay.uniteller.ru/pay/" method="POST">
-    {% for key, value in fields %}
-        <input type="hidden" name="{{ key }}" value="{{ value }}">
-    {% endfor %}
-
-    <input type="submit" name="Submit" value="Оплатить">
-</form>
+    <form action="https://wpay.uniteller.ru/pay/" method="POST">
+        {% for key, value in fields %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+    </form>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            document.forms[0].submit();
+        });
+    </script>
 {% endblock %}
-<script type="text/javascript">
-    window.onload = function () {
-        document.forms[0].submit();
-    }
-</script>
