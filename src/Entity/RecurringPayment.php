@@ -12,6 +12,7 @@ class RecurringPayment
 {
     /**
      * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
@@ -39,8 +40,7 @@ class RecurringPayment
     private $createdAt;
 
     /**
-     * User constructor.
-     *
+     * RecurringPayment constructor.
      * @throws \Exception
      */
     public function __construct()
@@ -61,6 +61,7 @@ class RecurringPayment
     public function setRequest(Request $request): self
     {
         $this->request = $request;
+        $this->user = $request->getUser();
 
         return $this;
     }

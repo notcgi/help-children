@@ -213,7 +213,27 @@
         </section>
     </main>
     <script type="text/javascript">
-        var elementsVisa = document.getElementsByClassName('showVISA');
+        const form = document.getElementsByClassName('showVISA'),
+            requisites = document.getElementById('requisitesContent'),
+            radiohandler = e => {
+                if ('visa' === e.target.value) {
+                    requisites.style.display = 'none';
+                    for (var i = 0; i < form.length; i++) {
+                        form[i].style.display = 'flex';
+                    }
+                } else {
+                    requisites.style.display = 'flex';
+                    for (var i = 0; i < form.length; i++) {
+                        form[i].style.display = 'none';
+                    }
+                }
+            };
+
+        for (const el of Array.from(document.forms[0].elements['payment-type'])) {
+            el.addEventListener('change', radiohandler);
+        }
+
+       /* var elementsVisa = document.getElementsByClassName('showVISA');
         var requisitesContent = document.getElementById('requisitesContent');
         document.getElementById('paymentByRequisites').onclick = function () {
             requisitesContent.style.display = 'flex';
@@ -227,6 +247,6 @@
             for (var i = 0; i < elementsVisa.length; i++) {
                 elementsVisa[i].style.display = 'flex';
             }
-        };
+        };*/
     </script>
 {% endblock %}
