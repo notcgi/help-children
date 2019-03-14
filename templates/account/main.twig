@@ -10,6 +10,7 @@
                     {% include 'components/account_nav.twig' %}
                     <div class="account-content fast-access">
                         <h1 class="account-content__title">Быстрый доступ</h1>
+                        <img src="{{ qr_code_data_uri(url('referral', { id: app.user.id })) }}" alt="qrCode">
                         <div class="fast-access-cards">
                             <div class="fast-access-cards__item fast-access-card">
                                 <div class="fast-access-card__title">Добавить регулярный платеж</div>

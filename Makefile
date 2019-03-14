@@ -6,3 +6,6 @@ flushdb:
 
 cs:
 	./vendor/bin/php-cs-fixer fix --verbose --show-progress dots
+
+run
+	php bin/bash server:run 127.0.0.1:80
