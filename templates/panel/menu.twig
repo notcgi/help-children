@@ -3,8 +3,8 @@
         <nav class="nav nav-pills flex-column flex-sm-row justify-content-center">
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:10] == 'panel_main' ? 'active' }}"
                 href="{{ path('panel_main') }}">Главная</a>
-            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:11] == 'panel_users' ? 'active' }}"
-                href="{{ path('panel_users') }}">Пользователи</a>
+            <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:10] == 'panel_user' ? 'active' }}"
+                href="{{ path('panel_user') }}">Пользователи</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:11] == 'panel_child' ? 'active' }}"
                 href="{{ path('panel_child') }}">Дети</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:13] == 'panel_requests' ? 'active' }}"

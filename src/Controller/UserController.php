@@ -117,12 +117,13 @@ class UserController extends AbstractController
             )
             ->add(
                 'referrer',
-                ChoiceType::class, [
+                ChoiceType::class,
+                [
                     'required' => false,
                     'choices' => $userList,
-                    'choice_label' => function($userList) {
-                        /** @var User $userList */
-                        return $userList->getEmail();
+                    'choice_label' => function($user) {
+                        /** @var User $user */
+                        return $user->getEmail();
                     }
                 ]
             )
@@ -149,7 +150,7 @@ class UserController extends AbstractController
             [
                 'allUser' => $userData,
                 'user' => $userData,
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]
         );
     }

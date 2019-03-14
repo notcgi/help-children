@@ -1,5 +1,7 @@
 {% extends 'base_panel_wrapper.twig' %}
 
+{% import 'panel/users/table.twig' as table %}
+
 {% block content %}
     <div class="container">
         {% include 'panel/menu.twig' %}
@@ -36,34 +38,30 @@
                 </div>
                 <div class="form-group">
                     {{ form_widget(form.referrer, {'attr': {'class':'form-control'}}) }}
-                    {#<select class="form-control" name="form[referrer]">
-                        {% for userItem in allUser %}
-                            <option value="{{ userItem.id }}">{{ userItem.email }}</option>
-                        {% endfor %}
-                    </select>#}
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Дата
                         создания: {{ user.createdAt|date("Y-m-d h:i:s") }}</label>
                 </div>
-                {% if(user.deletedAt != null) %}
+                {% if(user.deletedAt != null) -%}
                     <div class="form-group">
                         <label for="exampleFormControlSelect2">Дата
                             удаления: {{ user.deletedAt|date("Y-m-d h:i:s") }} </label>
                     </div>
-                {% endif %}
+                {%- endif %}
                 {{ form_end(form) }}
 
-                <br><br>
-                {% if user.referrer %}
-                    <h6>Пригласитель</h6>
-                    <div> id: <b>{{ user.referrer.id }}</b>; email: <b>{{ user.referrer.email }}</b></div>
-                {% endif %}
+                {% if user.referrer -%}
+                    <br><br>
+                    <h4>Пригласитель</h4>
+                    {{ table.table([user.referrer]) }}
+                {%- endif %}
 
-                {% for referal in user.referrals %}
-                    <h6>Список рефералов</h6>
-                    <div>id: <b>{{ referal.id }}</b>; email: <b>{{ referal.email }}}</b></div>
-                {% endfor %}
+                {% if user.referrals|length -%}
+                    <br><br>
+                    <h4>Список рефералов</h4>
+                    {{ table.table(user.referrals) }}
+                {%- endif %}
             </div>
         </div>
     </div>

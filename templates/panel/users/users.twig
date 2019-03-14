@@ -1,39 +1,14 @@
 {% extends 'base_panel_wrapper.twig' %}
 
+{% import 'panel/users/table.twig' as table %}
+
 {% block content %}
     <div class="container">
         {% include 'panel/menu.twig' %}
         <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
             <div class="col-sm">
                 <h1>Пользователи:</h1>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Фамилия</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Возраст</th>
-                        <th scope="col">Телефон</th>
-                        <th scope="col">Дата регистрации</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <th scope="row">{{ user.id }}</th>
-                            <td>{{ user.firstName }}</td>
-                            <td>{{ user.lastName }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.age }}</td>
-                            <td>{{ user.Phone }}</td>
-                            <td>{{ user.CreatedAt|date('Y.m.d') }}</td>
-                            <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                {{ table.table(users) }}
             </div>
         </div>
     </div>

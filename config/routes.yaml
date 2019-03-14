@@ -111,7 +111,7 @@ panel_main:
     path: /panel
     controller: App\Controller\PanelController::main
 
-panel_users:
+panel_user:
     path: /panel/users
     controller: App\Controller\PanelController::users
 

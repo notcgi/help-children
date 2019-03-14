@@ -317,7 +317,7 @@ class User implements UserInterface
         return $this->referrer;
     }
 
-    public function setReferrer(User $referrer): self
+    public function setReferrer($referrer): self
     {
         $this->referrer = $referrer;
 
