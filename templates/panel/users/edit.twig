@@ -35,6 +35,14 @@
                     {{ form_widget(form.roles, {'attr': {'class':'form-control'}}) }}
                 </div>
                 <div class="form-group">
+                    {{ form_widget(form.referrer, {'attr': {'class':'form-control'}}) }}
+                    {#<select class="form-control" name="form[referrer]">
+                        {% for userItem in allUser %}
+                            <option value="{{ userItem.id }}">{{ userItem.email }}</option>
+                        {% endfor %}
+                    </select>#}
+                </div>
+                <div class="form-group">
                     <label for="exampleFormControlSelect2">Дата
                         создания: {{ user.createdAt|date("Y-m-d h:i:s") }}</label>
                 </div>
@@ -46,12 +54,15 @@
                 {% endif %}
                 {{ form_end(form) }}
 
+                <br><br>
                 {% if user.referrer %}
-                <div>{{ user.referrer.id }} {{ user.referrer.email }}</div>
+                    <h6>Пригласитель</h6>
+                    <div> id: <b>{{ user.referrer.id }}</b>; email: <b>{{ user.referrer.email }}</b></div>
                 {% endif %}
 
                 {% for referal in user.referrals %}
-                    <div>{{ referal.id }} {{ referal.email }}</div>
+                    <h6>Список рефералов</h6>
+                    <div>id: <b>{{ referal.id }}</b>; email: <b>{{ referal.email }}}</b></div>
                 {% endfor %}
             </div>
         </div>

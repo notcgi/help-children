@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -44,9 +45,11 @@ class UserController extends AbstractController
      */
     public function edit(int $id, Request $request)
     {
-        $userData = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($id);
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $userList = $repository->findUserSelecting($id);
+
+        $userData = $repository->find($id);
 
         if (!$userData) {
             throw $this->createNotFoundException(
@@ -113,6 +116,18 @@ class UserController extends AbstractController
                 ]
             )
             ->add(
+                'referrer',
+                ChoiceType::class, [
+                    'choices' => [
+                        $userList
+                    ],
+                    'choice_label' => function($userList) {
+                        /** @var User $userList */
+                        return $userList->getEmail();
+                    }
+                ]
+            )
+            ->add(
                 'save',
                 SubmitType::class,
                 [
@@ -133,6 +148,7 @@ class UserController extends AbstractController
         return $this->render(
             'panel/users/edit.twig',
             [
+                'allUser' => $userData,
                 'user' => $userData,
                 'form' => $form->createView(),
             ]

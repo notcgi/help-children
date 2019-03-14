@@ -53,6 +53,15 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findUserSelecting(int $id)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.id != :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
