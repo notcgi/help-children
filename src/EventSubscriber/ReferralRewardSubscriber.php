@@ -2,12 +2,12 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\RecurringPayment;
+use App\Entity\ReferralHistory;
 use App\Event\RequestSuccessEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class RecurringPaymentSubscriber implements EventSubscriberInterface
+class ReferralRewardSubscriber implements EventSubscriberInterface
 {
     /**
      * @var EntityManagerInterface
@@ -26,14 +26,22 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
     public function onRequestSuccess(RequestSuccessEvent $event): void
     {
         $req = $event->getRequest();
+        $user = $req->getUser();
+        $referrer = $user->getReferrer();
 
-        if (!$req->isRecurent()) {
+        if (null === $referrer) {
             return;
         }
 
-        $this->entityManager->persist((new RecurringPayment())
+        // @TODO: вынести констаты в отдельный конфиг
+        $sum = floor(($req->isRecurent() ? $req->getSum() * .25 : .1) * 100) / 100;
+
+        $this->entityManager->persist((new ReferralHistory())
+            ->setUser($referrer)
+            ->setDonator($user)
             ->setRequest($req)
-            ->setWithdrawalAt(new \DateTime()));
+            ->setSum($sum)
+            ->setRequest($req));
 
         $this->entityManager->flush();
     }
