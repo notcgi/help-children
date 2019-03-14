@@ -9,6 +9,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ReferralRewardSubscriber implements EventSubscriberInterface
 {
+    // @TODO: вынести констаты в отдельный конфиг
+    const RECURRING_REWARD = .25;
+
+    const DEFAULT_REWARD = .1;
+
     /**
      * @var EntityManagerInterface
      */
@@ -33,14 +38,15 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // @TODO: вынести констаты в отдельный конфиг
-        $sum = floor(($req->isRecurent() ? $req->getSum() * .25 : .1) * 100) / 100;
-
         $this->entityManager->persist((new ReferralHistory())
             ->setUser($referrer)
             ->setDonator($user)
             ->setRequest($req)
-            ->setSum($sum)
+            ->setSum(floor($req->getSum() * (
+                $req->isRecurent()
+                    ? self::RECURRING_REWARD
+                    : self::DEFAULT_REWARD
+                ) * 100) / 100)
             ->setRequest($req));
 
         $this->entityManager->flush();
