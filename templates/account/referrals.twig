@@ -21,6 +21,9 @@
                                         пополнить телефон. Мы сделали благотворительность проще и доступнее. Теперь
                                         помочь всем не
                                         сложнее, чем пополнить телефон. </p>
+                                    <button class="btn btn-dark referrals__invite-button"
+                                        data-modal-trigger="modal-invite">Пригласить
+                                    </button>
                                 </div>
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Баланс</h2>
@@ -45,7 +48,9 @@
                                         <tr class="referrals-list-table__row">
                                             <td class="referrals-list-table__body-col">{{ pair[0].email }}</td>
                                             <td class="referrals-list-table__body-col">{{ pair[0].createdAt|date('d m Y') }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }} руб.</td>
+                                            <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }}
+                                                руб.
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -57,4 +62,31 @@
             </div>
         </section>
     </main>
+
+    <div id="modal-invite" class="modal modal-invite" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-modal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-invite-title">
+                <div class="modal__header">
+                    <button class="modal__close" aria-label="Close modal" data-modal-close></button>
+                </div>
+                <div class="modal__content" id="modal-invite-content">
+                    <h3 class="modal__title">Пригласите друзей</h3>
+                    <p class="modal__subtitle">Покажите QR-код или используйте ссылку для пришлашения ваших друзей.</p>
+                    <div class="qr-code">
+                        <p class="mute">Ваш QR-код</p>
+                        <img src="{{ qr_code_data_uri(url('referral', { id: app.user.id })) }}" alt="" width="300" height="300">
+                    </div>
+                    <div class="ref-link">
+                        <p class="mute">Ваша реферальная ссылка</p>
+                        <div class="copy-field">
+                            <input class="input-rounded ref-link__input" type="text" value="{{ url('referral', { id: app.user.id }) }}">
+                            <button class="btn copy-btn js-copy-button" title="Скопировать">
+                                <span class="icon icon-copy"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

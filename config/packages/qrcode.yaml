@@ -1,13 +1,13 @@
 endroid_qr_code:
     writer: 'svg'
-    size: 150
+    size: 300
     margin: 5
     foreground_color: { r: 32, g: 32, b: 32 }
     background_color: { r: 255, g: 255, b: 255 }
     error_correction_level: medium # low, medium, quartile or high
     encoding: UTF-8
     label: Scan the code
-    label_font_size: 20
+    label_font_size: 0
     label_alignment: center # left, center or right
     label_margin: { b: 20 }
 #    logo_path: '%kernel.root_dir%/../public/favicon/favicon.ico'
