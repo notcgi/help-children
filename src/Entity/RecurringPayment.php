@@ -18,7 +18,7 @@ class RecurringPayment
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Request", fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="Request")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     private $request;

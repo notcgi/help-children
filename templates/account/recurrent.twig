@@ -12,52 +12,47 @@
                         <h1 class="account-content__title recurrents-title">Регулярные платежи</h1>
                         <div class="recurrents-wrapper account-content-padding">
                             <div class="fast-access-cards recurrents-cards">
-                                <div class="fast-access-cards__item fast-access-card recurrents-card">
-                                    <div class="fast-access-card__title">Регулярное пожертвование фонду</div>
-                                    <div class="fast-access-card__content recurrents-card__content">
-                                        Регулярные пожертвования дают нам возможность рассчитывать наши силы и регулярно помогать детям.
-                                    </div>
-                                    <div class="recurrents-card__sum">2 000 руб.</div>
-                                    <div class="with-tooltip">
-                                        <button class="btn btn-link js-open-tooltip-button cancel-recurrent-payment">Отменить</button>
-                                        <div class="with-tooltip__tooltip cancel-recurrent-payment-tooltip">
-                                            <div class="with-tooltip__tooltip-arrow"></div>
-                                            <p class="cancel-recurrent-payment-tooltip__notice">Вы действительно хотите отменить регулярное пожертвование</p>
-                                            <div class="cancel-recurrent-payment-tooltip__buttons">
-                                                <button class="btn btn-dark reject-cancel-recurrent js-close-tooltip-button">Нет</button>
-                                                <button class="btn btn-dark confirm-cancel-recurrent js-confirm-cancel-recurrent">Да</button>
+                                {% for payment in payments %}
+                                    <div class="fast-access-cards__item fast-access-card recurrents-card">
+                                        <div class="fast-access-card__title">Регулярное пожертвование фонду</div>
+                                        <div class="fast-access-card__content recurrents-card__content">
+                                            Регулярные пожертвования дают нам возможность рассчитывать наши силы и
+                                            регулярно помогать детям.
+                                        </div>
+                                        <div class="recurrents-card__sum">{{ payment.request.sum|number_format(0, '.', ' ') }} руб.</div>
+                                        <div class="with-tooltip">
+                                            <button class="btn btn-link js-open-tooltip-button cancel-recurrent-payment">
+                                                Отменить
+                                            </button>
+                                            <div class="with-tooltip__tooltip cancel-recurrent-payment-tooltip">
+                                                <div class="with-tooltip__tooltip-arrow"></div>
+                                                <p class="cancel-recurrent-payment-tooltip__notice">Вы действительно
+                                                    хотите отменить регулярное пожертвование</p>
+                                                <div class="cancel-recurrent-payment-tooltip__buttons">
+                                                    <form action="{{ path('account_recurrent_remove', { id: payment.id }) }}"
+                                                        method="post">
+                                                        <input type="hidden"
+                                                            name="token"
+                                                            value="{{ csrf_token('delete-item') }}">
+                                                        <button type="button"
+                                                            class="btn btn-dark reject-cancel-recurrent js-close-tooltip-button">
+                                                            Нет
+                                                        </button>
+                                                        <button class="btn btn-dark confirm-cancel-recurrent js-confirm-cancel-recurrent">
+                                                            Да
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="fast-access-card__bgicon"
+                                            style="background-image: url('/images/card-refresh.png');"></div>
                                     </div>
-                                    <div
-                                        class="fast-access-card__bgicon"
-                                        style="background-image: url('/images/card-refresh.png');"
-                                    ></div>
-                                </div>
-                                <div class="fast-access-cards__item fast-access-card">
-                                    <div class="fast-access-card__title">Регулярное пожертвование фонду</div>
-                                    <div class="fast-access-card__content recurrents-card__content">
-                                        Регулярные пожертвования дают нам возможность рассчитывать наши силы и регулярно помогать детям.
-                                    </div>
-                                    <div class="recurrents-card__sum">11 994 руб.</div>
-                                    <div class="with-tooltip">
-                                        <button class="btn btn-link js-open-tooltip-button cancel-recurrent-payment">Отменить</button>
-                                        <div class="with-tooltip__tooltip cancel-recurrent-payment-tooltip">
-                                            <div class="with-tooltip__tooltip-arrow"></div>
-                                            <p class="cancel-recurrent-payment-tooltip__notice">Вы действительно хотите отменить регулярное пожертвование</p>
-                                            <div class="cancel-recurrent-payment-tooltip__buttons">
-                                                <button class="btn btn-dark reject-cancel-recurrent js-close-tooltip-button">Нет</button>
-                                                <button class="btn btn-dark confirm-cancel-recurrent js-confirm-cancel-recurrent">Да</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="fast-access-card__bgicon"
-                                        style="background-image:url(/images/card-refresh.png)"
-                                    ></div>
-                                </div>
+                                {% endfor %}
                             </div>
-                            <a style="text-decoration: none" class="btn btn-dark btn--big add-recurrents-button js-add-recurrents" href="{{ path('donate') }}">Добавить</a>
+                            <a style="text-decoration: none"
+                                class="btn btn-dark btn--big add-recurrents-button js-add-recurrents"
+                                href="{{ path('donate') }}">Добавить</a>
                         </div>
                     </div>
                 </div>

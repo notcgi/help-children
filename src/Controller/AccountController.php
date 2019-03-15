@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\RecurringPayment;
 use App\Entity\User;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
@@ -101,7 +103,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/referrals.twig',
             [
-                'entities' => $repository->findReferralsWithHistory($this->getUser())
+                'entities' => $repository->findReferralsWithHistory($this->getUser()),
             ]
         );
     }
@@ -109,10 +111,55 @@ class AccountController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     * @throws \UnexpectedValueException
      */
     public function recurrent()
     {
-        return $this->render('account/recurrent.twig');
+        return $this->render(
+            'account/recurrent.twig',
+            [
+                'payments' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findBy(
+                    [
+                        'user' => $this->getUser(),
+                    ]
+                ),
+            ]
+        );
+    }
+
+    /**
+     * @param int                   $id
+     * @param Request               $request
+     * @param UrlGeneratorInterface $generator
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \LogicException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function recurrent_remove(int $id, Request $request, UrlGeneratorInterface $generator)
+    {
+        if (!$this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
+            return $this->redirect($generator->generate('account_recurrent'));
+        }
+
+        $doctrine = $this->getDoctrine();
+        /** @var RecurringPayment $payment */
+        $payment = $doctrine->getRepository(RecurringPayment::class)->find($id);
+
+        if (!$payment || $payment->getUser()->getId() !== $this->getUser()->getId()) {
+            throw $this->createNotFoundException(
+                'Нет платежа с id '.$id
+            );
+        }
+
+        $entityManager = $doctrine->getManager();
+        $entityManager->remove($payment);
+        $entityManager->flush();
+
+        return $this->redirect($generator->generate('account_recurrent'));
     }
 
     /**

@@ -33,7 +33,7 @@ class RecurringFixtures extends Fixture
             ->setPass(
                 $this->passwordEncoder->encodePassword(
                     $user,
-                    'user4'
+                    'user44'
                 )
             );
         $manager->persist($user);

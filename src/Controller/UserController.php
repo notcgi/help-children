@@ -121,7 +121,7 @@ class UserController extends AbstractController
                 [
                     'required' => false,
                     'choices' => $userList,
-                    'choice_label' => function($user) {
+                    'choice_label' => function ($user) {
                         /** @var User $user */
                         return $user->getEmail();
                     }

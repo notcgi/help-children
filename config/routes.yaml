@@ -107,6 +107,13 @@ account_recurrent:
     path: /account/recurrent
     controller: App\Controller\AccountController::recurrent
 
+account_recurrent_remove:
+    path: /account/recurrent/{id}
+    methods: post
+    controller: App\Controller\AccountController::recurrent_remove
+    requirements:
+        id: '\d+'
+
 panel_main:
     path: /panel
     controller: App\Controller\PanelController::main
