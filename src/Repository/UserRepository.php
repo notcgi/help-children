@@ -76,6 +76,19 @@ class UserRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countReferrerNotNull()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.referrer IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

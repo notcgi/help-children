@@ -7,26 +7,34 @@
             <div class="col-sm">
                 <h1>Главная:</h1>
                 <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Фамилия</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Возраст</th>
-                        <th scope="col">Телефон</th>
-                        <th scope="col">Дата создания</th>
-                    </tr>
-                    </thead>
                     <tbody>
                     <tr>
-                        <th scope="row">-</th>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
+                        <td scope="row">Всего пожертвованно:</td>
+                        <td>{{ totalSum|number_format(2, '.', ' ') }} р.</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Всего начисленно рефералльных:</td>
+                        <td>{{ referralSum|number_format(2, '.', ' ') }} р.</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Сумма активных рекуррентный платежей:</td>
+                        <td>{{ recurringSum|number_format(2, '.', ' ') }} р.</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Средний чек доноро:</td>
+                        <td>{{ totalAvg|number_format(2, '.', ' ') }} р.</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Количество активных подписчиков:</td>
+                        <td>{{ recurringSumCount }}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Количество обычных доноров:</td>
+                        <td>{{ userBaseCount }}</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Количество приглашённых доноров:</td>
+                        <td>{{ userRefCount }}</td>
                     </tr>
                     </tbody>
                 </table>

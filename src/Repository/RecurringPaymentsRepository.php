@@ -26,6 +26,19 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
         parent::__construct($registry, RecurringPayment::class);
     }
 
+    /**
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateSum()
+    {
+        return $this->createQueryBuilder('rp')
+            ->select('SUM(r.sum)')
+            ->leftJoin('rp.request', 'r')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return ChildHistory[] Returns an array of Child objects
     //  */

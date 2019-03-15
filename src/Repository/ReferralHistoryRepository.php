@@ -31,6 +31,18 @@ class ReferralHistoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')->leftJoin('r.user', 'u')->getQuery()->getResult();
     }
 
+    /**
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateSum()
+    {
+        return $this->createQueryBuilder('rh')
+            ->select('SUM(rh.sum)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return ReferralHistory[] Returns an array of Child objects
     //  */

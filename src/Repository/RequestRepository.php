@@ -47,6 +47,32 @@ class RequestRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateSumSuccessPayment()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('SUM(r.sum)')
+            ->where('r.status = 2')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateAvgSuccessPayment()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('AVG(r.sum)')
+            ->where('r.status = 2')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Request[] Returns an array of Request objects
     //  */
