@@ -3,7 +3,9 @@
 namespace App\EventSubscriber;
 
 use App\Entity\ReferralHistory;
+use App\Entity\User;
 use App\Event\RequestSuccessEvent;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,13 +21,20 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
 
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->entityManager = $em;
+        $this->userRepository = $em->getRepository(User::class);
     }
 
     /**
-     * @param  RequestSuccessEvent $event
+     * @param RequestSuccessEvent $event
+     *
      * @throws \Exception
      */
     public function onRequestSuccess(RequestSuccessEvent $event): void
@@ -38,17 +47,22 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->entityManager->persist((new ReferralHistory())
-            ->setUser($referrer)
-            ->setDonator($user)
-            ->setRequest($req)
-            ->setSum(floor($req->getSum() * (
-                $req->isRecurent()
+        $sum = floor(
+            $req->getSum() * (
+                    $req->isRecurent()
                     ? self::RECURRING_REWARD
                     : self::DEFAULT_REWARD
-                ) * 100) / 100)
-            ->setRequest($req));
-
+                ) * 100
+            ) / 100;
+        $this->entityManager->persist(
+            (new ReferralHistory())
+                ->setUser($referrer)
+                ->setDonator($user)
+                ->setRequest($req)
+                ->setSum($sum)
+                ->setRequest($req)
+        );
+        $this->userRepository->addReferralReward($referrer, $sum);
         $this->entityManager->flush();
     }
 

@@ -62,6 +62,20 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function addReferralReward(User $user, float $sum)
+    {
+        return $this->createQueryBuilder('u')
+            ->update()
+            ->set('u.rewardSum', 'u.rewardSum + :sum')
+            ->where('u.id = :id')
+            ->setParameters([
+                'id' => $user->getId(),
+                'sum' => $sum
+            ])
+            ->getQuery()
+            ->execute();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
