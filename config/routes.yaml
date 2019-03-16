@@ -68,7 +68,11 @@ help:
     controller: App\Controller\MainController::help
 
 donate_help:
-    path: /help(\.html)?
+    path: /help
+    controller: App\Controller\DonateController::main
+
+donate_online_help:
+    path: /online-help.html
     controller: App\Controller\DonateController::main
 
 donate:
