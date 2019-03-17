@@ -49,7 +49,7 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
 
         $sum = floor(
             $req->getSum() * (
-                    $req->isRecurent()
+                $req->isRecurent()
                     ? self::RECURRING_REWARD
                     : self::DEFAULT_REWARD
                 ) * 100

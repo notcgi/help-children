@@ -79,7 +79,12 @@ class Request
         return $this->child;
     }
 
-    public function setChild(Child $child): self
+    /**
+     * @param Child|null $child
+     *
+     * @return Request
+     */
+    public function setChild($child): self
     {
         $this->child = $child;
 

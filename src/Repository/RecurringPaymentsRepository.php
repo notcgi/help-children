@@ -39,6 +39,23 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @param int $limit
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findNeedRequest($limit = 5)
+    {
+        return $this->createQueryBuilder('rp')
+            ->leftJoin('rp.request', 'r')
+            ->where('rp.withdrawalAt <= :date')
+            ->setParameter('date', (new \DateTime())->sub(new \DateInterval('P1M')))
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return ChildHistory[] Returns an array of Child objects
     //  */

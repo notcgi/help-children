@@ -11,11 +11,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UnitellerService
 {
-    const SHOP_IDP = '00016117';
+    const SHOP_IDP = '00016215';
 
     const LIFE_TIME = 300;
 
     const SECRET_KEY = 'PrrKymMnW06gAaFH4VcnqrhS0Sb7vfuAxIWK6OSxP98rgOSTRBTHkb94vIhr0l4VZgtdm4GRwgsYA0Lg';
+
+    const RECURRING_URL = 'https://wpay.uniteller.ru/recurrent/';
 
     private $urlGenerator;
 
@@ -38,7 +40,7 @@ class UnitellerService
         $fields = [
             'Shop_IDP' => self::SHOP_IDP,
             'Order_IDP' => $req->getId(),
-            'Subtotal_P' => $req->getSum(),
+            'Subtotal_P' => number_format($req->getSum(), 2, '.', ''),
             'Lifetime' => self::LIFE_TIME,
             'Customer_IDP' => $user->getId(),
             'URL_RETURN' => $this->urlGenerator->generate('donate_status', [], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -89,6 +91,42 @@ class UnitellerService
 
         return $form['Signature'] === strtoupper(md5(($form['Order_ID'] ?? '').($form['Status'] ?? '')
                 .self::SECRET_KEY));
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return string
+     */
+    public function getRecurringSignature(array $data): string
+    {
+        $arr = [
+            $data['Shop_IDP'],
+            $data['Order_IDP'],
+            $data['Subtotal_P'],
+            $data['Parent_Order_IDP']
+        ];
+
+        $arr[] = self::SECRET_KEY;
+
+        foreach ($arr as $key => $value) {
+            $arr[$key] = md5($value);
+        }
+
+        return strtoupper(md5(implode('&', $arr)));
+    }
+
+    public function getRecurringForm(Request $request, Request $parent_request)
+    {
+        $data = [
+            'Shop_IDP' => self::SHOP_IDP,
+            'Order_IDP' => $request->getId(),
+            'Subtotal_P' => number_format($request->getSum(), 2, '.', ''),
+            'Parent_Order_IDP' => $parent_request->getId()
+        ];
+        $data['Signature'] = $this->getRecurringSignature($data);
+
+        return $data;
     }
 
     /**

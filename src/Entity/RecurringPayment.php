@@ -12,7 +12,6 @@ class RecurringPayment
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
@@ -61,6 +60,7 @@ class RecurringPayment
     public function setRequest(Request $request): self
     {
         $this->request = $request;
+        $this->id = $request->getId();
         $this->user = $request->getUser();
 
         return $this;
