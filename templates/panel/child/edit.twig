@@ -22,6 +22,12 @@
                     {{ form_widget(form.birthdate, {'attr': {'class':'form-control', 'placeholder': 'Дата рождения'}}) }}
                 </div>
                 <div class="form-group">
+                    {% for img in child.images %}
+                        <img class="img-thumbnail" src="{{ asset('uploads/images/' ~ img) }}">
+                    {% endfor %}
+                </div>
+                {#{{ dump(child.images[0]) }}#}
+                <div class="form-group">
                     {{ form_label(form.diagnosis, 'Диагноз') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.diagnosis) }}</div>
                     {{ form_widget(form.diagnosis, {'attr': {'class':'form-control', 'placeholder': 'Диагноз', 'value': child.diagnosis }}) }}

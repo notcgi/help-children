@@ -19,7 +19,7 @@
                                 <div class="card-child-photos">
                                     <div class="card-child-photos__main">
                                         <img class="img-responsive"
-                                            src="{{ child.images[0] }}"
+                                            src="{{ asset('uploads/images/' ~ child.images[0]) }}"
                                             alt="{{ child.name }}"
                                             width="382">
                                     </div>
@@ -27,7 +27,7 @@
                                     <div class="card-child-photos__list photo-gallery">
                                         {% for image in child.images %}
                                             <img class="photo-gallery__item photo-gallery__item--active img-responsive"
-                                                src="{{ image }}"
+                                                src="{{ asset('uploads/images/' ~ image) }}"
                                                 alt="{{ child.name }}"
                                                 width="59">
                                         {% endfor %}

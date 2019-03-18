@@ -19,6 +19,11 @@
                     {{ form_widget(form.birthdate, {'attr': {'class':'form-control'}}) }}
                 </div>
                 <div class="form-group">
+                    {{ form_label(form.images, 'Изображение') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.images) }}</div>
+                    {{ form_widget(form.images, {'attr': {'class':'form-control', 'placeholder': 'Изображение' }}) }}
+                </div>
+                <div class="form-group">
                     {{ form_label(form.diagnosis, 'Диагноз') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.diagnosis) }}</div>
                     {{ form_widget(form.diagnosis, {'attr': {'class':'form-control', 'placeholder': 'Диагноз' }}) }}

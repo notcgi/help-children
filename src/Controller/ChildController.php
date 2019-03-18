@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Child;
+use App\Form\AddChildTypes;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Range;
+use App\Service\FileUploader;
+
 
 class ChildController extends AbstractController
 {
@@ -232,118 +235,28 @@ class ChildController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Request      $request
+     * @param FileUploader $fileUploader
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function add(Request $request)
+    public function add(Request $request, FileUploader $fileUploader)
     {
         $userData = new Child();
-        $form = $this->createFormBuilder($userData)
-            ->add(
-                'name',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'birthdate',
-                DateType::class,
-                ['widget' => 'single_text']
-            )
-            ->add(
-                'diagnosis',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            /*->add(
-                'images',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ],
-                ]
-            )*/
-            ->add(
-                'comment',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'requisites',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'contacts',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-            ->add(
-                'collected',
-                NumberType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Range(
-                            [
-                                'min' => 1,
-                                'max' => 10000000,
-                            ]
-                        ),
-                    ],
-                ]
-            )
-            ->add(
-                'goal',
-                NumberType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Range(
-                            [
-                                'min' => 1,
-                                'max' => 10000000,
-                            ]
-                        ),
-                    ],
-                ]
-            )
-            ->add(
-                'save',
-                SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'attr' => ['class' => 'btn btn-primary'],
-                ]
-            )
-            ->getForm();
-
+        $form = $this->createForm(AddChildTypes::class, $userData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $images = $userData->getImages();
+            $arrayImg = [];
+            foreach($images as $image){
+                $arrayImg[] = $fileUploader->upload($image);
+            }
+            $userData->setImages($arrayImg);
+
             $entityManager->persist($userData);
             $entityManager->flush();
 

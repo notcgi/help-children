@@ -17,7 +17,7 @@
                         {% for child in opened -%}
                             <li class="aid-list__item">
                                 <div class="aid-card">
-                                    <img class="aid-card__photo" src="{{ child.images[0] }}" alt="Фото Вани Иванова"/>
+                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="Фото Вани Иванова"/>
                                     <div class="aid-card__description">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
