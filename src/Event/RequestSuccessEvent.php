@@ -13,6 +13,8 @@ class RequestSuccessEvent extends Event
 {
     const NAME = 'request.success';
 
+    const RECURRING_NAME = 'recurringRequest.success';
+
     /**
      * @var Request
      */

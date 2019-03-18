@@ -73,7 +73,8 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'request.success' => 'onRequestSuccess'
+            'request.success' => 'onRequestSuccess',
+            'recurringRequest.success' => 'onRequestSuccess'
         ];
     }
 }
