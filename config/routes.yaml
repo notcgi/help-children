@@ -167,3 +167,7 @@ panel_child_delete:
     controller: App\Controller\RecurringController::delete
     requirements:
         id: '\d+'
+
+panel_config:
+    path: /panel/config
+    controller: App\Controller\ConfigController::edit

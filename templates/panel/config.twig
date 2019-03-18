@@ -1,0 +1,27 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Конфигурация процентных стравок:</h1>
+
+                {{ form_start(form) }}
+                {{ form_widget(form.id, {'value': config.id }) }}
+                <div class="form-group">
+                    {{ form_label(form.percentDefault, 'Процент по умолчанию') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.percentDefault) }}</div>
+                    {{ form_widget(form.percentDefault, {'attr': {'class':'form-control', 'placeholder': 'Иван', 'value': config.percentDefault }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.percentRecurrent, 'Процент для реккурентов') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.percentRecurrent) }}</div>
+                    {{ form_widget(form.percentRecurrent, {'attr': {'class':'form-control', 'placeholder': 'Иванов', 'value': config.percentRecurrent}}) }}
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
