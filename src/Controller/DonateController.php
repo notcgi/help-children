@@ -184,9 +184,10 @@ class DonateController extends AbstractController
         UnitellerService $unitellerService
     ) {
         $form_errors = [];
+        $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
         $form = [
             'payment-type' => trim($request->request->get('payment-type', 'visa')),
-            'child_id' => trim($request->request->filter('child_id', null, FILTER_VALIDATE_INT)),
+            'child_id' => $child_id === 0 ? null :  $child_id,
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
