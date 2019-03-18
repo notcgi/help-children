@@ -3,6 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Request;
+use App\Entity\Config;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,13 +20,20 @@ class RequestSuccessEvent extends Event
     protected $request;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * RequestSuccessEvent constructor.
      *
      * @param Request $request
+     * @param Config $config
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, Config $config)
     {
         $this->request = $request;
+        $this->config = $config;
     }
 
     /**
@@ -34,5 +42,13 @@ class RequestSuccessEvent extends Event
     public function getRequest(): Request
     {
         return $this->request;
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig(): Config
+    {
+        return $this->config;
     }
 }

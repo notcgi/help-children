@@ -11,11 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ReferralRewardSubscriber implements EventSubscriberInterface
 {
-    // @TODO: вынести констаты в отдельный конфиг
-    const RECURRING_REWARD = .25;
-
-    const DEFAULT_REWARD = .1;
-
     /**
      * @var EntityManagerInterface
      */
@@ -39,6 +34,7 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
      */
     public function onRequestSuccess(RequestSuccessEvent $event): void
     {
+        $config = $event->getConfig();
         $req = $event->getRequest();
         $user = $req->getUser();
         $referrer = $user->getReferrer();
@@ -50,8 +46,8 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
         $sum = floor(
             $req->getSum() * (
                 $req->isRecurent()
-                    ? self::RECURRING_REWARD
-                    : self::DEFAULT_REWARD
+                    ? $config->getPercentRecurrent()
+                    : $config->getPercentRecurrent()
                 ) * 100
             ) / 100;
         $this->entityManager->persist(
