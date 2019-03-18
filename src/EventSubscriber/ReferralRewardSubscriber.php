@@ -2,9 +2,11 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Config;
 use App\Entity\ReferralHistory;
 use App\Entity\User;
 use App\Event\RequestSuccessEvent;
+use App\Repository\ConfigRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,10 +23,16 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
      */
     private $userRepository;
 
+    /**
+     * @var ConfigRepository
+     */
+    private $configRepository;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->entityManager = $em;
         $this->userRepository = $em->getRepository(User::class);
+        $this->configRepository = $em->getRepository(Config::class);
     }
 
     /**
@@ -34,7 +42,6 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
      */
     public function onRequestSuccess(RequestSuccessEvent $event): void
     {
-        $config = $event->getConfig();
         $req = $event->getRequest();
         $user = $req->getUser();
         $referrer = $user->getReferrer();
@@ -43,11 +50,12 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $config = $this->configRepository->find(1);
         $sum = floor(
             $req->getSum() * (
                 $req->isRecurent()
                     ? $config->getPercentRecurrent()
-                    : $config->getPercentRecurrent()
+                    : $config->getPercentDefault()
                 ) * 100
             ) / 100;
         $this->entityManager->persist(

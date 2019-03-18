@@ -13,12 +13,22 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ConfigController extends AbstractController
 {
-
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
+     */
     public function edit(Request $request)
     {
         $config = $this->getDoctrine()
             ->getRepository(Config::class)
-            ->findOneBy(['id' => 1]);
+            ->find(1);
 
         if (!$config) {
             throw $this->createNotFoundException(
