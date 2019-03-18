@@ -26,7 +26,9 @@ class UserController extends AbstractController
     {
         return $this->render(
             'user/index.twig',
-            ['users' => $this->getDoctrine()->getRepository(User::class)->findAll()]
+            [
+                'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+            ]
         );
     }
 
@@ -64,8 +66,8 @@ class UserController extends AbstractController
                 [
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -73,8 +75,8 @@ class UserController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -82,8 +84,8 @@ class UserController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -91,8 +93,8 @@ class UserController extends AbstractController
                 IntegerType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -101,8 +103,8 @@ class UserController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Email(),
-                    ],
+                        new Email()
+                    ]
                 ]
             )
             ->add(
@@ -110,9 +112,10 @@ class UserController extends AbstractController
                 ChoiceType::class,
                 [
                     'choices' => [
-                        ['ROLE_ADMIN' => 'ROLE_ADMIN', 'ROLE_USER' => 'ROLE_USER'],
+                        'ROLE_ADMIN' => 'ROLE_ADMIN',
+                        'ROLE_USER' => 'ROLE_USER'
                     ],
-                    'multiple' => true,
+                    'multiple' => true
                 ]
             )
             ->add(
@@ -132,7 +135,9 @@ class UserController extends AbstractController
                 SubmitType::class,
                 [
                     'label' => 'Submit',
-                    'attr' => ['class' => 'btn btn-primary'],
+                    'attr' => [
+                        'class' => 'btn btn-primary'
+                    ]
                 ]
             )
             ->getForm();

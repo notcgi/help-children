@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Range;
 use App\Service\FileUploader;
 
-
 class ChildController extends AbstractController
 {
     /**
@@ -42,7 +41,9 @@ class ChildController extends AbstractController
             'child/detail.twig',
             [
                 'child' => $child,
-                'form' => ['payment-type' => 'visa'],
+                'form' => [
+                    'payment-type' => 'visa'
+                ]
             ]
         );
     }
@@ -64,7 +65,7 @@ class ChildController extends AbstractController
             'child/list.twig',
             [
                 'opened' => $opened,
-                'closed' => $closed,
+                'closed' => $closed
             ]
         );
     }
@@ -78,7 +79,7 @@ class ChildController extends AbstractController
         return $this->render(
             'panel/child/list.twig',
             [
-                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll(),
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
             ]
         );
     }
@@ -114,8 +115,8 @@ class ChildController extends AbstractController
                 [
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -123,22 +124,24 @@ class ChildController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
                 'birthdate',
                 DateType::class,
-                ['widget' => 'single_text']
+                [
+                    'widget' => 'single_text'
+                ]
             )
             ->add(
                 'diagnosis',
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             /*->add(
@@ -147,7 +150,7 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank()
-                    ],
+                    ]
                 ]
             )*/
             ->add(
@@ -155,8 +158,8 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -164,8 +167,8 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -173,8 +176,8 @@ class ChildController extends AbstractController
                 TextareaType::class,
                 [
                     'constraints' => [
-                        new NotBlank(),
-                    ],
+                        new NotBlank()
+                    ]
                 ]
             )
             ->add(
@@ -183,13 +186,11 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range(
-                            [
-                                'min' => 1,
-                                'max' => 10000000,
-                            ]
-                        ),
-                    ],
+                        new Range([
+                            'min' => 1,
+                            'max' => 10000000
+                        ])
+                    ]
                 ]
             )
             ->add(
@@ -198,13 +199,11 @@ class ChildController extends AbstractController
                 [
                     'constraints' => [
                         new NotBlank(),
-                        new Range(
-                            [
-                                'min' => 1,
-                                'max' => 10000000,
-                            ]
-                        ),
-                    ],
+                        new Range([
+                            'min' => 1,
+                            'max' => 10000000
+                        ])
+                    ]
                 ]
             )
             ->add(
@@ -212,7 +211,9 @@ class ChildController extends AbstractController
                 SubmitType::class,
                 [
                     'label' => 'Submit',
-                    'attr' => ['class' => 'btn btn-primary'],
+                    'attr' => [
+                        'class' => 'btn btn-primary'
+                    ]
                 ]
             )
             ->getForm();
@@ -229,7 +230,7 @@ class ChildController extends AbstractController
             'panel/child/edit.twig',
             [
                 'child' => $childData,
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]
         );
     }
@@ -248,15 +249,16 @@ class ChildController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
             $images = $userData->getImages();
             $arrayImg = [];
-            foreach($images as $image){
+
+            foreach ($images as $image) {
                 $arrayImg[] = $fileUploader->upload($image);
             }
+
             $userData->setImages($arrayImg);
 
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($userData);
             $entityManager->flush();
 
@@ -266,7 +268,7 @@ class ChildController extends AbstractController
         return $this->render(
             'panel/child/add.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]
         );
     }

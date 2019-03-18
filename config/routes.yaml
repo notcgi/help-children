@@ -72,7 +72,7 @@ donate_help:
     controller: App\Controller\DonateController::main
 
 donate_online_help:
-    path: /online-help.html
+    path: /dist/online-help.html
     controller: App\Controller\DonateController::main
 
 donate:

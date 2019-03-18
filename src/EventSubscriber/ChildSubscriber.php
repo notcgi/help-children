@@ -23,7 +23,8 @@ class ChildSubscriber implements EventSubscriberInterface
     /**
      * @param RequestSuccessEvent $event
      *
-     * @return mixed
+     * @return bool|int
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function onRequestSuccess(RequestSuccessEvent $event)
@@ -59,7 +60,7 @@ class ChildSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'request.success' => 'onRequestSuccess',
+            'request.success' => 'onRequestSuccess'
         ];
     }
 }

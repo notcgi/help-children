@@ -28,12 +28,6 @@ class DonateFormTypes extends AbstractType
                     new NotBlank(),
                     new GreaterThan(['value' => 0])
                 ]
-            ])
-            ->add('child_id', TextF::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThan(['value' => 0])
-                ]
             ]);
     }
 

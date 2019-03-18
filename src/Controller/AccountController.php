@@ -47,7 +47,7 @@ class AccountController extends AbstractController
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'oldPassword' => trim($request->request->filter('oldPassword', '')),
             'password' => trim($request->request->filter('Password', '')),
-            'retypePassword' => trim($request->request->filter('retypePassword', '')),
+            'retypePassword' => trim($request->request->filter('retypePassword', ''))
         ];
         $form_errors = [];
 
@@ -84,7 +84,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/history.twig',
             [
-                'entities' => $repository->findRequestsDonateWithUser(),
+                'entities' => $repository->findRequestsDonateWithUser()
             ]
         );
     }
@@ -103,7 +103,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/referrals.twig',
             [
-                'entities' => $repository->findReferralsWithHistory($this->getUser()),
+                'entities' => $repository->findReferralsWithHistory($this->getUser())
             ]
         );
     }
@@ -118,11 +118,11 @@ class AccountController extends AbstractController
         return $this->render(
             'account/recurrent.twig',
             [
-                'payments' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findBy(
-                    [
-                        'user' => $this->getUser(),
-                    ]
-                ),
+                'payments' => $this->getDoctrine()
+                    ->getRepository(RecurringPayment::class)
+                    ->findBy([
+                        'user' => $this->getUser()
+                    ])
             ]
         );
     }
@@ -174,17 +174,15 @@ class AccountController extends AbstractController
     {
         return Validation::createValidator()->validate(
             $data,
-            new Assert\Collection(
-                [
-                    'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                    'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                    'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
-                    'email' => [new Assert\NotBlank(), new Assert\Email()],
-                    'oldPassword' => [new Assert\NotBlank(), new SecurityAssert\UserPassword()],
-                    'password' => [new Assert\NotBlank(), new Assert\EqualTo(['propertyPath' => 'retypePassword'])],
-                    'retypePassword' => [new Assert\NotBlank()],
-                ]
-            )
+            new Assert\Collection([
+                'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
+                'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
+                'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
+                'email' => [new Assert\NotBlank(), new Assert\Email()],
+                'oldPassword' => [new Assert\NotBlank(), new SecurityAssert\UserPassword()],
+                'password' => [new Assert\NotBlank(), new Assert\EqualTo(['propertyPath' => 'retypePassword'])],
+                'retypePassword' => [new Assert\NotBlank()]
+            ])
         );
     }
 }

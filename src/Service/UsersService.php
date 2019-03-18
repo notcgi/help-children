@@ -23,8 +23,11 @@ class UsersService
 
     public $passwordEncoder;
 
-    public function __construct(ManagerRegistry $doctrine, SessionInterface $session, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        ManagerRegistry $doctrine,
+        SessionInterface $session,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->doctrine = $doctrine;
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
@@ -37,9 +40,8 @@ class UsersService
      * @throws \Exception
      * @throws \RuntimeException
      */
-    public function findOrCreateUser(
-        array $data
-    ): User {
+    public function findOrCreateUser(array $data): User
+    {
         if (!isset($data['email'])) {
             throw new \RuntimeException('Email undefined');
         }

@@ -50,7 +50,9 @@ class PanelController extends AbstractController
     {
         return $this->render(
             'panel/users/users.twig',
-            ['users' => $this->getDoctrine()->getRepository(User::class)->findAll()]
+            [
+                'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+            ]
         );
     }
 
@@ -66,7 +68,7 @@ class PanelController extends AbstractController
         return $this->render(
             'panel/requests.twig',
             [
-                'entities' => $repository->getRequestsWithUsers(),
+                'entities' => $repository->getRequestsWithUsers()
             ]
         );
     }
@@ -77,8 +79,6 @@ class PanelController extends AbstractController
      */
     public function payments()
     {
-        return $this->render(
-            'panel/payments.twig'
-        );
+        return $this->render('panel/payments.twig');
     }
 }

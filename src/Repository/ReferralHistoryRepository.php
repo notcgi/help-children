@@ -28,7 +28,10 @@ class ReferralHistoryRepository extends ServiceEntityRepository
 
     public function findReferralsWithUser()
     {
-        return $this->createQueryBuilder('r')->leftJoin('r.user', 'u')->getQuery()->getResult();
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -42,33 +45,4 @@ class ReferralHistoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
-    // /**
-    //  * @return ReferralHistory[] Returns an array of Child objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ReferralHistory
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
