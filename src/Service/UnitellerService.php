@@ -90,7 +90,7 @@ class UnitellerService
         }
 
         return $form['Signature'] === strtoupper(md5(($form['Order_ID'] ?? '').($form['Status'] ?? '')
-                .self::SECRET_KEY));
+            .self::SECRET_KEY));
     }
 
     /**

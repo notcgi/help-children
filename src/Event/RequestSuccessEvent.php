@@ -33,6 +33,6 @@ class RequestSuccessEvent extends Event
      */
     public function getRequest(): Request
     {
-        $this->request;
+        return $this->request;
     }
 }

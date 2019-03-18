@@ -32,7 +32,7 @@ class DonateController extends AbstractController
             'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
             // Status может принимать основные значения: authorized, paid, canceled, waiting
             'Status' => $request->request->get('Status', ''),
-            'Signature' => $request->request->get('Signature', ''),
+            'Signature' => $request->request->get('Signature', '')
         ];
 
         if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
@@ -80,7 +80,7 @@ class DonateController extends AbstractController
             'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
             // Status может принимать основные значения: authorized, paid, canceled, waiting
             'Status' => $request->request->get('Status', ''),
-            'Signature' => $request->request->get('Signature', ''),
+            'Signature' => $request->request->get('Signature', '')
         ];
 
         if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
@@ -193,7 +193,7 @@ class DonateController extends AbstractController
             'sum' => (int) $request->request->filter('sum', 300, FILTER_VALIDATE_INT),
             'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
             'recurent' => (bool) $request->request->get('recurent', true),
-            'agree' => (bool) $request->request->get('agree', true),
+            'agree' => (bool) $request->request->get('agree', true)
         ];
 
         if ($request->isMethod('post')) {
@@ -232,11 +232,14 @@ class DonateController extends AbstractController
 
         $refSum = $sum * self::REF_RATE;
 
-        // Add referral
-        $refHistory = new \App\Entity\ReferralHistory();
-        $refHistory->setSum($refSum)
-            ->setUser($user);
-        $this->getDoctrine()->getManager()->persist($refHistory);
+        // Add referral;
+        $this->getDoctrine()
+            ->getManager()
+            ->persist(
+                (new \App\Entity\ReferralHistory())
+                ->setSum($refSum)
+                ->setUser($user)
+            );
 
         return true;
     }
@@ -253,19 +256,17 @@ class DonateController extends AbstractController
     {
         return Validation::createValidator()->validate(
             $data,
-            new Assert\Collection(
-                [
-                    'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
-                    'child_id' => new Assert\GreaterThan(['value' => 0]),
-                    'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
-                    'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
-                    'email' => [new Assert\NotBlank(), new Assert\Email()],
-                    'sum' => new Assert\Choice([300, 500]),
-                    'sumOther' => new Assert\Range(['min' => 0, 'max' => 1000000]),
-                    'recurent' => new Assert\Type(['type' => 'boolean']),
-                    'agree' => new Assert\IsTrue(),
-                ]
-            )
+            new Assert\Collection([
+                'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
+                'child_id' => new Assert\GreaterThan(['value' => 0]),
+                'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
+                'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
+                'email' => [new Assert\NotBlank(), new Assert\Email()],
+                'sum' => new Assert\Choice([300, 500]),
+                'sumOther' => new Assert\Range(['min' => 0, 'max' => 1000000]),
+                'recurent' => new Assert\Type(['type' => 'boolean']),
+                'agree' => new Assert\IsTrue()
+            ])
         );
     }
 }
