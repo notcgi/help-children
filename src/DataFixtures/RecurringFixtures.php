@@ -43,6 +43,7 @@ class RecurringFixtures extends Fixture
             ->setStatus(2)
             ->setUpdatedAt(new \DateTime());
         $manager->persist($req);
+        $manager->flush();
         $recurring = new RecurringPayment();
         $recurring->setRequest($req);
         $manager->persist($recurring);

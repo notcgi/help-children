@@ -17,12 +17,12 @@ class Config
     private $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=2)
+     * @ORM\Column(type="decimal", precision=3, scale=2)
      */
     private $percentDefault;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=2)
+     * @ORM\Column(type="decimal", precision=3, scale=2)
      */
     private $percentRecurrent;
 
@@ -31,7 +31,7 @@ class Config
         return $this->id;
     }
 
-    public function getPercentDefault():float
+    public function getPercentDefault(): float
     {
         return $this->percentDefault;
     }
@@ -43,7 +43,7 @@ class Config
         return $this;
     }
 
-    public function getPercentRecurrent():float
+    public function getPercentRecurrent(): float
     {
         return $this->percentRecurrent;
     }
