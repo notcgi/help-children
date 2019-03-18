@@ -1,11 +1,11 @@
 {% extends 'base_client_wrapper.twig' %}
 
 {% block content %}
-    {#<ul>
-        {% for error in formErrors %}
-            <li> * {{ error }}</li>
-        {% endfor %}
-    </ul>#}
+    <!--
+    {%- for error in formErrors %}
+        {{ error }}
+    {% endfor -%}
+    -->
     <main>
         <section class="section hero-large">
             <div class="container">
@@ -74,25 +74,27 @@
                             </div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row">
-                                    <div class="donate-sum-fieldgroup toggle-fieldgroup">
+                                    <div class="donate-sum-fieldgroup toggle-fieldgroup" style="overflow: hidden">
                                         <label class="donate-sum-fieldgroup__label toggle-field">
-                                            <input class="toggle-field__input" type="radio" name="sum" value="300"
-                                                {{ 300 == form.sum ? 'checked' }}>
+                                            <input class="toggle-field__input" type="radio" name="radioSum" value="300">
                                             <div class="toggle-field__text">300 Р</div>
                                         </label>
                                         <label class="donate-sum-fieldgroup__label toggle-field">
                                             <input class="toggle-field__input"
                                                 type="radio"
-                                                name="sum"
-                                                value="500" {{ 500 == form.sum ? 'checked' }}>
+                                                name="radioSum"
+                                                value="500">
                                             <div class="toggle-field__text">500 Р</div>
                                         </label>
                                         <label class="donate-sum-fieldgroup__label">
                                             <input class="donate-text-field"
                                                 type="text"
-                                                name="sumOther"
-                                                value="{{ form.sumOther ?: '' }}"
+                                                name="textSum"
+                                                value=""
                                                 placeholder="Другая сумма">
+                                            <input type="hidden"
+                                                name="sum"
+                                                value="{{ form.sum ?: 0 }}">
                                         </label>
                                     </div>
                                 </div>
@@ -218,7 +220,11 @@
         </section>
     </main>
     <script type="text/javascript">
-        const formBlocks = Array.from(document.querySelectorAll('.showVISA')),
+        const form = document.forms[0],
+            sum = form.elements['sum'],
+            radioSums = Array.from(form.elements['radioSum']),
+            textSum = form.elements['textSum'],
+            formBlocks = Array.from(document.querySelectorAll('.showVISA')),
             requisites = document.getElementById('requisitesContent'),
             setPaymentMethod = e => {
                 if ('visa' === e) {
@@ -235,11 +241,36 @@
                     }
                 }
             },
+            radioSumChangeHandler = e => {
+                textSum.classList.remove('checked');
+                textSum.value = '';
+                sum.value = e.currentTarget.value;
+            },
+            textSumHandler = e => {
+                radioSums.forEach(el => el.checked = false);
+                e.currentTarget.classList.add('checked');
+                sum.value = e.currentTarget.value;
+            },
             radioHandler = e => setPaymentMethod(e.target.value);
 
         setPaymentMethod('{{ form['payment-type'] }}');
 
-        for (const el of Array.from(document.forms[0].elements['payment-type'])) {
+        switch (0 | sum.value) {
+            case 300: radioSums[0].checked = true; break;
+            case 500: radioSums[1].checked = true; break;
+            default:
+                textSum.classList.add('checked');
+                textSum.value = sum.value;
+        }
+
+        textSum.addEventListener('change', textSumHandler);
+        textSum.addEventListener('click', textSumHandler);
+
+        for (const el of radioSums) {
+            el.addEventListener('change', radioSumChangeHandler);
+        }
+
+        for (const el of Array.from(form.elements['payment-type'])) {
             el.addEventListener('change', radioHandler);
         }
     </script>

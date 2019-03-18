@@ -192,7 +192,6 @@ class DonateController extends AbstractController
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'sum' => (int) $request->request->filter('sum', 300, FILTER_VALIDATE_INT),
-            'sumOther' => (int) $request->request->filter('sumOther', '', FILTER_VALIDATE_INT),
             'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => (bool) $request->request->get('agree', true)
         ];
@@ -263,8 +262,7 @@ class DonateController extends AbstractController
                 'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
-                'sum' => new Assert\Choice([300, 500]),
-                'sumOther' => new Assert\Range(['min' => 0, 'max' => 1000000]),
+                'sum' => new Assert\Range(['min' => 300, 'max' => 1000000]),
                 'recurent' => new Assert\Type(['type' => 'boolean']),
                 'agree' => new Assert\IsTrue()
             ])
