@@ -88,12 +88,21 @@
                                         </label>
                                         <label class="donate-sum-fieldgroup__label">
                                             <input class="donate-text-field"
-                                                type="text"
+                                                type="number"
                                                 name="textSum"
+                                                min="100"
+                                                max="1000000"
+                                                maxlength="7"
+                                                minlength="3"
+                                                step="100"
                                                 value=""
                                                 placeholder="Другая сумма">
                                             <input type="hidden"
                                                 name="sum"
+                                                min="100"
+                                                max="1000000"
+                                                maxlength="7"
+                                                minlength="3"
                                                 value="{{ form.sum ?: 0 }}">
                                         </label>
                                     </div>
