@@ -54,7 +54,7 @@
                                         name="phone"
                                         placeholder="Введите номер телефона"
                                         data-type="phone"
-                                        value="{{ form.phone }}">
+                                        value="{{ form.phone ?: '+7' }}">
                                     <input class="input-rounded ohf-col-input__row-item ohf-col-input__row-item__notfirst"
                                         type="email"
                                         name="email"
