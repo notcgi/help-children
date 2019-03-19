@@ -37,6 +37,14 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine = $this->getDoctrine();
+            /** @var User $old_user */
+            $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+
+            if ($old_user && !$old_user->getPass()) {
+                $user = $old_user;
+            }
+
             // encode the plain password
             $user->setPass(
                 $passwordEncoder->encodePassword(
@@ -45,12 +53,11 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
             // do anything else you need here, like send an email
-
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
