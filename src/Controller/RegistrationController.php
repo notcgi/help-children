@@ -36,7 +36,11 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                return new Response('true');
+            }
+
             $doctrine = $this->getDoctrine();
             /** @var User $old_user */
             $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
