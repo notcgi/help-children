@@ -25,26 +25,14 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $user
-            ->setEmail('admin@mail.com')
+            ->setEmail('fond.detyam@mail.ru')
             ->setRoles(['ROLE_ADMIN'])
-            ->setFirstName('Stupid')
-            ->setLastName('Admin')
+            ->setFirstName('fond')
+            ->setLastName('detyam')
             ->setPass(
                 $this->passwordEncoder->encodePassword(
                     $user,
-                    'admin1'
-                )
-            );
-        $manager->persist($user);
-        $user = new User();
-        $user
-            ->setEmail('user@mail.com')
-            ->setFirstName('Stupid')
-            ->setLastName('User')
-            ->setPass(
-                $this->passwordEncoder->encodePassword(
-                    $user,
-                    'user12'
+                    'Fond1234'
                 )
             );
         $manager->persist($user);
