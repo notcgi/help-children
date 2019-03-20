@@ -84,7 +84,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/history.twig',
             [
-                'entities' => $repository->findRequestsDonateWithUser()
+                'entities' => $repository->findRequestsDonateWithUser($this->getUser())
             ]
         );
     }

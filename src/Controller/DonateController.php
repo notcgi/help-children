@@ -117,14 +117,12 @@ class DonateController extends AbstractController
      * 4000000000002487
      * UNITELLER TEST
      *
-     * @param Request                  $request
-     * @param UnitellerService         $unitellerService
-     * @param EventDispatcherInterface $dispatcher
+     * @param  Request                  $request
+     * @param  UnitellerService         $unitellerService
+     * @param  EventDispatcherInterface $dispatcher
      *
      * @return Response
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
@@ -156,7 +154,7 @@ class DonateController extends AbstractController
                 $req->setStatus(1);
         }
 
-        $entityManager->persist($req);
+        $entityManager->persist($req->setUpdatedAt(new \DateTime()));
         $entityManager->flush();
 
         return new Response('OK');
