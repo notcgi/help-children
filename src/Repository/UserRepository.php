@@ -32,7 +32,7 @@ class UserRepository extends ServiceEntityRepository
             ->addSelect('SUM(rh.sum)')
             ->where('u.referrer = :id')
             ->leftJoin('u.donate_history', 'rh')
-            ->groupBy('rh.donator')
+            ->groupBy('u.id')
             ->setParameters([
                 'id' => $user->getId()
             ])
