@@ -191,7 +191,7 @@ class DonateController extends AbstractController
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
-            'sum' => (int) $request->request->filter('sum', 300, FILTER_VALIDATE_INT),
+            'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
             'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => (bool) $request->request->get('agree', true)
         ];
@@ -201,7 +201,7 @@ class DonateController extends AbstractController
 
             if (0 === count($form_errors)) {
                 $req = new \App\Entity\Request();
-                $req->setSum(round($form['sum'], 2))
+                $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
                     ->setUser($usersService->findOrCreateUser($form));
 
