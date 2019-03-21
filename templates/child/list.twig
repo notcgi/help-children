@@ -27,7 +27,7 @@
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
                                         <div class="aid-card__description-resources collected-resources">
                                             <div class="collected-resources__slider">
-                                                <div class="collected-resources__slider-filled"></div>
+                                                <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
                                             </div>
                                             <div class="collected-resources__sum">
                                                 <span class="collected-resources__sum-notice">Собрано:</span>
