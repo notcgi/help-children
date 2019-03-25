@@ -36,30 +36,31 @@
                             </div>
                         </div>
                         <div class="ohf-row showVISA"
-                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
-                                    <div class="ohf-col-label__notice-title">Кто наш пожертвователь?</div>
+                                    <div class="ohf-col-label__notice-title">Кто наш благотворитель?</div>
                                     <p class="ohf-col-label__notice-subtitle">Мы хотим знать кого благодарить :)</p>
                                 </div>
                             </div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row">
                                     <input class="input-rounded input-fullwidth"
-                                        type="text"
-                                        name="fullName"
-                                        placeholder="Введите Ваше ФИО"
-                                        value="{{ form.fullName }}">
+                                           type="text"
+                                           name="fullName"
+                                           placeholder="Введите Ваше ФИО"
+                                           value="{{ form.fullName }}">
                                 </div>
                                 <div class="ohf-col-input__row">
                                     <input class="input-rounded ohf-col-input__row-item"
-                                        type="text"
-                                        name="phone"
-                                        placeholder="Введите номер телефона"
-                                        data-type="phone"
-                                        value="{{ form.phone ?: '+7' }}">
-                                    <input class="input-rounded ohf-col-input__row-item ohf-col-input__row-item__notfirst"
+                                           type="text"
+                                           name="phone"
+                                           placeholder="Введите номер телефона"
+                                           data-type="phone"
+                                           value="{{ form.phone ?: '+7' }}">
+                                    <input
+                                        class="input-rounded ohf-col-input__row-item ohf-col-input__row-item__notfirst"
                                         type="email"
                                         name="email"
                                         placeholder="Введите E-mail"
@@ -68,7 +69,7 @@
                             </div>
                         </div>
                         <div class="ohf-row showVISA"
-                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">3</div>
                                 <div class="ohf-col-label__notice">
@@ -85,28 +86,28 @@
                                         </label>
                                         <label class="donate-sum-fieldgroup__label toggle-field">
                                             <input class="toggle-field__input"
-                                                type="radio"
-                                                name="radioSum"
-                                                value="500">
+                                                   type="radio"
+                                                   name="radioSum"
+                                                   value="500">
                                             <div class="toggle-field__text">500 Р</div>
                                         </label>
                                         <label class="donate-sum-fieldgroup__label">
                                             <input class="donate-text-field"
-                                                type="number"
-                                                name="textSum"
-                                                min="50"
-                                                max="1000000"
-                                                maxlength="7"
-                                                minlength="2"
-                                                value=""
-                                                placeholder="Другая сумма">
+                                                   type="number"
+                                                   name="textSum"
+                                                   min="50"
+                                                   max="1000000"
+                                                   maxlength="7"
+                                                   minlength="2"
+                                                   value=""
+                                                   placeholder="Другая сумма">
                                             <input type="hidden"
-                                                name="sum"
-                                                min="50"
-                                                max="1000000"
-                                                maxlength="7"
-                                                minlength="2"
-                                                value="{{ form.sum ?: 0 }}">
+                                                   name="sum"
+                                                   min="50"
+                                                   max="1000000"
+                                                   maxlength="7"
+                                                   minlength="2"
+                                                   value="{{ form.sum ?: 0 }}">
                                         </label>
                                     </div>
                                 </div>
@@ -131,16 +132,16 @@
                             </div>
                         </div>
                         <div class="ohf-row showVISA"
-                            style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label"></div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
                                     <div class="input-checkbox payment-count-field">
                                         <label class="input-checkbox__label">
                                             <input class="input-checkbox__input"
-                                                type="checkbox"
-                                                name="agreements"
-                                                value="true"
+                                                   type="checkbox"
+                                                   name="agreements"
+                                                   value="true"
                                                 {{ form.agree ? 'checked' }}>
                                             <span class="input-checkbox__checkmark"></span>
                                             <span class="input-checkbox__label">Я согласен с
@@ -150,7 +151,8 @@
                                     </div>
                                 </div>
                                 <div class="ohf-col-input__row ohf-col-input__row--start ohf-col-buttons">
-                                    <button class="btn btn-dark btn--big online-help-form__submit js-online-help-button-submit"
+                                    <button
+                                        class="btn btn-dark btn--big online-help-form__submit js-online-help-button-submit"
                                         type="submit">
                                         Пожертвовать
                                     </button>
@@ -160,17 +162,18 @@
                                         <span class="icon icon-apple"></span> <span>Оплатить</span>
                                     </button> #}
                                 </div>
-                                <div class="donate-form-payment-systems__notice online-help-form-payment-systems__notice">
+                                <div
+                                    class="donate-form-payment-systems__notice online-help-form-payment-systems__notice">
                                     <div class="icon-wrapper"><span class="icon icon-lock"></span></div>
                                     <span>Все сделки защищены SSL, PSI DSS, <br>
-                                        Персональный данные конфидициальны.
+                                        Персональные данные конфиденциальны.
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div id="requisitesContent"
-                            class="ohf-row"
-                            style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
+                             class="ohf-row"
+                             style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="contacts-details">
                                 {% include 'components/requisites.twig' %}
                             </div>
@@ -268,8 +271,12 @@
         setPaymentMethod('{{ form['payment-type'] }}');
 
         switch (0 | sum.value) {
-            case 300: radioSums[0].checked = true; break;
-            case 500: radioSums[1].checked = true; break;
+            case 300:
+                radioSums[0].checked = true;
+                break;
+            case 500:
+                radioSums[1].checked = true;
+                break;
             default:
                 textSum.classList.add('checked');
                 textSum.value = sum.value;
