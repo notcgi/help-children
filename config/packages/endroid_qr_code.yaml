@@ -10,7 +10,7 @@ endroid_qr_code:
     label_font_size: 0
     label_alignment: center # left, center or right
     label_margin: { b: 20 }
-#    logo_path: '%kernel.root_dir%/../public/favicon/favicon.ico'
+    #    logo_path: '%kernel.root_dir%/../public/favicon/favicon.ico'
     logo_width: 64
     logo_height: 64
     validate_result: false # checks if the result is readable
