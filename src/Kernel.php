@@ -24,10 +24,6 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-
-        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-        }
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
