@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Request;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -38,14 +39,18 @@ class RequestRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param  User      $user
      * @return Request[]
      */
-    public function findRequestsDonateWithUser()
+    public function findRequestsDonateWithUser(User $user)
     {
         return $this->createQueryBuilder('r')
-            ->where('r.status = 2')
+            ->where('r.status = 2 AND r.user = :user')
             ->leftJoin('r.user', 'u')
             ->leftJoin('r.child', 'id')
+            ->setParameters([
+                'user' => $user->getId()
+            ])
             ->getQuery()
             ->getResult();
     }

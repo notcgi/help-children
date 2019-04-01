@@ -1,12 +1,16 @@
 {% extends 'base_client_wrapper.twig' %}
 
+{% block title %}БФ “Помогите Детям” | {{ child.name }}{% endblock %}
+{% block desciption %}БФ “Помогите Детям” | {{ child.name }}{% endblock %}
+{% block keywords %}{{ child.name }}{% endblock %}
+
 {% block content %}
     <main>
         <section class="section hero-medium">
             <div class="container child-container">
                 <h1 class="hero-medium__title">Дети</h1>
-                <a class="link-back" href="{{ path('main') }}"><span class="icon icon-arrow-angle-right"></span>К списку
-                    детей</a>
+                <a class="link-back" href="{{ path('children_list') }}"><span
+                        class="icon icon-arrow-angle-right"></span>К списку детей</a>
             </div>
         </section>
 
@@ -19,17 +23,17 @@
                                 <div class="card-child-photos">
                                     <div class="card-child-photos__main">
                                         <img class="img-responsive"
-                                            src="{{ asset('uploads/images/' ~ child.images[0]) }}"
-                                            alt="{{ child.name }}"
-                                            width="382">
+                                             src="{{ asset('uploads/images/' ~ child.images[0]) }}"
+                                             alt="{{ child.name }}"
+                                             width="382">
                                     </div>
 
                                     <div class="card-child-photos__list photo-gallery">
                                         {% for image in child.images %}
                                             <img class="photo-gallery__item photo-gallery__item--active img-responsive"
-                                                src="{{ asset('uploads/images/' ~ image) }}"
-                                                alt="{{ child.name }}"
-                                                width="59">
+                                                 src="{{ asset('uploads/images/' ~ image) }}"
+                                                 alt="{{ child.name }}"
+                                                 width="59">
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -56,15 +60,17 @@
                                 <div class="card-child-collected collected-resources">
                                     <div class="collected-resources-left">
                                         <span class="collected-resources-left__title">Необходимо собрать:</span>
-                                        <span class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
+                                        <span
+                                            class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                     <div class="collected-resources__slider">
                                         <div class="collected-resources__slider-filled"
-                                            style="width: {{ child.goalRatio * 100 }}%"></div>
+                                             style="width: {{ child.goalRatio * 100 }}%"></div>
                                     </div>
                                     <div class="collected-resources__sum">
                                         <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                        <span class="collected-resources__sum-value">{{ child.collected|number_format(0, '.', ' ') }} руб.</span>
+                                        <span
+                                            class="collected-resources__sum-value">{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +80,8 @@
                             <input type="hidden" name="child_id" value="{{ child.id }}">
                             <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
                             <div class="child-help-form-row">
-                                <div class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
+                                <div
+                                    class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
                                     Выберите способ оплаты
                                 </div>
                                 <div class="child-help-form__col child-help-form__col-input ohf-col-input">
@@ -86,12 +93,13 @@
                                     <span class="icon icon-lock"></span>
                                 </div>
                                 <div class="child-help-form__notice-text">
-                                    Мы производим сбор средств только при оплате электронными способами и с прозрачной
-                                    отчетностью.
+                                    Все сделки защищены SSL, PSI DSS,<br>
+                                    Персональный данные конфиденциальны.
                                 </div>
                             </div>
                             <div class="child-help-form__buttons">
-                                <button class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit"
+                                <button
+                                    class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit"
                                     type="submit">
                                     Далее
                                 </button>
@@ -101,7 +109,7 @@
                     <div class="child-contacts">
                         <div class="contacts-details__row child-contacts__row">
                             <div class="contacts-details__row-name child-contacts-title">
-                                Прямые реквизиты для помощи
+                                Реквизиты для помощи
                             </div>
                             <div class="contacts-details__row-value child-contacts-value">
                                 {{ child.requisites|raw }}

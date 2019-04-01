@@ -84,17 +84,17 @@ class AccountController extends AbstractController
         return $this->render(
             'account/history.twig',
             [
-                'entities' => $repository->findRequestsDonateWithUser()
+                'entities' => $repository->findRequestsDonateWithUser($this->getUser())
             ]
         );
     }
 
     /**
+     * @param Request $request
+     * @param UrlGeneratorInterface $generator
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
-    public function referrals()
+    public function referrals(Request $request, UrlGeneratorInterface $generator)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /** @var UserRepository $repository */
@@ -103,7 +103,8 @@ class AccountController extends AbstractController
         return $this->render(
             'account/referrals.twig',
             [
-                'entities' => $repository->findReferralsWithHistory($this->getUser())
+                'entities' => $repository->findReferralsWithHistory($this->getUser()),
+                'referral_url' => $request->getScheme().'://'.idn_to_utf8($request->getHost()).$generator->generate('referral', ['id' => $this->getUser()->getId()])
             ]
         );
     }

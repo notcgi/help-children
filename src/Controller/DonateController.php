@@ -117,14 +117,12 @@ class DonateController extends AbstractController
      * 4000000000002487
      * UNITELLER TEST
      *
-     * @param Request                  $request
-     * @param UnitellerService         $unitellerService
-     * @param EventDispatcherInterface $dispatcher
+     * @param  Request                  $request
+     * @param  UnitellerService         $unitellerService
+     * @param  EventDispatcherInterface $dispatcher
      *
      * @return Response
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
@@ -156,7 +154,7 @@ class DonateController extends AbstractController
                 $req->setStatus(1);
         }
 
-        $entityManager->persist($req);
+        $entityManager->persist($req->setUpdatedAt(new \DateTime()));
         $entityManager->flush();
 
         return new Response('OK');
@@ -191,7 +189,7 @@ class DonateController extends AbstractController
             'fullName' => trim($request->request->get('fullName', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
-            'sum' => (int) $request->request->filter('sum', 300, FILTER_VALIDATE_INT),
+            'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
             'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => (bool) $request->request->get('agree', true)
         ];
@@ -201,7 +199,7 @@ class DonateController extends AbstractController
 
             if (0 === count($form_errors)) {
                 $req = new \App\Entity\Request();
-                $req->setSum(round($form['sum'], 2))
+                $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
                     ->setUser($usersService->findOrCreateUser($form));
 
@@ -262,7 +260,7 @@ class DonateController extends AbstractController
                 'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
-                'sum' => new Assert\Range(['min' => 100, 'max' => 1000000]),
+                'sum' => new Assert\Range(['min' => 50, 'max' => 1000000]),
                 'recurent' => new Assert\Type(['type' => 'boolean']),
                 'agree' => new Assert\IsTrue()
             ])

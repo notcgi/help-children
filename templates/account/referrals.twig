@@ -1,5 +1,9 @@
 {% extends 'base_client_wrapper.twig' %}
 
+{% block title %}БФ “Помогите Детям” | Реферальная программа{% endblock %}
+{% block desciption %}БФ “Помогите Детям” | Реферальная программа{% endblock %}
+{% block keywords %}Реферальная программа{% endblock %}
+
 {% block content %}
     <main>
         {% include 'components/account_title.twig' %}
@@ -79,7 +83,7 @@
                     <div class="ref-link">
                         <p class="mute">Ваша реферальная ссылка</p>
                         <div class="copy-field">
-                            <input class="input-rounded ref-link__input" type="text" value="{{ url('referral', { id: app.user.id }) }}">
+                            <input class="input-rounded ref-link__input" type="text" value="{{ referral_url }}">
                             <button class="btn copy-btn js-copy-button" title="Скопировать">
                                 <span class="icon icon-copy"></span>
                             </button>
