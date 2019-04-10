@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
@@ -164,10 +165,10 @@ class DonateController extends AbstractController
      * @param Request          $request
      * @param UsersService     $usersService
      * @param UnitellerService $unitellerService
+     * @param SessionInterface $session
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     * @throws \RuntimeException
+     * @return Response
+     * @throws \LogicException
      * @throws \RuntimeException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
@@ -179,7 +180,8 @@ class DonateController extends AbstractController
     public function main(
         Request $request,
         UsersService $usersService,
-        UnitellerService $unitellerService
+        UnitellerService $unitellerService,
+        SessionInterface $session
     ) {
         $form_errors = [];
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
@@ -189,6 +191,7 @@ class DonateController extends AbstractController
             'name' => trim($request->request->get('name', '')),
             'surname' => trim($request->request->get('surname', '')),
             'phone' => trim($request->request->get('phone', '')),
+            'ref-code' => (int) substr(trim($request->request->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
             'recurent' => (bool) $request->request->get('recurent', true),
@@ -199,6 +202,10 @@ class DonateController extends AbstractController
             $form_errors = $this->validate($form);
 
             if (0 === count($form_errors)) {
+                if (0 !== $form['ref-code']) {
+                    $session->set('referral', $form['ref-code']);
+                }
+
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
@@ -236,8 +243,8 @@ class DonateController extends AbstractController
             ->getManager()
             ->persist(
                 (new \App\Entity\ReferralHistory())
-                ->setSum($refSum)
-                ->setUser($user)
+                    ->setSum($refSum)
+                    ->setUser($user)
             );
 
         return true;
@@ -258,6 +265,7 @@ class DonateController extends AbstractController
             new Assert\Collection([
                 'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
+                'ref-code' => new Assert\GreaterThan(['value' => 0]),
                 'name' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'surname' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],

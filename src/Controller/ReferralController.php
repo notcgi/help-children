@@ -9,11 +9,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class ReferralController extends AbstractController
 {
     /**
-     * @param int              $id
-     * @param SessionInterface $session
+     * @param int                   $id
+     * @param SessionInterface      $session
+     * @param UrlGeneratorInterface $generator
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function devourer(int $id, SessionInterface $session, UrlGeneratorInterface $generator)
     {
