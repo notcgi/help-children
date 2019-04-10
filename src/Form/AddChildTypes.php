@@ -21,10 +21,6 @@ class AddChildTypes extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
-     *
-     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
-     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -75,6 +71,11 @@ class AddChildTypes extends AbstractType
                     new NotBlank()
                 ]
             ])
+            ->add('city', TextType::class, [
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
             ->add('collected', NumberType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -103,8 +104,6 @@ class AddChildTypes extends AbstractType
 
     /**
      * @param OptionsResolver $resolver
-     *
-     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
     {

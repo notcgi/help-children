@@ -4,17 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Child;
 use App\Form\AddChildTypes;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use App\Form\EditChildTypes;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\Range;
-use App\Service\FileUploader;
 
 class ChildController extends AbstractController
 {
@@ -89,12 +82,6 @@ class ChildController extends AbstractController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
-     * @throws \Symfony\Component\Form\Exception\LogicException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
-     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
     public function edit(int $id, Request $request)
     {
@@ -108,116 +95,7 @@ class ChildController extends AbstractController
             );
         }
 
-        $form = $this->createFormBuilder($childData)
-            ->add(
-                'id',
-                HiddenType::class,
-                [
-                    'mapped' => false,
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            ->add(
-                'name',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            ->add(
-                'birthdate',
-                DateType::class,
-                [
-                    'widget' => 'single_text'
-                ]
-            )
-            ->add(
-                'diagnosis',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            /*->add(
-                'images',
-                TextType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )*/
-            ->add(
-                'comment',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            ->add(
-                'requisites',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            ->add(
-                'contacts',
-                TextareaType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
-                ]
-            )
-            ->add(
-                'collected',
-                NumberType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
-                    ]
-                ]
-            )
-            ->add(
-                'goal',
-                NumberType::class,
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Range([
-                            'min' => 1,
-                            'max' => 10000000
-                        ])
-                    ]
-                ]
-            )
-            ->add(
-                'save',
-                SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'attr' => [
-                        'class' => 'btn btn-primary'
-                    ]
-                ]
-            )
-            ->getForm();
-
+        $form = $this->createForm(EditChildTypes::class, $childData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

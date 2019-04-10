@@ -117,9 +117,9 @@ class DonateController extends AbstractController
      * 4000000000002487
      * UNITELLER TEST
      *
-     * @param  Request                  $request
-     * @param  UnitellerService         $unitellerService
-     * @param  EventDispatcherInterface $dispatcher
+     * @param Request                  $request
+     * @param UnitellerService         $unitellerService
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return Response
      * @throws \Exception
@@ -186,7 +186,8 @@ class DonateController extends AbstractController
         $form = [
             'payment-type' => trim($request->request->get('payment-type', 'visa')),
             'child_id' => $child_id === 0 ? null : $child_id,
-            'fullName' => trim($request->request->get('fullName', '')),
+            'name' => trim($request->request->get('name', '')),
+            'surname' => trim($request->request->get('surname', '')),
             'phone' => trim($request->request->get('phone', '')),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
@@ -257,7 +258,8 @@ class DonateController extends AbstractController
             new Assert\Collection([
                 'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
-                'fullName' => [new Assert\NotBlank(), new Assert\Length(['min' => 8, 'max' => 256])],
+                'name' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
+                'surname' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
                 'sum' => new Assert\Range(['min' => 50, 'max' => 1000000]),

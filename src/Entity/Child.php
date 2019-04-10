@@ -170,6 +170,18 @@ class Child
         return $this;
     }
 
+    public function getCity(): string
+    {
+        return $this->body['city'] ?? '';
+    }
+
+    public function setCity(string $contacts): self
+    {
+        $this->body['city'] = $contacts;
+
+        return $this;
+    }
+
     public function getCollected()
     {
         return $this->collected;
