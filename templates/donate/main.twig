@@ -14,7 +14,7 @@
         <section class="section hero-large">
             <div class="container">
                 <h1 class="hero-large__title">Форма онлайн помощи</h1>
-                <p class="hero-large__subtitle">помощь прямо сейчас за 3 шага</p>
+                <p class="hero-large__subtitle">помочь прямо сейчас за 3 шага</p>
             </div>
         </section>
         <div class="bg-purple-line"></div>
@@ -48,11 +48,11 @@
                                 <div class="ohf-col-input__row">
                                     <div class="form-group ohf-col-input__row-item">
                                         <input class="input-rounded input-fullwidth" type="text" name="fullName"
-                                               placeholder="Введите ваше имя" value="{{ form.fullName }}">
+                                               placeholder="Введите ваше имя" value="{{ form.name }}">
                                     </div>
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
                                         <input class="input-rounded input-fullwidth" type="text" name="surname"
-                                               placeholder="Введите вашу фамилию">
+                                               placeholder="Введите вашу фамилию" value="{{ form.surname }}">
                                     </div>
                                 </div>
                                 <div class="ohf-col-input__row">
@@ -131,6 +131,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ohf-row">
+                            <div class="ohf-row__col ohf-col-label">
+                                <div class="ohf-col-label__number">4</div>
+                                <div class="ohf-col-label__notice">
+                                    <div class="ohf-col-label__notice-title">КТО ВАС ПРИГЛАСИЛ?</div>
+                                    <p class="ohf-col-label__notice-subtitle"></p>
+                                </div>
+                            </div>
+                            <div class="ohf-row__col ohf-col-input">
+                                <div class="ohf-col-input__row">
+                                    <input class="input-rounded input-fullwidth" type="text" name="ref-code"
+                                           placeholder="Введите код пригласителя" pattern="fond\d+">
+                                </div>
+                            </div>
+                        </div>
                         <div class="ohf-row showVISA"
                              style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label"></div>
@@ -187,7 +202,7 @@
                 <div class="help-notice-description">
                     <div class="help-notice-description-col help-notice-description-col-left">
                         <p class="help-notice-description-text">
-                            <b>Уважаемый клиент!</b><br>
+                            <b>Уважаемый благотворитель!</b><br>
                             Вы можете произвести пожертвование с помощью предложенных методов оплат через платежный
                             сервис компании
                             Uniteller. После подтверждения Вы будете перенаправлены на защищенную платежную страницу

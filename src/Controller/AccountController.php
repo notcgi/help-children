@@ -90,8 +90,8 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param UrlGeneratorInterface $generator
+     * @param  Request                                    $request
+     * @param  UrlGeneratorInterface                      $generator
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function referrals(Request $request, UrlGeneratorInterface $generator)
