@@ -266,7 +266,6 @@ class DonateController extends AbstractController
             new Assert\Collection([
                 'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
-                'ref-code' => new Assert\Length(['min' => 5, 'max' => 14]),
                 'name' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'surname' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
