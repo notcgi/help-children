@@ -191,7 +191,7 @@ class DonateController extends AbstractController
             'name' => trim($request->request->get('name', '')),
             'surname' => trim($request->request->get('surname', '')),
             'phone' => trim($request->request->get('phone', '')),
-            'ref-code' => (int) substr(trim($request->request->get('ref-code', '')), 4),
+            'ref-code' => substr(trim($request->request->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
             'recurent' => (bool) $request->request->get('recurent', true),
@@ -202,8 +202,8 @@ class DonateController extends AbstractController
             $form_errors = $this->validate($form);
 
             if (0 === count($form_errors)) {
-                if (0 !== $form['ref-code']) {
-                    $session->set('referral', $form['ref-code']);
+                if (0 !== (int) $form['ref-code']) {
+                    $session->set('referral', (int) $form['ref-code']);
                 }
 
                 $req = new \App\Entity\Request();
@@ -265,7 +265,7 @@ class DonateController extends AbstractController
             new Assert\Collection([
                 'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
-                'ref-code' => new Assert\GreaterThan(['value' => 0]),
+                'ref-code' => new Assert\Length(['min' => 5, 'max' => 14]),
                 'name' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'surname' => [new Assert\NotBlank(), new Assert\Length(['min' => 2, 'max' => 128])],
                 'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
