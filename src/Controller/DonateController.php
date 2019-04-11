@@ -183,16 +183,17 @@ class DonateController extends AbstractController
         UnitellerService $unitellerService,
         SessionInterface $session
     ) {
+        $user = $this->getUser();
         $form_errors = [];
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
         $form = [
             'payment-type' => trim($request->request->get('payment-type', 'visa')),
             'child_id' => $child_id === 0 ? null : $child_id,
-            'name' => trim($request->request->get('name', '')),
-            'surname' => trim($request->request->get('surname', '')),
-            'phone' => trim($request->request->get('phone', '')),
+            'name' => trim($request->request->get('name', $user ? $user->getFirstName() : '')),
+            'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : '')),
+            'phone' => trim($request->request->get('phone', $user ? $user->getPhone() : '')),
             'ref-code' => substr(trim($request->request->get('ref-code', '')), 4),
-            'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
+            'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),
             'sum' => round($request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT), 2),
             'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => (bool) $request->request->get('agree', true)
