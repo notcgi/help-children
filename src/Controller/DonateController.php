@@ -207,6 +207,7 @@ class DonateController extends AbstractController
                     $session->set('referral', (int) $form['ref-code']);
                 }
 
+                $form['referral'] = $form['ref-code'];
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])

@@ -27,12 +27,10 @@ class UsersService
     public $passwordEncoder;
 
     public function __construct(
-        Request $request,
         ManagerRegistry $doctrine,
         SessionInterface $session,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->request = $request;
         $this->doctrine = $doctrine;
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
@@ -74,8 +72,8 @@ class UsersService
             );
         }
 
-        if ($this->request->cookies->has('referral')) {
-            $referrerId = (int) $this->request->cookies->get('referral');
+        if (isset($data['referral'])) {
+            $referrerId = (int) $data['referral'];
             /** @var User $referrer */
             $referrer = $userRepository->find($referrerId);
 
