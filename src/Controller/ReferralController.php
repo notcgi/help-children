@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -20,10 +22,13 @@ class ReferralController extends AbstractController
      */
     public function devourer(int $id, SessionInterface $session, UrlGeneratorInterface $generator)
     {
+        $response = new RedirectResponse($generator->generate('donate'));
+
         if (0 < $id) {
             $session->set('referral', $id);
+            $response->headers->setCookie(new Cookie('referral', $id));
         }
 
-        return $this->redirect($generator->generate('donate'));
+        return $response;
     }
 }

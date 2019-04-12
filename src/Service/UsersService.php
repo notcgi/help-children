@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -19,15 +20,19 @@ class UsersService
      */
     public $doctrine;
 
+    public $request;
+
     public $session;
 
     public $passwordEncoder;
 
     public function __construct(
+        Request $request,
         ManagerRegistry $doctrine,
         SessionInterface $session,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
+        $this->request = $request;
         $this->doctrine = $doctrine;
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
@@ -69,8 +74,8 @@ class UsersService
             );
         }
 
-        if ($this->session->has('referral')) {
-            $referrerId = (int) $this->session->get('referral');
+        if ($this->request->cookies->has('referral')) {
+            $referrerId = (int) $this->request->cookies->get('referral');
             /** @var User $referrer */
             $referrer = $userRepository->find($referrerId);
 
