@@ -3,7 +3,14 @@
         <button class="account-nav__button js-account-nav-button">
             <span class="icon icon-menu"></span>
         </button>
-        <p class="account-nav__current-title">Реферальная программа</p>
+        <p class="account-nav__current-title">
+            {% set path = app.request.get('_route')[:12] %}
+            {{ path == 'account_main' ? 'Главная'
+            : path == 'account_myac' ? 'Мой аккаунт'
+            : path == 'account_hist' ? 'Мои пожертвования'
+            : path == 'account_refe' ? 'Реферальная программа'
+            : path == 'account_recu' ? 'Регулярные платежи' }}
+        </p>
     </div>
     <nav class="account-navbar">
         <ul class="account-links">
