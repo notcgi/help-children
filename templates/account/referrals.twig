@@ -17,22 +17,23 @@
                         <div class="referrals-wrapper account-content-padding">
                             <div class="referrals-statistics">
                                 <div class="referrals-statistics__notice">
-                                    <p class="referrals-statistics__notice-text">
-                                        Мы сделали благотворительность проще и доступнее. Теперь помочь всем не сложнее,
-                                        чем пополнить
-                                        телефон. Мы сделали благотворительность проще и доступнее. Теперь помочь всем не
-                                        сложнее, чем
-                                        пополнить телефон. Мы сделали благотворительность проще и доступнее. Теперь
+                                    <p class="referrals-statistics__notice-text">Мы сделали благотворительность проще и
+                                        доступнее. Теперь
+                                        помочь всем не сложнее, чем пополнить телефон. Мы сделали
+                                        благотворительность проще и доступнее. Теперь помочь всем не сложнее, чем
+                                        пополнить телефон. Мы
+                                        сделали благотворительность проще и доступнее. Теперь
                                         помочь всем не
                                         сложнее, чем пополнить телефон. </p>
                                     <button class="btn btn-dark referrals__invite-button"
-                                        data-modal-trigger="modal-invite">Пригласить
+                                            data-modal-trigger="modal-invite">Пригласить
                                     </button>
                                 </div>
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Баланс</h2>
                                     <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} руб.</div>
-                                    <button class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
+                                    <button
+                                        class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
                                         Вывести
                                     </button>
                                 </div>
@@ -78,7 +79,8 @@
                     <p class="modal__subtitle">Покажите QR-код или используйте ссылку для пришлашения ваших друзей.</p>
                     <div class="qr-code">
                         <p class="mute">Ваш QR-код</p>
-                        <img src="{{ qr_code_data_uri(url('referral', { id: app.user.id })) }}" alt="" width="300" height="300">
+                        <img src="{{ qr_code_data_uri(url('referral', { id: app.user.id })) }}" alt="" width="300"
+                             height="300">
                     </div>
                     <div class="ref-link">
                         <p class="mute">Ваша реферальная ссылка</p>
