@@ -89,10 +89,7 @@ class RecurringRequestCommand extends Command
 
         $opts = [
             'https' => [
-                'method' => 'POST',
-                'header' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded'
-                ],
+                'method' => 'GET',
                 'protocol_version' => 1.1,
                 'timeout' => 1,
                 'ignore_errors' => true
@@ -100,12 +97,10 @@ class RecurringRequestCommand extends Command
         ];
 
         foreach ($requests as $k => $v) {
-            $opts['https']['content'] = http_build_query(
-                $this->unitellerService->getRecurringForm($v, $rp[$k]->getRequest())
-            );
-            $opts['https']['header']['Content-Length'] = strlen($opts['https']['content']);
             $response = explode("\r\n", file_get_contents(
-                $this->unitellerService::RECURRING_URL,
+                $this->unitellerService::RECURRING_URL.'?'.http_build_query(
+                    $this->unitellerService->getRecurringForm($v, $rp[$k]->getRequest())
+                ),
                 false,
                 stream_context_create($opts)
             ));
