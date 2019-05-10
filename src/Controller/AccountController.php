@@ -28,15 +28,20 @@ class AccountController extends AbstractController
     /**
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $encoder
+     * @param UrlGeneratorInterface        $generator
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     * @throws \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function myAccount(Request $request, UserPasswordEncoderInterface $encoder)
+    public function myAccount(Request $request, UserPasswordEncoderInterface $encoder, UrlGeneratorInterface $generator)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -67,7 +72,14 @@ class AccountController extends AbstractController
             }
         }
 
-        return $this->render('account/myAccount.twig', ['userData' => $user, 'formErrors' => $form_errors]);
+        return $this->render('account/myAccount.twig', [
+            'userData' => $user,
+            'formErrors' => $form_errors,
+            'referral_url' => $request->getScheme()
+                .'://'
+                .idn_to_utf8($request->getHost())
+                .$generator->generate('referral', ['id' => $this->getUser()->getId()])
+        ]);
     }
 
     /**
@@ -90,9 +102,16 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @param  Request                                    $request
-     * @param  UrlGeneratorInterface                      $generator
+     * @param Request               $request
+     * @param UrlGeneratorInterface $generator
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     * @throws \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function referrals(Request $request, UrlGeneratorInterface $generator)
     {
@@ -104,7 +123,10 @@ class AccountController extends AbstractController
             'account/referrals.twig',
             [
                 'entities' => $repository->findReferralsWithHistory($this->getUser()),
-                'referral_url' => $request->getScheme().'://'.idn_to_utf8($request->getHost()).$generator->generate('referral', ['id' => $this->getUser()->getId()])
+                'referral_url' => $request->getScheme()
+                    .'://'
+                    .idn_to_utf8($request->getHost())
+                    .$generator->generate('referral', ['id' => $this->getUser()->getId()])
             ]
         );
     }
