@@ -52,7 +52,11 @@ class AccountController extends AbstractController
         $form = [
             'firstName' => trim($request->request->get('firstName', '')),
             'lastName' => trim($request->request->get('lastName', '')),
-            'phone' => trim($request->request->get('phone', '')),
+            'phone' => preg_replace(
+                '/[^+0-9]/',
+                '',
+                $request->request->get('phone', '' )
+            ),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'oldPassword' => trim($request->request->filter('oldPassword', '')),
             'password' => trim($request->request->filter('Password', '')),
