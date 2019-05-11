@@ -191,7 +191,11 @@ class DonateController extends AbstractController
             'child_id' => $child_id === 0 ? null : $child_id,
             'name' => trim($request->request->get('name', $user ? $user->getFirstName() : '')),
             'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : '')),
-            'phone' => trim($request->request->get('phone', $user ? $user->getPhone() : '')),
+            'phone' => preg_replace(
+                '/[^+0-9]/',
+                '',
+                $request->request->get('phone', $user ? $user->getPhone() : '' )
+            ),
             'ref-code' => substr(trim($request->request->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),
             'sum' => round(
