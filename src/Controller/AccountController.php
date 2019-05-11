@@ -12,12 +12,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 class AccountController extends AbstractController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \LogicException
      */
     public function main()
@@ -31,6 +31,7 @@ class AccountController extends AbstractController
      * @param UrlGeneratorInterface        $generator
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \LogicException
      * @throws \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
@@ -41,8 +42,11 @@ class AccountController extends AbstractController
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function myAccount(Request $request, UserPasswordEncoderInterface $encoder, UrlGeneratorInterface $generator)
-    {
+    public function myAccount(
+        Request $request,
+        UserPasswordEncoderInterface $encoder,
+        UrlGeneratorInterface $generator
+    ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $form = [
@@ -59,12 +63,15 @@ class AccountController extends AbstractController
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
 
-            if ($form_errors->count() === 0) {
+            if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
                     ->setPhone($form['phone'])
-                    ->setEmail($form['email'])
-                    ->setPassword($encoder->encodePassword($user, $form['password']));
+                    ->setEmail($form['email']);
+
+                if (!empty($form['password'])) {
+                    $user->setPassword($encoder->encodePassword($user, $form['password']));
+                }
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
@@ -84,6 +91,7 @@ class AccountController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \LogicException
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
@@ -133,6 +141,7 @@ class AccountController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \LogicException
      * @throws \UnexpectedValueException
      */
@@ -156,6 +165,7 @@ class AccountController extends AbstractController
      * @param UrlGeneratorInterface $generator
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \LogicException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
@@ -189,6 +199,7 @@ class AccountController extends AbstractController
      * @param array $data
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     *
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
@@ -201,10 +212,13 @@ class AccountController extends AbstractController
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
                 'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
-                'email' => [new Assert\NotBlank(), new Assert\Email()],
-                'oldPassword' => [new Assert\NotBlank(), new SecurityAssert\UserPassword()],
-                'password' => [new Assert\NotBlank(), new Assert\EqualTo(['propertyPath' => 'retypePassword'])],
-                'retypePassword' => [new Assert\NotBlank()]
+                'email' => new Assert\NotBlank(),
+                'oldPassword' => [new Assert\NotBlank(), new Assert\Length(['min' => 6, 'max' => 64])],
+                'password' => [
+                    new Assert\Length(['min' => 0, 'max' => 64]),
+                    new Assert\EqualTo(['propertyPath' => 'retypePassword'])
+                ],
+                'retypePassword' => new Assert\Length(['min' => 0, 'max' => 64])
             ])
         );
     }
