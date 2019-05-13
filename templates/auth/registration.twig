@@ -17,12 +17,6 @@
                 <div class="login-wrapper registration-wrapper">
                     {{ form_start(form, {'attr':{'class':'login-form registration-form js-registration-form'}}) }}
                     <div class="login-form__title">Регистрация</div>
-                    {{ form_errors(form.lastName) }}
-                    {{ form_errors(form.firstName) }}
-                    {{ form_errors(form.age) }}
-                    {{ form_errors(form.phone) }}
-                    {{ form_errors(form.email) }}
-                    {{ form_errors(form.password) }}
                     <div class="login-form-row registration-form-row">
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
                         {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
@@ -43,6 +37,14 @@
                     {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
                     <div class="login-form-row">
                         <button class="btn btn--big btn-dark login-form-submit" type="submit">Зарегистрироваться</button>
+                    </div>
+                    <div>
+                        {{ form_errors(form.lastName) }}
+                        {{ form_errors(form.firstName) }}
+                        {{ form_errors(form.age) }}
+                        {{ form_errors(form.phone) }}
+                        {{ form_errors(form.email) }}
+                        {{ form_errors(form.password) }}
                     </div>
                     {{ form_end(form) }}
                     <div class="another-way-auth">
@@ -74,7 +76,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
     </main>
