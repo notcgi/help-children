@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -37,37 +38,45 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if (!$form->isValid()) {
-                return new Response('true');
-            }
-
             $doctrine = $this->getDoctrine();
-            /** @var User $old_user */
-            $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+            $valid = false;
 
-            if ($old_user && !$old_user->getPass()) {
-                $user = $old_user;
+            if ($form->isValid()) {
+                /** @var User $old_user */
+                $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+                $valid = true;
+
+                if ($old_user) {
+                    if (!$old_user->getPass()) {
+                        $user = $old_user;
+                    } else {
+                        $valid = false;
+                        $form->addError(new FormError('E-mail уже занят'));
+                    }
+                }
             }
 
-            // encode the plain password
-            $user->setPass(
-                $passwordEncoder->encodePassword(
+            if ($valid) {
+                // encode the plain password
+                $user->setPass(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // do anything else you need here, like send an email
+                return $guardHandler->authenticateUserAndHandleSuccess(
                     $user,
-                    $form->get('password')->getData()
-                )
-            );
-
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // do anything else you need here, like send an email
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+                    $request,
+                    $authenticator,
+                    'main' // firewall name in security.yaml
+                );
+            }
         }
 
         return $this->render(

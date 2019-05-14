@@ -34,10 +34,10 @@
                         {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
                         {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
                     </div>
-                    {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
                     <div class="login-form-row">
                         <button class="btn btn--big btn-dark login-form-submit" type="submit">Зарегистрироваться</button>
                     </div>
+                    {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
                     <div>
                         {{ form_errors(form.lastName) }}
                         {{ form_errors(form.firstName) }}
