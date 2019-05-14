@@ -32,7 +32,9 @@
                             <button class="btn btn--big btn-dark login-form-submit" type="submit">Войти</button>
                         </div>
                         {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            <div class="alert alert-danger">
+                                Пожалуйста, проверьте правильность написания логина и пароля.
+                            </div>
                         {% endif %}
                     </form>
                     <div class="another-way-auth">
