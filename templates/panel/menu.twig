@@ -2,15 +2,15 @@
     <div class="col-sm">
         <nav class="nav nav-pills flex-column flex-sm-row justify-content-center">
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:10] == 'panel_main' ? 'active' }}"
-                href="{{ path('panel_main') }}">Главная</a>
+               href="{{ path('panel_main') }}">Главная</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:10] == 'panel_user' ? 'active' }}"
-                href="{{ path('panel_user') }}">Пользователи</a>
+               href="{{ path('panel_user') }}">Пользователи</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:11] == 'panel_child' ? 'active' }}"
-                href="{{ path('panel_child') }}">Дети</a>
+               href="{{ path('panel_child') }}">Дети</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:13] == 'panel_requests' ? 'active' }}"
-                href="{{ path('panel_requests') }}">Платежи</a>
+               href="{{ path('panel_requests') }}">Платежи</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:15] == 'panel_recurring' ? 'active' }}"
-                href="{{ path('panel_recurring') }}">Рекуррентные подписки</a>
+               href="{{ path('panel_recurring') }}">Рекуррентные подписки</a>
             <a class="flex-sm-fill text-sm-center nav-link {{ app.request.get('_route')[:12] == 'panel_config' ? 'active' }}"
                href="{{ path('panel_config') }}">Процент рефералов</a>
             <a class="flex-sm-fill text-sm-center nav-link" href="{{ path('app_logout') }}">Выйти</a>
