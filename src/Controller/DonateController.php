@@ -204,7 +204,7 @@ class DonateController extends AbstractController
                 2
             ),
             'recurent' => (bool) $request->request->get('recurent', true),
-            'agree' => (bool) $request->request->get('agree', true)
+            'agree' => (bool) $request->request->get('agree', false)
         ];
 
         if ($request->isMethod('post')) {
