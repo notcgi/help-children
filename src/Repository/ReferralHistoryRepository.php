@@ -28,14 +28,15 @@ class ReferralHistoryRepository extends ServiceEntityRepository
 
     public function findReferralsWithUser()
     {
-        return $this->createQueryBuilder('r')
-            ->leftJoin('r.user', 'u')
+        return $this->createQueryBuilder('rh')
+            ->leftJoin('rh.user', 'u')
             ->getQuery()
             ->getResult();
     }
 
     /**
      * @return float
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function aggregateSum()
@@ -44,5 +45,14 @@ class ReferralHistoryRepository extends ServiceEntityRepository
             ->select('SUM(rh.sum)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function aggregateSumWithUsers()
+    {
+        return $this->createQueryBuilder('rh')
+            ->select('SUM(rh.sum), u')
+            ->leftJoin('rh.user', 'u')
+            ->getQuery()
+            ->getResult();
     }
 }

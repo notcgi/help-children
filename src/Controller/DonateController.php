@@ -194,7 +194,7 @@ class DonateController extends AbstractController
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
-                $request->request->get('phone', $user ? $user->getPhone() : '' )
+                $request->request->get('phone', $user ? $user->getPhone() : '')
             ),
             'ref-code' => substr(trim($request->request->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),

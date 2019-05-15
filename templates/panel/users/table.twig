@@ -21,7 +21,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.age }}</td>
                 <td>{{ user.Phone }}</td>
-                <td>{{ user.CreatedAt|date('Y.m.d') }}</td>
+                <td>{{ user.CreatedAt|date('Y.m.d H:i') }}</td>
                 <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
             </tr>
         {% endfor %}

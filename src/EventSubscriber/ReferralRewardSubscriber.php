@@ -64,7 +64,6 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
                 ->setDonator($user)
                 ->setRequest($req)
                 ->setSum($sum)
-                ->setRequest($req)
         );
         $this->userRepository->addReferralReward($referrer, $sum);
         $this->entityManager->flush();

@@ -55,7 +55,7 @@ class AccountController extends AbstractController
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
-                $request->request->get('phone', '' )
+                $request->request->get('phone', '')
             ),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'oldPassword' => trim($request->request->filter('oldPassword', '')),
@@ -134,7 +134,7 @@ class AccountController extends AbstractController
         return $this->render(
             'account/referrals.twig',
             [
-                'entities' => $repository->findReferralsWithHistory($this->getUser()),
+                'entities' => $repository->findReferralsWithSum($this->getUser()),
                 'referral_url' => $request->getScheme()
                     .'://'
                     .idn_to_utf8($request->getHost())

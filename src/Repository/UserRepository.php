@@ -26,7 +26,13 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findReferralsWithHistory(User $user)
+    /**
+     * Возвращает рефёрерров с суммами вознаграждений
+     *
+     * @param  User  $user
+     * @return mixed
+     */
+    public function findReferralsWithSum(User $user)
     {
         return $this->createQueryBuilder('u')
             ->addSelect('SUM(rh.sum)')
@@ -40,17 +46,36 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findReferralsWithSum(User $user)
+    public function getWithReferralSum()
     {
         return $this->createQueryBuilder('u')
             ->addSelect('SUM(rh.sum)')
-            ->where('u.referrer = :id')
-            ->leftJoin('u.donate_history', 'rh')
+            ->leftJoin('u.referral_history', 'rh')
+            ->groupBy('u.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findWithReferralSum(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->addSelect('SUM(rh.sum)')
+            ->leftJoin('u.referral_history', 'rh')
+            ->where('u.id = :id')
+            ->groupBy('u.id')
             ->setParameters([
                 'id' => $user->getId()
             ])
             ->getQuery()
-            ->getResult();
+            ->getSingleResult();
     }
 
     public function findUserSelecting(int $id)
