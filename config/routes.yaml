@@ -136,10 +136,6 @@ panel_requests:
     path: /panel/requests
     controller: App\Controller\PanelController::requests
 
-panel_payments:
-    path: /panel/payments
-    controller: App\Controller\PanelController::payments
-
 user_controller:
     path: /user
     controller: App\Controller\UserController::index

@@ -72,13 +72,4 @@ class PanelController extends AbstractController
             ]
         );
     }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
-     */
-    public function payments()
-    {
-        return $this->render('panel/payments.twig');
-    }
 }

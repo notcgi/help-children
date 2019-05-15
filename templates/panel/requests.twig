@@ -5,7 +5,7 @@
         {% include 'panel/menu.twig' %}
         <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
             <div class="col-sm">
-                <h1>Заявки:</h1>
+                <h1>Платежи:</h1>
                 <table class="table">
                     <thead>
                     <tr>
@@ -17,13 +17,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% set statuses = {0: 'Не завершена', 1: 'Отмена', 2: 'Успешно'} %}
                     {% for req in entities %}
                         <tr>
                             <th scope="row">{{ req.id }}</th>
                             <td>{{ req.user.email }}</td>
-                            <td>{{ req.status }}</td>
+                            <td>{{ statuses[req.status] }}</td>
                             <td>{{ req.sum|number_format(2, '.', ' ') }}</td>
-                            <td>{{ req.createdAt|date('d m Y') }}</td>
+                            <td>{{ req.createdAt|date('d m Y H:i') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
