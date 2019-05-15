@@ -204,7 +204,7 @@ class DonateController extends AbstractController
                 2
             ),
             'recurent' => (bool) $request->request->get('recurent', true),
-            'agree' => (bool) $request->request->get('agree', false)
+            'agree' => $request->request->get('agree', 'false')
         ];
 
         if ($request->isMethod('post')) {
@@ -282,7 +282,7 @@ class DonateController extends AbstractController
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
                 'sum' => new Assert\Range(['min' => 50, 'max' => 1000000]),
                 'recurent' => new Assert\Type(['type' => 'boolean']),
-                'agree' => new Assert\IsTrue()
+                'agree' => new Assert\EqualTo('true')
             ])
         );
     }
