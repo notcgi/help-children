@@ -21,7 +21,7 @@
         <section class="section online-help section-with-bghearts">
             <div class="container container--small">
                 <div class="online-help-wrapper">
-                    <form class="online-help-form ohf" method="POST">
+                    <form class="online-help-form ohf" method="POST" action="{{ path('donate') }}">
                         <input type="hidden" name="child_id" value="{{ form.child_id ?: '' }}">
                         <div class="ohf-row">
                             <div class="ohf-row__col ohf-col-label">
