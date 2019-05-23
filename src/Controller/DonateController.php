@@ -200,7 +200,7 @@ class DonateController extends AbstractController
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),
             'sum' => round(
                 $request->query->filter('sum', null, FILTER_VALIDATE_FLOAT)
-                    ?: $request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT),
+                    ?: $request->request->filter('sum', 500, FILTER_VALIDATE_FLOAT),
                 2
             ),
             'recurent' => (bool) $request->request->get('recurent', true),
