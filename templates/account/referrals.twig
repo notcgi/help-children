@@ -13,18 +13,14 @@
                 <div class="account-wrapper">
                     {% include 'components/account_nav.twig' %}
                     <div class="account-content referrals">
-                        <h1 class="account-content__title referrals-title account-content-padding">Мои приглашенные</h1>
+                        <h1 class="account-content__title referrals-title account-content-padding">Программа «Поможем вместе»</h1>
                         <div class="referrals-wrapper account-content-padding">
                             <div class="referrals-statistics">
                                 <div class="referrals-statistics__notice">
-                                    <p class="referrals-statistics__notice-text">Мы сделали благотворительность проще и
-                                        доступнее. Теперь
-                                        помочь всем не сложнее, чем пополнить телефон. Мы сделали
-                                        благотворительность проще и доступнее. Теперь помочь всем не сложнее, чем
-                                        пополнить телефон. Мы
-                                        сделали благотворительность проще и доступнее. Теперь
-                                        помочь всем не
-                                        сложнее, чем пополнить телефон. </p>
+                                    <p class="referrals-statistics__notice-text">Мы сделали благотворительность проще и доступнее. Теперь помочь детям вместе не сложнее, чем пополнить баланс:
+ 1. Поделись с друзьями реферальной ссылкой и пригласи их принять участие в благотворительном проекте;
+ 2. Ознакомься со списком приглашенных и суммой, которую вы вместе собрали. Это Ваш вклад в наше доброе дело;
+ 3. Поделись своими достижениями в социальных сетях! Многие увидят результат и последуют Вашему примеру.</p>
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-invite">Пригласить
                                     </button>
@@ -76,7 +72,7 @@
                 </div>
                 <div class="modal__content" id="modal-invite-content">
                     <h3 class="modal__title">Пригласите друзей</h3>
-                    <p class="modal__subtitle">Покажите QR-код или используйте ссылку для пришлашения ваших друзей.</p>
+                    <p class="modal__subtitle">Покажите QR-код или используйте ссылку для приглашения ваших друзей.</p>
                     <div class="qr-code">
                         <p class="mute">Ваш QR-код</p>
                         <img src="{{ qr_code_data_uri(url('referral', { id: app.user.id })) }}" alt="" width="300"
