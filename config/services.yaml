@@ -30,3 +30,8 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%images_directory%'
+
+    App\Service\UnitellerService:
+        arguments:
+            $shop_idp: '%env(UNITELLER_APP_IDP)%'
+            $secret_key: '%env(UNITELLER_SECRET_KEY)%'

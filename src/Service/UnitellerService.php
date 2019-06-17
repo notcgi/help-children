@@ -11,22 +11,30 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UnitellerService
 {
-//    const SHOP_IDP = '00016215';
-
-    // Dev ID
-    const SHOP_IDP = '00016117';
-
     const LIFE_TIME = 300;
-
-    const SECRET_KEY = 'PrrKymMnW06gAaFH4VcnqrhS0Sb7vfuAxIWK6OSxP98rgOSTRBTHkb94vIhr0l4VZgtdm4GRwgsYA0Lg';
 
     const RECURRING_URL = 'https://wpay.uniteller.ru/recurrent/';
 
+    /**
+     * @var string
+     */
+    private $shop_idp;
+
+    /**
+     * @var string
+     */
+    private $secret_key;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, $shop_idp, $secret_key)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->shop_idp = $shop_idp;
+        $this->secret_key = $secret_key;
     }
 
     /**
@@ -41,7 +49,7 @@ class UnitellerService
     {
         $user = $req->getUser();
         $fields = [
-            'Shop_IDP' => self::SHOP_IDP,
+            'Shop_IDP' => $this->shop_idp,
             'Order_IDP' => $req->getId(),
             'Subtotal_P' => number_format($req->getSum(), 2, '.', ''),
             'Lifetime' => self::LIFE_TIME,
@@ -75,7 +83,7 @@ class UnitellerService
     {
         return strtoupper(
             md5(
-                $form['Order_ID'].$form['Status'].self::SECRET_KEY
+                $form['Order_ID'].$form['Status'].$this->secret_key
             )
         );
     }
@@ -93,7 +101,7 @@ class UnitellerService
         }
 
         return $form['Signature'] === strtoupper(md5(($form['Order_ID'] ?? '').($form['Status'] ?? '')
-            .self::SECRET_KEY));
+            .$this->secret_key));
     }
 
     /**
@@ -110,7 +118,7 @@ class UnitellerService
             $data['Parent_Order_IDP']
         ];
 
-        $arr[] = self::SECRET_KEY;
+        $arr[] = $this->secret_key;
 
         foreach ($arr as $key => $value) {
             $arr[$key] = md5($value);
@@ -122,7 +130,7 @@ class UnitellerService
     public function getRecurringForm(Request $request, Request $parent_request)
     {
         $data = [
-            'Shop_IDP' => self::SHOP_IDP,
+            'Shop_IDP' => $this->shop_idp,
             'Order_IDP' => $request->getId(),
             'Subtotal_P' => number_format($request->getSum(), 2, '.', ''),
             'Parent_Order_IDP' => $parent_request->getId()
@@ -156,7 +164,7 @@ class UnitellerService
             $arr[] = $data['OrderLifetime'];
         }
 
-        $arr[] = self::SECRET_KEY;
+        $arr[] = $this->secret_key;
 
         foreach ($arr as $key => $value) {
             $arr[$key] = md5($value);
