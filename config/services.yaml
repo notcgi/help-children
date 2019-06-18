@@ -35,3 +35,8 @@ services:
         arguments:
             $shop_idp: '%env(UNITELLER_APP_IDP)%'
             $secret_key: '%env(UNITELLER_SECRET_KEY)%'
+
+    App\Service\SendGridService:
+        arguments:
+            $api_key: '%env(SENDGRID_API_KEY)%'
+            $from:
