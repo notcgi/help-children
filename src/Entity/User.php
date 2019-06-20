@@ -34,7 +34,7 @@ class User implements UserInterface
     private $pass;
 
     /**
-     * @ORM\Column(type="string", length=6, nullable=true)
+     * @ORM\Column(type="string", length=16, nullable=true)
      */
     private $ref_code;
 

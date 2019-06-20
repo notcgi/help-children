@@ -62,6 +62,10 @@ class UsersService
             ->setLastName($data['surname'] ?? '')
             ->setPhone($data['phone'] ?? '');
 
+        if (isset($data['refCode'])) {
+            $user->setRefCode($data['refCode']);
+        }
+
         if (isset($data['pass'])) {
             $user->setPass(
                 $this->passwordEncoder->encodePassword(
