@@ -36,12 +36,14 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
 
-        if ($request->isMethod('POST')) {
-            $request->request->set('phone', preg_replace(
+        if ($request->isMethod('post')) {
+            $regfrom = $request->request->get('registration_form');
+            $regfrom['phone'] = preg_replace(
                 '/[^+0-9]/',
                 '',
-                $request->request->get('phone', '')
-            ));
+                $regfrom['phone']
+            );
+            $request->request->set('registration_form', $regfrom);
         }
 
         $form->handleRequest($request);
