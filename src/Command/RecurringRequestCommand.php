@@ -11,7 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RecurringRequestCommand extends Command
 {
@@ -28,23 +28,21 @@ class RecurringRequestCommand extends Command
     private $entityManager;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $dispatcher;
 
     /**
      * RecurringRequestCommand constructor.
      *
-     * @param UnitellerService         $unitellerService
-     * @param EntityManagerInterface   $entityManager
-     * @param EventDispatcherInterface $dispatcher
-     *
-     * @throws \Symfony\Component\Console\Exception\LogicException
+     * @param UnitellerService       $unitellerService
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcher        $dispatcher
      */
     public function __construct(
         UnitellerService $unitellerService,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher
+        EventDispatcher $dispatcher
     ) {
         $this->unitellerService = $unitellerService;
         $this->entityManager = $entityManager;
@@ -118,7 +116,7 @@ class RecurringRequestCommand extends Command
             $io->text($response[1]);
             $this->entityManager->persist($v->setStatus(2));
             $this->entityManager->persist($rp[$k]->setWithdrawalAt(new \DateTime()));
-            $this->dispatcher->dispatch(new RequestSuccessEvent($v));
+            $this->dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($v));
         }
 
         $this->entityManager->flush();
