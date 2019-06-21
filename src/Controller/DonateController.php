@@ -7,7 +7,7 @@ use App\Event\RequestSuccessEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -118,14 +118,14 @@ class DonateController extends AbstractController
      * 4000000000002487
      * UNITELLER TEST
      *
-     * @param Request          $request
-     * @param UnitellerService $unitellerService
-     * @param EventDispatcher  $dispatcher
+     * @param Request                  $request
+     * @param UnitellerService         $unitellerService
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return Response
      * @throws \Exception
      */
-    public function status(Request $request, UnitellerService $unitellerService, EventDispatcher $dispatcher)
+    public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
         try {
             $form = json_decode($request->getContent(), true, 2, JSON_THROW_ON_ERROR);

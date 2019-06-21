@@ -11,7 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RecurringRequestCommand extends Command
 {
@@ -28,21 +28,21 @@ class RecurringRequestCommand extends Command
     private $entityManager;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $dispatcher;
 
     /**
      * RecurringRequestCommand constructor.
      *
-     * @param UnitellerService       $unitellerService
-     * @param EntityManagerInterface $entityManager
-     * @param EventDispatcher        $dispatcher
+     * @param UnitellerService         $unitellerService
+     * @param EntityManagerInterface   $entityManager
+     * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         UnitellerService $unitellerService,
         EntityManagerInterface $entityManager,
-        EventDispatcher $dispatcher
+        EventDispatcherInterface $dispatcher
     ) {
         $this->unitellerService = $unitellerService;
         $this->entityManager = $entityManager;
