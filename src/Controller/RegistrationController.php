@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\RegistrationEvent;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,19 +23,21 @@ class RegistrationController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler    $guardHandler
      * @param LoginFormAuthenticator       $authenticator
+     * @param EventDispatcherInterface     $dispatcher
      *
      * @return Response
      *
-     * @throws \Exception
      * @throws \LogicException
      * @throws \OutOfBoundsException
      * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws \Symfony\Component\Form\Exception\RuntimeException
      */
     public function register(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        EventDispatcherInterface $dispatcher
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -76,11 +80,13 @@ class RegistrationController extends AbstractController
                         $user,
                         $form->get('password')->getData()
                     )
-                )->setRefCode(substr(base64_encode(random_bytes(20)), 16));
+                )->setRefCode(substr(base64_encode(random_bytes(20)), 0, 16));
 
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
+
+                $dispatcher->dispatch(new RegistrationEvent($user));
 
                 // do anything else you need here, like send an email
                 return $guardHandler->authenticateUserAndHandleSuccess(
