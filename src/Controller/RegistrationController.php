@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\EmailConfirm;
 use App\Event\RegistrationEvent;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
@@ -107,19 +108,23 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \LogicException
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function confirmCode(Request $request)
+    public function confirmCode(Request $request, EventDispatcherInterface $dispatcher)
     {
         $form = [
             'code' => $request->query->get('code'),
             'email' => $request->query->filter('email', FILTER_VALIDATE_EMAIL)
         ];
 
-        $form_errors = $this->validate($form);
+        $form_errors = $this->codeValidate($form);
 
         if (0 === count($form_errors)) {
             $doctrine = $this->getDoctrine();
@@ -134,6 +139,7 @@ class RegistrationController extends AbstractController
                 $doctrine->getManager()->persist($user->setRefCode(null));
                 $doctrine->getManager()->flush();
                 $this->addFlash('code_confirm', 'E-mail подтверждён');
+                $dispatcher->dispatch(new EmailConfirm($user));
             }
         }
 

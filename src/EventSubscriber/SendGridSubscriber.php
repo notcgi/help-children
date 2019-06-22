@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Event\EmailConfirm;
 use App\Event\RegistrationEvent;
 use App\Event\RequestSuccessEvent;
 use App\Repository\ChildRepository;
@@ -62,17 +63,26 @@ class SendGridSubscriber implements EventSubscriberInterface
     public function onRequestSuccess(RequestSuccessEvent $event)
     {
         $req = $event->getRequest();
-
-        if (!$req->isRecurent()) {
-            return;
-        }
-
         $user = $req->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName()
         );
-        $mail->setTemplateId('d-92b94309494247eea3ff6187e7ddb3ae');
+        $mail->setTemplateId(!$req->isRecurent()
+            ? 'd-92b94309494247eea3ff6187e7ddb3ae'
+            : 'd-07888ea4b98c44278e218c6d1f365549');
+
+        return $this->sendGrid->send($mail);
+    }
+
+    public function onEmailConfirm(EmailConfirm $event)
+    {
+        $user = $event->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName()
+        );
+        $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a');
 
         return $this->sendGrid->send($mail);
     }
@@ -81,7 +91,8 @@ class SendGridSubscriber implements EventSubscriberInterface
     {
         return [
             'registration' => 'onRegistration',
-            'request.success' => 'onRequestSuccess'
+            'request.success' => 'onRequestSuccess',
+            'user.emailConfirm' => 'onEmailConfirm'
         ];
     }
 }
