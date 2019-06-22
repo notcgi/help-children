@@ -149,7 +149,7 @@ class DonateController extends AbstractController
             case 'paid':
             case 'authorized':
                 $req->setStatus(2);
-                $dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($req));
+                $dispatcher->dispatch(new RequestSuccessEvent($req));
                 break;
             case 'canceled':
                 $req->setStatus(1);

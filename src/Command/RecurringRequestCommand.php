@@ -116,7 +116,7 @@ class RecurringRequestCommand extends Command
             $io->text($response[1]);
             $this->entityManager->persist($v->setStatus(2));
             $this->entityManager->persist($rp[$k]->setWithdrawalAt(new \DateTime()));
-            $this->dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($v));
+            $this->dispatcher->dispatch(new RequestSuccessEvent($v));
         }
 
         $this->entityManager->flush();
