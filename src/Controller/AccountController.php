@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\RecurringPayment;
 use App\Entity\User;
+use App\Event\RecurringPaymentRemove;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -145,7 +147,6 @@ class AccountController extends AbstractController
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     *
      * @throws \LogicException
      * @throws \UnexpectedValueException
      */
@@ -164,20 +165,24 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @param int                   $id
-     * @param Request               $request
-     * @param UrlGeneratorInterface $generator
+     * @param int                      $id
+     * @param Request                  $request
+     * @param UrlGeneratorInterface    $generator
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * @throws \LogicException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
-    public function recurrent_remove(int $id, Request $request, UrlGeneratorInterface $generator)
-    {
+    public function recurrent_remove(
+        int $id,
+        Request $request,
+        UrlGeneratorInterface $generator,
+        EventDispatcherInterface $dispatcher
+    ) {
         if (!$this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
             return $this->redirect($generator->generate('account_recurrent'));
         }
@@ -194,6 +199,7 @@ class AccountController extends AbstractController
 
         $entityManager = $doctrine->getManager();
         $entityManager->remove($payment);
+        $dispatcher->dispatch(RecurringPaymentRemove::NAME, new RecurringPaymentRemove($payment));
         $entityManager->flush();
 
         return $this->redirect($generator->generate('account_recurrent'));

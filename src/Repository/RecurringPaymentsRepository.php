@@ -42,7 +42,7 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
     /**
      * @param int $limit
      *
-     * @return mixed
+     * @return RecurringPayment[]
      * @throws \Exception
      */
     public function findNeedRequest($limit = 5)
@@ -51,6 +51,29 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
             ->leftJoin('rp.request', 'r')
             ->where('rp.withdrawalAt <= :date')
             ->setParameter('date', (new \DateTime())->sub(new \DateInterval('P1M')))
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param int $limit
+     *
+     * @return RecurringPayment[]
+     * @throws \Exception
+     */
+    public function findBeforeNeedOneDayRequest($limit = 5)
+    {
+        return $this->createQueryBuilder('rp')
+            ->leftJoin('rp.request', 'r')
+            ->leftJoin('rp.user', 'u')
+            ->where('rp.withdrawalAt <= :date')
+            ->setParameter(
+                'date',
+                (new \DateTime())
+                    ->sub(new \DateInterval('P1M'))
+                    ->add(new \DateInterval('P1D'))
+            )
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

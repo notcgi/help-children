@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 use App\Entity\SendGridSchedule;
 use App\Event\EmailConfirm;
 use App\Event\RecurringPaymentFailure;
+use App\Event\RecurringPaymentRemove;
 use App\Event\RegistrationEvent;
 use App\Event\RequestSuccessEvent;
 use App\Repository\ChildRepository;
@@ -151,13 +152,33 @@ class SendGridSubscriber implements EventSubscriberInterface
         return $this->sendGrid->send($mail);
     }
 
+    public function onRecurringPaymentRemove(RecurringPaymentRemove $event)
+    {
+        $user = $event->getRecurringPayment()->getUser();
+        $this->em->persist((new SendGridSchedule())
+            ->setEmail($user->getEmail())
+            ->setName($user->getFirstName())
+            ->setBody([
+                'first_name' => $user->getFirstName()
+            ])
+            ->setTemplateId('d-eaae4848c985425f90e2b968d9364630')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime())
+                    ->add(new \DateInterval('P1D'))
+                )
+            ));
+        $this->em->flush();
+    }
+
     public static function getSubscribedEvents()
     {
         return [
             'registration' => 'onRegistration',
             'request.success' => 'onRequestSuccess',
             'user.emailConfirm' => 'onEmailConfirm',
-            'recurring_payment.failure' => 'onRecurringPaymentFailure'
+            'recurring_payment.failure' => 'onRecurringPaymentFailure',
+            'recurring_payment.remove' => 'onRecurringPaymentRemove'
         ];
     }
 }
