@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\RecurringPayment;
 use App\Entity\Request;
+use App\Event\RecurringPaymentFailure;
 use App\Event\RequestSuccessEvent;
 use App\Service\UnitellerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,6 +39,8 @@ class RecurringRequestCommand extends Command
      * @param UnitellerService         $unitellerService
      * @param EntityManagerInterface   $entityManager
      * @param EventDispatcherInterface $dispatcher
+     *
+     * @throws \Symfony\Component\Console\Exception\LogicException
      */
     public function __construct(
         UnitellerService $unitellerService,
@@ -108,6 +111,7 @@ class RecurringRequestCommand extends Command
             }
 
             if ('ErrorCode' == $response[0][0]) {
+                $this->dispatcher->dispatch(RecurringPaymentFailure::NAME, new RecurringPaymentFailure($v));
                 $io->warning($response[1][1]);
 
                 continue;

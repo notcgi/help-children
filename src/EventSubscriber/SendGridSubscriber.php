@@ -2,11 +2,14 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\SendGridSchedule;
 use App\Event\EmailConfirm;
+use App\Event\RecurringPaymentFailure;
 use App\Event\RegistrationEvent;
 use App\Event\RequestSuccessEvent;
 use App\Repository\ChildRepository;
 use App\Service\SendGridService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -22,16 +25,21 @@ class SendGridSubscriber implements EventSubscriberInterface
      */
     private $generator;
 
-    public function __construct(SendGridService $sg, UrlGeneratorInterface $generator)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(SendGridService $sg, UrlGeneratorInterface $generator, EntityManagerInterface $em)
     {
         $this->sendGrid = $sg;
         $this->generator = $generator;
+        $this->em = $em;
     }
 
     /**
      * @param RegistrationEvent $event
      *
-     * @return \SendGrid\Response
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
@@ -51,8 +59,45 @@ class SendGridSubscriber implements EventSubscriberInterface
             ]
         );
         $mail->setTemplateId('d-536b9f1c13cf4596a92513f67a076543');
+        $this->sendGrid->send($mail);
 
-        return $this->sendGrid->send($mail);
+        // Письмо О фонде
+        $this->em->persist(
+            (new SendGridSchedule())
+            ->setEmail($user->getEmail())
+            ->setName($user->getFirstName())
+            ->setBody([
+                'first_name' => $user->getFirstName()
+            ])
+            ->setTemplateId('d-f79a687fd8fa49089ab62a18445ce6fc')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime())
+                    ->add(new \DateInterval('P35D'))
+                    ->setTime(12, 0, 0)
+                )
+            )
+        );
+
+        // Писмьмо О Фонде - на что живет фонд, команда
+        $this->em->persist(
+            (new SendGridSchedule())
+            ->setEmail($user->getEmail())
+            ->setName($user->getFirstName())
+            ->setBody([
+                'first_name' => $user->getFirstName()
+            ])
+            ->setTemplateId('d-30f3d027463c430f8f743356307a77bb')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime())
+                    ->add(new \DateInterval('P65D'))
+                    ->setTime(12, 0, 0)
+                )
+            )
+        );
+
+        $this->em->flush();
     }
 
     /**
@@ -66,11 +111,12 @@ class SendGridSubscriber implements EventSubscriberInterface
         $user = $req->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
-            $user->getFirstName()
+            $user->getFirstName(),
+            [
+                'first_name' => $user->getFirstName()
+            ]
         );
-        $mail->setTemplateId(!$req->isRecurent()
-            ? 'd-92b94309494247eea3ff6187e7ddb3ae'
-            : 'd-07888ea4b98c44278e218c6d1f365549');
+        $mail->setTemplateId('d-07888ea4b98c44278e218c6d1f365549');
 
         return $this->sendGrid->send($mail);
     }
@@ -80,9 +126,27 @@ class SendGridSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
-            $user->getFirstName()
+            $user->getFirstName(),
+            [
+                'first_name' => $user->getFirstName()
+            ]
         );
         $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a');
+
+        return $this->sendGrid->send($mail);
+    }
+
+    public function onRecurringPaymentFailure(RecurringPaymentFailure $event)
+    {
+        $user = $event->getRequest()->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName(),
+            [
+                'first_name' => $user->getFirstName()
+            ]
+        );
+        $mail->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5');
 
         return $this->sendGrid->send($mail);
     }
@@ -92,7 +156,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         return [
             'registration' => 'onRegistration',
             'request.success' => 'onRequestSuccess',
-            'user.emailConfirm' => 'onEmailConfirm'
+            'user.emailConfirm' => 'onEmailConfirm',
+            'recurring_payment.failure' => 'onRecurringPaymentFailure'
         ];
     }
 }
