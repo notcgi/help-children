@@ -80,8 +80,7 @@ class RecurringRequestCommand extends Command
             $new_request = (new Request())
                 ->setSum($request->getSum())
                 ->setUser($v->getUser())
-                ->setChild($request->getChild())
-                ->setRecurent(true);
+                ->setChild($request->getChild());
             $this->entityManager->persist($new_request);
             $requests[] = $new_request;
         }
