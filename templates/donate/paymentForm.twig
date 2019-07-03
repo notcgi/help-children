@@ -5,7 +5,16 @@
     <script>
      this.pay = function () {
     var widget = new cp.CloudPayments();
-    dataUser = {'email' : '{{ fields.Email }}', 'lastname' : '{{ fields.LastName }}', 'firstname' : '{{ fields.FirstName }}', 'phone' : '{{ fields.Phone }}'};
+
+    var data = {};
+        {% if fields.IsRecurrentStart == 1 %}
+        data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки
+        {% endif %}
+        data.email = '{{ fields.Email }}';
+        data.lastname = '{{ fields.LastName }}';
+        data.firstname = '{{ fields.FirstName }}';
+        data.phone = '{{ fields.Phone }}';
+
     widget.charge({ // options
             publicId: 'pk_51de50fd3991dbf5b3610e65935d1',  //id из личного кабинета
             description: 'Благотворительная помощь', //назначение
@@ -14,9 +23,7 @@
             invoiceId: '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
             accountId: '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
             skin: "mini", //дизайн виджета
-            data: {
-                myProp: 'myProp value' //произвольный набор параметров
-            }
+            data: data
         },
         function (options) { // success
             //действие при успешной оплате
