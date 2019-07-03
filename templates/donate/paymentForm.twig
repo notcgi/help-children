@@ -1,14 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <form action="https://wpay.uniteller.ru/pay/" method="POST">
+    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments"></script>
+    <script>
+     this.pay = function () {
+    var widget = new cp.CloudPayments();
+    dataUser = {'email' : '{{ fields.Email }}', 'lastname' : '{{ fields.LastName }}', 'firstname' : '{{ fields.FirstName }}', 'phone' : '{{ fields.Phone }}'};
+    widget.charge({ // options
+            publicId: 'pk_51de50fd3991dbf5b3610e65935d1',  //id из личного кабинета
+            description: 'Благотворительная помощь', //назначение
+            amount: {{ fields.Subtotal_P }}, //сумма
+            currency: 'RUB', //валюта
+            invoiceId: '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
+            accountId: '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
+            skin: "mini", //дизайн виджета
+            data: {
+                myProp: 'myProp value' //произвольный набор параметров
+            }
+        },
+        function (options) { // success
+            //действие при успешной оплате
+            window.location.href = '{{ fields.URL_RETURN_OK }}';
+        },
+        function (reason, options) { // fail
+            //действие при неуспешной оплате
+            window.location.href = '{{ fields.URL_RETURN_NO }}';
+        });
+};
+    </script>
+    <!--<form action="https://wpay.uniteller.ru/pay/" method="POST">
         {% for key, value in fields %}
             <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
-    </form>
+    </form>-->
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
-            document.forms[0].submit();
+            //document.forms[0].submit();/
+            pay();
         });
     </script>
 {% endblock %}
