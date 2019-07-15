@@ -197,10 +197,33 @@ class AccountController extends AbstractController
             );
         }
 
-        $entityManager = $doctrine->getManager();
-        $entityManager->remove($payment);
-        $dispatcher->dispatch(RecurringPaymentRemove::NAME, new RecurringPaymentRemove($payment));
-        $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        /** @var \App\Entity\Request $req */
+        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($id);
+
+        $SubscriptionsId = $req->getSubscriptionsId();
+
+        if (trim($SubscriptionsId)) {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/cancel");
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+          curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+          curl_setopt($ch, CURLOPT_POSTFIELDS, "Id=".$SubscriptionsId);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $server_output = curl_exec ($ch);
+
+          curl_close ($ch);
+          $json = json_decode($server_output);
+          if ($json->Success) {
+            // удаление оплаты на сайте (в базе)
+              $entityManager = $doctrine->getManager();
+              $entityManager->remove($payment);
+
+              $dispatcher->dispatch(RecurringPaymentRemove::NAME, new RecurringPaymentRemove($payment));
+              $entityManager->flush();
+          }
+        }
 
         return $this->redirect($generator->generate('account_recurrent'));
     }

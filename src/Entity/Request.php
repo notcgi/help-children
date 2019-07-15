@@ -60,6 +60,21 @@ class Request
     private $referral_history;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $json;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $TransactionId;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $SubscriptionsId;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -125,6 +140,42 @@ class Request
         $this->status = $status;
 
         return $this;
+    }
+
+    public function setTransactionId(int $TransactionId): self
+    {
+        $this->TransactionId = $TransactionId;
+
+        return $this;
+    }
+
+    public function getTransactionId(): ?int
+    {
+        return $this->TransactionId;
+    }
+
+    public function setSubscriptionsId($SubscriptionsId): self
+    {
+        $this->SubscriptionsId = $SubscriptionsId;
+
+        return $this;
+    }
+
+    public function getSubscriptionsId()
+    {
+        return $this->SubscriptionsId;
+    }
+
+    public function setJson($Json): self
+    {
+        $this->json = $Json;
+
+        return $this;
+    }
+
+    public function getJson()
+    {
+        return $this->json;
     }
 
     public function isRecurent(): ?bool
