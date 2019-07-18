@@ -159,4 +159,31 @@ class UserController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \LogicException
+     */
+    public function delete(int $id)
+    {
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $userList = $repository->findUserSelecting($id);
+
+        $userData = $repository->find($id);
+
+        if (!$userData) {
+            throw $this->createNotFoundException(
+                'Нет пользователя с id '.$id
+            );
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($userData);
+        $entityManager->flush();
+
+        return $this->redirect('/panel/users');
+    }
 }

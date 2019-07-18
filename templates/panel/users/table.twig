@@ -23,6 +23,7 @@
                 <td>{{ user.Phone }}</td>
                 <td>{{ user.CreatedAt|date('Y.m.d H:i') }}</td>
                 <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
+                <td><a href="/panel/users/{{ user.id }}/delete">Удалить</a></td>
             </tr>
         {% endfor %}
         </tbody>
