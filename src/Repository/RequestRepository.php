@@ -34,6 +34,7 @@ class RequestRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
+            ->orderBy('r.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }
