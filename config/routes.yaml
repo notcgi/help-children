@@ -136,6 +136,12 @@ panel_user_edit:
     requirements:
         id: '\d+'
 
+panel_user_delete:
+    path: /panel/users/{id}/delete
+    controller: App\Controller\UserController:delete
+    requirements:
+        id: '\d+'
+
 panel_requests:
     path: /panel/requests
     controller: App\Controller\PanelController::requests

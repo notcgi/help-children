@@ -26,8 +26,8 @@
                                     </button>
                                 </div>
                                 <div class="referrals-statistics__balance">
-                                    <h2 class="referrals-statistics__balance-title">Баланс</h2>
-                                    <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} руб.</div>
+                                    <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
+                                    <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
                                     <button
                                         class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
                                         Вывести
@@ -50,7 +50,7 @@
                                             <td class="referrals-list-table__body-col">{{ pair[0].email }}</td>
                                             <td class="referrals-list-table__body-col">{{ pair[0].createdAt|date('d m Y') }}</td>
                                             <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }}
-                                                руб.
+                                                б.
                                             </td>
                                         </tr>
                                     {% endfor %}
