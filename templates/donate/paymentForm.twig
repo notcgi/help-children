@@ -27,7 +27,7 @@
         },
         function (options) { // success
             //действие при успешной оплате
-            window.location.href = '{{ fields.URL_RETURN_OK }}';
+            window.location.href = '/account/history';
         },
         function (reason, options) { // fail
             //действие при неуспешной оплате

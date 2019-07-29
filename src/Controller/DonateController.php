@@ -27,27 +27,28 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    public function ok(Request $request, UnitellerService $unitellerService)
+    public function ok(Request $request)
     {
-        $form = [
-            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
-            // Status может принимать основные значения: authorized, paid, canceled, waiting
-            'Status' => $request->request->get('Status', ''),
-            'Signature' => $request->request->get('Signature', '')
-        ];
-
-        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
-            return $this->render('account/history.twig');
+        try {
+            $form = $request->request->all();
+        } catch (\JsonException $e) {
+            return new Response('invalid data', 400);
         }
+        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
+        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->query->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
+        /*if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
+            return $this->render('account/history.twig');
+        }*/
 
         $entityManager = $this->getDoctrine()->getManager();
+
         $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
 
         if (!$req) {
-            return new Response('', 404);
+            return new Response('order not found', 404);
         }
 
-        if ($form['Status'] == 'paid') {
+        if ($form['Status'] == 'Completed') {
             $req->setStatus(2);
             $this->refHistory($req->getUser(), $req->getSum());
 
@@ -63,7 +64,8 @@ class DonateController extends AbstractController
         $entityManager->persist($req);
         $entityManager->flush();
 
-        return new Response('OK');
+        #help https://symfony.com/doc/current/components/http_foundation.html
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
     /**
@@ -75,18 +77,26 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    public function no(Request $request, UnitellerService $unitellerService)
+    public function no(Request $request)
     {
+      return $this->render('account/history.twig');
+      
+        try {
+            $form = $request->request->all();
+        } catch (\JsonException $e) {
+            return new Response('invalid data', 400);
+        }
+       /*
         $form = [
             'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
             // Status может принимать основные значения: authorized, paid, canceled, waiting
             'Status' => $request->request->get('Status', ''),
             'Signature' => $request->request->get('Signature', '')
-        ];
+        ];*/
 
-        if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
+        /*if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
             return $this->render('account/history.twig');
-        }
+        }*/
 
         $entityManager = $this->getDoctrine()->getManager();
         $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
@@ -104,19 +114,20 @@ class DonateController extends AbstractController
             $childHistory->setSum($req->getSum())
                 ->setChild($req->getChild());
             $entityManager->persist($childHistory);
-        } elseif ($form['Status'] != '') {
+        } elseif ($form['Status'] != '') {// canceled
             $req->setStatus(1);
         }
 
         $entityManager->persist($req);
         $entityManager->flush();
 
-        return new Response('OK');
+        #return new Response('OK');
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
     /**
-     * 4000000000002487
-     * UNITELLER TEST
+     * 4242424242424242
+     * CLOUDPAYMENTS TEST
      *
      * @param Request                  $request
      * @param UnitellerService         $unitellerService
@@ -128,37 +139,61 @@ class DonateController extends AbstractController
     public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
         try {
-            $form = json_decode($request->getContent(), true, 2, JSON_THROW_ON_ERROR);
+            $form = $request->request->all();
         } catch (\JsonException $e) {
-            return new Response('invalid json', 400);
+            return new Response('invalid data', 400);
         }
 
-        if (!$unitellerService->validateStatusSignature($form)) {
+        /*if (!$unitellerService->validateStatusSignature($form)) {
             return new Response('', 400);
-        }
+        }*/
 
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
-        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
 
         if (!$req) {
             return new Response('', 404);
         }
 
+        file_put_contents(dirname(__DIR__)."/../logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+
         switch ($form['Status']) {
-            case 'paid':
-            case 'authorized':
+            #case 'paid':
+            #case 'authorized':
+            case 'Completed':
                 $req->setStatus(2);
+                $req->setTransactionId($form['TransactionId']); #avtorkoda
+                $req->setJson(json_encode($form));              #avtorkoda
                 $dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($req));
-                break;
-            case 'canceled':
+
+                if ($req -> isRecurent()) {//оформление подписки
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+                    curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $server_output = curl_exec ($ch);
+
+                    $req->setSubscriptionsId('abc123');
+
+                    file_put_contents(dirname(__DIR__)."/../logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
+
+                    curl_close ($ch);
+                }
+            break;
+            case 'canceled':// ?
                 $req->setStatus(1);
         }
 
         $entityManager->persist($req->setUpdatedAt(new \DateTime()));
         $entityManager->flush();
 
-        return new Response('OK');
+        #help https://symfony.com/doc/current/components/http_foundation.html
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
     /**
