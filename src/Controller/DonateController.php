@@ -34,8 +34,8 @@ class DonateController extends AbstractController
         } catch (\JsonException $e) {
             return new Response('invalid data', 400);
         }
-        file_put_contents(dirname(__DIR__)."/../logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
-        file_put_contents(dirname(__DIR__)."/../logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->query->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
+        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
+        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->query->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
         /*if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
             return $this->render('account/history.twig');
         }*/
@@ -156,7 +156,7 @@ class DonateController extends AbstractController
             return new Response('', 404);
         }
 
-        file_put_contents(dirname(__DIR__)."/../logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+        file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
 
         switch ($form['Status']) {
             #case 'paid':
@@ -180,7 +180,7 @@ class DonateController extends AbstractController
 
                     $req->setSubscriptionsId('abc123');
 
-                    file_put_contents(dirname(__DIR__)."/../logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
+                    file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
 
                     curl_close ($ch);
                 }
