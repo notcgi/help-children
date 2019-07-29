@@ -25,13 +25,13 @@ class ReferralHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="referral_history", fetch="LAZY")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="donate_history", fetch="LAZY")
-     * @ORM\JoinColumn(name="donator_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="donator_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $donator;
 

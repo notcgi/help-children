@@ -24,7 +24,7 @@ class RecurringPayment
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="recurring_payments")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
 
