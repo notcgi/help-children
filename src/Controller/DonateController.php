@@ -156,7 +156,8 @@ class DonateController extends AbstractController
             return new Response('', 404);
         }
 
-        file_put_contents(dirname(__DIR__)."/../logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+
+        file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
 
         switch ($form['Status']) {
             #case 'paid':
@@ -180,7 +181,8 @@ class DonateController extends AbstractController
 
                     $req->setSubscriptionsId('abc123');
 
-                    file_put_contents(dirname(__DIR__)."/../logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
+
+                    file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
 
                     curl_close ($ch);
                 }
