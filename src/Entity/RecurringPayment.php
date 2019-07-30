@@ -18,7 +18,7 @@ class RecurringPayment
 
     /**
      * @ORM\OneToOne(targetEntity="Request")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $request;
 

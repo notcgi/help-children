@@ -19,7 +19,7 @@ class ReferralHistory
 
     /**
      * @ORM\OneToOne(targetEntity="Request", inversedBy="referral_history", fetch="LAZY")
-     * @ORM\JoinColumn(name="request_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="request_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $request;
 

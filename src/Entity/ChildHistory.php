@@ -19,7 +19,7 @@ class ChildHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
-     * @ORM\JoinColumn(name="child_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="child_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $child;
 
