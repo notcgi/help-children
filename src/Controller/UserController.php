@@ -11,7 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -104,6 +106,25 @@ class UserController extends AbstractController
                     'constraints' => [
                         new NotBlank(),
                         new Email()
+                    ]
+                ]
+            )
+            ->add(
+                'rewardSum',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank()
+                    ]
+                ]
+            )
+            ->add(
+                'fundraiser',
+                CheckboxType::class,
+                [
+                    'label' => 'Фандрайзер',
+                    'attr' => [
+                        'class' => 'form-check-input'
                     ]
                 ]
             )

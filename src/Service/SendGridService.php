@@ -61,7 +61,7 @@ class SendGridService
         array $params = null,
         string $subject = null
     ): Mail {
-        return new Mail($this->from, new To($to, $name, $params, $subject));
+        return new Mail($this->from, new To($to, $name, $params, $subject), $subject);
     }
 
     /**

@@ -18,13 +18,13 @@ class RecurringPayment
 
     /**
      * @ORM\OneToOne(targetEntity="Request")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $request;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="recurring_payments")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
 

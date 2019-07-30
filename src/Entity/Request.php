@@ -19,13 +19,13 @@ class Request
 
     /**
      * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
-     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="child_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $child;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="requests", fetch="LAZY")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
 
@@ -55,22 +55,22 @@ class Request
     private $createdAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="ReferralHistory", mappedBy="request", fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="ReferralHistory", mappedBy="request", fetch="LAZY", cascade={"persist", "remove"})     
      */
     private $referral_history;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true, options={"collation":"utf8mb4_unicode_ci"})
      */
     private $json;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $TransactionId;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=50, nullable=true, options={"collation":"utf8mb4_unicode_ci"})
      */
     private $SubscriptionsId;
 

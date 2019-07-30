@@ -33,7 +33,7 @@ class SendGridSchedule
     private $template_id;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="json", nullable=false, options={"collation":"utf8mb4_bin"})
      */
     private $body = [];
 

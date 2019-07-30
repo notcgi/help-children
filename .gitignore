@@ -30,3 +30,5 @@
 /.php-version
 *.bak
 .htaccess 
+
+.vscode/

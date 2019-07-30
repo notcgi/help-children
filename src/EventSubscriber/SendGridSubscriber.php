@@ -13,11 +13,12 @@ use App\Service\SendGridService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Psr\Log\LoggerInterface;
 
 class SendGridSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ChildRepository
+     * @var SendGridService
      */
     private $sendGrid;
 
@@ -31,11 +32,17 @@ class SendGridSubscriber implements EventSubscriberInterface
      */
     private $em;
 
-    public function __construct(SendGridService $sg, UrlGeneratorInterface $generator, EntityManagerInterface $em)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(SendGridService $sg, UrlGeneratorInterface $generator, EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->sendGrid = $sg;
         $this->generator = $generator;
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,7 +53,7 @@ class SendGridSubscriber implements EventSubscriberInterface
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function onRegistration(RegistrationEvent $event)
-    {
+    {        
         $user = $event->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
@@ -56,11 +63,18 @@ class SendGridSubscriber implements EventSubscriberInterface
                 'confirm_url' => $this->generator->generate('code_confirm', [
                     'code' => $user->getRefCode(),
                     'email' => $user->getEmail()
-                ])
-            ]
+                ], 0)
+            ],
+            'Регистрация на сайте'
         );
+        
         $mail->setTemplateId('d-536b9f1c13cf4596a92513f67a076543');
-        $this->sendGrid->send($mail);
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }        
 
         // Письмо О фонде
         $this->em->persist(

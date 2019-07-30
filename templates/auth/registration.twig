@@ -21,30 +21,41 @@
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
                         {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
                     </div>
-                    <div class="login-form-row registration-form-row">
+                    <div class="login-form-row registration-form-row">                        
                         {{ form_widget(form.age, {'value': form.age ?: '', 'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш возраст'}}) }}
                         <label class="registration-form-field registration-form-phone">
                             {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded', 'placeholder': 'Введите номер телефона', 'data-type':'phone'}}) }}
-                        </label>
+                        </label>                                                
                     </div>
+                    <div id="phone" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
+                            <div class="form-error-tooltip__arrow"></div>
+                            <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                        </div>
                     <div class="login-form-row registration-form-row">
                         {{ form_widget(form.email, {'attr': {'class':'input-rounded registration-form-input', 'required':'required', 'placeholder': 'Ваша почта'}}) }}
                     </div>
                     <div class="login-form-row registration-form-row login-form-group">
-                        {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
-                        {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
+                        <div style="width:100%; height:70px">
+                            {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
+                            <div id="pass" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top: -10px">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
+                            </div>
+                        </div>
+                        <div style="width:100%; height:70px">
+                            {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
+                            <div id="confirm" class="form-error-tooltip" style="display:none; width: 100%; position: relative; top: -10px">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Пароли не совпадают</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="login-form-row">
-                        <button class="btn btn--big btn-dark login-form-submit" type="submit">Зарегистрироваться</button>
+                        <input class="btn btn--big btn-dark login-form-submit" type="submit" value="Зарегистрироваться" onclick="return validate_registration();">
                     </div>
                     {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
-                    <div>
-                        {{ form_errors(form.lastName) }}
-                        {{ form_errors(form.firstName) }}
-                        {{ form_errors(form.age) }}
-                        {{ form_errors(form.phone) }}
-                        {{ form_errors(form.email) }}
-                        {{ form_errors(form.password) }}
+                    <div>                        
+                        {{ form_errors(form.email) }}                        
                     </div>
                     {{ form_end(form) }}                                         
                         <div class="another-way-auth__col">

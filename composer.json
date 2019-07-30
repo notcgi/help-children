@@ -1,4 +1,6 @@
 {
+    "name": "help-children",
+    "description": "Помощь детям",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -21,8 +23,7 @@
         "symfony/orm-pack": "^1.0",
         "symfony/process": "4.3.*",
         "symfony/security-bundle": "4.3.*",
-        "symfony/serializer-pack": "*",
-        "symfony/swiftmailer-bundle": "^3.2",
+        "symfony/serializer-pack": "*",        
         "symfony/translation": "4.3.*",
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
