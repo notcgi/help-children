@@ -1,4 +1,6 @@
 {
+    "name": "help-children",
+    "description": "Помощь детям",
     "type": "project",
     "license": "proprietary",
     "require": {
