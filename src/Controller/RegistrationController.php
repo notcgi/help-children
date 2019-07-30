@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController
                 }
             }
 
-            if ($valid) {
+            if ($valid) {                
                 // encode the plain password
                 $user->setPass(
                     $passwordEncoder->encodePassword(
@@ -137,6 +137,7 @@ class RegistrationController extends AbstractController
 
             if ($user) {
                 $doctrine->getManager()->persist($user->setRefCode(null));
+                $doctrine->getManager()->persist($user->setConfirmed(1));
                 $doctrine->getManager()->flush();
                 $this->addFlash('code_confirm', 'E-mail подтверждён');
                 $dispatcher->dispatch(new EmailConfirm($user), EmailConfirm::NAME);

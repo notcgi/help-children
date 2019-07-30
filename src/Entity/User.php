@@ -54,6 +54,11 @@ class User implements UserInterface
     private $fundraiser = 0;
 
     /**
+     * @ORM\Column(type="boolean", options={"default":1})
+     */
+    private $confirmed = 0;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $deletedAt;
@@ -307,6 +312,26 @@ class User implements UserInterface
     public function setFundraiser(bool $fundraiser): self
     {
         $this->fundraiser = $fundraiser;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @param bool $confirmed
+     * 
+     * @return User
+     */
+    public function setConfirmed(bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
 
         return $this;
     }

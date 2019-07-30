@@ -137,18 +137,23 @@ class SendGridSubscriber implements EventSubscriberInterface
     }
 
     public function onEmailConfirm(EmailConfirm $event)
-    {
+    {        
         $user = $event->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
             [
                 'first_name' => $user->getFirstName()
-            ]
-        );
-        $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a');
-
-        return $this->sendGrid->send($mail);
+            ],
+            'Приветствие'
+        );        
+        $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a1');
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }            
     }
 
     public function onRecurringPaymentFailure(RecurringPaymentFailure $event)
