@@ -36,6 +36,10 @@
                     <div class="err_list form-text text-muted">{{ form_errors(form.rewardSum) }}</div>
                     {{ form_widget(form.rewardSum, {'attr': {'class':'form-control', 'placeholder': '50.00', 'value': user.rewardSum}}) }}
                 </div>
+                <div class="form-group" style='margin-left: 20px'>
+                    {{ form_widget(form.fundraiser, {'attr': {'class':'form-check-input'}}) }}
+                    {{ form_label(form.fundraiser,  'Фандрайзер', {'label_attr': {'class':'form-check-label'}}) }}                    
+                </div>
                 <div class="form-group">
                     {{ form_label(form.roles, 'Roles') }}
                     <label for="exampleFormControlSelect2">Уровни доступа</label>
@@ -43,7 +47,7 @@
                 </div>
                 <div class="form-group">
                     {{ form_widget(form.referrer, {'attr': {'class':'form-control'}}) }}
-                </div>
+                </div>                
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Дата
                         создания: {{ user.createdAt|date("Y-m-d h:i:s") }}</label>
