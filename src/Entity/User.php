@@ -51,7 +51,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean", options={"default":0})
      */
-    private $fundraiser;
+    private $fundraiser = 0;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
