@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\RecurringPayment;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 class RecurringPaymentRemove extends Event
 {
