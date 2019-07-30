@@ -43,7 +43,7 @@ class User implements UserInterface
      */
     private $meta = [];
 
-    /**
+    /**     
      * @ORM\Column(type="decimal", precision=10, scale=2, options={"default":0})
      */
     private $rewardSum = 0;
