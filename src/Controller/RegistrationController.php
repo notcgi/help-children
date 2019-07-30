@@ -90,12 +90,14 @@ class RegistrationController extends AbstractController
                 $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
                 // do anything else you need here, like send an email
-                return $guardHandler->authenticateUserAndHandleSuccess(
-                    $user,
-                    $request,
-                    $authenticator,
-                    'main' // firewall name in security.yaml
-                );
+                // return $guardHandler->authenticateUserAndHandleSuccess(
+                //     $user,
+                //     $request,
+                //     $authenticator,
+                //     'main' // firewall name in security.yaml
+                // );
+
+                return $this->redirect('/login');
             }
         }
 
@@ -144,7 +146,7 @@ class RegistrationController extends AbstractController
             }
         }
 
-        return $this->redirect('/');
+        return $this->redirect('/login');
     }
 
     /**

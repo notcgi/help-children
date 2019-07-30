@@ -33,7 +33,7 @@
                         </div>
                         {% if error %}
                             <div class="alert alert-danger new-alert">
-                                Пожалуйста, проверьте правильность написания логина и пароля.
+                                {{ error.message }}                                
                             </div>
                         {% endif %}
                     </form>
