@@ -79,7 +79,8 @@ class DonateController extends AbstractController
      */
     public function no(Request $request)
     {
-      return $this->render('account/history.twig');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        return $this->render('account/history.twig');
       
         try {
             $form = $request->request->all();
