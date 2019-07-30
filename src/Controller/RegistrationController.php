@@ -87,7 +87,7 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                $dispatcher->dispatch(RegistrationEvent::NAME, new RegistrationEvent($user));
+                $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
                 // do anything else you need here, like send an email
                 return $guardHandler->authenticateUserAndHandleSuccess(
