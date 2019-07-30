@@ -131,7 +131,7 @@ class RegistrationController extends AbstractController
 
             /** @var User $user */
             $user = $doctrine->getRepository(User::class)->findOneBy([
-                'refCode' => $form['code'],
+                'ref_code' => $form['code'],
                 'email' => $form['email']
             ]);
 
@@ -139,7 +139,7 @@ class RegistrationController extends AbstractController
                 $doctrine->getManager()->persist($user->setRefCode(null));
                 $doctrine->getManager()->flush();
                 $this->addFlash('code_confirm', 'E-mail подтверждён');
-                $dispatcher->dispatch(EmailConfirm::NAME, new EmailConfirm($user));
+                $dispatcher->dispatch(new EmailConfirm($user), EmailConfirm::NAME);
             }
         }
 

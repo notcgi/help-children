@@ -62,8 +62,8 @@ class UsersService
             ->setLastName($data['surname'] ?? '')
             ->setPhone($data['phone'] ?? '');
 
-        if (isset($data['refCode'])) {
-            $user->setRefCode($data['refCode']);
+        if (isset($data['ref_code'])) {
+            $user->setRefCode($data['ref_code']);
         }
 
         if (isset($data['pass'])) {

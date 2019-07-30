@@ -63,9 +63,11 @@ class SendGridSubscriber implements EventSubscriberInterface
                 'confirm_url' => $this->generator->generate('code_confirm', [
                     'code' => $user->getRefCode(),
                     'email' => $user->getEmail()
-                ])
-            ]
+                ], 0)
+            ],
+            'Регистрация на сайте'
         );
+        
         $mail->setTemplateId('d-536b9f1c13cf4596a92513f67a076543');
         try {
             $this->sendGrid->send($mail);

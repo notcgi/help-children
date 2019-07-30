@@ -252,7 +252,7 @@ class DonateController extends AbstractController
                 }
 
                 $form['referral'] = $form['ref-code'] ?: $request->cookies->get('referral');
-                $form['refCode'] = substr(base64_encode(random_bytes(20)), 0, 16);
+                $form['ref_code'] = substr(base64_encode(random_bytes(20)), 0, 16);
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
