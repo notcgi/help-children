@@ -49,6 +49,11 @@ class User implements UserInterface
     private $rewardSum = 0;
 
     /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     */
+    private $fundraiser;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $deletedAt;
@@ -282,6 +287,26 @@ class User implements UserInterface
     public function setRewardSum(float $rewardSum): self
     {
         $this->rewardSum = $rewardSum;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getFundraiser()
+    {
+        return $this->fundraiser;
+    }
+
+    /**
+     * @param bool $fundraiser
+     * 
+     * @return User
+     */
+    public function setFundraiser(bool $fundraiser): self
+    {
+        $this->fundraiser = $fundraiser;
 
         return $this;
     }
