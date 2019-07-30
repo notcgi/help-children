@@ -25,6 +25,7 @@
                                             data-modal-trigger="modal-invite">Пригласить
                                     </button>
                                 </div>
+                                {% if app.user.fundraiser %}
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
                                     <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
@@ -33,6 +34,7 @@
                                         Вывести
                                     </button>
                                 </div>
+                                {% endif %}
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
