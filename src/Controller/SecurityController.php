@@ -57,8 +57,9 @@ class SecurityController extends AbstractController
             if ($user) {
                 $error = 'На почту отправлены указания по восстановлению пароля.';
                 
+                $user->setPass(substr(hash('sha256', random_bytes(20)), 0, 90));
                 $entityManager = $doctrine->getManager();
-                $entityManager->persist($user->setPass(substr(base64_encode(random_bytes(20)), 0, 16)));
+                $entityManager->persist($user);
                 $entityManager->flush();  
                 $dispatcher->dispatch(new ResetPasswordEvent($user), ResetPasswordEvent::NAME);
             }
@@ -103,7 +104,7 @@ class SecurityController extends AbstractController
             $token = $request->query->get("token", null);
             $resetToken = $old_user->getPass();
 
-            if ($token != $resetToken)
+            if ($token != $resetToken || $token == null)
                 return $this->redirect('/');
 
             $old_user->setPass(null);
@@ -132,10 +133,17 @@ class SecurityController extends AbstractController
             }
         }
 
+        $title = 'Восстановление пароля';
+        $description = 'Введите новый пароль';
+        $value = 'Восстановить';
+        
         return $this->render(
             'auth/resetPassword.twig',
             [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'title' => $title, 
+                'description' => $description, 
+                'value' => $value
             ]
         );
     }
