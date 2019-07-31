@@ -163,10 +163,12 @@ class SendGridSubscriber implements EventSubscriberInterface
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
-            [
-                'email' => $user->getEmail(),
-                'first_name' => $user->getFirstName(),
-                'token' => $user->getPass()
+            [        
+                'first_name' => $user->getFirstName(),        
+                'reset_url' => $this->generator->generate('reset_password', [
+                    'email' => $user->getEmail(),
+                    'token' => $user->getPass()    
+                ], 0)                
             ],
             'Восстановление доступа'
         );        
