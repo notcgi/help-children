@@ -84,9 +84,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Пожалуйста, проверьте правильность написания логина и пароля.');
         }
 
-        if ($valid && !$user->getConfirmed()) {
-            throw new CustomUserMessageAuthenticationException('Ваша учётная запись не подтверждена.');
-        }
+        // if ($valid && !$user->getConfirmed()) {
+        //     throw new CustomUserMessageAuthenticationException('Ваша учётная запись не подтверждена.');
+        // }
 
         return $user;
     }
