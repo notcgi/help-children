@@ -235,7 +235,7 @@ class DonateController extends AbstractController
                 '',
                 $request->request->get('phone', $user ? $user->getPhone() : '')
             ),
-            'ref-code' => substr(trim($request->request->get('ref-code', '')), 4),
+            'ref-code' => substr(trim($request->query->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),
             'sum' => round(
                 $request->query->filter('sum', null, FILTER_VALIDATE_FLOAT)

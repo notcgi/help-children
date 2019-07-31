@@ -22,9 +22,11 @@ class ReferralController extends AbstractController
      */
     public function devourer(int $id, SessionInterface $session, UrlGeneratorInterface $generator)
     {
-        $response = new RedirectResponse($generator->generate('donate'));
+        $response = new RedirectResponse($generator->generate('donate', [
+            'ref-code' => 'fand' . $id
+        ]));
 
-        if (0 < $id) {
+        if ($id > 0) {
             $session->set('referral', $id);
             $response->headers->setCookie(new Cookie('referral', $id));
         }
