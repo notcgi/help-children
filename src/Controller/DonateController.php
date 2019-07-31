@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\RegistrationEvent;
 use App\Event\RequestSuccessEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
@@ -198,10 +199,11 @@ class DonateController extends AbstractController
     }
 
     /**
-     * @param Request          $request
-     * @param UsersService     $usersService
-     * @param UnitellerService $unitellerService
-     * @param SessionInterface $session
+     * @param Request                  $request
+     * @param UsersService             $usersService
+     * @param UnitellerService         $unitellerService
+     * @param SessionInterface         $session
+     * @param EventDispatcherInterface $dispatcher
      *
      * @return Response
      * @throws \LogicException
@@ -217,7 +219,8 @@ class DonateController extends AbstractController
         Request $request,
         UsersService $usersService,
         UnitellerService $unitellerService,
-        SessionInterface $session
+        SessionInterface $session,
+        EventDispatcherInterface $dispatcher
     ) {
         $user = $this->getUser();
         $form_errors = [];
@@ -261,6 +264,8 @@ class DonateController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($req);
                 $entityManager->flush();
+
+                $dispatcher->dispatch(new RegistrationEvent($req->getUser()), RegistrationEvent::NAME);
 
                 return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
