@@ -23,9 +23,13 @@ referral:
     requirements:
         refferal: '\d+'
 
-code_confirm:
-    path: /user/confirm
+code_confirm:    
+    path: /user/confirm    
     controller: App\Controller\RegistrationController::confirmCode
+
+send_code_confirm:
+    path: /user/sendConfirm
+    controller: App\Controller\RegistrationController::sendConfirmCode
 
 main:
     path: /

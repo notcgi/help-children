@@ -57,7 +57,13 @@
                                             type="email"
                                             name="email"
                                             value="{{ userData.email }}">
-                                    </label>
+                                    </label>                                                               
+                                </div>
+                                <div class="my-account-row">
+                                    <button id='btnStatus' class="btn btn-link" style="pointer-events:none" disabled>{% if userData.confirmed == 1 %}Ваша почта подтверждена.{% else %}Ваша почта не подтверждена.{% endif %}</button>
+                                        {% if userData.confirmed == 0 %}
+                                            <button id='btnSend' class="btn btn-link" onclick="send_email_confirm_code()" style="text-decoration: underline;" type="button">Отправить письмо ещё раз</button>
+                                        {% endif %}    
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-reflink">
