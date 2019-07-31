@@ -82,7 +82,7 @@ class RegistrationController extends AbstractController
                         $user,
                         $form->get('password')->getData()
                     )
-                )->setRefCode(substr(base64_encode(random_bytes(20)), 0, 16));
+                )->setRefCode(substr(md5(random_bytes(20)), 0, 16));
 
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($user);
@@ -162,9 +162,7 @@ class RegistrationController extends AbstractController
             if (!$form1->isSubmitted()) {
                 return $this->render('auth/resetPassword.twig', 
                 ['form' => $form1->createView(), 'title' => $title, 'description' => $description, 'value' => $value]);
-            }
-            
-            $doctrine = $this->getDoctrine();                         
+            }                                 
             // encode the plain password
             $user->setPass(
                 $passwordEncoder->encodePassword(
@@ -208,5 +206,25 @@ class RegistrationController extends AbstractController
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
             ])
         );
+    }
+
+    public function sendConfirmCode(Request $request, EventDispatcherInterface $dispatcher)
+    {    
+        $email = $request->request->get('email');                  
+        if (!$email)
+            return new Response('false');
+
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);
+        if (!$user || $user->getConfirmed())
+            return new Response('false');
+
+        $user->setRefCode(substr(md5(random_bytes(20)), 0, 16));
+        $doctrine->getManager()->persist($user);
+        $doctrine->getManager()->flush();
+        $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+        return new Response('true');
     }
 }
