@@ -233,7 +233,7 @@ class User implements UserInterface
         return $this->pass;
     }
 
-    public function setPass(string $pass): self
+    public function setPass(?string $pass): self
     {
         $this->pass = $pass;
 

@@ -6,6 +6,10 @@ pass_recovery:
     path: /passwordRecovery
     controller: App\Controller\SecurityController::recovery
 
+reset_password:
+    path: /resetPassword
+    controller: App\Controller\SecurityController::reset_password
+
 app_logout:
     path: /logout
 
