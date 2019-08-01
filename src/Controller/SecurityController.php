@@ -45,7 +45,7 @@ class SecurityController extends AbstractController
     public function recovery(Request $request, EventDispatcherInterface $dispatcher): Response
     {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirect('/');
+            return $this->redirect('/account');
         }
 
         $error = null;
