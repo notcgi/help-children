@@ -5,22 +5,25 @@
 {% block keywords %}Мой аккаунт{% endblock %}
 
 {% block content %}
-    <ul>
-        {% for error in formErrors %}
-            <li> * {{ error }}</li>
-        {% endfor %}
-    </ul>
     <main>
         {% include 'components/account_title.twig' %}
         <div class="bg-purple-line"></div>
         <section class="section account section-with-bghearts">
             <div class="container container--small">
                 <div class="account-wrapper">
-                    {% include 'components/account_nav.twig' %}
-                    <div class="account-content my-account">
+                    {% include 'components/account_nav.twig' %}         
+                    <div class="account-content my-account">                                   
                         <h1 class="account-content__title my-account-title account-content-padding">Мой аккаунт</h1>
                         <div class="my-account-form-wrapper account-content-padding">
                             <form class="my-account-form js-my-account-form" method="POST">
+                                <ul style="margin-bottom: 10px">
+                                    {% for error in formErrors %}
+                                        <li> * {{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in errors %}
+                                        <li> * {{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваше Имя</div>
