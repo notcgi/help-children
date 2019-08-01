@@ -7,6 +7,7 @@ use App\Event\EmailConfirm;
 use App\Event\RecurringPaymentFailure;
 use App\Event\RecurringPaymentRemove;
 use App\Event\RegistrationEvent;
+use App\Event\ResetPasswordEvent;
 use App\Event\RequestSuccessEvent;
 use App\Repository\ChildRepository;
 use App\Service\SendGridService;
@@ -137,18 +138,47 @@ class SendGridSubscriber implements EventSubscriberInterface
     }
 
     public function onEmailConfirm(EmailConfirm $event)
-    {
+    {        
         $user = $event->getUser();
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
             [
                 'first_name' => $user->getFirstName()
-            ]
-        );
-        $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a');
+            ],
+            'Приветствие'
+        );        
+        $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a1');
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }            
+    }
 
-        return $this->sendGrid->send($mail);
+    public function onResetPassword(ResetPasswordEvent $event)
+    {        
+        $user = $event->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName(),
+            [        
+                'first_name' => $user->getFirstName(),        
+                'reset_url' => $this->generator->generate('reset_password', [
+                    'email' => $user->getEmail(),
+                    'token' => $user->getPass()    
+                ], 0)                
+            ],
+            'Восстановление доступа'
+        );        
+        $mail->setTemplateId('d-d9cc7d4306914b0dbf7090e4bacae96a');
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }            
     }
 
     public function onRecurringPaymentFailure(RecurringPaymentFailure $event)
@@ -191,6 +221,7 @@ class SendGridSubscriber implements EventSubscriberInterface
             'registration' => 'onRegistration',
             'request.success' => 'onRequestSuccess',
             'user.emailConfirm' => 'onEmailConfirm',
+            'user.resetPassword' => 'onResetPassword',
             'recurring_payment.failure' => 'onRecurringPaymentFailure',
             'recurring_payment.remove' => 'onRecurringPaymentRemove'
         ];

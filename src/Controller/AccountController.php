@@ -50,10 +50,11 @@ class AccountController extends AbstractController
         UrlGeneratorInterface $generator
     ) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
+        $user = $this->getUser();            
         $form = [
             'firstName' => trim($request->request->get('firstName', '')),
             'lastName' => trim($request->request->get('lastName', '')),
+            'age' => $request->request->get('age', ''),
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
@@ -61,22 +62,34 @@ class AccountController extends AbstractController
             ),
             'email' => trim($request->request->filter('email', '', FILTER_VALIDATE_EMAIL)),
             'oldPassword' => trim($request->request->filter('oldPassword', '')),
-            'password' => trim($request->request->filter('Password', '')),
+            'password' => trim($request->request->filter('password', '')),
             'retypePassword' => trim($request->request->filter('retypePassword', ''))
         ];
+        
         $form_errors = [];
+        $errors = null;
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('post')) {            
             $form_errors = $this->validate($form);
+            if (!$encoder->isPasswordValid($user, $form['oldPassword']))
+                $errors[] = 'Неверный текущий пароль';
 
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
+                    ->setAge($form['age'])
                     ->setPhone($form['phone'])
                     ->setEmail($form['email']);
-
+                
+                $errors[] = 'Данные сохранены';
+            
                 if (!empty($form['password'])) {
-                    $user->setPassword($encoder->encodePassword($user, $form['password']));
+                    if ($form['password'] == $form['retypePassword']) {
+                        $user->setPass($encoder->encodePassword($user, $form['password']));                        
+                        $errors[] = 'Пароль успешно изменён';
+                    }
+                    else
+                        $errors[] = 'Новые пароли не совпадают';
                 }
 
                 $entityManager = $this->getDoctrine()->getManager();
@@ -87,6 +100,7 @@ class AccountController extends AbstractController
 
         return $this->render('account/myAccount.twig', [
             'userData' => $user,
+            'errors' => $errors,
             'formErrors' => $form_errors,
             'referral_url' => $request->getScheme()
                 .'://'
@@ -243,7 +257,8 @@ class AccountController extends AbstractController
             $data,
             new Assert\Collection([
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
+                'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],                
+                'age' => [],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                 'email' => new Assert\NotBlank(),
                 'oldPassword' => [new Assert\NotBlank(), new Assert\Length(['min' => 6, 'max' => 64])],

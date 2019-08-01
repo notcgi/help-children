@@ -6,6 +6,10 @@ pass_recovery:
     path: /passwordRecovery
     controller: App\Controller\SecurityController::recovery
 
+reset_password:
+    path: /resetPassword
+    controller: App\Controller\SecurityController::reset_password
+
 app_logout:
     path: /logout
 
@@ -19,9 +23,13 @@ referral:
     requirements:
         refferal: '\d+'
 
-code_confirm:
-    path: /user/confirm
+code_confirm:    
+    path: /user/confirm    
     controller: App\Controller\RegistrationController::confirmCode
+
+send_code_confirm:
+    path: /user/sendConfirm
+    controller: App\Controller\RegistrationController::sendConfirmCode
 
 main:
     path: /

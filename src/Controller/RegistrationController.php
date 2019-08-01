@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Event\EmailConfirm;
 use App\Event\RegistrationEvent;
 use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordFormType;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -61,7 +62,7 @@ class RegistrationController extends AbstractController
 
             if ($form->isValid()) {
                 /** @var User $old_user */
-                $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+            $old_user = $doctrine->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
                 $valid = true;
 
                 if ($old_user) {
@@ -74,14 +75,14 @@ class RegistrationController extends AbstractController
                 }
             }
 
-            if ($valid) {
+            if ($valid) {                
                 // encode the plain password
                 $user->setPass(
                     $passwordEncoder->encodePassword(
                         $user,
                         $form->get('password')->getData()
                     )
-                )->setRefCode(substr(base64_encode(random_bytes(20)), 0, 16));
+                )->setRefCode(substr(md5(random_bytes(20)), 0, 16));
 
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($user);
@@ -95,7 +96,7 @@ class RegistrationController extends AbstractController
                     $request,
                     $authenticator,
                     'main' // firewall name in security.yaml
-                );
+                );                
             }
         }
 
@@ -108,8 +109,11 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param Request                  $request
-     * @param EventDispatcherInterface $dispatcher
+     * @param Request                      $request
+     * @param EventDispatcherInterface     $dispatcher
+     * @param GuardAuthenticatorHandler    $guardHandler 
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param LoginFormAuthenticator       $authenticator    
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \LogicException
@@ -117,33 +121,72 @@ class RegistrationController extends AbstractController
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
      */
-    public function confirmCode(Request $request, EventDispatcherInterface $dispatcher)
+    public function confirmCode(Request $request, 
+        EventDispatcherInterface $dispatcher,
+        GuardAuthenticatorHandler $guardHandler,
+        UserPasswordEncoderInterface $passwordEncoder,
+        LoginFormAuthenticator $authenticator)
     {
         $form = [
             'code' => $request->query->get('code'),
             'email' => $request->query->filter('email', FILTER_VALIDATE_EMAIL)
         ];
 
+        if (!$form['code'])
+            return $this->redirect('/');
+
         $form_errors = $this->codeValidate($form);
 
-        if (0 === count($form_errors)) {
-            $doctrine = $this->getDoctrine();
+        if (count($form_errors) > 0)
+            return $this->redirect('/');
+        
+        $doctrine = $this->getDoctrine();
 
-            /** @var User $user */
-            $user = $doctrine->getRepository(User::class)->findOneBy([
-                'ref_code' => $form['code'],
-                'email' => $form['email']
-            ]);
+        /** @var User $user */
+        $user = $doctrine->getRepository(User::class)->findOneBy([
+            'ref_code' => $form['code'],
+            'email' => $form['email']
+        ]);
 
-            if ($user) {
-                $doctrine->getManager()->persist($user->setRefCode(null));
-                $doctrine->getManager()->flush();
-                $this->addFlash('code_confirm', 'E-mail подтверждён');
-                $dispatcher->dispatch(new EmailConfirm($user), EmailConfirm::NAME);
-            }
+        if (!$user)
+            return $this->redirect('/');
+
+        if ($user->getPass() == null) {
+            $title = 'Завершение регистрации';
+            $description = 'Для продолжения регистрации введите свой пароль';
+            $value = 'Продолжить';
+            
+            $form1 = $this->createForm(ResetPasswordFormType::class, $user);
+            $form1->handleRequest($request);
+
+            if (!$form1->isSubmitted()) {
+                return $this->render('auth/resetPassword.twig', 
+                ['form' => $form1->createView(), 'title' => $title, 'description' => $description, 'value' => $value]);
+            }                                 
+            // encode the plain password
+            $user->setPass(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form1->get('password')->getData()
+                )
+            );                
         }
 
-        return $this->redirect('/');
+        if ($user) {
+            $doctrine->getManager()->persist($user->setRefCode(null));
+            $doctrine->getManager()->persist($user->setConfirmed(1));
+            $doctrine->getManager()->flush();
+            $this->addFlash('code_confirm', 'E-mail подтверждён');
+            $dispatcher->dispatch(new EmailConfirm($user), EmailConfirm::NAME);
+        }
+
+        // do anything else you need here, like send an email
+        return $guardHandler->authenticateUserAndHandleSuccess(
+            $user,
+            $request,
+            $authenticator,
+            'main' // firewall name in security.yaml
+        );           
     }
 
     /**
@@ -163,5 +206,25 @@ class RegistrationController extends AbstractController
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
             ])
         );
+    }
+
+    public function sendConfirmCode(Request $request, EventDispatcherInterface $dispatcher)
+    {    
+        $email = $request->request->get('email');                  
+        if (!$email)
+            return new Response('false');
+
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);
+        if (!$user || $user->getConfirmed())
+            return new Response('false');
+
+        $user->setRefCode(substr(md5(random_bytes(20)), 0, 16));
+        $doctrine->getManager()->persist($user);
+        $doctrine->getManager()->flush();
+        $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+        return new Response('true');
     }
 }

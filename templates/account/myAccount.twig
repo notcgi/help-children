@@ -5,22 +5,25 @@
 {% block keywords %}Мой аккаунт{% endblock %}
 
 {% block content %}
-    <ul>
-        {% for error in formErrors %}
-            <li> * {{ error }}</li>
-        {% endfor %}
-    </ul>
     <main>
         {% include 'components/account_title.twig' %}
         <div class="bg-purple-line"></div>
         <section class="section account section-with-bghearts">
             <div class="container container--small">
                 <div class="account-wrapper">
-                    {% include 'components/account_nav.twig' %}
-                    <div class="account-content my-account">
+                    {% include 'components/account_nav.twig' %}         
+                    <div class="account-content my-account">                                   
                         <h1 class="account-content__title my-account-title account-content-padding">Мой аккаунт</h1>
                         <div class="my-account-form-wrapper account-content-padding">
                             <form class="my-account-form js-my-account-form" method="POST">
+                                <ul style="margin-bottom: 10px">
+                                    {% for error in formErrors %}
+                                        <li> * {{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in errors %}
+                                        <li> * {{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваше Имя</div>
@@ -32,11 +35,21 @@
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
-                                        <div class="my-account-form-field__label label-text">Ваше Фамилия</div>
+                                        <div class="my-account-form-field__label label-text">Ваша Фамилия</div>
                                         <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="lastName"
                                             value="{{ userData.lastName }}">
+                                    </label>
+                                </div>
+                                <div class="my-account-row">
+                                    <label class="my-account-form-field my-account-form-phone">
+                                        <div class="my-account-form-field__label label-text">Ваш возраст</div>
+                                        <input class="my-account-form-input input-rounded"
+                                            type="number"
+                                            name="age"
+                                            value="{{ userData.age }}"
+                                            placeholder="Введите возраст">
                                     </label>
                                 </div>
                                 <div class="my-account-row">
@@ -57,7 +70,13 @@
                                             type="email"
                                             name="email"
                                             value="{{ userData.email }}">
-                                    </label>
+                                    </label>                                                               
+                                </div>
+                                <div class="my-account-row">
+                                    <button id='btnStatus' class="btn btn-link" style="pointer-events:none" disabled>{% if userData.confirmed == 1 %}Ваша почта подтверждена.{% else %}Ваша почта не подтверждена.{% endif %}</button>
+                                        {% if userData.confirmed == 0 %}
+                                            <button id='btnSend' class="btn btn-link" onclick="send_email_confirm_code()" style="text-decoration: underline;" type="button">Отправить письмо ещё раз</button>
+                                        {% endif %}    
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-reflink">
