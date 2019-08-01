@@ -27,7 +27,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Возвращает рефёрерров с суммами вознаграждений
+     * Возвращает рефёрерров с суммами вознаграждений и их пожертвованиями
      *
      * @param  User  $user
      * @return mixed
@@ -35,10 +35,10 @@ class UserRepository extends ServiceEntityRepository
     public function findReferralsWithSum(User $user)
     {
         return $this->createQueryBuilder('u')
-            ->addSelect('SUM(rh.sum)')
+            ->select('u.email, u.meta, u.createdAt')        
+            ->addSelect('(SELECT SUM(rh.sum) FROM \App\Entity\ReferralHistory rh WHERE rh.donator=u) as reward')            
+            ->addSelect('(SELECT SUM(r.sum) FROM \App\Entity\Request r WHERE r.status=2 AND r.user=u) as donate')
             ->where('u.referrer = :id')
-            ->leftJoin('u.donate_history', 'rh')
-            ->groupBy('u.id')
             ->setParameters([
                 'id' => $user->getId()
             ])

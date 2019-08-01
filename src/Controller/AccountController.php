@@ -151,11 +151,11 @@ class AccountController extends AbstractController
 
         $this->updateResults($this->getUser());
         $result_path = $this->getResultPath($this->getUser());
-        
+                
         return $this->render(
             'account/referrals.twig',
             [                
-                'entities' => $repository->findReferralsWithSum($this->getUser()),
+                'users' => $repository->findReferralsWithSum($this->getUser()),
                 'result_path' => $result_path,
                 'referral_url' => $request->getScheme()
                     .'://'
@@ -185,8 +185,8 @@ class AccountController extends AbstractController
         $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
         if ($success) {
             $user->setResultHash($hash);
-            $this->getDoctrine()->getEntityManager()->persist($user);
-            $this->getDoctrine()->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
         }
         return true;
     }
