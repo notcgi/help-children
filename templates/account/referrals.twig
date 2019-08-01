@@ -46,17 +46,24 @@
                                     <thead class="referrals-list-table__head">
                                     <tr>
                                         <th class="referrals-list-table__head-col">Почта</th>
-                                        <th class="referrals-list-table__head-col">Дата регистрации</th>
+                                        <th class="referrals-list-table__head-col">Телефон</th>
+                                        <th class="referrals-list-table__head-col">Регистрация</th>
                                         <th class="referrals-list-table__head-col">Начислено</th>
+                                        <th class="referrals-list-table__head-col">Пожертвовал</th>
                                     </tr>
                                     </thead>
                                     <tbody class="referrals-list-table__body">
                                     {% for pair in entities %}
                                         <tr class="referrals-list-table__row">
                                             <td class="referrals-list-table__body-col">{{ pair[0].email }}</td>
+                                            <td class="referrals-list-table__body-col">{{ pair[0].phone }}</td>
                                             <td class="referrals-list-table__body-col">{{ pair[0].createdAt|date('d m Y') }}</td>
                                             <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }}
                                                 б.
+                                            </td>
+                                            <td class="referrals-list-table__body-col">
+                                            0
+                                            {# todo СДЕЛАТЬ #}
                                             </td>
                                         </tr>
                                     {% endfor %}
