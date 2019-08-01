@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\RecurringPayment;
 use App\Entity\User;
+use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -149,7 +151,7 @@ class AccountController extends AbstractController
 
         return $this->render(
             'account/referrals.twig',
-            [
+            [                
                 'entities' => $repository->findReferralsWithSum($this->getUser()),
                 'referral_url' => $request->getScheme()
                     .'://'
@@ -240,6 +242,23 @@ class AccountController extends AbstractController
         }
 
         return $this->redirect($generator->generate('account_recurrent'));
+    }
+
+    public function sendPayoutRequest(Request $request, EventDispatcherInterface $dispatcher)
+    {    
+        $email = $request->request->get('email');                  
+        if (!$email)
+            return new Response('false');
+
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);
+        if (!$user)
+            return new Response('false');
+
+        $dispatcher->dispatch(new PayoutRequestEvent($user), PayoutRequestEvent::NAME);
+        return new Response('true');
     }
 
     /**

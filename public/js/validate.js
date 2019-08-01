@@ -80,3 +80,32 @@ function sendEmailConfirmCode() {
 
     xhr.send(data);
 }
+
+function sendPayoutRequest() {
+    let btnSend = document.querySelector('#btnSendPayout');
+    btnSend.blur();        
+    btnSend.textContent = 'Заявка отправлена';
+    btnSend.disabled = true;    
+    btnSend.style.cursor = 'default';    
+    btnSend.style.pointerEvents = 'none';
+    btnSend.className = 'btn';
+
+    let email = document.querySelector('#email').value;
+    var data = "email=" + email;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/account/sendPayoutRequest");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}

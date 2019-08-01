@@ -6,6 +6,7 @@ use App\Entity\SendGridSchedule;
 use App\Event\EmailConfirm;
 use App\Event\RecurringPaymentFailure;
 use App\Event\RecurringPaymentRemove;
+use App\Event\PayoutRequestEvent;
 use App\Event\RegistrationEvent;
 use App\Event\ResetPasswordEvent;
 use App\Event\RequestSuccessEvent;
@@ -156,6 +157,34 @@ class SendGridSubscriber implements EventSubscriberInterface
             $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
         }            
     }
+    
+    public function onPayoutRequest(PayoutRequestEvent $event)
+    {       
+        $mail_to = 'fond.detyam@mail.ru';
+
+        $user = $event->getUser();
+        $mail = $this->sendGrid->getMail(
+            $mail_to,
+            $user->getFirstName(),
+            [
+                'first_name' => $user->getFirstName()
+            ],
+            'Запрос вывода средств'
+        );        
+
+        $mail->addContent("text/plain", 
+            "Запрос: " .
+            "\n Имя: " . $user->getFirstName() . 
+            "\n Почта: " . $user->getEmail() . 
+            "\n Баллы: " . $user->getRewardSum());
+        // $mail->setTemplateId('d-c104643da6d04f6884baf477a2f819a1');
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }            
+    }
 
     public function onResetPassword(ResetPasswordEvent $event)
     {        
@@ -218,6 +247,7 @@ class SendGridSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            'account.payoutRequestEvent' => 'onPayoutRequest',
             'registration' => 'onRegistration',
             'request.success' => 'onRequestSuccess',
             'user.emailConfirm' => 'onEmailConfirm',

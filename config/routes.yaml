@@ -130,6 +130,11 @@ account_recurrent_remove:
     requirements:
         id: '\d+'
 
+account_payout_request:
+    path: /account/sendPayoutRequest
+    methods: POST
+    controller: App\Controller\AccountController::sendPayoutRequest
+
 panel_main:
     path: /panel
     controller: App\Controller\PanelController::main
