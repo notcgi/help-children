@@ -208,6 +208,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getResultHash(): string
+    {
+        return $this->meta['resultHash'] ?? '';
+    }
+
+    public function setResultHash(string $hash): self
+    {
+        $this->meta['resultHash'] = $hash;
+
+        return $this;
+    }
+
     public function getEmail(): string
     {
         return $this->email;

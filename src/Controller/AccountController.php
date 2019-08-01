@@ -149,16 +149,98 @@ class AccountController extends AbstractController
         /** @var UserRepository $repository */
         $repository = $this->getDoctrine()->getRepository(User::class);
 
+        $this->updateResults($this->getUser());
+        $result_path = $this->getResultPath($this->getUser());
+        
         return $this->render(
             'account/referrals.twig',
             [                
                 'entities' => $repository->findReferralsWithSum($this->getUser()),
+                'result_path' => $result_path,
                 'referral_url' => $request->getScheme()
                     .'://'
                     .idn_to_utf8($request->getHost())
                     .$generator->generate('referral', ['id' => $this->getUser()->getId()])
             ]
         );
+    }
+
+    function updateResults($user)
+    {        
+        $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';       
+        
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+        $donate = $repository->aggregateSumSuccessPaymentWithUser($user);
+        $donateSum = '+ ' . round($donate) . ' Р';
+        $childCount = $repository->aggregateCountChildWithUser($user);
+        $referrCount = $repository->aggregateCountReferWithUser($user);
+
+        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
+
+        // if ($user->getResultHash() === $hash)
+        //     return;
+
+        $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
+        
+        $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
+        if ($success) {
+            $user->setResultHash($hash);
+            $this->getDoctrine()->getEntityManager()->persist($user);
+            $this->getDoctrine()->getEntityManager()->flush();
+        }
+        return true;
+    }
+
+    private function getResultHash($id, $donateSum, $childCount, $referrCount)
+    {
+        $row = 'hash' . $id . $donateSum . $childCount . $referrCount;
+        $hash = md5($row);
+        return $hash;
+    }
+
+    private function getResultPath($user)
+    {
+        $id = $user->getId();
+        $row = 'hash path' . $id . 'asdf' . $id;
+        $hash = md5($row);
+        $path = '/images/results/' . $hash . '.jpg';
+        return $path;
+    }    
+
+    private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
+    {        
+        $font = dirname(__DIR__) . '/../public/fonts/MuseoSans Cyrillic/MuseoSansCyrl-700.otf';
+        $template_path = dirname(__DIR__) . '/../public/images/account-results.jpg';
+
+        $image = ImageCreateFromjpeg($template_path);
+        
+        $color_name = ImageColorAllocate($image, 255, 255, 255);    
+        $w_name = 210; //ширина
+        $h_name = 375; //высота    
+
+        if (mb_strlen($name) > 21) {
+            $name = str_replace(' ', "\n", $name);
+            $h_name -= 50;
+        }
+
+        $color = ImageColorAllocate($image, 255, 173, 4);
+        $w_donate = 210;
+        $h_donate = 840;        
+
+        $w_child = 445;
+        $h_child = 1040;
+
+        $w_refer = 220;
+        $h_refer = 1280;
+                
+        ImageFTtext($image, 50, 0, $w_name, $h_name, $color_name, $font, $name);
+        ImageFTtext($image, 95, 0, $w_donate, $h_donate, $color, $font, $donateSum);
+        ImageFTtext($image, 115, 0, $w_child, $h_child, $color, $font, $childCount);
+        ImageFTtext($image, 198, 0, $w_refer, $h_refer, $color, $font, $referrCount);
+        Header("Content-type: image/jpeg"); //указываем на тип передаваемых данных
+        Imagejpeg($image, $path); //сохраняем рисунок в формате JPEG
+        ImageDestroy($image); //освобождаем память и закрываем изображение
+        return true;
     }
 
     /**
