@@ -109,3 +109,9 @@ function sendPayoutRequest() {
 
     xhr.send(data);
 }
+
+function openShare() {
+    document.querySelector('#btnShare').style.display = 'none';
+    document.querySelector('#link').style.display = 'block';
+    document.querySelector('#share').style.display = 'flex';
+}

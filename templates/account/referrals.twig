@@ -46,10 +46,31 @@
                                 {% endif %}
                             </div>
                             <div class="referrals-statistics">
-                                <img src="{{ result_path }}" 
+                                <img 
+                                     id = 'result'
+                                     src="{{ result_path }}" 
                                      alt='Результаты пожертвований' 
                                      width=300
-                                     style='margin: 0 auto;'/>
+                                     style='margin: 0 auto;'/>                                
+                            </div>
+                            <div id='btnShare' class="referrals-statistics">
+                            <button class='btn btn-dark referrals__invite-button' onclick='openShare();' style="background:none;color:black;font-weight:bold;margin: 0 auto;">Поделиться</button>
+                            </div>
+                            <div id="link" class="referrals-statistics" style="margin-bottom: 0;display:none;">
+                            <ul style="margin: 0 auto; text-align: center;">
+                                <li style="display:block"><a class="btn-link" href="https://test.помогитедетям.рф{{ result_path }}"  download>Скачать изображение</a></li>
+                            <li style="display:block"><p>Поделиться</p></li>
+                            </ul>
+                            </div>
+                            <div id="share" class="referrals-statistics" style="display:none">
+                            <div class="share42init" 
+                            data-url="https://test.помогитедетям.рф{{ result_path }}"
+                            data-title='Статистика | БФ "Помогите Детям"'
+                            data-image="https://test.помогитедетям.рф{{ result_path }}"
+                            data-description="Мой вклад"
+                            style='margin: 0 auto;'>                            
+                            </div>                            
+        <script type="text/javascript" src="/share42/share42.js"></script>        
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
