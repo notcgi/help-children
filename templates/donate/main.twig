@@ -143,7 +143,8 @@
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row">
                                     <input class="input-rounded input-fullwidth" type="text" name="ref-code"
-                                           placeholder="Введите код приглашения" value="{{ form['ref-code'] }}">
+                                           placeholder="Введите код приглашения" value="{{ form['ref-code'] }}"
+                                           {% if not (form['ref-code'] is empty) %} disabled {% endif %}>
                                 </div>
                             </div>
                         </div>
