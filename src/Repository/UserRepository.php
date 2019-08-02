@@ -98,6 +98,15 @@ class UserRepository extends ServiceEntityRepository
             ->getSingleResult();
     }
 
+    public function findByBirthDayToday()
+    {
+        return $this->createQueryBuilder('u')
+            ->where('MONTH(u.birthday) = MONTH(:date) AND DAY(u.birthday) = DAY(:date)')
+            ->setParameter('date', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findUserSelecting(int $id)
     {
         return $this->createQueryBuilder('p')
