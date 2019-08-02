@@ -177,8 +177,8 @@ class AccountController extends AbstractController
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
 
-        // if ($user->getResultHash() === $hash)
-        //     return;
+        if ($user->getResultHash() === $hash)
+            return;
 
         $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
         
