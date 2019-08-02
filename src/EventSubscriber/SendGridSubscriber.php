@@ -11,6 +11,7 @@ use App\Event\PayoutRequestEvent;
 use App\Event\RegistrationEvent;
 use App\Event\ResetPasswordEvent;
 use App\Event\RequestSuccessEvent;
+use App\Event\SendReminderEvent;
 use App\Repository\ChildRepository;
 use App\Service\SendGridService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -270,6 +271,24 @@ class SendGridSubscriber implements EventSubscriberInterface
         $this->em->flush();
     }
 
+    public function onSendReminder(SendReminderEvent $event) {    
+        $this->em->persist((new SendGridSchedule())
+            ->setEmail($event->getEmail())
+            ->setName($event->getName())
+            ->setBody([
+                'first_name' => $event->getName()                
+            ])
+            ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime($event->getDate()))        
+                    ->setTime(12, 0, 0)            
+                )
+            ));
+        $this->em->flush();
+        return true;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -280,7 +299,8 @@ class SendGridSubscriber implements EventSubscriberInterface
             'user.emailConfirm' => 'onEmailConfirm',
             'user.resetPassword' => 'onResetPassword',
             'recurring_payment.failure' => 'onRecurringPaymentFailure',
-            'recurring_payment.remove' => 'onRecurringPaymentRemove'
+            'recurring_payment.remove' => 'onRecurringPaymentRemove',
+            'sendReminder' => 'onSendReminder'
         ];
     }
 }

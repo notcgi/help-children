@@ -107,6 +107,10 @@ donate_status:
     path: /donate/status
     controller: App\Controller\DonateController::status
 
+send_reminder:
+    path: /donate/sendReminder
+    controller: App\Controller\DonateController::sendReminder
+
 account_main:
     path: /account
     controller: App\Controller\AccountController::main

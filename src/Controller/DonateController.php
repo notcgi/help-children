@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Event\RegistrationEvent;
 use App\Event\RequestSuccessEvent;
+use App\Event\SendReminderEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -351,5 +352,17 @@ class DonateController extends AbstractController
                 'agree' => new Assert\EqualTo('true')
             ])
         );
+    }
+
+    public function sendReminder(Request $request, EventDispatcherInterface $dispatcher) {
+        $email = $request->request->get('email');
+        $name = $request->request->get('name');
+        $date = $request->request->get('date');
+
+        if (!isset($email) || !isset($name) || !isset($date))
+            return new Response('false');
+
+        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date), SendReminderEvent::NAME);
+        return new Response('true');
     }
 }

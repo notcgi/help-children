@@ -47,7 +47,7 @@
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row">
                                     <div class="form-group ohf-col-input__row-item">
-                                        <input class="input-rounded input-fullwidth" type="text" name="name"
+                                        <input id='name' class="input-rounded input-fullwidth" type="text" name="name"
                                                placeholder="Введите ваше имя" value="{{ form.name }}" required>
                                     </div>
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
@@ -62,7 +62,7 @@
                                                value="{{ form.phone }}" required>
                                     </div>
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
-                                        <input class="input-rounded input-fullwidth" type="email" name="email"
+                                        <input id='email' class="input-rounded input-fullwidth" type="email" name="email"
                                                placeholder="Введите E-mail" value="{{ form.email }}" required>
                                     </div>
                                 </div>
@@ -108,7 +108,18 @@
                                                    maxlength="7"
                                                    minlength="2"
                                                    value="{{ form.sum ?: 0 }}">
-                                        </label>
+                                        </label>                                        
+                                    </div>
+                                    <button id='buttonLater' class='btn btn-link' style='margin: 0 auto;' type='button' onclick='showCalendar();'>Совершить пожертвование позже</button>
+                                    <div id='blockWhen' style='display:none; margin: 0 auto;'>
+                                        <button id='buttonWhen' class='btn btn-link' style='margin: 0 auto; pointer-events:none;' type='button' disabled>Когда вам напомнить о пожертвовании?</button>                                    
+                                        <div id='blockDate'>
+                                            <input id='inputDate' class='input-rounded' type='date' placeholder='Выберите дату' value={{ "now"|date("m/d/Y") }}>
+                                            <button class="btn btn-dark referrals__invite-button"
+                                                    style="background:none;color:black;"
+                                                    type="button"
+                                                    onClick="sendReminder()">Отправить</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="ohf-col-input__row ohf-col-input__row--start">

@@ -151,3 +151,50 @@ function modalRegistration() {
 
     xhr.send(data);
 }
+
+function showCalendar() {
+    document.querySelector('#buttonLater').style.display = 'none';
+    document.querySelector('#blockWhen').style.display = 'block';    
+}
+
+function sendReminder() {
+    let date = document.querySelector('#inputDate').value;
+    if (!date) {
+        alert('Сначала выберите дату!');
+        return;
+    }
+
+    let email = document.querySelector('#email').value;    
+    if (!email) {
+        alert('Введите Email');
+        return;
+    }
+
+    let name = document.querySelector('#name').value;
+    if (!name) {
+        alert('Введите имя');
+        return;
+    }
+    
+    document.querySelector('#blockDate').style.display = 'none';
+    document.querySelector('#buttonWhen').textContent = 'Напоминание будет отправлено ' + date;
+
+
+    let data = "email=" + email + "&name=" + name + "&date=" + date;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}
