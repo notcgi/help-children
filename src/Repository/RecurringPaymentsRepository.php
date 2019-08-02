@@ -45,13 +45,15 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
      * @return RecurringPayment[]
      * @throws \Exception
      */
-    public function findNeedRequest($limit = 5)
+    public function findNeedRequest()
     {
         return $this->createQueryBuilder('rp')
             ->leftJoin('rp.request', 'r')
             ->where('rp.withdrawalAt <= :date')
-            ->setParameter('date', (new \DateTime())->sub(new \DateInterval('P1M')))
-            ->setMaxResults($limit)
+            ->setParameter('date', 
+                (new \DateTime())
+                    ->setTime(0, 0, 0)
+                    ->sub(new \DateInterval('P1M')))            
             ->getQuery()
             ->getResult();
     }
@@ -62,19 +64,27 @@ class RecurringPaymentsRepository extends ServiceEntityRepository
      * @return RecurringPayment[]
      * @throws \Exception
      */
-    public function findBeforeNeedOneDayRequest($limit = 5)
+    public function findBeforeNeedOneDayRequest()
     {
-        return $this->createQueryBuilder('rp')
-            ->leftJoin('rp.request', 'r')
+        return $this->createQueryBuilder('rp')            
+            ->addSelect('SUM(r.sum) as sum')
             ->leftJoin('rp.user', 'u')
-            ->where('rp.withdrawalAt <= :date')
-            ->setParameter(
-                'date',
-                (new \DateTime())
-                    ->sub(new \DateInterval('P1M'))
-                    ->add(new \DateInterval('P1D'))
-            )
-            ->setMaxResults($limit)
+            ->leftJoin('rp.request', 'r')
+            ->where('rp.withdrawalAt >= :dateAfter AND rp.withdrawalAt < :dateBefore')
+            ->groupBy('rp.user')
+            ->setParameters([                
+                'dateAfter' =>
+                    (new \DateTime())         
+                        ->setTime(0, 0, 0)
+                        ->sub(new \DateInterval('P1M'))               
+                        ->add(new \DateInterval('P1D')),                        
+
+                'dateBefore' =>
+                    (new \DateTime())
+                        ->setTime(0, 0, 0)
+                        ->sub(new \DateInterval('P1M'))
+                        ->add(new \DateInterval('P2D'))
+            ])            
             ->getQuery()
             ->getResult();
     }
