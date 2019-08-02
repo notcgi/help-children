@@ -44,11 +44,11 @@
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-phone">
-                                        <div class="my-account-form-field__label label-text">Ваш возраст</div>
+                                        <div class="my-account-form-field__label label-text">Ваша дата рождения</div>
                                         <input class="my-account-form-input input-rounded"
-                                            type="number"
-                                            name="age"
-                                            value="{{ userData.age }}"
+                                            type="date"
+                                            name="birthday"
+                                            value="{{ userData.birthday|date('Y-m-d') }}"
                                             placeholder="Введите возраст">
                                     </label>
                                 </div>

@@ -39,6 +39,11 @@ class User implements UserInterface
     private $ref_code;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthday;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $meta = [];
@@ -184,16 +189,27 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAge(): ?string
+    public function getBirthday(): ?\DateTime
     {
-        return $this->meta['age'] ?? 0;
+        return $this->birthday;
     }
 
-    public function setAge(string $age): self
+    public function setBirthday(\DateTime $birthday)
     {
-        $this->meta['age'] = $age;
+        $this->birthday = $birthday;
 
         return $this;
+    }
+
+    public function getAge(): ?string
+    {
+        if (empty($this->getBirthday()))
+            return '';
+
+        $now = new \DateTime();
+        $diff = $now - $this->getBirthday();
+        $age = floor($diff / (365*60*60*24));  
+        return $age;
     }
 
     public function getPhone(): string

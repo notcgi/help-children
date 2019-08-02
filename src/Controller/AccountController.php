@@ -56,7 +56,7 @@ class AccountController extends AbstractController
         $form = [
             'firstName' => trim($request->request->get('firstName', '')),
             'lastName' => trim($request->request->get('lastName', '')),
-            'age' => $request->request->get('age', ''),
+            'birthday' => $request->request->get('birthday', ''),
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
@@ -79,7 +79,7 @@ class AccountController extends AbstractController
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
-                    ->setAge($form['age'])
+                    ->setBirthday(new \DateTime($form['birthday']))
                     ->setPhone($form['phone'])
                     ->setEmail($form['email']);
                 
@@ -359,7 +359,7 @@ class AccountController extends AbstractController
             new Assert\Collection([
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
                 'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],                
-                'age' => [],
+                'birthday' => [],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                 'email' => new Assert\NotBlank(),
                 'oldPassword' => [new Assert\NotBlank(), new Assert\Length(['min' => 6, 'max' => 64])],
