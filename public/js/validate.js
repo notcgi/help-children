@@ -115,3 +115,39 @@ function openShare() {
     document.querySelector('#link').style.display = 'block';
     document.querySelector('#share').style.display = 'flex';
 }
+
+function resetModal() {
+    document.querySelector('#modal-register-content').style.display = 'block';
+    document.querySelector('#modal-register-send').style.display = 'none';
+    document.querySelector('#form').reset();
+}
+
+function modalRegistration() {
+    document.querySelector('#modal-register-content').style.display = 'none';
+    document.querySelector('#modal-register-send').style.display = 'block';
+
+    let fund = document.querySelector('#fund').value;
+    let firstName = document.querySelector('#inputFirstName').value;
+    let lastName = document.querySelector('#inputLastName').value;
+    let email = document.querySelector('#inputEmail').value;
+    let phone = document.querySelector('#inputPhone').value;
+    let check = document.querySelector('#inputCheck').value ? 1 : 0;
+    
+    let data = "email=" + email + "&phone=" + phone + "&firstName=" + firstName + "&lastName=" + lastName + "&check=" + check + "&fund=" + fund;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/user/registerFundMethod");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}

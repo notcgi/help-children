@@ -6,6 +6,7 @@ use App\Entity\SendGridSchedule;
 use App\Event\EmailConfirm;
 use App\Event\RecurringPaymentFailure;
 use App\Event\RecurringPaymentRemove;
+use App\Event\DonateReminderEvent;
 use App\Event\PayoutRequestEvent;
 use App\Event\RegistrationEvent;
 use App\Event\ResetPasswordEvent;
@@ -157,6 +158,31 @@ class SendGridSubscriber implements EventSubscriberInterface
             $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
         }            
     }
+
+    public function onDonateReminder(DonateReminderEvent $event)
+    {        
+        $user = $event->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName(),
+            [
+                'first_name' => $user->getFirstName(),
+                'donate_url' => $this->generator->generate('donate', [
+                    'code' => $user->getRefCode(),
+                    'email' => $user->getEmail(),
+                    'fund' => $user->getReferrer(),
+                ], 0)
+            ],
+            'Напоминание о платеже'
+        );        
+        $mail->setTemplateId('d-7e5881310e7447599243855b1c12d2af');
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch (Exception $e) {
+            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
+        }            
+    }
     
     public function onPayoutRequest(PayoutRequestEvent $event)
     {       
@@ -247,6 +273,7 @@ class SendGridSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            'donateReminderEvent' => 'onDonateReminder',
             'account.payoutRequestEvent' => 'onPayoutRequest',
             'registration' => 'onRegistration',
             'request.success' => 'onRequestSuccess',

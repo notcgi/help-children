@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Event\EmailConfirm;
+use App\Event\DonateReminderEvent;
 use App\Event\RegistrationEvent;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordFormType;
@@ -107,6 +108,8 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+
+
 
     /**
      * @param Request                      $request
@@ -225,6 +228,50 @@ class RegistrationController extends AbstractController
         $doctrine->getManager()->persist($user);
         $doctrine->getManager()->flush();
         $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+        return new Response('true');
+    }
+
+    public function registerFundMethod(Request $request, EventDispatcherInterface $dispatcher)
+    {    
+        $email = $request->request->get('email');                  
+        $phone = $request->request->get('phone');
+        $firstName = $request->request->get('firstName');
+        $lastName = $request->request->get('lastName');
+        $check = $request->request->get('check');
+        $fund = $request->request->get('fund');
+
+        if (!$email)
+            return new Response('false');
+
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);
+
+        if ($user)
+            return new Response('false');
+
+        $user = new User();
+        $user
+        ->setFirstName($firstName)
+        ->setLastName($lastName)
+        ->setEmail($email)
+        ->setPhone($phone)
+        ->setRefCode(substr(md5(random_bytes(20)), 0, 16));
+
+        $refer = $doctrine->getRepository(User::class)->findOneBy([            
+            'id' => $fund
+        ]);
+
+        $user->setReferrer($refer);
+
+        $doctrine->getManager()->persist($user);
+        $doctrine->getManager()->flush();
+        $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+
+        if ($check === '1')
+            $dispatcher->dispatch(new DonateReminderEvent($user), DonateReminderEvent::NAME);
+
         return new Response('true');
     }
 }

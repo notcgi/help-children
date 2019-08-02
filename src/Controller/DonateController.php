@@ -12,6 +12,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use App\Security\LoginFormAuthenticator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
@@ -199,11 +201,13 @@ class DonateController extends AbstractController
     }
 
     /**
-     * @param Request                  $request
-     * @param UsersService             $usersService
-     * @param UnitellerService         $unitellerService
-     * @param SessionInterface         $session
-     * @param EventDispatcherInterface $dispatcher
+     * @param Request                   $request
+     * @param UsersService              $usersService
+     * @param UnitellerService          $unitellerService
+     * @param SessionInterface          $session
+     * @param EventDispatcherInterface  $dispatcher
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator    $authenticator
      *
      * @return Response
      * @throws \LogicException
@@ -220,8 +224,30 @@ class DonateController extends AbstractController
         UsersService $usersService,
         UnitellerService $unitellerService,
         SessionInterface $session,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $authenticator
     ) {
+        if (!$this->isGranted('ROLE_USER')) {
+            $email = $request->query->get('email');
+            $code = $request->query->get('code');
+
+            $doctrine = $this->getDoctrine();
+            $user = $doctrine->getRepository(User::class)->findOneBy([
+                'ref_code' => $code,
+                'email' => $email
+            ]);
+
+            if ($user) {
+                $guardHandler->authenticateUserAndHandleSuccess(
+                    $user,
+                    $request,
+                    $authenticator,
+                    'main' // firewall name in security.yaml
+                );     
+            }
+        }
+
         $user = $this->getUser();
         $form_errors = [];
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
@@ -263,9 +289,7 @@ class DonateController extends AbstractController
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($req);
-                $entityManager->flush();
-
-                $dispatcher->dispatch(new RegistrationEvent($req->getUser()), RegistrationEvent::NAME);
+                $entityManager->flush();                
 
                 return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
