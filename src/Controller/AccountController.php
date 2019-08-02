@@ -227,10 +227,10 @@ class AccountController extends AbstractController
         $w_donate = 210;
         $h_donate = 840;        
 
-        $w_child = 445;
+        $w_child = 525 - 80 * strlen($childCount);
         $h_child = 1040;
 
-        $w_refer = 220;
+        $w_refer = 330 - 110 * strlen($referrCount);
         $h_refer = 1280;
                 
         ImageFTtext($image, 50, 0, $w_name, $h_name, $color_name, $font, $name);
