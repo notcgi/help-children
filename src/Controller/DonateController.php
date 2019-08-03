@@ -347,24 +347,6 @@ class DonateController extends AbstractController
                 $entityManager->persist($req);
                 $entityManager->flush();                
 
-                // Завершение платежа
-                $entityManager->persist(
-                    (new SendGridSchedule())
-                    ->setEmail($user->getEmail())
-                    ->setName($user->getFirstName())
-                    ->setBody([
-                        'first_name' => $user->getFirstName()
-                    ])
-                    ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
-                    ->setSendAt(
-                        \DateTimeImmutable::createFromMutable(
-                            (new \DateTime())
-                            ->add(new \DateInterval('PT2H'))                            
-                        )
-                    )                    
-                );
-                $entityManager->flush();
-
                 return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
         }
