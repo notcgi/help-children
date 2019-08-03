@@ -194,7 +194,7 @@ class User implements UserInterface
         return $this->birthday;
     }
 
-    public function setBirthday(\DateTime $birthday)
+    public function setBirthday(?\DateTime $birthday)
     {
         $this->birthday = $birthday;
 
