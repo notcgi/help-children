@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -91,12 +92,10 @@ class UserController extends AbstractController
                 ]
             )
             ->add(
-                'age',
-                IntegerType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
+                'birthday',
+                BirthdayType::class, [
+                    'widget' => 'single_text',  
+                    'required' => false                    
                 ]
             )
             ->add(
@@ -122,10 +121,11 @@ class UserController extends AbstractController
                 'fundraiser',
                 CheckboxType::class,
                 [
+                    'required' => false,
                     'label' => 'Фандрайзер',
                     'attr' => [
-                        'class' => 'form-check-input'
-                    ]
+                        'class' => 'form-check-input'                        
+                    ],                    
                 ]
             )
             ->add(

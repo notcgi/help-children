@@ -36,7 +36,7 @@ class UserRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
             ->select('u.email, u.meta, u.createdAt')        
-            ->addSelect('(SELECT rh.sum FROM \App\Entity\ReferralHistory rh WHERE rh.donator=u) as reward')            
+            ->addSelect('(SELECT rh.sum FROM \App\Entity\ReferralHistory rh WHERE rh.donator=u GROUP BY rh.donator) as reward')            
             ->addSelect('(SELECT SUM(r.sum) FROM \App\Entity\Request r WHERE r.status=2 AND r.user=u) as donate')
             ->where('u.referrer = :id')
             ->setParameters([
