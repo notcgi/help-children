@@ -26,16 +26,23 @@ class SendGridScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, SendGridSchedule::class);
     }
 
-    /**
-     * @return SendGridSchedule[]
-     * @throws \Exception
-     */
     public function findNeededSend(): array
     {
         return $this->createQueryBuilder('sgs')
-            ->where('sgs.sendAt <= :sendAt')
-            ->setMaxResults(50)
+            ->where('sgs.sendAt <= :sendAt AND sgs.sent=0')            
             ->setParameter('sendAt', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUnfinished($email): array
+    {
+        return $this->createQueryBuilder('sgs')
+            ->where('sgs.email = :email AND sgs.sent=0 AND sgs.template_id=:template')            
+            ->setParameters([
+                'email' => $email,
+                'template' => 'd-a5e99ed02f744cb1b2b8eb12ab4764b5'
+            ])
             ->getQuery()
             ->getResult();
     }

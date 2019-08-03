@@ -57,7 +57,7 @@ class SendGridScheduleCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         /** @var SendGridSchedule[] $scs */
-        $scs = $this->entityManager->getRepository(SendGridSchedule::class)->findNeededSend();
+        $scs = $this->entityManager->getRepository(SendGridSchedule::class)->findNeededSend();        
 
         foreach ($scs as $sc) {
             $mail = $this->sg->getMail(
@@ -68,7 +68,7 @@ class SendGridScheduleCommand extends Command
             $mail->setTemplateId($sc->getTemplateId());
             $this->sg->send($mail);
             $io->text('Send mail to: '.$sc->getEmail().' with template: '.$sc->getTemplateId());
-            $this->entityManager->remove($sc);
+            $this->entityManager->persist($sc->setSent(1));
         }
 
         $this->entityManager->flush();

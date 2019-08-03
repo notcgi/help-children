@@ -19,7 +19,7 @@ class RegistrationEvent extends Event
     protected $user;
 
     /**
-     * RequestSuccessEvent constructor.
+     * RegistrationEvent constructor.
      *
      * @param User $user
      */

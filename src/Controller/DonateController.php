@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\SendGridSchedule;
 use App\Event\RegistrationEvent;
+use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\SendReminderEvent;
 use App\Service\UnitellerService;
@@ -170,7 +172,40 @@ class DonateController extends AbstractController
                 $req->setStatus(2);
                 $req->setTransactionId($form['TransactionId']); #avtorkoda
                 $req->setJson(json_encode($form));              #avtorkoda
-                $dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($req));
+                
+                // Убрать напоминание о завершении платежа
+                $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
+                foreach ($urs as $ur) {
+                    $entityManager->remove($ur);
+                }
+                $entityManager->flush();
+
+                if (count($req->getUser()->getRequests()) > 1)
+                    $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+                else {
+                    $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
+                    if (!$req -> isRecurent()) {
+                        // Письмо №10
+                        $user = $req->getUser();
+                        $entityManager->persist(
+                            (new SendGridSchedule())
+                            ->setEmail($user->getEmail())
+                            ->setName($user->getFirstName())
+                            ->setBody([
+                                'first_name' => $user->getFirstName()
+                            ])
+                            ->setTemplateId('d-1836d6b43e9c437d8f7e436776d1a489')
+                            ->setSendAt(
+                                \DateTimeImmutable::createFromMutable(
+                                    (new \DateTime())
+                                    ->add(new \DateInterval('P28D'))
+                                    ->setTime(12, 0, 0)
+                                )
+                            )
+                        ); 
+                        $entityManager->flush();               
+                    }
+                }
 
                 if ($req -> isRecurent()) {//оформление подписки
 
@@ -188,6 +223,26 @@ class DonateController extends AbstractController
                     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
 
                     curl_close ($ch);
+
+                    $user = $req->getUser();
+                    // Увеличение
+                    $entityManager->persist(
+                        (new SendGridSchedule())
+                        ->setEmail($user->getEmail())
+                        ->setName($user->getFirstName())
+                        ->setBody([
+                            'first_name' => $user->getFirstName()
+                        ])
+                        ->setTemplateId('d-b12bbbbdfd2c4747b6b96b2243ffaad7')
+                        ->setSendAt(
+                            \DateTimeImmutable::createFromMutable(
+                                (new \DateTime())
+                                ->add(new \DateInterval('P4M3D'))
+                                ->setTime(12, 0, 0)
+                            )
+                        )
+                    );
+                    $entityManager->flush();
                 }
             break;
             case 'canceled':// ?
@@ -291,6 +346,24 @@ class DonateController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($req);
                 $entityManager->flush();                
+
+                // Завершение платежа
+                $entityManager->persist(
+                    (new SendGridSchedule())
+                    ->setEmail($user->getEmail())
+                    ->setName($user->getFirstName())
+                    ->setBody([
+                        'first_name' => $user->getFirstName()
+                    ])
+                    ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                    ->setSendAt(
+                        \DateTimeImmutable::createFromMutable(
+                            (new \DateTime())
+                            ->add(new \DateInterval('PT2H'))                            
+                        )
+                    )                    
+                );
+                $entityManager->flush();
 
                 return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
