@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\RecurringPayment;
 use App\Entity\User;
+use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -54,7 +56,7 @@ class AccountController extends AbstractController
         $form = [
             'firstName' => trim($request->request->get('firstName', '')),
             'lastName' => trim($request->request->get('lastName', '')),
-            'age' => $request->request->get('age', ''),
+            'birthday' => $request->request->get('birthday', ''),
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
@@ -77,7 +79,7 @@ class AccountController extends AbstractController
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
-                    ->setAge($form['age'])
+                    ->setBirthday(new \DateTime($form['birthday']))
                     ->setPhone($form['phone'])
                     ->setEmail($form['email']);
                 
@@ -147,16 +149,98 @@ class AccountController extends AbstractController
         /** @var UserRepository $repository */
         $repository = $this->getDoctrine()->getRepository(User::class);
 
+        $this->updateResults($this->getUser());
+        $result_path = $this->getResultPath($this->getUser());
+                        
         return $this->render(
             'account/referrals.twig',
-            [
-                'entities' => $repository->findReferralsWithSum($this->getUser()),
+            [                
+                'users' => $repository->findReferralsWithSum($this->getUser()),
+                'result_path' => $result_path,
                 'referral_url' => $request->getScheme()
                     .'://'
                     .idn_to_utf8($request->getHost())
                     .$generator->generate('referral', ['id' => $this->getUser()->getId()])
             ]
         );
+    }
+
+    function updateResults($user)
+    {        
+        $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';       
+        
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+        $donate = $repository->aggregateSumSuccessPaymentWithUser($user);
+        $donateSum = '+ ' . round($donate) . ' Р';
+        $childCount = $repository->aggregateCountChildWithUser($user);
+        $referrCount = $repository->aggregateCountReferWithUser($user);
+
+        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
+
+        if ($user->getResultHash() === $hash)
+            return;
+
+        $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
+        
+        $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
+        if ($success) {
+            $user->setResultHash($hash);
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+        }
+        return true;
+    }
+
+    private function getResultHash($id, $donateSum, $childCount, $referrCount)
+    {
+        $row = 'hash' . $id . $donateSum . $childCount . $referrCount;
+        $hash = md5($row);
+        return $hash;
+    }
+
+    private function getResultPath($user)
+    {
+        $id = $user->getId();
+        $row = 'hash path' . $id . 'asdf' . $id;
+        $hash = md5($row);
+        $path = '/images/results/' . $hash . '.jpg';
+        return $path;
+    }    
+
+    private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
+    {        
+        $font = dirname(__DIR__) . '/../public/fonts/MuseoSans Cyrillic/MuseoSansCyrl-700.otf';
+        $template_path = dirname(__DIR__) . '/../public/images/account-results.jpg';
+
+        $image = ImageCreateFromjpeg($template_path);
+        
+        $color_name = ImageColorAllocate($image, 255, 255, 255);    
+        $w_name = 210; //ширина
+        $h_name = 375; //высота    
+
+        if (mb_strlen($name) > 21) {
+            $name = str_replace(' ', "\n", $name);
+            $h_name -= 50;
+        }
+
+        $color = ImageColorAllocate($image, 255, 173, 4);
+        $w_donate = 210;
+        $h_donate = 840;        
+
+        $w_child = 525 - 80 * strlen($childCount);
+        $h_child = 1040;
+
+        $w_refer = 330 - 110 * strlen($referrCount);
+        $h_refer = 1280;
+                
+        ImageFTtext($image, 50, 0, $w_name, $h_name, $color_name, $font, $name);
+        ImageFTtext($image, 95, 0, $w_donate, $h_donate, $color, $font, $donateSum);
+        ImageFTtext($image, 115, 0, $w_child, $h_child, $color, $font, $childCount);
+        ImageFTtext($image, 198, 0, $w_refer, $h_refer, $color, $font, $referrCount);
+        Header("Content-type: image/jpeg"); //указываем на тип передаваемых данных
+        Imagejpeg($image, $path); //сохраняем рисунок в формате JPEG
+        ImageDestroy($image); //освобождаем память и закрываем изображение
+        return true;
     }
 
     /**
@@ -242,6 +326,23 @@ class AccountController extends AbstractController
         return $this->redirect($generator->generate('account_recurrent'));
     }
 
+    public function sendPayoutRequest(Request $request, EventDispatcherInterface $dispatcher)
+    {    
+        $email = $request->request->get('email');                  
+        if (!$email)
+            return new Response('false');
+
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);
+        if (!$user)
+            return new Response('false');
+
+        $dispatcher->dispatch(new PayoutRequestEvent($user), PayoutRequestEvent::NAME);
+        return new Response('true');
+    }
+
     /**
      * @param array $data
      *
@@ -258,7 +359,7 @@ class AccountController extends AbstractController
             new Assert\Collection([
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
                 'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],                
-                'age' => [],
+                'birthday' => [],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                 'email' => new Assert\NotBlank(),
                 'oldPassword' => [new Assert\NotBlank(), new Assert\Length(['min' => 6, 'max' => 64])],

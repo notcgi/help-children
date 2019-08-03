@@ -5,9 +5,15 @@ namespace App\Event;
 use App\Entity\Request;
 use Symfony\Component\EventDispatcher\Event;
 
-class RecurringPaymentFailure extends Event
+/**
+ * Class FirstRequestSuccessEvent
+ * @package App\Event
+ */
+class FirstRequestSuccessEvent extends Event
 {
-    const NAME = 'recurring_payment.failure';
+    const NAME = 'request.successFirst';
+
+    const RECURRING_NAME = 'recurringRequest.successFirst';
 
     /**
      * @var Request
@@ -15,7 +21,7 @@ class RecurringPaymentFailure extends Event
     protected $request;
 
     /**
-     * RecurringPaymentFailure constructor.
+     * FirstRequestSuccessEvent constructor.
      *
      * @param Request $request
      */

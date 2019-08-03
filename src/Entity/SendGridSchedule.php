@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChildRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SendGridScheduleRepository")
  * @ORM\Table(name="sendGrid_schedule")
  */
 class SendGridSchedule
@@ -41,6 +41,32 @@ class SendGridSchedule
      * @ORM\Column(type="datetime_immutable")
      */
     private $sendAt;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     */
+    private $sent = 0;
+
+
+    /**
+     * @return bool
+     */
+    public function getSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * @param bool $sent
+     * 
+     * @return SendGridSchedule
+     */
+    public function setSent(bool $sent)
+    {
+        $this->sent = $sent;
+
+        return $this;
+    }
 
     /**
      * @return int

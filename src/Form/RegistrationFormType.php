@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -40,11 +41,8 @@ class RegistrationFormType extends AbstractType
                     new Length(['min' => 2, 'max' => 32])
                 ]
             ])
-            ->add('age', NumberType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Range(['min' => 13, 'max' => 102])
-                ]
+            ->add('birthday', BirthdayType::class, [
+                'widget' => 'single_text',                
             ])
             ->add('phone', TextType::class, [
                 'required' => false,

@@ -31,6 +31,10 @@ send_code_confirm:
     path: /user/sendConfirm
     controller: App\Controller\RegistrationController::sendConfirmCode
 
+register_fund_method:
+    path: /user/registerFundMethod
+    controller: App\Controller\RegistrationController::registerFundMethod
+
 main:
     path: /
     controller: App\Controller\MainController::main
@@ -103,6 +107,10 @@ donate_status:
     path: /donate/status
     controller: App\Controller\DonateController::status
 
+send_reminder:
+    path: /donate/sendReminder
+    controller: App\Controller\DonateController::sendReminder
+
 account_main:
     path: /account
     controller: App\Controller\AccountController::main
@@ -129,6 +137,11 @@ account_recurrent_remove:
     controller: App\Controller\AccountController::recurrent_remove
     requirements:
         id: '\d+'
+
+account_payout_request:
+    path: /account/sendPayoutRequest
+    methods: POST
+    controller: App\Controller\AccountController::sendPayoutRequest
 
 panel_main:
     path: /panel

@@ -24,21 +24,54 @@
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-invite">Пригласить
                                     </button>
+                                    {% if app.user.fundraiser %}
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-register"
-                                            style="background:none;color:black;font-weight:bold;">Зарегистрировать
+                                            style="background:none;color:black;font-weight:bold;"
+                                            onclick="resetModal();">Зарегистрировать
                                     </button>
+                                    {% endif %}
                                 </div>
                                 {% if app.user.fundraiser %}
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
                                     <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
+                                    <input id="email" type="hidden" value={{ app.user.email }}>
                                     <button
-                                        class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
+                                        id="btnSendPayout"
+                                        class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button"
+                                        onclick="sendPayoutRequest()">
                                         Вывести
                                     </button>
                                 </div>
                                 {% endif %}
+                            </div>
+                            <div class="referrals-statistics">
+                                <img 
+                                     id = 'result'
+                                     src="{{ result_path }}" 
+                                     alt='Результаты пожертвований' 
+                                     width=300
+                                     style='margin: 0 auto;'/>                                
+                            </div>
+                            <div id='btnShare' class="referrals-statistics">
+                            <button class='btn btn-dark referrals__invite-button' onclick='openShare();' style="background:none;color:black;font-weight:bold;margin: 0 auto;">Поделиться</button>
+                            </div>
+                            <div id="link" class="referrals-statistics" style="margin-bottom: 0;display:none;">
+                            <ul style="margin: 0 auto; text-align: center;">
+                                <li style="display:block"><a class="btn-link" href="https://test.помогитедетям.рф{{ result_path }}"  download>Скачать изображение</a></li>
+                            <li style="display:block"><p>Поделиться</p></li>
+                            </ul>
+                            </div>
+                            <div id="share" class="referrals-statistics" style="display:none">
+                            <div class="share42init" 
+                            data-url="https://test.помогитедетям.рф{{ result_path }}"
+                            data-title='Статистика | БФ "Помогите Детям"'
+                            data-image="https://test.помогитедетям.рф{{ result_path }}"
+                            data-description="Мой вклад"
+                            style='margin: 0 auto;'>                            
+                            </div>                            
+        <script type="text/javascript" src="/share42/share42.js"></script>        
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
@@ -53,18 +86,13 @@
                                     </tr>
                                     </thead>
                                     <tbody class="referrals-list-table__body">
-                                    {% for pair in entities %}
+                                    {% for user in users %}
                                         <tr class="referrals-list-table__row">
-                                            <td class="referrals-list-table__body-col">{{ pair[0].email }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[0].phone }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[0].createdAt|date('d m Y') }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }}
-                                                б.
-                                            </td>
-                                            <td class="referrals-list-table__body-col">
-                                            0
-                                            {# todo СДЕЛАТЬ #}
-                                            </td>
+                                            <td class="referrals-list-table__body-col">{{ user.email }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.meta.phone }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.createdAt|date('d m Y') }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.reward|number_format(2, '.', ' ') }} б.</td>
+                                            <td class="referrals-list-table__body-col">{{ user.donate|number_format(0, '.', ' ') }} руб.</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -105,15 +133,17 @@
         </div>
     </div>
 
+    {% if app.user.fundraiser %}
     <div id="modal-register" class="modal modal-invite" aria-hidden="true">
         <div class="modal__overlay" tabindex="-1" data-modal-close>
-            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-register-title">                
-                <div class="modal__content" id="modal-register-content">
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-register-title" style="min-width:300px;min-height:300px">                
+                <div class="modal__content" id="modal-register-content" style="display:block">
                     <h3 class="modal__title">Регистрация приглашенного</h3>
-                    <form class="online-help-form ohf" method="POST" action="{{ path('donate') }}">
+                    <form id="form" class="online-help-form ohf" method="POST" action="{{ path('donate') }}">                   
+                        <input type="hidden" id="fund" value="fund{{ app.user.id }}">
                         <div class="form-group ohf-col-input__row-item">
                             <input type="text" 
-                                id="inputName" 
+                                id="inputFirstName" 
                                 class="input-rounded" 
                                 placeholder="Введите имя"
                                 required autofocus>
@@ -134,20 +164,26 @@
                                 required>
                         </div>              
                         <div class="form-group ohf-col-input__row-item">
-                            <input class="input-rounded input-fullwidth" type="text" name="phone"
+
+                            <input class="input-rounded input-fullwidth" id="inputPhone" type="text" name="phone"                           
                                     placeholder="Введите номер телефона" data-type="phone"
                                     required>
                         </div>          
                         <div class="form-group ohf-col-input__row-item">
-                            <input type="checkbox" id="form_fundraiser" name="form[fundraiser]" required="required" class="form-check-input" value="1">
-                            <label class="form-check-label required" for="form_fundraiser">Напомнить о пожертвовании</label>
+                            <input type="checkbox" id="inputCheck" name="form[fundraiser]" class="form-check-input" value="1">
+                            <label class="form-check-label required" for="inputCheck">Напомнить о пожертвовании</label>
                         </div>
                         <div class="login-form-row">
-                            <input class="btn btn-dark login-form-submit" type="submit" value="Зарегистрировать">
+                            <input class="btn btn-dark login-form-submit" type="submit" value="Зарегистрировать" onclick="return modalRegistration();">
                         </div>
                     </form>
+                </div>
+                <div class="modal__content" id="modal-register-send" style='margin-top: 50px;text-align: center; display:none'>
+                    <img src="/images/modal-registration.png" alt="Приглашение отправлено" width=100>
+                    <p class='btn-link' style="background:none;color:black;font-weight:bold;">Приглашение отправлено</p
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}

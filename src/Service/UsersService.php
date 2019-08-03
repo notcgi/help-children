@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Event\RegistrationEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -13,6 +15,7 @@ class UsersService
      * @param array                        $data
      * @param SessionInterface             $session
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EventDispatcherInterface     $dispatcher
      *
      * @return User
      * @throws \RuntimeException
@@ -25,14 +28,18 @@ class UsersService
 
     public $passwordEncoder;
 
+    public $dispatcher;
+
     public function __construct(
         ManagerRegistry $doctrine,
         SessionInterface $session,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->doctrine = $doctrine;
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -89,6 +96,8 @@ class UsersService
         $entityManager = $this->doctrine->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
         return $user;
     }

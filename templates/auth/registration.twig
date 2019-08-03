@@ -21,8 +21,11 @@
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
                         {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
                     </div>
+                    <div class="login-form-row registration-form-row">
+                        <label>Ваша дата рождения</label>
+                    </div>
                     <div class="login-form-row registration-form-row">                        
-                        {{ form_widget(form.age, {'value': form.age ?: '', 'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш возраст'}}) }}
+                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш день рождения'}}) }}
                         <label class="registration-form-field registration-form-phone">
                             {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded', 'placeholder': 'Введите номер телефона', 'data-type':'phone'}}) }}
                         </label>                                                

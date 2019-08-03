@@ -53,14 +53,16 @@ function validate_reset() {
     return isValid;
 }
 
-function send_email_confirm_code() {
+function sendEmailConfirmCode() {
+    let inputEmail = document.querySelector('#email');
     let btnStatus = document.querySelector('#btnStatus');
     let btnSend = document.querySelector('#btnSend');
 
     btnStatus.textContent = 'Письмо отправлено.';
     btnSend.style.display = 'None';
 
-    var data = "email=alexan999%40yandex.ru";
+    let email = inputEmail.value;
+    var data = "email=" + email;
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -72,13 +74,126 @@ function send_email_confirm_code() {
 
     xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/user/sendConfirm");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("User-Agent", "PostmanRuntime/7.15.2");
     xhr.setRequestHeader("Accept", "*/*");
-    xhr.setRequestHeader("Cache-Control", "no-cache");    
-    xhr.setRequestHeader("Host", "test.xn--c1accbmwfjbh2bd3o.xn--p1ai");
-    xhr.setRequestHeader("Accept-Encoding", "gzip, deflate");
-    xhr.setRequestHeader("Content-Length", "27");
-    xhr.setRequestHeader("Connection", "keep-alive");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}
+
+function sendPayoutRequest() {
+    let btnSend = document.querySelector('#btnSendPayout');
+    btnSend.blur();        
+    btnSend.textContent = 'Заявка отправлена';
+    btnSend.disabled = true;    
+    btnSend.style.cursor = 'default';    
+    btnSend.style.pointerEvents = 'none';
+    btnSend.className = 'btn';
+
+    let email = document.querySelector('#email').value;
+    var data = "email=" + email;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/account/sendPayoutRequest");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}
+
+function openShare() {
+    document.querySelector('#btnShare').style.display = 'none';
+    document.querySelector('#link').style.display = 'block';
+    document.querySelector('#share').style.display = 'flex';
+}
+
+function resetModal() {
+    document.querySelector('#modal-register-content').style.display = 'block';
+    document.querySelector('#modal-register-send').style.display = 'none';
+    document.querySelector('#form').reset();
+}
+
+function modalRegistration() {
+    document.querySelector('#modal-register-content').style.display = 'none';
+    document.querySelector('#modal-register-send').style.display = 'block';
+
+    let fund = document.querySelector('#fund').value;
+    let firstName = document.querySelector('#inputFirstName').value;
+    let lastName = document.querySelector('#inputLastName').value;
+    let email = document.querySelector('#inputEmail').value;
+    let phone = document.querySelector('#inputPhone').value;
+    let check = document.querySelector('#inputCheck').value ? 1 : 0;
+    
+    let data = "email=" + email + "&phone=" + phone + "&firstName=" + firstName + "&lastName=" + lastName + "&check=" + check + "&fund=" + fund;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/user/registerFundMethod");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+
+    xhr.send(data);
+}
+
+function showCalendar() {
+    document.querySelector('#buttonLater').style.display = 'none';
+    document.querySelector('#blockWhen').style.display = 'block';    
+}
+
+function sendReminder() {
+    let date = document.querySelector('#inputDate').value;
+    if (!date) {
+        alert('Сначала выберите дату!');
+        return;
+    }
+
+    let email = document.querySelector('#email').value;    
+    if (!email) {
+        alert('Введите Email');
+        return;
+    }
+
+    let name = document.querySelector('#name').value;
+    if (!name) {
+        alert('Введите имя');
+        return;
+    }
+    
+    document.querySelector('#blockDate').style.display = 'none';
+    document.querySelector('#buttonWhen').textContent = 'Напоминание будет отправлено ' + date;
+
+
+    let data = "email=" + email + "&name=" + name + "&date=" + date;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {        
+    }
+    });
+
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
     xhr.setRequestHeader("cache-control", "no-cache");
 
     xhr.send(data);
