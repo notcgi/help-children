@@ -113,10 +113,10 @@
                                     <button id='buttonLater' class='btn btn-link' style='margin: 0 auto;' type='button' onclick='showCalendar();'>Совершить пожертвование позже</button>
                                     <div id='blockWhen' style='display:none; margin: 0 auto;'>
                                         <button id='buttonWhen' class='btn btn-link' style='margin: 0 auto; pointer-events:none;' type='button' disabled>Когда вам напомнить о пожертвовании?</button>                                    
-                                        <div id='blockDate'>
-                                            <input id='inputDate' class='input-rounded' type='date' placeholder='Выберите дату' value={{ "now"|date("m/d/Y") }}>
+                                        <div id='blockDate' style="text-align:center">
+                                            <input id='inputDate' class='input-rounded' type='date' placeholder='Выберите дату' value={{ "now"|date("m/d/Y") }} style="min-width: 180px; padding-right:0">
                                             <button class="btn btn-dark referrals__invite-button"
-                                                    style="background:none;color:black;"
+                                                    style="background:none;color:black;padding-left:1rem;padding-right:1rem"
                                                     type="button"
                                                     onClick="sendReminder()">Отправить</button>
                                         </div>

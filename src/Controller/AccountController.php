@@ -170,7 +170,7 @@ class AccountController extends AbstractController
         $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';       
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
-        $donate = $repository->aggregateSumSuccessPaymentWithUser($user);
+        $donate = $this->getTotalDonate($user);
         $donateSum = '+ ' . round($donate) . ' Р';
         $childCount = $repository->aggregateCountChildWithUser($user);
         $referrCount = $repository->aggregateCountReferWithUser($user);
@@ -179,7 +179,6 @@ class AccountController extends AbstractController
 
         if ($user->getResultHash() === $hash)
             return;
-
         $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
         
         $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
@@ -189,6 +188,20 @@ class AccountController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
         }
         return true;
+    }
+
+    function getTotalDonate($user)
+    {
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+        $userDonate = $repository->aggregateSumSuccessPaymentWithUser($user);
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\User::class);
+        $referrals = $repository->findReferralsWithSum($user);
+        $refDonate = 0;
+        foreach ($referrals as $referral) {
+            $refDonate += $referral['donate'];
+        }
+        $total = $userDonate + $refDonate;
+        return $total;
     }
 
     private function getResultHash($id, $donateSum, $childCount, $referrCount)

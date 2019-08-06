@@ -78,6 +78,7 @@
                                 <table class="referrals-list-table">
                                     <thead class="referrals-list-table__head">
                                     <tr>
+                                        <th class="referrals-list-table__head-col">Имя</th>
                                         <th class="referrals-list-table__head-col">Почта</th>
                                         <th class="referrals-list-table__head-col">Телефон</th>
                                         <th class="referrals-list-table__head-col">Регистрация</th>
@@ -88,6 +89,7 @@
                                     <tbody class="referrals-list-table__body">
                                     {% for user in users %}
                                         <tr class="referrals-list-table__row">
+                                            <td class="referrals-list-table__body-col">{{ user.meta.firstName ~ " " ~ user.meta.lastName }}</td>
                                             <td class="referrals-list-table__body-col">{{ user.email }}</td>
                                             <td class="referrals-list-table__body-col">{{ user.meta.phone }}</td>
                                             <td class="referrals-list-table__body-col">{{ user.createdAt|date('d m Y') }}</td>
