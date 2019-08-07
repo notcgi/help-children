@@ -341,7 +341,8 @@ class SendGridSubscriber implements EventSubscriberInterface
                     'email' => $event->getEmail(),  
                     'name' => $event->getName(),
                     'lastName' => $event->getLastName(),
-                    'phone' => $event->getPhone(),                  
+                    'phone' => $event->getPhone(),   
+                    'code' => $event->getCode()               
                 ], 0)              
             ])
             ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')

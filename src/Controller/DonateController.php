@@ -224,7 +224,7 @@ class DonateController extends AbstractController
                     $json = json_decode($server_output);
                     $success = $json['Success'];
                     if (!$success)
-                        return new Response('Платёж произведён успешно, однако установить регулярный платёж не удалось. Свяжитесь с администратором для уточнений');
+                        return $this->render('account/history.twig');
 
                     $subscription_id = $json['Model']['Id'];
                     $req->setSubscriptionsId($subscription_id);
@@ -297,8 +297,8 @@ class DonateController extends AbstractController
         $lastName = $request->query->get('lastName');   
         $phone = $request->query->get('phone');   
 
-        if (!$this->isGranted('ROLE_USER')) {                     
-            $doctrine = $this->getDoctrine();
+        if (!$this->isGranted('ROLE_USER') && isset($code)) {                     
+            $doctrine = $this->getDoctrine();            
             $user = $doctrine->getRepository(User::class)->findOneBy([
                 'ref_code' => $code,
                 'email' => $email
@@ -424,12 +424,27 @@ class DonateController extends AbstractController
         $name = $request->request->get('name');
         $date = $request->request->get('date');
         $lastName = $request->request->get('lastName');
-        $phone = $request->request->get('phone');
+        $phone = $request->request->get('phone');        
+        $code = null;
+
+        $doctrine = $this->getDoctrine();            
+        $user = $doctrine->getRepository(User::class)->findOneBy([            
+            'email' => $email
+        ]);      
+
+        if (null !== $user->getRefCode())
+            $code = $user->getRefCode();
+        else {
+            $code = substr(md5(random_bytes(20)), 0, 16);
+            $user->setRefCode($code);
+            $doctrine->getManager()->persist($user);
+            $doctrine->getManager()->flush();
+        }
 
         if (!isset($email) || !isset($name) || !isset($date))
             return new Response('false');
 
-        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone), SendReminderEvent::NAME);
+        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone, $code), SendReminderEvent::NAME);
         return new Response('true');
     }
 }

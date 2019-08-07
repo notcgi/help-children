@@ -15,13 +15,15 @@ class SendReminderEvent extends Event
     private $date;
     private $lastName;
     private $phone;
+    private $code;
 
-    function __construct($email, $name, $date, $lastName, $phone) {
+    function __construct($email, $name, $date, $lastName, $phone, $code) {
         $this->email = $email;
         $this->name = $name;
         $this->date = $date;
         $this->lastName = $lastName;
         $this->phone = $phone;
+        $this->code = $code;
     }
 
     public function getEmail() {
@@ -42,5 +44,9 @@ class SendReminderEvent extends Event
 
     public function getPhone() {
         return $this->phone;
+    }
+
+    public function getCode() {
+        return $this->code;
     }
 }

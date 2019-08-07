@@ -203,7 +203,7 @@ function sendReminder() {
     }
     });
 
-    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
