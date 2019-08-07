@@ -128,7 +128,7 @@ function modalRegistration() {
     let lastName = document.querySelector('#inputLastName').value;
     let email = document.querySelector('#inputEmail').value;
     let phone = document.querySelector('#inputPhone').value;
-    let check = document.querySelector('#inputCheck').value ? 1 : 0;
+    let check = document.querySelector('#inputCheck').checked ? 1 : 0;
     
     let data = "email=" + email + "&phone=" + phone + "&firstName=" + firstName + "&lastName=" + lastName + "&check=" + check + "&fund=" + fund;
 

@@ -261,8 +261,9 @@ class RegistrationController extends AbstractController
         ->setRefCode(substr(md5(random_bytes(20)), 0, 16));
 
 
+        $refer_id = substr($fund, 4);
         $refer = $doctrine->getRepository(User::class)->findOneBy([            
-            'id' => $fund
+            'id' => $refer_id
         ]);
 
         $user->setReferrer($refer);
