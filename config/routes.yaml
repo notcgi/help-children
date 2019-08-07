@@ -131,6 +131,10 @@ account_referrals:
     path: /account/referrals
     controller: App\Controller\AccountController::referrals
 
+account_download:
+    path: /account/downloadImage
+    controller: App\Controller\AccountController::downloadImage
+
 account_recurrent:
     path: /account/recurrent
     controller: App\Controller\AccountController::recurrent

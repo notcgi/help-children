@@ -131,6 +131,19 @@ class AccountController extends AbstractController
         );
     }
 
+    public function downloadImage(Request $request)
+    {        
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');        
+        $result_path = $this->getResultPath($this->getUser());
+                        
+        return $this->render(
+            'account/downloadImage.twig',
+            [                                
+                'imagePath' => $result_path                
+            ]
+        );
+    }
+
     /**
      * @param Request               $request
      * @param UrlGeneratorInterface $generator
