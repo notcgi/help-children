@@ -336,7 +336,13 @@ class SendGridSubscriber implements EventSubscriberInterface
             ->setEmail($event->getEmail())
             ->setName($event->getName())
             ->setBody([
-                'first_name' => $event->getName()                
+                'first_name' => $event->getName(),
+                'donate_url' => $this->generator->generate('donate', [                                        
+                    'email' => $event->getEmail(),  
+                    'name' => $event->getName(),
+                    'lastName' => $event->getLastName(),
+                    'phone' => $event->getPhone(),                  
+                ], 0)              
             ])
             ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
             ->setSendAt(

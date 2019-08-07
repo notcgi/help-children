@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\LoginFormAuthenticator;
@@ -286,15 +287,18 @@ class DonateController extends AbstractController
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator
     ) {
-        if (!$this->isGranted('ROLE_USER')) {
-            $email = $request->query->get('email');
-            $code = $request->query->get('code');
+        $name = $request->query->get('name');  
+        $email = $request->query->get('email');
+        $code = $request->query->get('code');   
+        $lastName = $request->query->get('lastName');   
+        $phone = $request->query->get('phone');   
 
+        if (!$this->isGranted('ROLE_USER')) {                     
             $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository(User::class)->findOneBy([
                 'ref_code' => $code,
                 'email' => $email
-            ]);
+            ]);                               
 
             if ($user) {
                 $guardHandler->authenticateUserAndHandleSuccess(
@@ -303,7 +307,7 @@ class DonateController extends AbstractController
                     $authenticator,
                     'main' // firewall name in security.yaml
                 );     
-            }
+            }        
         }
 
         $user = $this->getUser();
@@ -312,15 +316,15 @@ class DonateController extends AbstractController
         $form = [
             'payment-type' => trim($request->request->get('payment-type', 'visa')),
             'child_id' => $child_id === 0 ? null : $child_id,
-            'name' => trim($request->request->get('name', $user ? $user->getFirstName() : '')),
-            'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : '')),
+            'name' => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
+            'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $lastName)),
             'phone' => preg_replace(
                 '/[^+0-9]/',
                 '',
-                $request->request->get('phone', $user ? $user->getPhone() : '')
+                $request->request->get('phone', $user ? $user->getPhone() : $phone)
             ),
             'ref-code' => substr(trim($request->query->get('ref-code', '')), 4),
-            'email' => trim($request->request->filter('email', $user ? $user->getEmail() : '', FILTER_VALIDATE_EMAIL)),
+            'email' => trim($request->request->filter('email', $user ? $user->getEmail() : $email, FILTER_VALIDATE_EMAIL)),
             'sum' => round(
                 $request->query->filter('sum', null, FILTER_VALIDATE_FLOAT)
                     ?: $request->request->filter('sum', 500, FILTER_VALIDATE_FLOAT),
@@ -415,11 +419,13 @@ class DonateController extends AbstractController
         $email = $request->request->get('email');
         $name = $request->request->get('name');
         $date = $request->request->get('date');
+        $lastName = $request->request->get('lastName');
+        $phone = $request->request->get('phone');
 
         if (!isset($email) || !isset($name) || !isset($date))
             return new Response('false');
 
-        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date), SendReminderEvent::NAME);
+        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone), SendReminderEvent::NAME);
         return new Response('true');
     }
 }

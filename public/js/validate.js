@@ -185,12 +185,15 @@ function sendReminder() {
         alert('Введите имя');
         return;
     }
+
+    let lastName = document.querySelector('#lastName').value;
+    let phone = document.querySelector('#phone').value;
     
     document.querySelector('#blockDate').style.display = 'none';
     document.querySelector('#buttonWhen').textContent = 'Напоминание будет отправлено ' + date;
 
 
-    let data = "email=" + email + "&name=" + name + "&date=" + date;
+    let data = "email=" + email + "&name=" + name + "&date=" + date + "&lastName=" + lastName + "&phone=" + phone;
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -200,7 +203,7 @@ function sendReminder() {
     }
     });
 
-    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
+    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
