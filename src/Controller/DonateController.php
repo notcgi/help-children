@@ -220,13 +220,17 @@ class DonateController extends AbstractController
                     curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $server_output = curl_exec ($ch);
+                    curl_close ($ch);
+                    $json = json_decode($server_output);
+                    $success = $json['Success'];
+                    if (!$success)
+                        return new Response('Платёж произведён успешно, однако установить регулярный платёж не удалось. Свяжитесь с администратором для уточнений');
 
-                    $req->setSubscriptionsId('abc123');
+                    $subscription_id = $json['Model']['Id'];
+                    $req->setSubscriptionsId($subscription_id);
 
                     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
-
-                    curl_close ($ch);
-
+                    
                     $user = $req->getUser();
                     // Увеличение
                     $entityManager->persist(
