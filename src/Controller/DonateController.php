@@ -180,8 +180,10 @@ class DonateController extends AbstractController
                 }
                 $entityManager->flush();
 
-                if (count($req->getUser()->getRequests()) > 1)
+                if (count($req->getUser()->getRequests()) > 1) {
+                    $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
                     $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+                }
                 else {
                     $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
                     if (!$req -> isRecurent()) {
