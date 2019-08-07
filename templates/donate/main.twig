@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="ohf-row showVISA"
-                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <div class="ohf-row showVISA"
-                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">3</div>
                                 <div class="ohf-col-label__notice">
@@ -114,7 +114,7 @@
                                     <div id='blockWhen' style='display:none; margin: 0 auto;'>
                                         <button id='buttonWhen' class='btn btn-link' style='margin: 0 auto; pointer-events:none;' type='button' disabled>Когда вам напомнить о пожертвовании?</button>                                    
                                         <div id='blockDate' style="text-align:center">
-                                            <input id='inputDate' class='input-rounded' type='date' placeholder='Выберите дату' value={{ "now"|date("m/d/Y") }} style="min-width: 180px; padding-right:0">
+                                            <input id='inputDate' class='input-rounded' type='date' placeholder='Выберите дату' value={{ "now"|date("m/d/Y") }} style="min-width: 150px">
                                             <button class="btn btn-dark referrals__invite-button"
                                                     style="background:none;color:black;padding-left:1rem;padding-right:1rem"
                                                     type="button"
@@ -161,7 +161,7 @@
                         </div>
                         {% endif %}
                         <div class="ohf-row showVISA"
-                             style="display:{{ 'requisite-services' != form['payment-type'] ? 'flex' : 'none' }}">
+                             style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label"></div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
@@ -206,6 +206,29 @@
                              style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="contacts-details">
                                 {% include 'components/requisites.twig' %}
+                            </div>
+                        </div>
+                        <div id="smsContent"
+                             class="ohf-row"
+                             style="padding:5rem 15rem;display:{{ 'sms' == form['payment-type'] ? 'flex' : 'none' }}">
+                            <div class="sms-details">
+                                <div class="contacts-details__row-value">                         
+<p>Чтобы <strong>внести пожертвование</strong> прямо сейчас отправьте SMS на номер <strong>3443</strong> со словом <strong>ФОНДУ</strong> и через пробел укажите сумму пожертвования.<br></p>
+
+<p>Например, <strong>ФОНДУ 200</strong>. В этом случае Вы пожертвуете 200 рублей. Если отправите просто слово <strong>ФОНДУ</strong> без указания суммы, то с Вашего телефона спишется 100 рублей.<br></p>
+
+
+<p>Чтобы Ваша поддержка была регулярной, отправьте SMS на <strong>3443</strong> текстом: <strong>ФОНДУ 200 ПОДПИСКА</strong> и Вам ежемесячно будет приходить SMS-напоминание с просьбой подтвердить данный платеж. Чтобы отписаться от регулярного пожертвования, отправьте SMS на <strong>3443</strong> с текстом <strong>ФОНДУ СТОП</strong>.<br></p>
+
+<p>Допустимый размер пожертвования — от 10 до 5 000 рублей. Стоимость отправки SMS на <strong>3443</strong> – бесплатно. Комиссия с абонента - 0%. Услуга доступна для абонентов МТС, Билайн, Мегафон, Теле2.<br><a href="http://info.gmmobile.ru">Техническая поддержка сервиса осуществляется компанией GmMobile.ru</a></p>
+<hr>
+<p><strong>Информация для абонентов:</strong></p>
+<img src="/images/operators.png" alt="Операторы сотовой связи">
+<p>МТС Договор оферты: <a href="http://static.mts.ru/uploadmsk/contents/1655/soglashenie_easy_pay.pdf">Ссылка</a><br>
+ТЕЛЕ2 Договор оферты: <a href="https://market.tele2.ru/offer/">Ссылка</a><br>
+БИЛАЙН Договор оферты: <a href="https://static.beeline.ru/upload/dpcupload/images/help/Docs/Limity_pri_oplate_tovarov.pdf">Ссылка</a><br>
+МЕГАФОН Комиссия с абонента — 0%. Договор оферты: <a href="http://moscow.megafon.ru/popups/oferta_m_payment.html">Ссылка</a></p>
+                                </div>                                                        
                             </div>
                         </div>
                     </form>
@@ -271,15 +294,27 @@
             textSum = form.elements['textSum'],
             formBlocks = Array.from(document.querySelectorAll('.showVISA')),
             requisites = document.getElementById('requisitesContent'),
+            sms = document.getElementById('smsContent'),
             setPaymentMethod = e => {
                 if ('visa' === e) {
                     requisites.style.display = 'none';
+                    sms.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'flex';
                     }
-                } else {
+                }
+                else if ('sms' === e) {
+                    requisites.style.display = 'none';
+                    sms.style.display = 'block';
+
+                    for (const el of formBlocks) {
+                        el.style.display = 'none';
+                    }
+                } 
+                else{
                     requisites.style.display = 'block';
+                    sms.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'none';

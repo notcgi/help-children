@@ -240,8 +240,9 @@ class RegistrationController extends AbstractController
         $check = $request->request->get('check');
         $fund = $request->request->get('fund');
 
-        if (!$email)
+        if (!$email || !$phone || strlen($phone) < 10)
             return new Response('false');
+
 
         $doctrine = $this->getDoctrine();
         $user = $doctrine->getRepository(User::class)->findOneBy([            
@@ -259,6 +260,7 @@ class RegistrationController extends AbstractController
         ->setPhone($phone)
         ->setRefCode(substr(md5(random_bytes(20)), 0, 16));
 
+
         $refer = $doctrine->getRepository(User::class)->findOneBy([            
             'id' => $fund
         ]);
@@ -266,11 +268,18 @@ class RegistrationController extends AbstractController
         $user->setReferrer($refer);
 
         $doctrine->getManager()->persist($user);
+        
+        try {
         $doctrine->getManager()->flush();
-        $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+        
+            $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
-        if ($check === '1')
-            $dispatcher->dispatch(new DonateReminderEvent($user), DonateReminderEvent::NAME);
+            if ($check === '1')
+                $dispatcher->dispatch(new DonateReminderEvent($user), DonateReminderEvent::NAME);
+        }
+        catch (Exception $e) {
+            return new Response('false');
+        }
 
         return new Response('true');
     }

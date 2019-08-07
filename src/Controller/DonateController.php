@@ -395,7 +395,7 @@ class DonateController extends AbstractController
         return Validation::createValidator()->validate(
             $data,
             new Assert\Collection([
-                'payment-type' => new Assert\Choice(['visa', 'requisite-services']),
+                'payment-type' => new Assert\Choice(['visa', 'requisite-services', 'sms']),
                 'ref-code' => new Assert\Length(['min' => 0, 'max' => 14]),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
                 'name' => new Assert\Length(['min' => 0, 'max' => 128]),

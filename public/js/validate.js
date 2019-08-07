@@ -72,7 +72,7 @@ function sendEmailConfirmCode() {
     }
     });
 
-    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/user/sendConfirm");
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/user/sendConfirm");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
@@ -101,7 +101,7 @@ function sendPayoutRequest() {
     }
     });
 
-    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/account/sendPayoutRequest");
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/account/sendPayoutRequest");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
@@ -123,9 +123,6 @@ function resetModal() {
 }
 
 function modalRegistration() {
-    document.querySelector('#modal-register-content').style.display = 'none';
-    document.querySelector('#modal-register-send').style.display = 'block';
-
     let fund = document.querySelector('#fund').value;
     let firstName = document.querySelector('#inputFirstName').value;
     let lastName = document.querySelector('#inputLastName').value;
@@ -139,11 +136,15 @@ function modalRegistration() {
     xhr.withCredentials = true;
 
     xhr.addEventListener("readystatechange", function () {
-    if (this.readyState === 4) {        
+    if (this.readyState === 4) {      
+        if (xhr.responseText === 'true') {
+            document.querySelector('#modal-register-content').style.display = 'none';
+            document.querySelector('#modal-register-send').style.display = 'block';  
+        }
     }
     });
-
-    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/user/registerFundMethod");
+    
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/user/registerFundMethod");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
@@ -151,6 +152,15 @@ function modalRegistration() {
 
     xhr.send(data);
 }
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
 
 function showCalendar() {
     document.querySelector('#buttonLater').style.display = 'none';
@@ -190,7 +200,7 @@ function sendReminder() {
     }
     });
 
-    xhr.open("POST", "https://test.xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    

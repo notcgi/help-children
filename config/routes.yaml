@@ -79,6 +79,10 @@ contacts:
     path: /contacts
     controller: App\Controller\MainController::contacts
 
+sms:
+    path: /sms
+    controller: App\Controller\MainController::sms
+
 help:
     path: /needhelp
     controller: App\Controller\MainController::help
