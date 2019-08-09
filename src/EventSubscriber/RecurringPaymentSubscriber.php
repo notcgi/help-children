@@ -38,10 +38,30 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param  RequestSuccessEvent $event
+     * @throws \Exception
+     */
+    public function onFirstRequestSuccess(FirstRequestSuccessEvent $event): void
+    {
+        $req = $event->getRequest();
+
+        if (!$req->isRecurent()) {
+            return;
+        }
+
+        $this->entityManager->persist((new RecurringPayment())
+            ->setRequest($req)
+            ->setWithdrawalAt(new \DateTime()));
+
+        $this->entityManager->flush();
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            'request.success' => 'onRequestSuccess'
+            'request.success' => 'onRequestSuccess',
+            'request.sucessFirst' => 'onFirstRequestSuccess',
         ];
     }
 }
