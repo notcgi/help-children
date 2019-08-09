@@ -57,10 +57,48 @@ class ChildSubscriber implements EventSubscriberInterface
         return $children_count;
     }
 
+        /**
+     * @param FirstRequestSuccessEvent $event
+     *
+     * @return bool|int
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function onFirstRequestSuccess(FirstRequestSuccessEvent $event)
+    {
+        return false; // отключенно за ненадобностью
+
+        $req = $event->getRequest();
+        $child = $req->getChild();
+
+        if (null !== $child) {
+            return $this->childRepository->addCollectedNyId($child, $req->getSum());
+        }
+
+        $children = $this->childRepository->getOpened();
+        $children_count = count($children);
+
+        if (0 === $children_count) {
+            return false;
+        }
+
+        $sum = $req->getSum();
+
+        for ($i = $children_count - 1; -1 < $i; --$i) {
+            $max_sum = floor($sum * 100 / ($i + 1)) / 100;
+            $take_sum = $max_sum > $children[$i]->getLeftGoal() ? $children[$i]->getLeftGoal() : $max_sum;
+            $sum -= $take_sum;
+            $this->childRepository->addCollectedNyId($child, $take_sum);
+        }
+
+        return $children_count;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            'request.success' => 'onRequestSuccess'
+            'request.success' => 'onRequestSuccess',
+            'request.sucessFirst' => 'onFirstRequestSuccess'
         ];
     }
 }

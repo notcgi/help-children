@@ -69,10 +69,47 @@ class ReferralRewardSubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
     }
 
+
+    /**
+     * @param FirstRequestSuccessEvent $event
+     *
+     * @throws \Exception
+     */
+    public function onFirstRequestSuccess(FirstRequestSuccessEvent $event): void
+    {
+        $req = $event->getRequest();
+        $user = $req->getUser();
+        $referrer = $user->getReferrer();
+
+        if (null === $referrer) {
+            return;
+        }
+
+        $config = $this->configRepository->find(1);
+        $sum = floor(
+            $req->getSum() * (
+                $req->isRecurent()
+                    ? $config->getPercentRecurrent()
+                    : $config->getPercentDefault()
+                ) * 100
+            ) / 100;
+        $this->entityManager->persist(
+            (new ReferralHistory())
+                ->setUser($referrer)
+                ->setDonator($user)
+                ->setRequest($req)
+                ->setSum($sum)
+        );
+        $this->userRepository->addReferralReward($referrer, $sum);
+        $this->entityManager->flush();
+    }
+
+
     public static function getSubscribedEvents()
     {
         return [
             'request.success' => 'onRequestSuccess',
+            'request.sucessFirst' => 'onFirstRequestSuccess',
             'recurringRequest.success' => 'onRequestSuccess'
         ];
     }

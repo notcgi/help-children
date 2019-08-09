@@ -39,7 +39,7 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param  RequestSuccessEvent $event
+     * @param  FirstRequestSuccessEvent $event
      * @throws \Exception
      */
     public function onFirstRequestSuccess(FirstRequestSuccessEvent $event): void
@@ -61,7 +61,7 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
     {
         return [
             'request.success' => 'onRequestSuccess',
-            'request.sucessFirst' => 'onFirstRequestSuccess',
+            'request.sucessFirst' => 'onFirstRequestSuccess'
         ];
     }
 }
