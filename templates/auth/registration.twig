@@ -8,7 +8,7 @@
     <style>
         #form div {
             margin: auto;
-        }
+        }   
     </style>
 
     <main>
@@ -17,15 +17,12 @@
                 <div class="login-wrapper registration-wrapper">
                     {{ form_start(form, {'attr':{'class':'login-form registration-form js-registration-form'}}) }}
                     <div class="login-form__title">Регистрация</div>
-                    <div class="login-form-row registration-form-row">
+                    <div class="login-form-row registration-form-row">                            
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
                         {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
-                    </div>
-                    <div class="login-form-row registration-form-row">
-                        <label>Ваша дата рождения</label>
-                    </div>
-                    <div class="login-form-row registration-form-row">                        
-                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш день рождения'}}) }}
+                    </div>                    
+                    <div class="login-form-row registration-form-row">                                            
+                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения'}}) }}
                         <label class="registration-form-field registration-form-phone">
                             {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded', 'placeholder': 'Введите номер телефона', 'data-type':'phone'}}) }}
                         </label>                                                
@@ -70,5 +67,14 @@
                 </div>
             </div>
         </section>
+        <script>
+            function ready() {
+                var foopicker = new FooPicker({
+                    id: 'registration_form_birthday',
+                    dateFormat: 'dd.MM.yyyy',
+                });
+            }
+            document.addEventListener("DOMContentLoaded", ready);   
+        </script>
     </main>
 {% endblock %}

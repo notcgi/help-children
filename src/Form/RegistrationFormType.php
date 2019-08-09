@@ -41,8 +41,8 @@ class RegistrationFormType extends AbstractType
                     new Length(['min' => 2, 'max' => 32])
                 ]
             ])
-            ->add('birthday', BirthdayType::class, [
-                'widget' => 'single_text',                
+            ->add('birthday', TextType::class, [
+                // 'widget' => 'single_text',                
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
