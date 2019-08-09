@@ -50,10 +50,11 @@ class DonateController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+        
 
         if (!$req) {
             return new Response('order not found', 404);
-        }
+        }        
 
         if ($form['Status'] == 'Completed') {
             $req->setStatus(2);
@@ -152,16 +153,40 @@ class DonateController extends AbstractController
             return new Response('invalid data', 400);
         }
 
-        /*if (!$unitellerService->validateStatusSignature($form)) {
-            return new Response('', 400);
-        }*/
-
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
         $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
 
+        // Если не нашёл такого платежа - возможно, он рекуррентный
         if (!$req) {
-            return new Response('', 404);
+            $subscription_id = $form['SubscriptionId'];
+            if (null === $subscription_id)
+                return new Response('', 404); // Если нет Id подписки, всё-таки ерунда
+            $subscr_req = $entityManager->getRepository(\App\Entity\Request::class)->findOneBy([
+                    'subscriptions_id' => $subscription_id
+                ]);
+            if (!$subscr_req)
+                return new Response('', 404); // Не судьба...
+            $rp = $entityManager->getRepository(\App\Entity\RecurringPayments::class)->find($subscr_req->getId());
+            if (!$rp) {
+                file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form UNREGISTERED IN SYSTEM".print_r($form, true)."\n", FILE_APPEND);
+                return new Response('', 404); // Незарегистрированная в базе подписка
+            }
+            
+            $req = new \App\Entity\Request();
+            $req->setChild($subscr_req->getChild)
+                ->setUser($subscr_req->getUser())                    
+                ->setSum($subscr_req->getSum())
+                ->setTransactionId($form['TransactionId'])
+                ->setJson(json_encode($form))
+                ->setStatus(2)
+                ->setRecurent(0);
+
+            $rp->setWithdrawalAt(new \DateTime());
+
+            $entityManager->persist($req)->persist($rp)->flush();
+            $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
 
         file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
