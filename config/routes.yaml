@@ -107,6 +107,10 @@ donate_no:
     path: /donate/no
     controller: App\Controller\DonateController::no
 
+donate_fail:
+    path: /donate/fail
+    controller: App\Controller\DonateController::fail
+
 donate_status:
     path: /donate/status
     controller: App\Controller\DonateController::status

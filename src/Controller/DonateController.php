@@ -134,6 +134,21 @@ class DonateController extends AbstractController
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
+    public function fail(Request $request, EventDispatcherInterface $dispatcher)
+    {
+        try {
+            $form = $request->request->all();
+        } catch (\JsonException $e) {
+            return new Response('invalid data', 400);
+        }
+
+        $user_id = $form['AccountId'];
+        $user = $entityManager->getRepository(\App\Entity\User::class)->find($user_id);        
+        $req = (new \App\Entity\Request())->setUser($user);
+        $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+    }
+
     /**
      * 4242424242424242
      * CLOUDPAYMENTS TEST
