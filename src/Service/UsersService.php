@@ -61,6 +61,26 @@ class UsersService
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
         if ($user) {
+            $entityManager = $this->doctrine->getManager();            
+    
+            // Завершение платежа
+            $entityManager->persist(
+                (new SendGridSchedule())
+                ->setEmail($user->getEmail())
+                ->setName($user->getFirstName())
+                ->setBody([
+                    'first_name' => $user->getFirstName()
+                ])
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setSendAt(
+                    \DateTimeImmutable::createFromMutable(
+                        (new \DateTime())
+                        ->add(new \DateInterval('PT2H'))                            
+                    )
+                )                    
+            );
+            $entityManager->flush();
+
             return $user;
         }
 
