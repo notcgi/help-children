@@ -7,6 +7,7 @@ use App\Entity\SendGridSchedule;
 use App\Event\RegistrationEvent;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
+use App\Event\RecurringPaymentFailure;
 use App\Event\SendReminderEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
@@ -139,13 +140,25 @@ class DonateController extends AbstractController
         try {
             $form = $request->request->all();
         } catch (\JsonException $e) {
+            file_put_contents(dirname(__DIR__)."/../var/logs/fail.log", date("d.m.Y H:i:s")."; "."Invalid data"."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
             return new Response('invalid data', 400);
         }
 
+        file_put_contents(dirname(__DIR__)."/../var/logs/fail.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
+
+        $entityManager = $this->getDoctrine()->getManager();
         $user_id = $form['AccountId'];
         $user = $entityManager->getRepository(\App\Entity\User::class)->find($user_id);        
         $req = (new \App\Entity\Request())->setUser($user);
         $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);
+        
+        // Убрать напоминание о завершении платежа
+        $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());                        
+        foreach ($urs as $ur) {
+            $entityManager->remove($ur);
+        }
+        $entityManager->flush();
+
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
