@@ -184,8 +184,11 @@ class AccountController extends AbstractController
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $donate = $this->getTotalDonate($user);
-        $donateSum = '+ ' . round($donate) . ' Р';
-        $childCount = $repository->aggregateCountChildWithUser($user);
+        $donateSum = '+ ' . round($donate) . ' Р';        
+        // $childCount = $repository->aggregateCountChildWithUser($user);
+        // Выводим общее число нуждающихся детей
+        $child_repository = $this->getDoctrine()->getRepository(\App\Entity\Child::class);
+        $childCount = $child_repository->aggregateTotalCountChild();
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        

@@ -56,4 +56,16 @@ class ChildRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateTotalCountChild()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c)')            
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
