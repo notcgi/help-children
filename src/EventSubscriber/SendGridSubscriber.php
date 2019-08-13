@@ -236,6 +236,13 @@ class SendGridSubscriber implements EventSubscriberInterface
             'Напоминание о платеже'
         );        
         $mail->setTemplateId('d-7e5881310e7447599243855b1c12d2af');
+        $mail->setSendAt(
+            \DateTimeImmutable::createFromMutable(
+                (new \DateTime())
+                ->add(new \DateInterval('PT2H'))                            
+            )
+        );
+
         try {
             $this->sendGrid->send($mail);
         }
