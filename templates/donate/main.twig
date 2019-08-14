@@ -57,9 +57,9 @@
                                 </div>
                                 <div class="ohf-col-input__row">
                                     <div class="form-group ohf-col-input__row-item">
-                                        <input id='phone' class="input-rounded input-fullwidth" type="text" name="phone"
+                                        <input id='phone' class="input-rounded input-fullwidth input-type-phone" type="text" name="phone"
                                                placeholder="Введите номер телефона" data-type="phone"
-                                               value="{{ form.phone }}" required>
+                                               value="{{ form.phone }}" onclick="checkPhone();" onkeyup="checkPhone();">
                                     </div>
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
                                         <input id='email' class="input-rounded input-fullwidth" type="email" name="email"

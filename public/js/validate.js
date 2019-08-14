@@ -261,3 +261,14 @@ function sendReminder() {
 
     xhr.send(data);
 }
+
+function checkPhone() {
+    let flag = document.getElementsByClassName('selected-flag')[0].title;
+    let code = flag.split(': ')[1];    
+    let phone = document.getElementsByClassName('input-type-phone')[0].value;
+
+    if (phone.length < code.length)
+        document.getElementsByClassName('input-type-phone')[0].value = code;        
+    if (phone === '')
+        document.getElementsByClassName('input-type-phone')[0].value = code; 
+}
