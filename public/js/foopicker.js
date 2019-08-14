@@ -419,7 +419,7 @@ var FooPicker = (function () {
     buildYears: function() {
       var elem = '<select class="foopicker__date--year">', currentYear = this.getCurrentYear();
       var year = this.year();
-      for (var i = year - 100; i <= currentYear; i++) {
+      for (var i = 1920; i <= new Date().getFullYear(); i++) {
         elem += '<option value="' + i + '"';
         if (i === year) {
           elem += ' selected';
@@ -569,7 +569,7 @@ var FooPicker = (function () {
     if (el) {
       addEvent(el, 'click', picker.showPicker, false);
       addEvent(el, 'blur', picker.hidePicker, false);
-      window.onscroll = picker.hidePickerScroll;
+      // window.onscroll = picker.hidePickerScroll;
     }
   }
 

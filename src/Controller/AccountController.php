@@ -222,7 +222,7 @@ class AccountController extends AbstractController
 
     private function getResultHash($id, $donateSum, $childCount, $referrCount)
     {
-        $row = 'hash' . $id . $donateSum . $childCount . $referrCount;
+        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount;
         $hash = md5($row);
         return $hash;
     }
