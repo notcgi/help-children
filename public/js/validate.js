@@ -37,13 +37,10 @@ function validate_reset() {
     let fields = document.getElementsByClassName('input-rounded');
     
     let password = fields[0];
-    let confirm = fields[1];
-    
-    if (!password.value)
-        return;
+    let confirm = fields[1];    
 
     let passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$/;
-    if(!password.value.match(passw)) {
+    if(!password.value || !password.value.match(passw)) {
         document.getElementById('pass').style.display = 'block';
         isValid = false;
     }
