@@ -38,9 +38,10 @@ var FooPicker = (function () {
         var datepicker = pickerField.getBoundingClientRect();
         var left = datepicker.left;
         var top = datepicker.bottom - 7;
-        if (pickerDiv) {
-          pickerDiv.style.position = 'fixed';
-          pickerDiv.style.top = top + 'px';
+        var bodyTop = document.body.getBoundingClientRect().top;
+        if (pickerDiv) {          
+          pickerDiv.style.position = 'absolute';
+          pickerDiv.style.top = top - bodyTop + 'px';
           pickerDiv.style.left = left + 'px';
           pickerDiv.style.zIndex = '99999';
         }
