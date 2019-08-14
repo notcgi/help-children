@@ -211,9 +211,7 @@ class DonateController extends AbstractController
                 ->setTransactionId($form['TransactionId'])
                 ->setJson(json_encode($form))
                 ->setStatus(2)
-                ->setRecurent(0);
-
-            $this->refHistory($req->getUser(), $req->getSum());
+                ->setRecurent(0);            
 
             $rp->setWithdrawalAt(new \DateTime());
 
