@@ -9,6 +9,8 @@ use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\RecurringPaymentFailure;
 use App\Event\SendReminderEvent;
+use App\Event\HalfYearRecurrentEvent;
+use App\Event\YearRecurrentEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -214,6 +216,17 @@ class DonateController extends AbstractController
 
             $entityManager->persist($req)->persist($rp)->flush();
             $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+
+            $startDate = $rp->getCreatedAt();
+            $endDate = new \DateTime();        
+            $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
+
+            if ($numberOfMonths == 6)
+                $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
+            
+            if ($numberOfMonths == 12)
+                $dispatcher->dispatch(new YearRecurrentEvent($req), YearRecurrentEvent::NAME);
+
             return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
 
