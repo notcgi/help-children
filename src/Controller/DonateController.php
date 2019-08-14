@@ -39,6 +39,9 @@ class DonateController extends AbstractController
      */
     public function ok(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        return $this->render('account/history.twig');
+
         try {
             $form = $request->request->all();
         } catch (\JsonException $e) {
@@ -165,8 +168,6 @@ class DonateController extends AbstractController
     }
 
     /**
-     * 4242424242424242
-     * CLOUDPAYMENTS TEST
      *
      * @param Request                  $request
      * @param UnitellerService         $unitellerService
@@ -211,6 +212,8 @@ class DonateController extends AbstractController
                 ->setJson(json_encode($form))
                 ->setStatus(2)
                 ->setRecurent(0);
+
+            $this->refHistory($req->getUser(), $req->getSum());
 
             $rp->setWithdrawalAt(new \DateTime());
 
