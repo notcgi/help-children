@@ -250,7 +250,7 @@ class RegistrationController extends AbstractController
         ]);
 
         if ($user)
-            return new Response('false');
+            return new Response('false (email)');
 
         $user = new User();
         $user

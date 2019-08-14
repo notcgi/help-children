@@ -123,9 +123,56 @@ function resetModal() {
     document.querySelector('#modal-register-content').style.display = 'block';
     document.querySelector('#modal-register-send').style.display = 'none';
     document.querySelector('#form').reset();
+
+    document.getElementById('firstNameError').style.display = 'none';
+    document.getElementById('lastNameError').style.display = 'none';
+    document.getElementById('emailError').style.display = 'none';
+    document.getElementById('emailExist').style.display = 'none';
+    document.getElementById('phone').style.display = 'none';
+}
+
+function validate_modal_registration() {
+    let firstNameInput = document.querySelector('#inputFirstName').value;
+    let lastNameInput = document.querySelector('#inputLastName').value;
+    let emailInput = document.querySelector('#inputEmail').value;
+    let phoneInput = document.querySelector('#inputPhone').value;
+
+    document.getElementById('firstNameError').style.display = 'none';
+    document.getElementById('lastNameError').style.display = 'none';
+    document.getElementById('emailError').style.display = 'none';
+    document.getElementById('emailExist').style.display = 'none';
+    document.getElementById('phone').style.display = 'none';
+
+    let isValid = true;    
+    
+    if (firstNameInput === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (lastNameInput === '') {
+        document.getElementById('lastNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneInput.length < 10 || phoneInput.length > 13) {        
+        document.getElementById('phone').style.display = 'block';
+        isValid = false;
+    }
+
+    let emailPattern = ".+@.+\..+";              
+    if (!emailInput.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    return isValid;
 }
 
 function modalRegistration() {
+    if (!validate_modal_registration())
+        return;
+
     let fund = document.querySelector('#fund').value;
     let firstName = document.querySelector('#inputFirstName').value;
     let lastName = document.querySelector('#inputLastName').value;
@@ -143,6 +190,9 @@ function modalRegistration() {
         if (xhr.responseText === 'true') {
             document.querySelector('#modal-register-content').style.display = 'none';
             document.querySelector('#modal-register-send').style.display = 'block';  
+        }
+        else if (xhr.responseText === 'false (email)') {
+            document.querySelector('#emailExist').style.display = 'block';
         }
     }
     });
