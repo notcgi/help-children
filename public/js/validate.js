@@ -34,10 +34,13 @@ function validate_reset() {
     document.getElementById('confirm').style.display = 'none';
 
     let isValid = true;
-    let fields = document.getElementsByClassName('registration-form-input');
+    let fields = document.getElementsByClassName('input-rounded');
     
     let password = fields[0];
     let confirm = fields[1];
+    
+    if (!password.value)
+        return;
 
     let passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$/;
     if(!password.value.match(passw)) {
