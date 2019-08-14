@@ -419,7 +419,7 @@ var FooPicker = (function () {
     buildYears: function() {
       var elem = '<select class="foopicker__date--year">', currentYear = this.getCurrentYear();
       var year = this.year();
-      for (var i = year - 20; i <= currentYear; i++) {
+      for (var i = year - 100; i <= currentYear; i++) {
         elem += '<option value="' + i + '"';
         if (i === year) {
           elem += ' selected';
