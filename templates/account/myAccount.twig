@@ -57,12 +57,14 @@
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-phone">
                                         <div class="my-account-form-field__label label-text">Ваш номер телефона</div>
-                                        <input class="my-account-form-input input-rounded"
+                                        <input class="my-account-form-input input-rounded input-type-phone"
                                             type="text"
                                             name="phone"
                                             value="{{ userData.phone }}"
                                             placeholder="Введите номер телефона"
-                                            data-type="phone">
+                                            data-type="phone"
+                                            onclick="checkPhone();"
+                                            onkeyup="checkPhone();">
                                     </label>
                                 </div>
                                 <div class="my-account-row">
