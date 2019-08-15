@@ -184,8 +184,7 @@ class AccountController extends AbstractController
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $donate = $this->getTotalDonate($user);
-        // Символ тот, в шрифте посажен не туда
-        $donateSum = '+ ' . round($donate) . ' ¤';               
+        $donateSum = '+ ' . round($donate) . ' ¤';        
         // $childCount = $repository->aggregateCountChildWithUser($user);
         // Выводим общее число нуждающихся детей
         $child_repository = $this->getDoctrine()->getRepository(\App\Entity\Child::class);
