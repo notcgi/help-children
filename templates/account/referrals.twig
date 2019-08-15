@@ -32,19 +32,20 @@
                                     </button>
                                     {% endif %}
                                 </div>
-                                {% if app.user.fundraiser %}
+                                
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
                                     <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
                                     <input id="email" type="hidden" value={{ app.user.email }}>
+                                    {% if app.user.fundraiser %}
                                     <button
                                         id="btnSendPayout"
                                         class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button"
                                         onclick="sendPayoutRequest()">
                                         Вывести
                                     </button>
-                                </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>                                
                             </div>
                             <div class="referrals-statistics">
                                 <img 
