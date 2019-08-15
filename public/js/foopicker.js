@@ -33,7 +33,7 @@ var FooPicker = (function () {
     _self.showPicker = function() {
       _self.buildPicker();
       var pickerField = document.getElementById(_id);
-      var pickerDiv = document.getElementById('foopicker-' + _id);
+      var pickerDiv = document.getElementById('foopicker-' + _id);      
       if (pickerField) {
         var datepicker = pickerField.getBoundingClientRect();
         var left = datepicker.left;
@@ -43,9 +43,9 @@ var FooPicker = (function () {
           pickerDiv.style.position = 'absolute';
           pickerDiv.style.top = top - bodyTop + 'px';
           pickerDiv.style.left = left + 'px';
-          pickerDiv.style.zIndex = '99999';
+          pickerDiv.style.zIndex = '99999';              
         }
-      }
+      }      
     };
 
     // Hide date picker
@@ -195,7 +195,7 @@ var FooPicker = (function () {
       
       // Close the date picker if clicked anywhere outside the picker element
       var htmlRoot = document.getElementsByTagName('html')[0];
-      addEvent(htmlRoot, 'click', _self.handleDocumentClick, false);
+      addEvent(htmlRoot, 'click', _self.handleDocumentClick, false);      
     };
 
     _self.handlePickerClick = function(event) {
@@ -569,7 +569,7 @@ var FooPicker = (function () {
     var el = document.getElementById(picker.options.id);
     if (el) {
       addEvent(el, 'click', picker.showPicker, false);
-      addEvent(el, 'blur', picker.hidePicker, false);
+      // addEvent(el, 'blur', picker.hidePicker, false);
       // window.onscroll = picker.hidePickerScroll;
     }
   }
