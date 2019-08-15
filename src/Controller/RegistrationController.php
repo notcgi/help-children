@@ -52,6 +52,7 @@ class RegistrationController extends AbstractController
                 '',
                 $regfrom['phone']
             );
+            $regfrom['birthday'] = \DateTime::createFromFormat("d.m.Y", $regfrom['birthday']);
             $request->request->set('registration_form', $regfrom);
         }
 
