@@ -13,23 +13,30 @@
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <div class="login-form__title">Войти</div>
                         <div class="login-form-row">
-                            <input type="email"
+                            <input type="text"
                                 value="{{ email }}"
                                 name="email"
                                 id="inputEmail"
                                 class="input-rounded"
                                 placeholder="Введите логин"
-                                required
                                 autofocus>
+                            <div id="loginError" class="form-error-tooltip" style="display: none; width: 200px; position: relative; left:0px; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите логин</p>
+                            </div>
                         </div>
                         <div class="login-form-row">
-                            <input class="input-rounded" type="password" name="password" placeholder="Введите пароль" required/>
+                            <input id="inputPassword" class="input-rounded" type="password" name="password" placeholder="Введите пароль"/>
+                            <div id="passwordError" class="form-error-tooltip" style="display: none; width: 200px; position: relative; left:0px; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите пароль</p>
+                            </div>
                         </div>
                         <div class="login-form-row login-form-row-remind">
                             <a href="{{ path('pass_recovery') }}" class="forgot-password-link">Забыли пароль?</a>
                         </div>
                         <div class="login-form-row">
-                            <button class="btn btn--big btn-dark login-form-submit" type="submit">Войти</button>
+                            <button class="btn btn--big btn-dark login-form-submit" type="submit" onclick="return validate_login();">Войти</button>
                         </div>
                         {% if error %}
                             <div class="alert alert-danger new-alert">

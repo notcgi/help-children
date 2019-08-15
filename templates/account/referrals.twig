@@ -22,12 +22,14 @@
  <br>2. Ознакомься со списком приглашенных и суммой, которую вы вместе собрали. Это Ваш вклад в наше доброе дело;
  <br>3. Поделись своими достижениями в социальных сетях! Многие увидят результат и последуют Вашему примеру.</p>
                                     <button class="btn btn-dark referrals__invite-button"
-                                            data-modal-trigger="modal-invite">Пригласить
+                                            data-modal-trigger="modal-invite"
+                                            style="margin-right:3rem">                                            
+                                            Пригласить
                                     </button>
                                     {% if app.user.fundraiser %}
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-register"
-                                            style="background:none;color:black;font-weight:bold;"
+                                            style="background:none;color:black;font-weight:bold;padding-left:0"
                                             onclick="resetModal();">Зарегистрировать
                                     </button>
                                     {% endif %}

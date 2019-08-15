@@ -53,6 +53,29 @@ function validate_reset() {
     return isValid;
 }
 
+function validate_login() {
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('passwordError').style.display = 'none';
+
+    let isValid = true;
+    let fields = document.getElementsByClassName('input-rounded');
+    
+    let login = fields[0].value;
+    let password = fields[1].value;
+
+    if (login === "") {
+        document.getElementById('loginError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (password === "") {
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
 function sendEmailConfirmCode() {
     let inputEmail = document.querySelector('#email');
     let btnStatus = document.querySelector('#btnStatus');
