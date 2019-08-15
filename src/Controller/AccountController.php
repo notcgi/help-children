@@ -184,7 +184,8 @@ class AccountController extends AbstractController
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $donate = $this->getTotalDonate($user);
-        $donateSum = '+ ' . round($donate) . ' Р';        
+        // Символ тот, в шрифте посажен не туда
+        $donateSum = '+ ' . round($donate) . ' ¤';               
         // $childCount = $repository->aggregateCountChildWithUser($user);
         // Выводим общее число нуждающихся детей
         $child_repository = $this->getDoctrine()->getRepository(\App\Entity\Child::class);
@@ -387,7 +388,7 @@ class AccountController extends AbstractController
             $data,
             new Assert\Collection([
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],                
+                'lastName' => [new Assert\Length(['min' => 2, 'max' => 256])],                
                 'birthday' => [],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                 'email' => new Assert\NotBlank(),
