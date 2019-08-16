@@ -17,35 +17,56 @@
                 <div class="login-wrapper registration-wrapper">
                     {{ form_start(form, {'attr':{'class':'login-form registration-form js-registration-form'}}) }}
                     <div class="login-form__title">Регистрация</div>
-                    <div class="login-form-row registration-form-row">                            
+                    <div class="login-form-row registration-form-row" style="align-items:flex-start">                            
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
-                        {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
-                    </div>                    
-                    <div class="login-form-row registration-form-row">                                            
-                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения', 'readonly': 'true'}}) }}
-                        <label class="registration-form-field registration-form-phone">
-                            {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded input-type-phone', 'placeholder': 'Введите номер телефона',
-                                'onclick':'checkPhone();', 'onkeyup':'checkPhone();', 'data-type':'phone'}}) }}
-                        </label>                                                
-                    </div>
-                    <div id="phone" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
-                            <div class="form-error-tooltip__arrow"></div>
-                            <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                        <div class="form-group registration-form-field">
+                            {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя*', 'onclick': "hideError('firstNameError');"}}) }}
+                            <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите имя</p>
+                            </div>
                         </div>
-                    <div class="login-form-row registration-form-row">
-                        {{ form_widget(form.email, {'attr': {'class':'input-rounded registration-form-input', 'required':'required', 'placeholder': 'Ваша почта'}}) }}
+                    </div>                    
+                    <div class="login-form-row registration-form-row" style="align-items:flex-start">                                            
+                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения', 'readonly': 'true'}}) }}
+                        <div class="form-group registration-form-field">
+                            <label class="registration-form-field registration-form-phone">
+                                {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded input-type-phone', 'placeholder': 'Введите номер телефона*',
+                                    'onclick':"hideError('phone');checkPhone();", 'onkeyup':'checkPhone();', 'data-type':'phone'}}) }}
+                            </label>                                                
+                            <div id="phone" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left: 0px;top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="login-form-row registration-form-row" style="align-items:flex-start">
+                        <div class="form-group registration-form-field">
+                            {{ form_widget(form.email, {'attr': {'class':'input-rounded registration-form-input', 
+                            'placeholder': 'Введите E-mail*', 'onclick':"hideError('emailError');hideError('emailExist');"}}) }}                        
+                            <div id="emailError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите правильный email</p>
+                            </div>
+                            <div id="emailExist" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
+                            </div>   
+                        </div>
                     </div>
-                    <div class="login-form-row registration-form-row login-form-group">
-                        <div style="width:100%">
-                            {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
-                            <div id="pass" class="form-error-tooltip" style="display: none; width: 300px; height: 50px; position: relative; left: 0px; top: 0px">
+                    <div class="login-form-row registration-form-row" style="align-items:flex-start">
+                        <div class="form-group registration-form-field">
+                            {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 
+                                'placeholder': 'Введите пароль*', 'onclick': "hideError('pass');"}}) }}
+                            <div id="pass" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left: 0px; top:-1px">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
                             </div>
                         </div>
-                        <div style="width:100%">
-                            {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
-                            <div id="confirm" class="form-error-tooltip" style="display:none; width: 100%; position: relative; top: -10px">
+                        <div class="form-group registration-form-field">
+                            {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 
+                                'placeholder': 'Повторите пароль*', 'onclick': "hideError('confirm');"}}) }}
+                            <div id="confirm" class="form-error-tooltip" style="display:none; width: 300px; position: relative; left:0px; top: -10px">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Пароли не совпадают</p>
                             </div>
@@ -55,9 +76,9 @@
                         <input class="btn btn--big btn-dark login-form-submit" type="submit" value="Зарегистрироваться" onclick="return validate_registration();">
                     </div>
                     {{ form_widget(form, {'attr':{'class':'login-form-row registration-form-row'}}) }}
-                    <div>                        
+                    {# <div>                        
                         {{ form_errors(form.email) }}                        
-                    </div>
+                    </div> #}
                     {{ form_end(form) }}                                         
                         <div class="another-way-auth__col">
                             <p>или</p>

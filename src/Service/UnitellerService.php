@@ -62,7 +62,8 @@ class UnitellerService
             'LastName' => $user->getLastName(),
             'FirstName' => $user->getFirstName(),
             'MiddleName' => $user->getMiddleName(),
-            'Phone' => $user->getPhone()
+            'Phone' => $user->getPhone(),
+            'IsRecurrentStart' => 0
         ];
 
         if ($req->isRecurent()) {

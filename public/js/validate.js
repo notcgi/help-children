@@ -1,4 +1,6 @@
 function validate_registration() {    
+    document.getElementById('firstNameError').style.display = 'none';
+    document.getElementById('emailError').style.display = 'none';
     document.getElementById('phone').style.display = 'none';
     document.getElementById('pass').style.display = 'none';
     document.getElementById('confirm').style.display = 'none';
@@ -6,12 +8,25 @@ function validate_registration() {
     let isValid = true;
     let fields = document.getElementsByClassName('registration-form-input');
 
+    let name = fields[1];
     let phoneNumber = fields[3];
+    let email = fields[4];
     let password = fields[5];
     let confirm = fields[6];
-    
-    if (phoneNumber.value.length < 10 || phoneNumber.value.length > 13) {        
+        
+    if (name.value === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneNumber.value.replace(/\D/gi, '').length < 10 || phoneNumber.value.replace(/\D/gi, '').length > 13) {        
         document.getElementById('phone').style.display = 'block';
+        isValid = false;
+    }
+    
+    let emailPattern = ".+@.+\..+";              
+    if (!email.value.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
         isValid = false;
     }
 
@@ -26,7 +41,7 @@ function validate_registration() {
         isValid = false;
     }
     
-    return isValid;
+    return isValid && checkEmailExisting('registration_form_email');
 }
 
 function validate_reset() {
@@ -77,7 +92,7 @@ function validate_login() {
 }
 
 function sendEmailConfirmCode() {
-    let inputEmail = document.querySelector('#email');
+    let inputEmail = document.querySelector('#inputEmail');
     let btnStatus = document.querySelector('#btnStatus');
     let btnSend = document.querySelector('#btnSend');
 
@@ -144,34 +159,25 @@ function resetModal() {
     document.querySelector('#modal-register-send').style.display = 'none';
     document.querySelector('#form').reset();
 
-    document.getElementById('firstNameError').style.display = 'none';
-    document.getElementById('lastNameError').style.display = 'none';
+    document.getElementById('firstNameError').style.display = 'none';    
     document.getElementById('emailError').style.display = 'none';
     document.getElementById('emailExist').style.display = 'none';
     document.getElementById('phone').style.display = 'none';
 }
 
 function validate_modal_registration() {
-    let firstNameInput = document.querySelector('#inputFirstName').value;
-    let lastNameInput = document.querySelector('#inputLastName').value;
+    let firstNameInput = document.querySelector('#inputFirstName').value;    
     let emailInput = document.querySelector('#inputEmail').value;
     let phoneInput = document.querySelector('#inputPhone').value;
 
-    document.getElementById('firstNameError').style.display = 'none';
-    document.getElementById('lastNameError').style.display = 'none';
-    document.getElementById('emailError').style.display = 'none';
-    document.getElementById('emailExist').style.display = 'none';
+    document.getElementById('firstNameError').style.display = 'none';    
+    document.getElementById('emailError').style.display = 'none';    
     document.getElementById('phone').style.display = 'none';
 
     let isValid = true;    
     
     if (firstNameInput === '') {
         document.getElementById('firstNameError').style.display = 'block';
-        isValid = false;
-    }
-
-    if (lastNameInput === '') {
-        document.getElementById('lastNameError').style.display = 'block';
         isValid = false;
     }
 
@@ -294,4 +300,141 @@ function checkPhone() {
         document.getElementsByClassName('input-type-phone')[0].value = code;        
     if (phone === '')
         document.getElementsByClassName('input-type-phone')[0].value = code; 
+}
+
+function validate_recovery() {    
+    let emailInput = document.querySelector('#inputEmail').value;    
+    
+    document.getElementById('emailError').style.display = 'none';        
+    let isValid = true;    
+
+    let emailPattern = ".+@.+\..+";              
+    if (!emailInput.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function validate_myAccount() {    
+    let firstNameInput = document.querySelector('#inputFirstName').value;    
+    let emailInput = document.querySelector('#inputEmail').value;
+    let phoneInput = document.querySelector('#inputPhone').value.replace(/\D/gi, '');
+    let passwordInput = document.querySelector('#inputPassword').value;
+    let newPassowrdInput = document.querySelector('#inputNewPassword');
+    let confirmPassowrdInput = document.querySelector('#inputConfirmPassword');
+
+    document.getElementById('firstNameError').style.display = 'none';    
+    document.getElementById('emailError').style.display = 'none';
+    document.getElementById('emailExist').style.display = 'none';
+    document.getElementById('phoneError').style.display = 'none';
+    document.getElementById('passwordError').style.display = 'none';
+    document.getElementById('newPasswordError').style.display = 'none';
+    document.getElementById('confirmPasswordError').style.display = 'none';
+
+    let isValid = true;    
+    
+    if (firstNameInput === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneInput.length < 10 || phoneInput.length > 13) {        
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+    }
+
+    let emailPattern = ".+@.+\..+";              
+    if (!emailInput.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (passwordInput === '') {        
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+    }    
+
+    let password = newPassowrdInput;
+    let confirm = confirmPassowrdInput;    
+
+    let passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$/;
+    if (password.value) {
+        if(!password.value.match(passw)) {
+            document.getElementById('newPasswordError').style.display = 'block';
+            isValid = false;
+        }
+        else
+        if (password.value !== confirm.value) {
+            document.getElementById('confirmPasswordError').style.display = 'block';    
+            isValid = false;
+        }
+    }
+
+    return isValid && checkEmailExisting('inputEmail');        
+}
+
+function checkEmailExisting(element) {
+    let emailInput = document.getElementById(element).value;   
+
+    document.getElementById('emailExist').style.display = 'none';    
+    
+    var data = "email=" + emailInput;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;    
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/checkEmail", false);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("Accept", "*/*");
+    xhr.setRequestHeader("Cache-Control", "no-cache");                    
+    xhr.setRequestHeader("cache-control", "no-cache");
+        
+    xhr.send(data);
+
+    if (xhr.responseText === 'exist') {
+        document.getElementById('emailExist').style.display = 'block';
+        return false;
+    }
+    return true;
+}
+
+function hideError(element) {
+    document.getElementById(element).style.display = 'none';
+}
+
+function validate_donate() {
+    let isValid = true;
+    document.getElementById('checkboxError').style.display = 'none';
+    let checkBoxInput = document.getElementById('checkboxInput').checked;
+    if (!checkBoxInput) {
+        document.getElementById('checkboxError').style.display = 'block';
+        isValid = false;
+    }
+
+    let firstNameInput = document.querySelector('#name').value;    
+    let emailInput = document.querySelector('#email').value;
+    let phoneInput = document.querySelector('#phone').value;
+
+    document.getElementById('firstNameError').style.display = 'none';    
+    document.getElementById('emailError').style.display = 'none';    
+    document.getElementById('phoneError').style.display = 'none';    
+    
+    if (firstNameInput === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneInput.length < 10 || phoneInput.length > 13) {        
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+    }
+
+    let emailPattern = ".+@.+\..+";              
+    if (!emailInput.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+    
+        return isValid;    
 }

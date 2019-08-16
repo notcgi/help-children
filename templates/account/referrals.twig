@@ -21,18 +21,20 @@
  <br>1. Поделись с друзьями реферальной ссылкой и пригласи их принять участие в благотворительном проекте;
  <br>2. Ознакомься со списком приглашенных и суммой, которую вы вместе собрали. Это Ваш вклад в наше доброе дело;
  <br>3. Поделись своими достижениями в социальных сетях! Многие увидят результат и последуют Вашему примеру.</p>
+                                    <div style="text-align:center">
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-invite"
-                                            style="margin-right:3rem">                                            
+                                            style="margin-left:1.5rem;margin-right:1.5rem">                                            
                                             Пригласить
                                     </button>
                                     {% if app.user.fundraiser %}
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-register"
-                                            style="background:none;color:black;font-weight:bold;padding-left:0"
+                                            style="margin-top:1rem;background:none;color:black;font-weight:bold"
                                             onclick="resetModal();">Зарегистрировать
                                     </button>
                                     {% endif %}
+                                    </div>
                                 </div>
                                 
                                 <div class="referrals-statistics__balance">
@@ -151,7 +153,8 @@
                             <input type="text" 
                                 id="inputFirstName" 
                                 class="input-rounded input-fullwidth" 
-                                placeholder="Введите имя">
+                                placeholder="Введите имя*"
+                                onclick="hideError('firstNameError');">
                             <div id="firstNameError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Введите имя</p>
@@ -162,17 +165,14 @@
                                 id="inputLastName" 
                                 class="input-rounded input-fullwidth" 
                                 placeholder="Введите фамилию">
-                            <div id="lastNameError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
-                                <div class="form-error-tooltip__arrow"></div>
-                                <p class="form-error-tooltip__notice">Введите фамилию</p>
-                            </div>
                         </div>
                         <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
                             <input type="email"                                
                                 name="email"
                                 id="inputEmail"
                                 class="input-rounded input-fullwidth"
-                                placeholder="Введите почту">
+                                placeholder="Введите почту*"
+                                onclick="hideError('emailError');hideError('emailExist');">
                             <div id="emailError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Введите правильный email</p>
@@ -185,7 +185,8 @@
                         <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
 
                             <input class="input-rounded input-fullwidth input-type-phone" id="inputPhone" type="text" name="phone"                           
-                                    placeholder="Введите номер телефона" data-type="phone" onclick="checkPhone();" onkeyup="checkPhone();">
+                                    placeholder="Введите номер телефона*" data-type="phone" 
+                                    onclick="hideError('phone');checkPhone();" onkeyup="checkPhone();">
                             <div id="phone" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Введите правильный номер</p>

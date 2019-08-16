@@ -182,9 +182,10 @@ class User implements UserInterface
         return $this->meta['lastName'] ?? '';
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
-        $this->meta['lastName'] = $lastName;
+        if ($lastName !== null)            
+            $this->meta['lastName'] = $lastName;
 
         return $this;
     }
