@@ -21,7 +21,7 @@
         <section class="section online-help section-with-bghearts">
             <div class="container container--small">
                 <div class="online-help-wrapper">
-                    <form class="online-help-form ohf" method="POST" action="{{ path('donate') }}">
+                    <form method="POST" action="{{ path('donate') }}">
                         <input type="hidden" name="child_id" value="{{ form.child_id ?: '' }}">
                         <div class="ohf-row">
                             <div class="ohf-row__col ohf-col-label">
@@ -48,8 +48,12 @@
                                 <div class="ohf-col-input__row">
                                     <div class="form-group ohf-col-input__row-item">
                                         <input id='name' class="input-rounded input-fullwidth" type="text" name="name"
-                                               placeholder="Введите ваше имя*" value="{{ form.name }}" required>
-                                    </div>
+                                               placeholder="Введите ваше имя*" value="{{ form.name }}" onclick="hideError('firstNameError');">                                        
+                                        <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:265px">
+                                            <div class="form-error-tooltip__arrow"></div>
+                                            <p class="form-error-tooltip__notice">Введите имя</p>
+                                        </div>
+                                    </div>                                    
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
                                         <input id='lastName' class="input-rounded input-fullwidth" type="text" name="surname"
                                                placeholder="Введите вашу фамилию" value="{{ form.surname }}">
@@ -59,12 +63,20 @@
                                     <div class="form-group ohf-col-input__row-item">
                                         <input id='phone' class="input-rounded input-fullwidth input-type-phone" type="text" name="phone"
                                                placeholder="Введите номер телефона*" data-type="phone"
-                                               value="{{ form.phone }}" onclick="checkPhone();" onkeyup="checkPhone();">
-                                    </div>
+                                               value="{{ form.phone }}" onclick="hideError('phoneError');checkPhone();" onkeyup="checkPhone();">                                        
+                                        <div id="phoneError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:265px">
+                                            <div class="form-error-tooltip__arrow"></div>
+                                            <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                                        </div>
+                                    </div>                                    
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
                                         <input id='email' class="input-rounded input-fullwidth" type="email" name="email"
-                                               placeholder="Введите E-mail*" value="{{ form.email }}" required>
-                                    </div>
+                                               placeholder="Введите E-mail*" value="{{ form.email }}" onclick="hideError('emailError');">                                        
+                                        <div id="emailError" class="form-error-tooltip" style="display: none; width: 265px; position: relative; left:0px;top:-1px">
+                                            <div class="form-error-tooltip__arrow"></div>
+                                            <p class="form-error-tooltip__notice">Введите правильный email</p>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
@@ -169,21 +181,26 @@
                                         <label class="input-checkbox__label">
                                             <input class="input-checkbox__input"
                                                    type="checkbox"
+                                                   id="checkboxInput"
                                                    name="agree"
                                                    value="true"
-                                                   checked
-                                                   required>
+                                                   onclick="hideError('checkboxError');"
+                                                   checked>                                            
                                             <span class="input-checkbox__checkmark"></span>
                                             <span class="input-checkbox__label">Я согласен с&nbsp;
                                                 <a class="link--purple" href="/docs/Public_offer.pdf" target="_blank">договором оферты</a>
-                                            </span>
+                                            </span>                                            
                                         </label>
+                                        <div id="checkboxError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                            <div class="form-error-tooltip__arrow"></div>
+                                            <p class="form-error-tooltip__notice">Необходимо согласие</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="ohf-col-input__row ohf-col-input__row--start ohf-col-buttons">
                                     <button
                                         class="btn btn-dark btn--big online-help-form__submit js-online-help-button-submit"
-                                        type="submit">
+                                        type="submit" onclick="return validate_donate();">
                                         Пожертвовать
                                     </button>
                                     {# <span class="online-help-form__or">или</span>

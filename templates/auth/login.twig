@@ -19,6 +19,7 @@
                                 id="inputEmail"
                                 class="input-rounded"
                                 placeholder="Введите логин"
+                                onclick="hideError('loginError');"
                                 autofocus>
                             <div id="loginError" class="form-error-tooltip" style="display: none; width: 200px; position: relative; left:0px; top:-1px;">
                                 <div class="form-error-tooltip__arrow"></div>
@@ -26,7 +27,8 @@
                             </div>
                         </div>
                         <div class="login-form-row">
-                            <input id="inputPassword" class="input-rounded" type="password" name="password" placeholder="Введите пароль"/>
+                            <input id="inputPassword" class="input-rounded" type="password" name="password" 
+                            placeholder="Введите пароль" onclick="hideError('passwordError');"/>
                             <div id="passwordError" class="form-error-tooltip" style="display: none; width: 200px; position: relative; left:0px; top:-1px;">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Введите пароль</p>

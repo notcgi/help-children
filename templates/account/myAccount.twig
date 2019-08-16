@@ -32,6 +32,7 @@
                                             id="inputFirstName"
                                             name="firstName"
                                             placeholder="Введите имя*"
+                                            onclick="hideError('firstNameError');"
                                             value="{{ userData.firstName }}">
                                     </label>
                                     <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
@@ -73,7 +74,7 @@
                                             value="{{ userData.phone }}"
                                             placeholder="Введите номер телефона*"
                                             data-type="phone"
-                                            onclick="checkPhone();"
+                                            onclick="hideError('phoneError');checkPhone();"
                                             onkeyup="checkPhone();">
                                     </label>
                                     <div id="phoneError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
@@ -89,16 +90,17 @@
                                             id="inputEmail"
                                             name="email"
                                             value="{{ userData.email }}"
+                                            onclick="hideError('emailError');hideError('emailExist');"
                                             placeholder="Введите E-mail*">
                                     </label>     
-                                <div id="emailError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px;width:300px">
-                                    <div class="form-error-tooltip__arrow"></div>
-                                    <p class="form-error-tooltip__notice">Введите правильный email</p>
-                                </div>
-                                <div id="emailExist" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px;width:300px">
-                                    <div class="form-error-tooltip__arrow"></div>
-                                    <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
-                                </div>                                                          
+                                    <div id="emailError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите правильный email</p>
+                                    </div>
+                                    <div id="emailExist" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
+                                    </div>                                                          
                                 </div>
                                 <div class="my-account-row">
                                     <button id='btnStatus' class="btn btn-link" style="pointer-events:none" disabled>{% if userData.confirmed == 1 %}Ваша почта подтверждена.{% else %}Ваша почта не подтверждена.{% endif %}</button>
@@ -126,6 +128,7 @@
                                             id="inputPassword"
                                             name="oldPassword"
                                             placeholder="Ваш старый пароль*"
+                                            onclick="hideError('passwordError');"
                                             minlength="6"
                                             maxlength="64">
                                     </label>
@@ -141,7 +144,8 @@
                                             type="password"
                                             id="inputNewPassword"
                                             name="password"
-                                            placeholder="Ваш новый пароль">
+                                            placeholder="Ваш новый пароль"
+                                            onclick="hideError('newPasswordError');">
                                     </label>
                                     <div id="newPasswordError" class="form-error-tooltip" style="display: none; width: 300px; position: sticky;">
                                         <div class="form-error-tooltip__arrow"></div>
@@ -155,7 +159,8 @@
                                             type="password"
                                             id="inputConfirmPassword"
                                             name="retypePassword"
-                                            placeholder="Ваш новый пароль">
+                                            placeholder="Ваш новый пароль"
+                                            onclick="hideError('confirmPasswordError');">
                                     </label>
                                     <div id="confirmPasswordError" class="form-error-tooltip" style="display:none; width: 300px; position: sticky">
                                         <div class="form-error-tooltip__arrow"></div>
