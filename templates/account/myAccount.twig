@@ -17,27 +17,31 @@
                         <div class="my-account-form-wrapper account-content-padding">
                             <form class="my-account-form js-my-account-form" method="POST">
                                 <ul style="margin-bottom: 10px">
-                                    {% for error in formErrors %}
+                                    {# {% for error in formErrors %}
                                         <li> * {{ error }}</li>
-                                    {% endfor %}
+                                    {% endfor %} #}
                                     {% for error in errors %}
-                                        <li> * {{ error }}</li>
+                                        <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваше Имя</div>
-                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="text"
                                             name="firstName"
                                             placeholder="Введите имя"
                                             value="{{ userData.firstName }}">
                                     </label>
+                                    <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите имя</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваша Фамилия</div>
-                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="text"
                                             name="lastName"
                                             placeholder="Введите фамилию"
@@ -70,6 +74,10 @@
                                             onclick="checkPhone();"
                                             onkeyup="checkPhone();">
                                     </label>
+                                    <div id="phoneError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-email">
@@ -79,7 +87,15 @@
                                             id="email"
                                             name="email"
                                             value="{{ userData.email }}">
-                                    </label>                                                               
+                                    </label>     
+                                <div id="emailError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; left:0px;top:-1px;width:300px">
+                                    <div class="form-error-tooltip__arrow"></div>
+                                    <p class="form-error-tooltip__notice">Введите правильный email</p>
+                                </div>
+                                <div id="emailExist" class="form-error-tooltip" style="display: none; width: 100%; position: relative; left:0px;top:-1px;width:300px">
+                                    <div class="form-error-tooltip__arrow"></div>
+                                    <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
+                                </div>                                                          
                                 </div>
                                 <div class="my-account-row">
                                     <button id='btnStatus' class="btn btn-link" style="pointer-events:none" disabled>{% if userData.confirmed == 1 %}Ваша почта подтверждена.{% else %}Ваша почта не подтверждена.{% endif %}</button>
