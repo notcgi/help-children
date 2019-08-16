@@ -153,8 +153,11 @@ class SecurityController extends AbstractController
         $doctrine = $this->getDoctrine();
         $mail = $request->request->get('email');
         $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $mail]);
-        if ($user && ($mail !== $current_user->getEmail()))
+        if ($user) {
+            if ($current_user && ($mail === $current_user->getEmail()))
+                return new Response('same');
             return new Response('exist');
+        }
         return new Response('free');
     }
 }

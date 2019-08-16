@@ -1,4 +1,6 @@
 function validate_registration() {    
+    document.getElementById('firstNameError').style.display = 'none';
+    document.getElementById('emailError').style.display = 'none';
     document.getElementById('phone').style.display = 'none';
     document.getElementById('pass').style.display = 'none';
     document.getElementById('confirm').style.display = 'none';
@@ -6,12 +8,25 @@ function validate_registration() {
     let isValid = true;
     let fields = document.getElementsByClassName('registration-form-input');
 
+    let name = fields[1];
     let phoneNumber = fields[3];
+    let email = fields[4];
     let password = fields[5];
     let confirm = fields[6];
-    
-    if (phoneNumber.value.length < 10 || phoneNumber.value.length > 13) {        
+        
+    if (name.value === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneNumber.value.replace(/\D/gi, '').length < 10 || phoneNumber.value.replace(/\D/gi, '').length > 13) {        
         document.getElementById('phone').style.display = 'block';
+        isValid = false;
+    }
+    
+    let emailPattern = ".+@.+\..+";              
+    if (!email.value.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
         isValid = false;
     }
 
@@ -26,7 +41,7 @@ function validate_registration() {
         isValid = false;
     }
     
-    return isValid;
+    return isValid && checkEmailExisting('registration_form_email');
 }
 
 function validate_reset() {
