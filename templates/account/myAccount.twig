@@ -29,8 +29,9 @@
                                         <div class="my-account-form-field__label label-text">Ваше Имя</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="text"
+                                            id="inputFirstName"
                                             name="firstName"
-                                            placeholder="Введите имя"
+                                            placeholder="Введите имя*"
                                             value="{{ userData.firstName }}">
                                     </label>
                                     <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
@@ -67,9 +68,10 @@
                                         <div class="my-account-form-field__label label-text">Ваш номер телефона</div>
                                         <input class="my-account-form-input input-rounded input-type-phone"
                                             type="text"
+                                            id="inputPhone"
                                             name="phone"
                                             value="{{ userData.phone }}"
-                                            placeholder="Введите номер телефона"
+                                            placeholder="Введите номер телефона*"
                                             data-type="phone"
                                             onclick="checkPhone();"
                                             onkeyup="checkPhone();">
@@ -84,15 +86,16 @@
                                         <div class="my-account-form-field__label label-text">Ваша почта</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="email"
-                                            id="email"
+                                            id="inputEmail"
                                             name="email"
-                                            value="{{ userData.email }}">
+                                            value="{{ userData.email }}"
+                                            placeholder="Введите E-mail*">
                                     </label>     
-                                <div id="emailError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; left:0px;top:-1px;width:300px">
+                                <div id="emailError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px;width:300px">
                                     <div class="form-error-tooltip__arrow"></div>
                                     <p class="form-error-tooltip__notice">Введите правильный email</p>
                                 </div>
-                                <div id="emailExist" class="form-error-tooltip" style="display: none; width: 100%; position: relative; left:0px;top:-1px;width:300px">
+                                <div id="emailExist" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px;width:300px">
                                     <div class="form-error-tooltip__arrow"></div>
                                     <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
                                 </div>                                                          
@@ -120,31 +123,45 @@
                                         <div class="my-account-form-field__label label-text">Старый пароль</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputPassword"
                                             name="oldPassword"
-                                            placeholder="Ваш старый пароль"
+                                            placeholder="Ваш старый пароль*"
                                             minlength="6"
-                                            maxlength="64"
-                                            required>
+                                            maxlength="64">
                                     </label>
+                                    <div id="passwordError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px; top:-1px;">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите пароль</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
                                         <div class="my-account-form-field__label label-text">Новый пароль</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputNewPassword"
                                             name="password"
                                             placeholder="Ваш новый пароль">
                                     </label>
+                                    <div id="newPasswordError" class="form-error-tooltip" style="display: none; width: 300px; position: sticky;">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
                                         <div class="my-account-form-field__label label-text">Новый пароль еще раз</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputConfirmPassword"
                                             name="retypePassword"
                                             placeholder="Ваш новый пароль">
                                     </label>
-                                    <button class="btn btn-link" type="submit">Изменить</button>
+                                    <div id="confirmPasswordError" class="form-error-tooltip" style="display:none; width: 300px; position: sticky">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Пароли не совпадают</p>
+                                    </div>
+                                    <button class="btn btn-link" type="submit" onclick="return validate_myAccount();">Изменить</button>
                                 </div>
                             </form>
                         </div>

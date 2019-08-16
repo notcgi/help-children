@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RecurringPayment;
+use App\Entity\SendGridSchedule;
 use App\Entity\User;
 use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
@@ -75,7 +76,28 @@ class AccountController extends AbstractController
             $form_errors = $this->validate($form);
             if (!$encoder->isPasswordValid($user, $form['oldPassword']))
                 $errors[] = 'Неверный текущий пароль';
-
+            $current_user = $this->getUser();
+            $current_email = $current_user->getEmail();
+            if ($form['email'] !== $current_email) {
+                $doctrine = $this->getDoctrine();
+                $user1 = $doctrine->getRepository(User::class)->findOneBy([            
+                    'email' => $form['email']
+                ]);
+                if ($user1) {
+                    return $this->render('account/myAccount.twig', [
+                        'userData' => $user,
+                        'errors' => $errors,
+                        'formErrors' => $form_errors,
+                        'referral_url' => $request->getScheme()
+                            .'://'
+                            .idn_to_utf8($request->getHost())
+                            .$generator->generate('referral', ['id' => $this->getUser()->getId()])
+                    ]);
+                }
+                $doctrine->getManager()->getRepository(SendGridSchedule::class)->changeEmail($current_email, $form['email']);  
+                $user->setConfirmed(0);
+            }
+            
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])

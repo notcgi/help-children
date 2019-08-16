@@ -10,6 +10,10 @@ reset_password:
     path: /resetPassword
     controller: App\Controller\SecurityController::reset_password
 
+check_email:
+    path: /checkEmail
+    controller: App\Controller\SecurityController::check_email
+
 app_logout:
     path: /logout
 
