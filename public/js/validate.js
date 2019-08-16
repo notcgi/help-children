@@ -144,21 +144,18 @@ function resetModal() {
     document.querySelector('#modal-register-send').style.display = 'none';
     document.querySelector('#form').reset();
 
-    document.getElementById('firstNameError').style.display = 'none';
-    document.getElementById('lastNameError').style.display = 'none';
+    document.getElementById('firstNameError').style.display = 'none';    
     document.getElementById('emailError').style.display = 'none';
     document.getElementById('emailExist').style.display = 'none';
     document.getElementById('phone').style.display = 'none';
 }
 
 function validate_modal_registration() {
-    let firstNameInput = document.querySelector('#inputFirstName').value;
-    let lastNameInput = document.querySelector('#inputLastName').value;
+    let firstNameInput = document.querySelector('#inputFirstName').value;    
     let emailInput = document.querySelector('#inputEmail').value;
     let phoneInput = document.querySelector('#inputPhone').value;
 
-    document.getElementById('firstNameError').style.display = 'none';
-    document.getElementById('lastNameError').style.display = 'none';
+    document.getElementById('firstNameError').style.display = 'none';    
     document.getElementById('emailError').style.display = 'none';
     document.getElementById('emailExist').style.display = 'none';
     document.getElementById('phone').style.display = 'none';
@@ -167,11 +164,6 @@ function validate_modal_registration() {
     
     if (firstNameInput === '') {
         document.getElementById('firstNameError').style.display = 'block';
-        isValid = false;
-    }
-
-    if (lastNameInput === '') {
-        document.getElementById('lastNameError').style.display = 'block';
         isValid = false;
     }
 
