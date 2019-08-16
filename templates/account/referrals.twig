@@ -21,18 +21,20 @@
  <br>1. Поделись с друзьями реферальной ссылкой и пригласи их принять участие в благотворительном проекте;
  <br>2. Ознакомься со списком приглашенных и суммой, которую вы вместе собрали. Это Ваш вклад в наше доброе дело;
  <br>3. Поделись своими достижениями в социальных сетях! Многие увидят результат и последуют Вашему примеру.</p>
+                                    <div style="text-align:center">
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-invite"
-                                            style="margin-right:3rem">                                            
+                                            style="margin-left:1.5rem;margin-right:1.5rem">                                            
                                             Пригласить
                                     </button>
                                     {% if app.user.fundraiser %}
                                     <button class="btn btn-dark referrals__invite-button"
                                             data-modal-trigger="modal-register"
-                                            style="background:none;color:black;font-weight:bold;padding-left:0"
+                                            style="margin-top:1rem;background:none;color:black;font-weight:bold"
                                             onclick="resetModal();">Зарегистрировать
                                     </button>
                                     {% endif %}
+                                    </div>
                                 </div>
                                 
                                 <div class="referrals-statistics__balance">
