@@ -287,3 +287,18 @@ function checkPhone() {
     if (phone === '')
         document.getElementsByClassName('input-type-phone')[0].value = code; 
 }
+
+function validate_recovery() {    
+    let emailInput = document.querySelector('#inputEmail').value;    
+    
+    document.getElementById('emailError').style.display = 'none';        
+    let isValid = true;    
+
+    let emailPattern = ".+@.+\..+";              
+    if (!emailInput.match(emailPattern)) {        
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    return isValid;
+}
