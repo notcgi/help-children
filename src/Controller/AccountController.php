@@ -79,7 +79,7 @@ class AccountController extends AbstractController
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
                 $user->setFirstName($form['firstName'])
                     ->setLastName($form['lastName'])
-                    ->setBirthday(new \DateTime($form['birthday']))
+                    ->setBirthday($form['birthday'] !== ''? new \DateTime($form['birthday']) : null)
                     ->setPhone($form['phone'])
                     ->setEmail($form['email']);
                 

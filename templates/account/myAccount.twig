@@ -30,6 +30,7 @@
                                         <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="firstName"
+                                            placeholder="Введите имя"
                                             value="{{ userData.firstName }}">
                                     </label>
                                 </div>
@@ -39,6 +40,7 @@
                                         <input class="my-account-form-input my-account-form-input--big input-rounded"
                                             type="text"
                                             name="lastName"
+                                            placeholder="Введите фамилию"
                                             value="{{ userData.lastName }}">
                                     </label>
                                 </div>
@@ -49,7 +51,9 @@
                                             id="inputDate"
                                             type="text"                                            
                                             name="birthday"
-                                            value="{{ userData.birthday|date('d.m.Y') }}"
+                                            {% if userData.birthday != '' %}
+                                                value="{{ userData.birthday|date('d.m.Y') }}"
+                                            {% endif %}                                                                                    
                                             placeholder="Введите дату рождения"
                                             readonly>
                                     </label>
