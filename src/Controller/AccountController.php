@@ -131,6 +131,19 @@ class AccountController extends AbstractController
         );
     }
 
+    public function downloadImage(Request $request)
+    {        
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');        
+        $result_path = $this->getResultPath($this->getUser());
+                        
+        return $this->render(
+            'account/downloadImage.twig',
+            [                                
+                'imagePath' => $result_path                
+            ]
+        );
+    }
+
     /**
      * @param Request               $request
      * @param UrlGeneratorInterface $generator
@@ -170,16 +183,19 @@ class AccountController extends AbstractController
         $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';       
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
-        $donate = $repository->aggregateSumSuccessPaymentWithUser($user);
-        $donateSum = '+ ' . round($donate) . ' Р';
-        $childCount = $repository->aggregateCountChildWithUser($user);
+        $donate = $this->getTotalDonate($user);
+        // Символ тот, в шрифте посажен не туда
+        $donateSum = '+ ' . round($donate) . ' ¤';        
+        // $childCount = $repository->aggregateCountChildWithUser($user);
+        // Выводим общее число нуждающихся детей
+        $child_repository = $this->getDoctrine()->getRepository(\App\Entity\Child::class);
+        $childCount = $child_repository->aggregateTotalCountChild();
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
 
         if ($user->getResultHash() === $hash)
             return;
-
         $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
         
         $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
@@ -191,9 +207,23 @@ class AccountController extends AbstractController
         return true;
     }
 
+    function getTotalDonate($user)
+    {
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+        $userDonate = $repository->aggregateSumSuccessPaymentWithUser($user);
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\User::class);
+        $referrals = $repository->findReferralsWithSum($user);
+        $refDonate = 0;
+        foreach ($referrals as $referral) {
+            $refDonate += $referral['donate'];
+        }
+        $total = $userDonate + $refDonate;
+        return $total;
+    }
+
     private function getResultHash($id, $donateSum, $childCount, $referrCount)
     {
-        $row = 'hash' . $id . $donateSum . $childCount . $referrCount;
+        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount;
         $hash = md5($row);
         return $hash;
     }
@@ -358,7 +388,7 @@ class AccountController extends AbstractController
             $data,
             new Assert\Collection([
                 'firstName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],
-                'lastName' => [new Assert\NotBlank(), new Assert\Length(['min' => 3, 'max' => 256])],                
+                'lastName' => [new Assert\Length(['min' => 2, 'max' => 256])],                
                 'birthday' => [],
                 'phone' => new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i']),
                 'email' => new Assert\NotBlank(),

@@ -68,6 +68,7 @@ class RecurringRequestCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        return;
         $io = new SymfonyStyle($input, $output);
 
         /** @var RecurringPayment[] $rp */

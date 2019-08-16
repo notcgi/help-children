@@ -45,6 +45,7 @@ class RecalculateRewardsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        return;
         $repository = $this->entityManager->getRepository(User::class);
         $io = new SymfonyStyle($input, $output);        
         $users = $repository->getAll();

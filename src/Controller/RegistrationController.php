@@ -52,6 +52,7 @@ class RegistrationController extends AbstractController
                 '',
                 $regfrom['phone']
             );
+            $regfrom['birthday'] = \DateTime::createFromFormat("d.m.Y", $regfrom['birthday']);
             $request->request->set('registration_form', $regfrom);
         }
 
@@ -240,8 +241,9 @@ class RegistrationController extends AbstractController
         $check = $request->request->get('check');
         $fund = $request->request->get('fund');
 
-        if (!$email)
+        if (!$email || !$phone || strlen($phone) < 10)
             return new Response('false');
+
 
         $doctrine = $this->getDoctrine();
         $user = $doctrine->getRepository(User::class)->findOneBy([            
@@ -249,7 +251,7 @@ class RegistrationController extends AbstractController
         ]);
 
         if ($user)
-            return new Response('false');
+            return new Response('false (email)');
 
         $user = new User();
         $user
@@ -259,18 +261,27 @@ class RegistrationController extends AbstractController
         ->setPhone($phone)
         ->setRefCode(substr(md5(random_bytes(20)), 0, 16));
 
+
+        $refer_id = substr($fund, 4);
         $refer = $doctrine->getRepository(User::class)->findOneBy([            
-            'id' => $fund
+            'id' => $refer_id
         ]);
 
         $user->setReferrer($refer);
 
         $doctrine->getManager()->persist($user);
+        
+        try {
         $doctrine->getManager()->flush();
-        $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+        
+            $dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
-        if ($check === '1')
-            $dispatcher->dispatch(new DonateReminderEvent($user), DonateReminderEvent::NAME);
+            if ($check === '1')
+                $dispatcher->dispatch(new DonateReminderEvent($user), DonateReminderEvent::NAME);
+        }
+        catch (Exception $e) {
+            return new Response('false');
+        }
 
         return new Response('true');
     }

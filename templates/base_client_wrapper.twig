@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/style.bundle.css?v=0.0.4">
+    <link rel="stylesheet" href="/css/foopicker.css">
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
@@ -49,6 +50,10 @@
                                         <li class="nav-links-submenu__item">
                                             <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
                                         </li>
+                                        {# <li class="nav-links-submenu__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
+                                        </li> #}
                                     </ul>
                                 </div>
                             </li>
@@ -152,6 +157,10 @@
                                         <a href="{{ path('contacts') }}"
                                            class="nav-links-submenu__item-link">Реквизиты</a>
                                     </li>
+                                    {# <li class="nav-links-submenu__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
+                                    </li>                                     #}
                                 </ul>
                             </li>
                             <li class="nav-links__item">
@@ -285,6 +294,10 @@
                                         <a href="{{ path('contacts') }}"
                                            class="footernav-links__item-link">Реквизиты</a>
                                     </li>
+                                    {# <li class="footernav-links__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="footernav-links__item-link">Оплата с помощью SMS</a>
+                                    </li> #}
                                 </ul>
                             </nav>
                         </div>
@@ -330,4 +343,5 @@
     </footer>
     <script src="/js/bundle.js?v=0.0.4"></script>
     <script src="/js/validate.js"></script>
+    <script src="/js/foopicker.js"></script>
 {% endblock %}

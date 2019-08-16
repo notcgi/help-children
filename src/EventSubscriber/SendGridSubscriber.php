@@ -13,6 +13,8 @@ use App\Event\ResetPasswordEvent;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\SendReminderEvent;
+use App\Event\HalfYearRecurrentEvent;
+use App\Event\YearRecurrentEvent;
 use App\Repository\ChildRepository;
 use App\Service\SendGridService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -116,44 +118,38 @@ class SendGridSubscriber implements EventSubscriberInterface
                 )
             )
         );
+    }
 
-        // Полгода
-        $this->em->persist(
-            (new SendGridSchedule())
-            ->setEmail($user->getEmail())
-            ->setName($user->getFirstName())
-            ->setBody([
+    public function onHalfYearRecurrent(HalfYearRecurrentEvent $event)
+    {
+        $req = $event->getRequest();
+        $user = $req->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName(),
+            [
                 'first_name' => $user->getFirstName()
-            ])
-            ->setTemplateId('d-02ff4902809d434fb76e194fe6df761e')
-            ->setSendAt(
-                \DateTimeImmutable::createFromMutable(
-                    (new \DateTime())
-                    ->add(new \DateInterval('P6M'))
-                    ->setTime(12, 0, 0)
-                )
-            )
+            ]
         );
+        $mail->setTemplateId('d-3d5e14962a0e4a1b9068da44577c4b83');
 
-        // Год
-        $this->em->persist(
-            (new SendGridSchedule())
-            ->setEmail($user->getEmail())
-            ->setName($user->getFirstName())
-            ->setBody([
+        return $this->sendGrid->send($mail);
+    }
+
+    public function onYearRecurrent(YearRecurrentEvent $event)
+    {
+        $req = $event->getRequest();
+        $user = $req->getUser();
+        $mail = $this->sendGrid->getMail(
+            $user->getEmail(),
+            $user->getFirstName(),
+            [
                 'first_name' => $user->getFirstName()
-            ])
-            ->setTemplateId('d-3d5e14962a0e4a1b9068da44577c4b83')
-            ->setSendAt(
-                \DateTimeImmutable::createFromMutable(
-                    (new \DateTime())
-                    ->add(new \DateInterval('P1Y'))
-                    ->setTime(12, 0, 0)
-                )
-            )
+            ]
         );
+        $mail->setTemplateId('d-02ff4902809d434fb76e194fe6df761e');
 
-        $this->em->flush();
+        return $this->sendGrid->send($mail);
     }
 
     /**
@@ -222,26 +218,27 @@ class SendGridSubscriber implements EventSubscriberInterface
     public function onDonateReminder(DonateReminderEvent $event)
     {        
         $user = $event->getUser();
-        $mail = $this->sendGrid->getMail(
-            $user->getEmail(),
-            $user->getFirstName(),
-            [
-                'first_name' => $user->getFirstName(),
-                'donate_url' => $this->generator->generate('donate', [
-                    'code' => $user->getRefCode(),
-                    'email' => $user->getEmail(),
-                    'fund' => $user->getReferrer(),
-                ], 0)
-            ],
-            'Напоминание о платеже'
-        );        
-        $mail->setTemplateId('d-7e5881310e7447599243855b1c12d2af');
-        try {
-            $this->sendGrid->send($mail);
-        }
-        catch (Exception $e) {
-            $this->logger->error('Caught exception: '.  $e->getMessage(). "\n");
-        }            
+
+        $this->em->persist((new SendGridSchedule())
+        ->setEmail($user->getEmail())
+        ->setName($user->getFirstName())
+        ->setBody([
+            'first_name' => $user->getFirstName(),
+            'donate_url' => $this->generator->generate('donate', [
+                'code' => $user->getRefCode(),
+                'email' => $user->getEmail(),
+                'fund' => $user->getReferrer(),
+            ], 0)
+        ])
+        ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
+        ->setSendAt(
+            \DateTimeImmutable::createFromMutable(
+                (new \DateTime())
+                ->add(new \DateInterval('PT2H'))                
+            )
+        ));            
+
+        $this->em->flush();
     }
     
     public function onPayoutRequest(PayoutRequestEvent $event)
@@ -336,7 +333,14 @@ class SendGridSubscriber implements EventSubscriberInterface
             ->setEmail($event->getEmail())
             ->setName($event->getName())
             ->setBody([
-                'first_name' => $event->getName()                
+                'first_name' => $event->getName(),
+                'donate_url' => $this->generator->generate('donate', [                                        
+                    'email' => $event->getEmail(),  
+                    'name' => $event->getName(),
+                    'lastName' => $event->getLastName(),
+                    'phone' => $event->getPhone(),   
+                    'code' => $event->getCode()               
+                ], 0)              
             ])
             ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
             ->setSendAt(
@@ -361,7 +365,9 @@ class SendGridSubscriber implements EventSubscriberInterface
             'user.resetPassword' => 'onResetPassword',
             'recurring_payment.failure' => 'onRecurringPaymentFailure',
             'recurring_payment.remove' => 'onRecurringPaymentRemove',
-            'sendReminder' => 'onSendReminder'
+            'sendReminder' => 'onSendReminder',
+            'halfYearRecurrent' => 'onHalfYearRecurrent',
+            'yearRecurrent' => 'onYearRecurrent'
         ];
     }
 }

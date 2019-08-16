@@ -8,7 +8,7 @@
     <style>
         #form div {
             margin: auto;
-        }
+        }   
     </style>
 
     <main>
@@ -17,17 +17,15 @@
                 <div class="login-wrapper registration-wrapper">
                     {{ form_start(form, {'attr':{'class':'login-form registration-form js-registration-form'}}) }}
                     <div class="login-form__title">Регистрация</div>
-                    <div class="login-form-row registration-form-row">
+                    <div class="login-form-row registration-form-row">                            
                         {{ form_widget(form.lastName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите фамилию'}}) }}
                         {{ form_widget(form.firstName, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите имя'}}) }}
-                    </div>
-                    <div class="login-form-row registration-form-row">
-                        <label>Ваша дата рождения</label>
-                    </div>
-                    <div class="login-form-row registration-form-row">                        
-                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Ваш день рождения'}}) }}
+                    </div>                    
+                    <div class="login-form-row registration-form-row">                                            
+                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения', 'readonly': 'true'}}) }}
                         <label class="registration-form-field registration-form-phone">
-                            {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded', 'placeholder': 'Введите номер телефона', 'data-type':'phone'}}) }}
+                            {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded input-type-phone', 'placeholder': 'Введите номер телефона',
+                                'onclick':'checkPhone();', 'onkeyup':'checkPhone();', 'data-type':'phone'}}) }}
                         </label>                                                
                     </div>
                     <div id="phone" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
@@ -38,14 +36,14 @@
                         {{ form_widget(form.email, {'attr': {'class':'input-rounded registration-form-input', 'required':'required', 'placeholder': 'Ваша почта'}}) }}
                     </div>
                     <div class="login-form-row registration-form-row login-form-group">
-                        <div style="width:100%; height:70px">
+                        <div style="width:100%">
                             {{ form_widget(form.password.first, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите пароль'}}) }}
-                            <div id="pass" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top: -10px">
+                            <div id="pass" class="form-error-tooltip" style="display: none; width: 300px; height: 50px; position: relative; left: 0px; top: 0px">
                                 <div class="form-error-tooltip__arrow"></div>
                                 <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
                             </div>
                         </div>
-                        <div style="width:100%; height:70px">
+                        <div style="width:100%">
                             {{ form_widget(form.password.second, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Повторите пароль'}}) }}
                             <div id="confirm" class="form-error-tooltip" style="display:none; width: 100%; position: relative; top: -10px">
                                 <div class="form-error-tooltip__arrow"></div>
@@ -70,5 +68,14 @@
                 </div>
             </div>
         </section>
+        <script>
+            function ready() {
+                var foopicker = new FooPicker({
+                    id: 'registration_form_birthday',
+                    dateFormat: 'dd.MM.yyyy',
+                });                
+            }
+            document.addEventListener("DOMContentLoaded", ready);   
+        </script>
     </main>
 {% endblock %}

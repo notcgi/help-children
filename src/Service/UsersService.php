@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\SendGridSchedule;
 use App\Entity\User;
 use App\Event\RegistrationEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -60,6 +61,26 @@ class UsersService
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
         if ($user) {
+            $entityManager = $this->doctrine->getManager();            
+    
+            // Завершение платежа
+            $entityManager->persist(
+                (new SendGridSchedule())
+                ->setEmail($user->getEmail())
+                ->setName($user->getFirstName())
+                ->setBody([
+                    'first_name' => $user->getFirstName()
+                ])
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setSendAt(
+                    \DateTimeImmutable::createFromMutable(
+                        (new \DateTime())
+                        ->add(new \DateInterval('PT2H'))                            
+                    )
+                )                    
+            );
+            $entityManager->flush();
+
             return $user;
         }
 
@@ -95,6 +116,24 @@ class UsersService
 
         $entityManager = $this->doctrine->getManager();
         $entityManager->persist($user);
+        $entityManager->flush();
+
+        // Завершение платежа
+        $entityManager->persist(
+            (new SendGridSchedule())
+            ->setEmail($user->getEmail())
+            ->setName($user->getFirstName())
+            ->setBody([
+                'first_name' => $user->getFirstName()
+            ])
+            ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime())
+                    ->add(new \DateInterval('PT2H'))                            
+                )
+            )                    
+        );
         $entityManager->flush();
 
         $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);

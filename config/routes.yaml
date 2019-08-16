@@ -79,6 +79,10 @@ contacts:
     path: /contacts
     controller: App\Controller\MainController::contacts
 
+sms:
+    path: /sms
+    controller: App\Controller\MainController::sms
+
 help:
     path: /needhelp
     controller: App\Controller\MainController::help
@@ -103,6 +107,10 @@ donate_no:
     path: /donate/no
     controller: App\Controller\DonateController::no
 
+donate_fail:
+    path: /donate/fail
+    controller: App\Controller\DonateController::fail
+
 donate_status:
     path: /donate/status
     controller: App\Controller\DonateController::status
@@ -126,6 +134,10 @@ account_history:
 account_referrals:
     path: /account/referrals
     controller: App\Controller\AccountController::referrals
+
+account_download:
+    path: /account/downloadImage
+    controller: App\Controller\AccountController::downloadImage
 
 account_recurrent:
     path: /account/recurrent
