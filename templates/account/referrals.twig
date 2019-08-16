@@ -39,7 +39,7 @@
                                 
                                 <div class="referrals-statistics__balance">
                                     <h2 class="referrals-statistics__balance-title" style="text-align:center">Всего начислено</h2>
-                                    <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
+                                    <div class="referrals-statistics__balance-sum" style="width:140px; margin:1rem auto">{{ app.user.rewardSum }} баллов</div>
                                     <input id="email" type="hidden" value={{ app.user.email }}>
                                     {% if app.user.fundraiser %}
                                     <button
