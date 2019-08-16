@@ -38,7 +38,7 @@
                                 </div>
                                 
                                 <div class="referrals-statistics__balance">
-                                    <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
+                                    <h2 class="referrals-statistics__balance-title" style="text-align:center">Всего начислено</h2>
                                     <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
                                     <input id="email" type="hidden" value={{ app.user.email }}>
                                     {% if app.user.fundraiser %}
@@ -81,7 +81,7 @@
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
-                                <table class="referrals-list-table">
+                                <table class="referrals-list-table" style="display:block;overflow-x:auto;white-space:no-wrap">
                                     <thead class="referrals-list-table__head">
                                     <tr>
                                         <th class="referrals-list-table__head-col">Имя</th>
