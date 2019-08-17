@@ -14,7 +14,7 @@
                     {% include 'components/account_nav.twig' %}
                     <div class="account-content referrals">
                         <h1 class="account-content__title referrals-title account-content-padding">Программа «Поможем вместе»</h1>
-                        <div class="referrals-wrapper account-content-padding">
+                        <div class="referrals-wrapper account-content-padding" style="overflow:hidden">
                             <div class="referrals-statistics">
                                 <div class="referrals-statistics__notice">
                                     <p class="referrals-statistics__notice-text">Мы сделали благотворительность проще и доступнее. Теперь помочь детям вместе не сложнее, чем пополнить баланс:
@@ -71,17 +71,17 @@
                             </div>
                             <div id="share" class="referrals-statistics" style="display:none">
                             <div class="share42init" 
-                            data-url="https://помогитедетям.рф{{ result_path }}"
-                            data-title='Мой вклад в проект | БФ "Помогите Детям"'
-                            data-image="https://помогитедетям.рф{{ result_path }}"
-                            data-description="Мой вклад в проект"
-                            style='margin: 0 auto;'>                            
+                                data-url="https://помогитедетям.рф{{ result_path }}"
+                                data-title='Мой вклад в проект | БФ "Помогите Детям"'
+                                data-image="https://помогитедетям.рф{{ result_path }}"
+                                data-description="Мой вклад в проект"
+                                style='margin: 0 auto;'>                            
                             </div>                            
         <script type="text/javascript" src="/share42/share42.js"></script>        
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
-                                <table class="referrals-list-table" style="display:block;overflow-x:auto;white-space:no-wrap">
+                                <table class="referrals-list-table" style="display:block;overflow-x:auto;white-space:nowrap">
                                     <thead class="referrals-list-table__head">
                                     <tr>
                                         <th class="referrals-list-table__head-col">Имя</th>
