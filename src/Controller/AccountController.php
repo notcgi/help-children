@@ -214,7 +214,7 @@ class AccountController extends AbstractController
         $childCount = $child_repository->aggregateTotalCountChild();
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
-        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
+        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
 
         if ($user->getResultHash() === $hash)
             return;
@@ -243,9 +243,9 @@ class AccountController extends AbstractController
         return $total;
     }
 
-    private function getResultHash($id, $donateSum, $childCount, $referrCount)
+    private function getResultHash($id, $donateSum, $childCount, $referrCount, $name)
     {
-        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount;
+        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount . $name;
         $hash = md5($row);
         return $hash;
     }
