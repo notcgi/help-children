@@ -287,8 +287,8 @@ class DonateController extends AbstractController
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $server_output = curl_exec ($ch);
                     curl_close ($ch);
-                    $json = json_decode($server_output);
-                    $success = $json->Success;
+                    $json = json_decode($server_output, true);
+                    $success = $json['Success'];
                     if (!$success)
                         return $this->render('account/history.twig');
 

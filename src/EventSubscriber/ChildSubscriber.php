@@ -98,7 +98,7 @@ class ChildSubscriber implements EventSubscriberInterface
     {
         return [
             'request.success' => 'onRequestSuccess',
-            'request.sucessFirst' => 'onFirstRequestSuccess'
+            'request.successFirst' => 'onFirstRequestSuccess'
         ];
     }
 }
