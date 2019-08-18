@@ -194,7 +194,7 @@ class DonateController extends AbstractController
             if (null === $subscription_id)
                 return new Response('', 404); // Если нет Id подписки, всё-таки ерунда
             $subscr_req = $entityManager->getRepository(\App\Entity\Request::class)->findOneBy([
-                    'subscriptions_id' => $subscription_id
+                    'SubscriptionsId' => $subscription_id
                 ]);
             if (!$subscr_req)
                 return new Response('', 404); // Не судьба...
