@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -60,7 +61,7 @@ class UserController extends AbstractController
             throw $this->createNotFoundException(
                 'Нет пользователя с id '.$id
             );
-        }
+        }        
 
         $form = $this->createFormBuilder($userData)
             ->add(
@@ -93,8 +94,9 @@ class UserController extends AbstractController
             )
             ->add(
                 'birthday',
-                BirthdayType::class, [
-                    'widget' => 'single_text',  
+                DateType::class, [     
+                    'format' => 'dd.MM.yyyy',      
+                    'widget' => 'single_text',                             
                     'required' => false                    
                 ]
             )
