@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 use App\Entity\Config;
 use App\Entity\ReferralHistory;
 use App\Entity\User;
+use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Repository\ConfigRepository;
 use App\Repository\UserRepository;
