@@ -398,7 +398,7 @@ class AccountController extends AbstractController
                   'template_id' => $template_id
               ]);
 
-              if (!$sgs_ten)
+              if ($sgs_ten)
                 $entityManager->remove($sgs_ten);
 
               $entityManager->remove($payment);
