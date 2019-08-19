@@ -270,12 +270,8 @@ class AccountController extends AbstractController
     private function removeOldResultImage($hash)
     {
         $path = $this->getResultPath($hash);
-        try {
+        if (file_exists($path))
             unlink($path);
-        }
-        catch(Exception $e) {
-
-        }
     }
 
     private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
