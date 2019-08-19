@@ -204,6 +204,17 @@ class UserController extends AbstractController
         }
 
         $entityManager = $this->getDoctrine()->getManager();
+
+        // Удаляем все неотправленные письма из очереди для этого юзера
+        $sgss = $entityManager->getRepository(\App\Entity\SendGridSchedule::class)->findBy([
+            'email' => $userData->getEmail(),            
+            'sent' => 0            
+        ]);
+
+        foreach ($sgss as $sgs) {
+            $entityManager->remove($sgs);
+        }
+
         $entityManager->remove($userData);
         $entityManager->flush();
 
