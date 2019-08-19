@@ -278,24 +278,29 @@ class DonateController extends AbstractController
 
                 if ($req -> isRecurent()) {//оформление подписки
 
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
-                    curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $server_output = curl_exec ($ch);
-                    curl_close ($ch);
-                    $json = json_decode($server_output, true);
-                    $success = $json['Success'];
-                    if (!$success)
-                        return $this->render('account/history.twig');
+                    // $ch = curl_init("https://api.cloudpayments.ru/subscriptions/create");
+                    // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");                    
+                    // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                    // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+                    // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                    // curl_setopt($ch, CURLOPT_POST, true);
+                    // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");                    
+                    // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                
+                    // $server_output = curl_exec ($ch);
+                    // curl_close ($ch);
+                    // $a = file_get_contents('php://input');
+                    // if (!$server_output)
+                    //     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; Error curl"."\n", FILE_APPEND);
+                    // $json = json_decode($server_output, true);
+                    // file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s").";".print_r($json, true)."\n".print_r($a, true)."\n".print_r($server_output, true)."\n", FILE_APPEND);
+                    // $success = $json['Success'];
 
-                    $subscription_id = $json['Model']['Id'];
+                    // $subscription_id = $json['Model']['Id'];
+                    $subscription_id = $form['SubscriptionId'];
                     $req->setSubscriptionsId($subscription_id);
 
-                    file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($server_output, true)."\n", FILE_APPEND);
+                    file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n", FILE_APPEND);
                     
                     $user = $req->getUser();
                     // Увеличение

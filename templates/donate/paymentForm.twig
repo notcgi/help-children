@@ -11,6 +11,7 @@
         data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки
         {% endif %}
         data.email = '{{ fields.Email }}';
+        data.name = '{{ fields.Name }}';
         data.lastname = '{{ fields.LastName }}';
         data.firstname = '{{ fields.FirstName }}';
         data.phone = '{{ fields.Phone }}';
@@ -20,6 +21,7 @@
             description: 'Благотворительная помощь', //назначение
             amount: {{ fields.Subtotal_P }}, //сумма
             currency: 'RUB', //валюта
+            email: '{{ fields.Email }}',
             invoiceId: '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
             accountId: '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
             skin: "mini", //дизайн виджета
