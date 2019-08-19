@@ -218,7 +218,7 @@ class DonateController extends AbstractController
             $entityManager->persist($req)->persist($rp)->flush();
             $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
 
-            $startDate = $rp->getCreatedAt();
+            $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
             $endDate = new \DateTime();        
             $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
 

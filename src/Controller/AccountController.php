@@ -368,9 +368,27 @@ class AccountController extends AbstractController
           if ($json->Success) {
             // удаление оплаты на сайте (в базе)
               $entityManager = $doctrine->getManager();
+
+            // удаление соответствующего письма №10
+              $mail_date = \DateTimeImmutable::createFromMutable(
+                        (new \DateTime($payment->getCreatedAt()->format('Y-m-d')))
+                            ->add(new \DateInterval('P28D'))
+                            ->setTime(12, 0, 0));
+              $email = $req->getUser()->getEmail();  
+              $template_id = 'd-1836d6b43e9c437d8f7e436776d1a489';
+              
+              $sgs_ten = $entityManager->getRepository(\App\Entity\SendGridSchedule::class)->findOneBy([
+                  'email' => $email,
+                  'sendAt' => $mail_date,
+                  'template_id' => $template_id
+              ]);
+
+              if (!$sgs_ten)
+                $entityManager->remove($sgs_ten);
+
               $entityManager->remove($payment);
 
-              $dispatcher->dispatch(RecurringPaymentRemove::NAME, new RecurringPaymentRemove($payment));
+              $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
               $entityManager->flush();
           }
         }
