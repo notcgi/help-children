@@ -185,7 +185,7 @@ class AccountController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
 
         $this->updateResults($this->getUser());
-        $result_path = $this->getResultPath($this->getUser());
+        $result_path = $this->getRealPath($this->getUser());
                         
         return $this->render(
             'account/referrals.twig',
@@ -216,9 +216,14 @@ class AccountController extends AbstractController
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
 
-        if ($user->getResultHash() === $hash)
-            return;
-        $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
+        if ($user->getResultHash() === $hash) {
+            $path = $this->getResultPath($hash);
+            if (file_exists($path))
+                return;
+        }
+        
+        $this->removeOldResultImage($user->getResultHash());
+        $path = $this->getResultPath($hash);
         
         $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
         if ($success) {
@@ -226,7 +231,13 @@ class AccountController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user);
             $this->getDoctrine()->getManager()->flush();
         }
+    
         return true;
+    }
+
+    function getRealPath($user) {
+        $real_path = '/images/results/' . $user->getResultHash() . '.jpg';
+        return $real_path;
     }
 
     function getTotalDonate($user)
@@ -250,14 +261,22 @@ class AccountController extends AbstractController
         return $hash;
     }
 
-    private function getResultPath($user)
-    {
-        $id = $user->getId();
-        $row = 'hash path' . $id . 'asdf' . $id;
-        $hash = md5($row);
-        $path = '/images/results/' . $hash . '.jpg';
+    private function getResultPath($hash)
+    {        
+        $path = dirname(dirname(__DIR__)) . '/public/images/results/' . $hash . '.jpg';
         return $path;
     }    
+
+    private function removeOldResultImage($hash)
+    {
+        $path = $this->getResultPath($hash);
+        try {
+            unlink($path);
+        }
+        catch(Exception $e) {
+
+        }
+    }
 
     private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
     {        
