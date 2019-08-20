@@ -359,7 +359,7 @@ class SendGridSubscriber implements EventSubscriberInterface
             'donateReminderEvent' => 'onDonateReminder',
             'account.payoutRequestEvent' => 'onPayoutRequest',
             'registration' => 'onRegistration',
-            'request.sucessFirst' => 'onFirstRequestSuccess',
+            'request.successFirst' => 'onFirstRequestSuccess',
             'request.success' => 'onRequestSuccess',
             'user.emailConfirm' => 'onEmailConfirm',
             'user.resetPassword' => 'onResetPassword',

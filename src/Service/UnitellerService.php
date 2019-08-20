@@ -59,6 +59,7 @@ class UnitellerService
             'URL_RETURN_NO' => $this->urlGenerator->generate('donate_no', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'Email' => $user->getEmail(),
             'CallbackFormat' => 'json',
+            'Name' => $user->getLastName(),
             'LastName' => $user->getLastName(),
             'FirstName' => $user->getFirstName(),
             'MiddleName' => $user->getMiddleName(),

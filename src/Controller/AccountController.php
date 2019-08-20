@@ -185,7 +185,7 @@ class AccountController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
 
         $this->updateResults($this->getUser());
-        $result_path = $this->getResultPath($this->getUser());
+        $result_path = $this->getRealPath($this->getUser());
                         
         return $this->render(
             'account/referrals.twig',
@@ -214,11 +214,16 @@ class AccountController extends AbstractController
         $childCount = $child_repository->aggregateTotalCountChild();
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
-        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount);        
+        $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
 
-        if ($user->getResultHash() === $hash)
-            return;
-        $path = dirname(dirname(__DIR__)) . '/public' . $this->getResultPath($user);
+        if ($user->getResultHash() === $hash) {
+            $path = $this->getResultPath($hash);
+            if (file_exists($path))
+                return;
+        }
+        
+        $this->removeOldResultImage($user->getResultHash());
+        $path = $this->getResultPath($hash);
         
         $success = $this->updateResultImage($name, $donateSum, $childCount, $referrCount, $path);
         if ($success) {
@@ -226,7 +231,13 @@ class AccountController extends AbstractController
             $this->getDoctrine()->getManager()->persist($user);
             $this->getDoctrine()->getManager()->flush();
         }
+    
         return true;
+    }
+
+    function getRealPath($user) {
+        $real_path = '/images/results/' . $user->getResultHash() . '.jpg';
+        return $real_path;
     }
 
     function getTotalDonate($user)
@@ -243,21 +254,25 @@ class AccountController extends AbstractController
         return $total;
     }
 
-    private function getResultHash($id, $donateSum, $childCount, $referrCount)
+    private function getResultHash($id, $donateSum, $childCount, $referrCount, $name)
     {
-        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount;
+        $row = 'hash result' . $id . $donateSum . $childCount . $referrCount . $name;
         $hash = md5($row);
         return $hash;
     }
 
-    private function getResultPath($user)
-    {
-        $id = $user->getId();
-        $row = 'hash path' . $id . 'asdf' . $id;
-        $hash = md5($row);
-        $path = '/images/results/' . $hash . '.jpg';
+    private function getResultPath($hash)
+    {        
+        $path = dirname(dirname(__DIR__)) . '/public/images/results/' . $hash . '.jpg';
         return $path;
     }    
+
+    private function removeOldResultImage($hash)
+    {
+        $path = $this->getResultPath($hash);
+        if (file_exists($path))
+            unlink($path);
+    }
 
     private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
     {        
@@ -368,9 +383,27 @@ class AccountController extends AbstractController
           if ($json->Success) {
             // удаление оплаты на сайте (в базе)
               $entityManager = $doctrine->getManager();
+
+            // удаление соответствующего письма №10
+              $mail_date = \DateTimeImmutable::createFromMutable(
+                        (new \DateTime($payment->getCreatedAt()->format('Y-m-d')))
+                            ->add(new \DateInterval('P28D'))
+                            ->setTime(12, 0, 0));
+              $email = $req->getUser()->getEmail();  
+              $template_id = 'd-1836d6b43e9c437d8f7e436776d1a489';
+              
+              $sgs_ten = $entityManager->getRepository(\App\Entity\SendGridSchedule::class)->findOneBy([
+                  'email' => $email,
+                  'sendAt' => $mail_date,
+                  'template_id' => $template_id
+              ]);
+
+              if ($sgs_ten)
+                $entityManager->remove($sgs_ten);
+
               $entityManager->remove($payment);
 
-              $dispatcher->dispatch(RecurringPaymentRemove::NAME, new RecurringPaymentRemove($payment));
+              $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
               $entityManager->flush();
           }
         }

@@ -414,7 +414,7 @@ function validate_donate() {
 
     let firstNameInput = document.querySelector('#name').value;    
     let emailInput = document.querySelector('#email').value;
-    let phoneInput = document.querySelector('#phone').value;
+    let phoneInput = document.querySelector('#phone').value.replace(/\D/gi, '');
 
     document.getElementById('firstNameError').style.display = 'none';    
     document.getElementById('emailError').style.display = 'none';    

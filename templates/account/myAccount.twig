@@ -117,7 +117,7 @@
                                             type="text"
                                             name="reflink"
                                             value="{{ referral_url }}">
-                                        <span class="icon icon-copy my-account-form-reflink__copy"></span>
+                                        <span class="icon icon-copy my-account-form-reflink__copy js-copy-button"></span>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
@@ -145,7 +145,7 @@
                                             placeholder="Ваш новый пароль"
                                             onclick="hideError('newPasswordError');">
                                     </label>
-                                    <div id="newPasswordError" class="form-error-tooltip" style="display: none; width: 300px; position: sticky;">
+                                    <div id="newPasswordError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px; top:-1px;">
                                         <div class="form-error-tooltip__arrow"></div>
                                         <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
                                     </div>
@@ -160,11 +160,11 @@
                                             placeholder="Ваш новый пароль"
                                             onclick="hideError('confirmPasswordError');">
                                     </label>
-                                    <div id="confirmPasswordError" class="form-error-tooltip" style="display:none; width: 300px; position: sticky">
+                                    <button class="btn btn-link" type="submit" onclick="return validate_myAccount();">Изменить</button>
+                                    <div id="confirmPasswordError" class="form-error-tooltip" style="display:none; width: 300px; position: relative; left:0px; top:-1px;">
                                         <div class="form-error-tooltip__arrow"></div>
                                         <p class="form-error-tooltip__notice">Пароли не совпадают</p>
-                                    </div>
-                                    <button class="btn btn-link" type="submit" onclick="return validate_myAccount();">Изменить</button>
+                                    </div>                                    
                                 </div>
                             </form>
                         </div>

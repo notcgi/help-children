@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Child;
 use App\Event\RequestSuccessEvent;
+use App\Event\FirstRequestSuccessEvent;
 use App\Repository\ChildRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -98,7 +99,7 @@ class ChildSubscriber implements EventSubscriberInterface
     {
         return [
             'request.success' => 'onRequestSuccess',
-            'request.sucessFirst' => 'onFirstRequestSuccess'
+            'request.successFirst' => 'onFirstRequestSuccess'
         ];
     }
 }

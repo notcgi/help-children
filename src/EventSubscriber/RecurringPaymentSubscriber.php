@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\RecurringPayment;
 use App\Event\RequestSuccessEvent;
+use App\Event\FirstRequestSuccessEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -61,7 +62,7 @@ class RecurringPaymentSubscriber implements EventSubscriberInterface
     {
         return [
             'request.success' => 'onRequestSuccess',
-            'request.sucessFirst' => 'onFirstRequestSuccess'
+            'request.successFirst' => 'onFirstRequestSuccess'
         ];
     }
 }
