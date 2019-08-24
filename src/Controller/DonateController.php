@@ -198,7 +198,7 @@ class DonateController extends AbstractController
                 ]);
             if (!$subscr_req)
                 return new Response('', 404); // Не судьба...
-            $rp = $entityManager->getRepository(\App\Entity\RecurringPayments::class)->find($subscr_req->getId());
+            $rp = $entityManager->getRepository(\App\Entity\RecurringPayment::class)->find($subscr_req->getId());
             if (!$rp) {
                 file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form UNREGISTERED IN SYSTEM".print_r($form, true)."\n", FILE_APPEND);
                 return new Response('', 404); // Незарегистрированная в базе подписка
