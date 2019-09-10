@@ -45,20 +45,26 @@ class RecalculateRewardsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-        $rh = $this->entityManager->getRepository(User::class)->getWithReferralSum();
+        return;
+        $repository = $this->entityManager->getRepository(User::class);
+        $io = new SymfonyStyle($input, $output);        
+        $users = $repository->getAll();
 
-        foreach ($rh as $v) {
-            if (null === $v[1] || $v[0]->getRewardSum() == $v[1]) {
+        foreach ($users as $user) {
+            $userRewards = $repository->getDonatorRewards($user);
+            $rightRewardSum = array_sum(array_map(function($item) { 
+                return $item['sum']; 
+            }, $userRewards));
+
+            if ($user->getRewardSum() == $rightRewardSum)
                 continue;
-            }
 
             $io->warning(
-                'Fix reward user '.$v[0]->getId().': '.$v[0]->getEmail().' '.$v[0]->getRewardSum().' to '.$v[1]
+                'Fix reward user ' . $user->getId() . ': ' . $user->getEmail() . ' ' . $user->getRewardSum() . ' to ' . $rightRewardSum
             );
 
-            $v[0]->setRewardSum((float) $v[1]);
-            $this->entityManager->persist($v[0]);
+            $user->setRewardSum((float) $rightRewardSum);
+            $this->entityManager->persist($user);
         }
 
         $this->entityManager->flush();

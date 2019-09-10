@@ -39,4 +39,4 @@ services:
     App\Service\SendGridService:
         arguments:
             $api_key: '%env(SENDGRID_API_KEY)%'
-            $from:
+            $from: 'info@xn--c1accbmwfjbh2bd3o.xn--p1ai'

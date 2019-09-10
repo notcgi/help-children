@@ -6,6 +6,14 @@ pass_recovery:
     path: /passwordRecovery
     controller: App\Controller\SecurityController::recovery
 
+reset_password:
+    path: /resetPassword
+    controller: App\Controller\SecurityController::reset_password
+
+check_email:
+    path: /checkEmail
+    controller: App\Controller\SecurityController::check_email
+
 app_logout:
     path: /logout
 
@@ -19,9 +27,17 @@ referral:
     requirements:
         refferal: '\d+'
 
-code_confirm:
-    path: /user/confirm
+code_confirm:    
+    path: /user/confirm    
     controller: App\Controller\RegistrationController::confirmCode
+
+send_code_confirm:
+    path: /user/sendConfirm
+    controller: App\Controller\RegistrationController::sendConfirmCode
+
+register_fund_method:
+    path: /user/registerFundMethod
+    controller: App\Controller\RegistrationController::registerFundMethod
 
 main:
     path: /
@@ -67,6 +83,10 @@ contacts:
     path: /contacts
     controller: App\Controller\MainController::contacts
 
+sms:
+    path: /sms
+    controller: App\Controller\MainController::sms
+
 help:
     path: /needhelp
     controller: App\Controller\MainController::help
@@ -91,9 +111,17 @@ donate_no:
     path: /donate/no
     controller: App\Controller\DonateController::no
 
+donate_fail:
+    path: /donate/fail
+    controller: App\Controller\DonateController::fail
+
 donate_status:
     path: /donate/status
     controller: App\Controller\DonateController::status
+
+send_reminder:
+    path: /donate/sendReminder
+    controller: App\Controller\DonateController::sendReminder
 
 account_main:
     path: /account
@@ -111,6 +139,10 @@ account_referrals:
     path: /account/referrals
     controller: App\Controller\AccountController::referrals
 
+account_download:
+    path: /account/downloadImage
+    controller: App\Controller\AccountController::downloadImage
+
 account_recurrent:
     path: /account/recurrent
     controller: App\Controller\AccountController::recurrent
@@ -121,6 +153,11 @@ account_recurrent_remove:
     controller: App\Controller\AccountController::recurrent_remove
     requirements:
         id: '\d+'
+
+account_payout_request:
+    path: /account/sendPayoutRequest
+    methods: POST
+    controller: App\Controller\AccountController::sendPayoutRequest
 
 panel_main:
     path: /panel

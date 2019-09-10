@@ -68,6 +68,7 @@ class RecurringRequestCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        return;
         $io = new SymfonyStyle($input, $output);
 
         /** @var RecurringPayment[] $rp */
@@ -110,7 +111,7 @@ class RecurringRequestCommand extends Command
             }
 
             if ('ErrorCode' == $response[0][0]) {
-                $this->dispatcher->dispatch(RecurringPaymentFailure::NAME, new RecurringPaymentFailure($v));
+                $this->dispatcher->dispatch(new RecurringPaymentFailure($v), RecurringPaymentFailure::NAME);
                 $io->warning($response[1][1]);
 
                 continue;
@@ -119,7 +120,7 @@ class RecurringRequestCommand extends Command
             $io->text($response[1]);
             $this->entityManager->persist($v->setStatus(2));
             $this->entityManager->persist($rp[$k]->setWithdrawalAt(new \DateTime()));
-            $this->dispatcher->dispatch(RequestSuccessEvent::NAME, new RequestSuccessEvent($v));
+            $this->dispatcher->dispatch(new RequestSuccessEvent($v), RequestSuccessEvent::NAME);
         }
 
         $this->entityManager->flush();

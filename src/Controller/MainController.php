@@ -28,6 +28,15 @@ class MainController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
      */
+    public function sms()
+    {
+        return $this->render('pages/sms.twig');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
     public function docs()
     {
         return $this->render('pages/docs.twig');

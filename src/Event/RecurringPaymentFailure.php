@@ -15,7 +15,7 @@ class RecurringPaymentFailure extends Event
     protected $request;
 
     /**
-     * RequestSuccessEvent constructor.
+     * RecurringPaymentFailure constructor.
      *
      * @param Request $request
      */

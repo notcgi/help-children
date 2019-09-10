@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SendMailOneOfDayCommand extends Command
 {
-    protected static $defaultName = 'app:send-mail-once';
+    protected static $defaultName = 'app:send-mail-daily';
 
     /**
      * @var EntityManagerInterface
@@ -57,30 +57,28 @@ class SendMailOneOfDayCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        // Отправка писем за день до списание рекурентного платежа
+        // Отправка писем за день до списания рекурентного платежа
         /** @var RecurringPayment[] $rps */
-        $rps = $this->entityManager->getRepository(RecurringPayment::class)->findNeedRequest();
-
+        $rps = $this->entityManager->getRepository(RecurringPayment::class)->findBeforeNeedOneDayRequest();        
         foreach ($rps as $rp) {
-            $user = $rp->getUser();
+            $user = $rp[0]->getUser();
             $mail = $this->sg->getMail(
                 $user->getEmail(),
                 $user->getFirstName(),
                 [
                     'first_name' => $user->getFirstName(),
-                    'sun' => number_format($rp->getRequest()->getSum(), 2, '.', ' '),
+                    'sum' => number_format($rp['sum'], 2, '.', ' '),
                 ]
             );
             $mail->setTemplateId('d-bc1ab47fdb6c4b73861f6bc600d8487d');
-            $this->sg->send($mail);
+            $this->sg->send($mail);            
             $io->text('Send mail to: '.$user->getEmail().' with template: d-bc1ab47fdb6c4b73861f6bc600d8487d');
         }
 
         // Отправка письма с поздравлением о дне рождении
         /** @var User[] $rps */
-        // Not implemented
-        // $users = $this->entityManager->getRepository(User::class)->findByBirthDayToday();
-        $users = [];
+    
+        $users = $this->entityManager->getRepository(User::class)->findByBirthDayToday();
 
         foreach ($users as $user) {
             $mail = $this->sg->getMail(

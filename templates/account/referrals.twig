@@ -12,7 +12,7 @@
             <div class="container container--small">
                 <div class="account-wrapper">
                     {% include 'components/account_nav.twig' %}
-                    <div class="account-content referrals">
+                    <div class="account-content referrals" style="overflow:hidden">
                         <h1 class="account-content__title referrals-title account-content-padding">Программа «Поможем вместе»</h1>
                         <div class="referrals-wrapper account-content-padding">
                             <div class="referrals-statistics">
@@ -21,37 +21,84 @@
  <br>1. Поделись с друзьями реферальной ссылкой и пригласи их принять участие в благотворительном проекте;
  <br>2. Ознакомься со списком приглашенных и суммой, которую вы вместе собрали. Это Ваш вклад в наше доброе дело;
  <br>3. Поделись своими достижениями в социальных сетях! Многие увидят результат и последуют Вашему примеру.</p>
+                                    <div style="text-align:center">
                                     <button class="btn btn-dark referrals__invite-button"
-                                            data-modal-trigger="modal-invite">Пригласить
+                                            data-modal-trigger="modal-invite"
+                                            style="margin-left:1.5rem;margin-right:1.5rem">                                            
+                                            Пригласить
                                     </button>
-                                </div>
+                                    {% if app.user.fundraiser %}
+                                    <button class="btn btn-dark referrals__invite-button"
+                                            data-modal-trigger="modal-register"
+                                            style="margin-top:1rem;background:none;color:black;font-weight:bold"
+                                            onclick="resetModal();">Зарегистрировать
+                                    </button>
+                                    {% endif %}
+                                    </div>
+                                </div>                                 
                                 <div class="referrals-statistics__balance">
-                                    <h2 class="referrals-statistics__balance-title">Всего начислено</h2>
-                                    <div class="referrals-statistics__balance-sum">{{ app.user.rewardSum }} баллов</div>
+                                    <h2 class="referrals-statistics__balance-title" style="text-align:center">Всего начислено</h2>
+                                    <div class="referrals-statistics__balance-sum" style="width:140px; margin:1rem auto">{{ app.user.rewardSum }} баллов</div>
+                                    <input id="email" type="hidden" value={{ app.user.email }}>
+                                    {% if app.user.fundraiser %}
                                     <button
-                                        class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button">
+                                        id="btnSendPayout"
+                                        class="referrals-statistics__balance-payout btn btn-dark payout-button js-payout-button"
+                                        onclick="sendPayoutRequest()">
                                         Вывести
                                     </button>
+                                    {% endif %}
+                                </div>                                
+                            </div>
+                          <div class="referrals-statistics">
+                                <div class="referrals-statistics__notice" style="/*  */flex-basis: 90%;flex-basflex-basis: 90%;">
+                                <hr style="border: 0; height: 0;border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3);color: #e5e5e5;">                                    
+                                   <h1 class="account-content__title referrals-title account-content-padding" style="padding-top: 1em;padding-left: 0em;">Делитесь достижениями!</h1>
+                                   <div style="-ms-flex-preferred-size: 80%;
+                                    flex-basis: 80%;
+                                    -ms-flex-negative: 0;
+                                    flex-shrink: 0;;50px;" 
+                                    class="referrals-statistics__notice">
+                                     <p class="referrals-statistics__notice-text" style="">
+                                     <img id="result" 
+                                     src="{{ result_path }}"
+                                     alt="Результаты пожертвований" 
+                                     width="300" height="533" 
+                                     style="margin: 0 auto;text-align: right;margin: 0 20px 0 0;" 
+                                     align="left">
+                                     Мы благодарим Вас за помощь детям которые находятся на обеспечении нашего фонда. Если у вас есть желание - вы можете поделиться достижениями о вашем вкладе в проект и, возможно, другие люди, вдохновившись вашим вкладом, захотят сделать своей доброе дело. Вместе Мы сделаем этот мир добрее!<br><br><i>Ниже, для Вас мы подготовили изображение которым вы сможете поделиться в социальных сетях.&nbsp;Удобный формат изображения подходит для публикации в Stories в Instagram.</i><br>
+                                     <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+                            <script src="https://yastatic.net/share2/share.js"></script>
+                            </p><a class="btn-link" href="/account/downloadImage">Скачать изображение</a> <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter,viber,whatsapp,telegram" data-url="{{ referral_url }}"  data-title="Мой вклад для детей больных с ДЦП через БФ &quot;Помогите Детям&quot;" data-image="https://xn--c1accbmwfjbh2bd3o.xn--p1ai{{ result_path }}" data-description="Вместе мы сможем сделать больше! Спасибо, что присоединяетесь - Помогите ребенку стоимостью чашки вашего любимого напитка. Это ценно!"></div><p></p>
+
+                                    </div>
+                                    
                                 </div>
+                                
+                                                                
                             </div>
                             <div class="referrals-list-wrapper">
                                 <h2 class="referrals-list-title">Список приглашенных</h2>
-                                <table class="referrals-list-table">
+                                <table class="referrals-list-table" style="display:block;overflow-x:auto;white-space:nowrap">
                                     <thead class="referrals-list-table__head">
                                     <tr>
+                                        <th class="referrals-list-table__head-col">Имя</th>
                                         <th class="referrals-list-table__head-col">Почта</th>
-                                        <th class="referrals-list-table__head-col">Дата регистрации</th>
+                                        <th class="referrals-list-table__head-col">Телефон</th>
+                                        <th class="referrals-list-table__head-col">Регистрация</th>
                                         <th class="referrals-list-table__head-col">Начислено</th>
+                                        <th class="referrals-list-table__head-col">Пожертвовал</th>
                                     </tr>
                                     </thead>
                                     <tbody class="referrals-list-table__body">
-                                    {% for pair in entities %}
+                                    {% for user in users %}
                                         <tr class="referrals-list-table__row">
-                                            <td class="referrals-list-table__body-col">{{ pair[0].email }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[0].createdAt|date('d m Y') }}</td>
-                                            <td class="referrals-list-table__body-col">{{ pair[1]|number_format(2, '.', ' ') }}
-                                                б.
-                                            </td>
+                                            <td class="referrals-list-table__body-col">{{ user.meta.firstName ~ " " ~ user.meta.lastName }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.email }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.meta.phone }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.createdAt|date('d m Y') }}</td>
+                                            <td class="referrals-list-table__body-col">{{ user.reward|number_format(2, '.', ' ') }} б.</td>
+                                            <td class="referrals-list-table__body-col">{{ user.donate|number_format(0, '.', ' ') }} руб.</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -91,4 +138,74 @@
             </div>
         </div>
     </div>
+
+    {% if app.user.fundraiser %}
+    <div id="modal-register" class="modal modal-invite" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-modal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-register-title" style="min-width:300px;min-height:300px">                
+                <div class="modal__content" id="modal-register-content" style="display:block">
+                    <h3 class="modal__title">Регистрация приглашенного</h3>
+                    <form id="form">                   
+                        <input type="hidden" id="fund" value="fund{{ app.user.id }}">
+                        <div class="form-group ohf-col-input__row-item">
+                            <input type="text" 
+                                id="inputFirstName" 
+                                class="input-rounded input-fullwidth" 
+                                placeholder="Введите имя*"
+                                onclick="hideError('firstNameError');">
+                            <div id="firstNameError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите имя</p>
+                            </div>
+                        </div>
+                        <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
+                            <input type="text" 
+                                id="inputLastName" 
+                                class="input-rounded input-fullwidth" 
+                                placeholder="Введите фамилию">
+                        </div>
+                        <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
+                            <input type="email"                                
+                                name="email"
+                                id="inputEmail"
+                                class="input-rounded input-fullwidth"
+                                placeholder="Введите почту*"
+                                onclick="hideError('emailError');hideError('emailExist');">
+                            <div id="emailError" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите правильный email</p>
+                            </div>
+                            <div id="emailExist" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
+                            </div>
+                        </div>              
+                        <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
+
+                            <input class="input-rounded input-fullwidth input-type-phone" id="inputPhone" type="text" name="phone"                           
+                                    placeholder="Введите номер телефона*" data-type="phone" 
+                                    onclick="hideError('phone');checkPhone();" onkeyup="checkPhone();">
+                            <div id="phone" class="form-error-tooltip" style="display: none; width: 100%; position: relative; top:-1px;">
+                                <div class="form-error-tooltip__arrow"></div>
+                                <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                            </div>
+                        </div>          
+                        <div class="form-group ohf-col-input__row-item" style='margin-top:7px'>
+                            <input type="checkbox" id="inputCheck" name="form[fundraiser]" 
+                                class="form-check-input" value="1" style="margin-left:20px">
+                            <label class="form-check-label required" for="inputCheck">Напомнить о пожертвовании</label>
+                        </div>
+                        <div class="login-form-row">
+                            <input class="btn btn-dark login-form-submit" type="button" value="Зарегистрировать" onclick="return modalRegistration();">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal__content" id="modal-register-send" style='margin-top: 50px;text-align: center; display:none'>
+                    <img src="/images/modal-registration.png" alt="Приглашение отправлено" width=100>
+                    <p class='btn-link' style="background:none;color:black;font-weight:bold;">Приглашение отправлено</p
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}

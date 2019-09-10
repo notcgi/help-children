@@ -9,9 +9,13 @@ use App\Repository\UserRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -57,7 +61,7 @@ class UserController extends AbstractController
             throw $this->createNotFoundException(
                 'Нет пользователя с id '.$id
             );
-        }
+        }        
 
         $form = $this->createFormBuilder($userData)
             ->add(
@@ -89,12 +93,11 @@ class UserController extends AbstractController
                 ]
             )
             ->add(
-                'age',
-                IntegerType::class,
-                [
-                    'constraints' => [
-                        new NotBlank()
-                    ]
+                'birthday',
+                DateType::class, [     
+                    'format' => 'dd.MM.yyyy',      
+                    'widget' => 'single_text',                             
+                    'required' => false                    
                 ]
             )
             ->add(
@@ -105,6 +108,26 @@ class UserController extends AbstractController
                         new NotBlank(),
                         new Email()
                     ]
+                ]
+            )
+            ->add(
+                'rewardSum',
+                NumberType::class,
+                [
+                    'constraints' => [
+                        new NotBlank()
+                    ]
+                ]
+            )
+            ->add(
+                'fundraiser',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'Фандрайзер',
+                    'attr' => [
+                        'class' => 'form-check-input'                        
+                    ],                    
                 ]
             )
             ->add(
@@ -181,6 +204,17 @@ class UserController extends AbstractController
         }
 
         $entityManager = $this->getDoctrine()->getManager();
+
+        // Удаляем все неотправленные письма из очереди для этого юзера
+        $sgss = $entityManager->getRepository(\App\Entity\SendGridSchedule::class)->findBy([
+            'email' => $userData->getEmail(),            
+            'sent' => 0            
+        ]);
+
+        foreach ($sgss as $sgs) {
+            $entityManager->remove($sgs);
+        }
+
         $entityManager->remove($userData);
         $entityManager->flush();
 

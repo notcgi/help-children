@@ -39,14 +39,29 @@ class User implements UserInterface
     private $ref_code;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $birthday;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $meta = [];
 
-    /**
+    /**     
      * @ORM\Column(type="decimal", precision=10, scale=2, options={"default":0})
      */
     private $rewardSum = 0;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":0})
+     */
+    private $fundraiser = 0;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":1})
+     */
+    private $confirmed = 0;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
@@ -167,23 +182,35 @@ class User implements UserInterface
         return $this->meta['lastName'] ?? '';
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
-        $this->meta['lastName'] = $lastName;
+        if ($lastName !== null)            
+            $this->meta['lastName'] = $lastName;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTime
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTime $birthday)
+    {
+        $this->birthday = $birthday;
 
         return $this;
     }
 
     public function getAge(): ?string
     {
-        return $this->meta['age'] ?? 0;
-    }
+        if (empty($this->getBirthday()))
+            return '';
 
-    public function setAge(string $age): self
-    {
-        $this->meta['age'] = $age;
-
-        return $this;
+        $now = new \DateTime();
+        $diff = $now - $this->getBirthday();
+        $age = floor($diff / (365*60*60*24));  
+        return $age;
     }
 
     public function getPhone(): string
@@ -194,6 +221,18 @@ class User implements UserInterface
     public function setPhone(string $phone): self
     {
         $this->meta['phone'] = $phone;
+
+        return $this;
+    }
+
+    public function getResultHash(): string
+    {
+        return $this->meta['resultHash'] ?? '';
+    }
+
+    public function setResultHash(string $hash): self
+    {
+        $this->meta['resultHash'] = $hash;
 
         return $this;
     }
@@ -223,7 +262,7 @@ class User implements UserInterface
         return $this->pass;
     }
 
-    public function setPass(string $pass): self
+    public function setPass(?string $pass): self
     {
         $this->pass = $pass;
 
@@ -282,6 +321,46 @@ class User implements UserInterface
     public function setRewardSum(float $rewardSum): self
     {
         $this->rewardSum = $rewardSum;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getFundraiser()
+    {
+        return $this->fundraiser;
+    }
+
+    /**
+     * @param bool $fundraiser
+     * 
+     * @return User
+     */
+    public function setFundraiser(bool $fundraiser): self
+    {
+        $this->fundraiser = $fundraiser;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @param bool $confirmed
+     * 
+     * @return User
+     */
+    public function setConfirmed(bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
 
         return $this;
     }

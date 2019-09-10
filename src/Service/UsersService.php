@@ -2,8 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\SendGridSchedule;
 use App\Entity\User;
+use App\Event\RegistrationEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -13,6 +16,7 @@ class UsersService
      * @param array                        $data
      * @param SessionInterface             $session
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EventDispatcherInterface     $dispatcher
      *
      * @return User
      * @throws \RuntimeException
@@ -25,14 +29,18 @@ class UsersService
 
     public $passwordEncoder;
 
+    public $dispatcher;
+
     public function __construct(
         ManagerRegistry $doctrine,
         SessionInterface $session,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->doctrine = $doctrine;
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -53,6 +61,26 @@ class UsersService
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
         if ($user) {
+            $entityManager = $this->doctrine->getManager();            
+    
+            // Завершение платежа
+            $entityManager->persist(
+                (new SendGridSchedule())
+                ->setEmail($user->getEmail())
+                ->setName($user->getFirstName())
+                ->setBody([
+                    'first_name' => $user->getFirstName()
+                ])
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setSendAt(
+                    \DateTimeImmutable::createFromMutable(
+                        (new \DateTime())
+                        ->add(new \DateInterval('PT2H'))                            
+                    )
+                )                    
+            );
+            $entityManager->flush();
+
             return $user;
         }
 
@@ -62,8 +90,8 @@ class UsersService
             ->setLastName($data['surname'] ?? '')
             ->setPhone($data['phone'] ?? '');
 
-        if (isset($data['refCode'])) {
-            $user->setRefCode($data['refCode']);
+        if (isset($data['ref_code'])) {
+            $user->setRefCode($data['ref_code']);
         }
 
         if (isset($data['pass'])) {
@@ -89,6 +117,26 @@ class UsersService
         $entityManager = $this->doctrine->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
+
+        // Завершение платежа
+        $entityManager->persist(
+            (new SendGridSchedule())
+            ->setEmail($user->getEmail())
+            ->setName($user->getFirstName())
+            ->setBody([
+                'first_name' => $user->getFirstName()
+            ])
+            ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+            ->setSendAt(
+                \DateTimeImmutable::createFromMutable(
+                    (new \DateTime())
+                    ->add(new \DateInterval('PT2H'))                            
+                )
+            )                    
+        );
+        $entityManager->flush();
+
+        $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
         return $user;
     }

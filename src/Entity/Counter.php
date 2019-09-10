@@ -22,7 +22,7 @@ class Counter
     private $value;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options={"collation":"utf8mb4_unicode_ci"})
      */
     private $additional_value;
 

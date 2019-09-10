@@ -5,59 +5,108 @@
 {% block keywords %}Мой аккаунт{% endblock %}
 
 {% block content %}
-    <ul>
-        {% for error in formErrors %}
-            <li> * {{ error }}</li>
-        {% endfor %}
-    </ul>
     <main>
         {% include 'components/account_title.twig' %}
         <div class="bg-purple-line"></div>
         <section class="section account section-with-bghearts">
             <div class="container container--small">
                 <div class="account-wrapper">
-                    {% include 'components/account_nav.twig' %}
-                    <div class="account-content my-account">
+                    {% include 'components/account_nav.twig' %}         
+                    <div class="account-content my-account">                                   
                         <h1 class="account-content__title my-account-title account-content-padding">Мой аккаунт</h1>
                         <div class="my-account-form-wrapper account-content-padding">
                             <form class="my-account-form js-my-account-form" method="POST">
+                                <ul style="margin-bottom: 10px">
+                                    {# {% for error in formErrors %}
+                                        <li> * {{ error }}</li>
+                                    {% endfor %} #}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
                                         <div class="my-account-form-field__label label-text">Ваше Имя</div>
-                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <input class="my-account-form-input input-rounded"
                                             type="text"
+                                            id="inputFirstName"
                                             name="firstName"
+                                            placeholder="Введите имя*"
+                                            onclick="hideError('firstNameError');"
                                             value="{{ userData.firstName }}">
                                     </label>
+                                    <div id="firstNameError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите имя</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-fio">
-                                        <div class="my-account-form-field__label label-text">Ваше Фамилия</div>
-                                        <input class="my-account-form-input my-account-form-input--big input-rounded"
+                                        <div class="my-account-form-field__label label-text">Ваша Фамилия</div>
+                                        <input class="my-account-form-input input-rounded"
                                             type="text"
                                             name="lastName"
+                                            placeholder="Введите фамилию"
                                             value="{{ userData.lastName }}">
                                     </label>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-phone">
-                                        <div class="my-account-form-field__label label-text">Ваш номер телефона</div>
+                                        <div class="my-account-form-field__label label-text">Ваша дата рождения</div>
                                         <input class="my-account-form-input input-rounded"
+                                            id="inputDate"
+                                            type="text"                                            
+                                            name="birthday"
+                                            {% if userData.birthday != '' %}
+                                                value="{{ userData.birthday|date('d.m.Y') }}"
+                                            {% endif %}                                                                                    
+                                            placeholder="Введите дату рождения"
+                                            readonly>
+                                    </label>
+                                </div>
+                                <div class="my-account-row">
+                                    <label class="my-account-form-field my-account-form-phone">
+                                        <div class="my-account-form-field__label label-text">Ваш номер телефона</div>
+                                        <input class="my-account-form-input input-rounded input-type-phone"
                                             type="text"
+                                            id="inputPhone"
                                             name="phone"
                                             value="{{ userData.phone }}"
-                                            placeholder="Введите номер телефона"
-                                            data-type="phone">
+                                            placeholder="Введите номер телефона*"
+                                            data-type="phone"
+                                            onclick="hideError('phoneError');checkPhone();"
+                                            onkeyup="checkPhone();">
                                     </label>
+                                    <div id="phoneError" class="form-error-tooltip" style="display: none; position: relative; left:0px;top:-1px;width:300px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите правильный номер</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-email">
                                         <div class="my-account-form-field__label label-text">Ваша почта</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="email"
+                                            id="inputEmail"
                                             name="email"
-                                            value="{{ userData.email }}">
-                                    </label>
+                                            value="{{ userData.email }}"
+                                            onclick="hideError('emailError');hideError('emailExist');"
+                                            placeholder="Введите E-mail*">
+                                    </label>     
+                                    <div id="emailError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите правильный email</p>
+                                    </div>
+                                    <div id="emailExist" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px;top:-1px">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Этот email уже зарегистрирован</p>
+                                    </div>                                                          
+                                </div>
+                                <div class="my-account-row">
+                                    <button id='btnStatus' class="btn btn-link" style="pointer-events:none" disabled>{% if userData.confirmed == 1 %}Ваша почта подтверждена.{% else %}Ваша почта не подтверждена.{% endif %}</button>
+                                        {% if userData.confirmed == 0 %}
+                                            <button id='btnSend' class="btn btn-link" onclick="sendEmailConfirmCode()" style="text-decoration: underline;" type="button">Отправить письмо ещё раз</button>
+                                        {% endif %}    
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-reflink">
@@ -68,7 +117,7 @@
                                             type="text"
                                             name="reflink"
                                             value="{{ referral_url }}">
-                                        <span class="icon icon-copy my-account-form-reflink__copy"></span>
+                                        <span class="icon icon-copy my-account-form-reflink__copy js-copy-button"></span>
                                     </label>
                                 </div>
                                 <div class="my-account-row">
@@ -76,31 +125,46 @@
                                         <div class="my-account-form-field__label label-text">Старый пароль</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputPassword"
                                             name="oldPassword"
-                                            placeholder="Ваш старый пароль"
-                                            minlength="6"
-                                            maxlength="64"
-                                            required>
+                                            placeholder="Ваш старый пароль*"
+                                            onclick="hideError('passwordError');"                                            >
                                     </label>
+                                    <div id="passwordError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px; top:-1px;">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Введите пароль</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
                                         <div class="my-account-form-field__label label-text">Новый пароль</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputNewPassword"
                                             name="password"
-                                            placeholder="Ваш новый пароль">
+                                            placeholder="Ваш новый пароль"
+                                            onclick="hideError('newPasswordError');">
                                     </label>
+                                    <div id="newPasswordError" class="form-error-tooltip" style="display: none; width: 300px; position: relative; left:0px; top:-1px;">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Пароль должен содержать 8 символов и включать в себя: цифры, латинские строчные и прописные буквы</p>
+                                    </div>
                                 </div>
                                 <div class="my-account-row">
                                     <label class="my-account-form-field my-account-form-password">
                                         <div class="my-account-form-field__label label-text">Новый пароль еще раз</div>
                                         <input class="my-account-form-input input-rounded"
                                             type="password"
+                                            id="inputConfirmPassword"
                                             name="retypePassword"
-                                            placeholder="Ваш новый пароль">
+                                            placeholder="Ваш новый пароль"
+                                            onclick="hideError('confirmPasswordError');">
                                     </label>
-                                    <button class="btn btn-link" type="submit">Изменить</button>
+                                    <button class="btn btn-link" type="submit" onclick="return validate_myAccount();">Изменить</button>
+                                    <div id="confirmPasswordError" class="form-error-tooltip" style="display:none; width: 300px; position: relative; left:0px; top:-1px;">
+                                        <div class="form-error-tooltip__arrow"></div>
+                                        <p class="form-error-tooltip__notice">Пароли не совпадают</p>
+                                    </div>                                    
                                 </div>
                             </form>
                         </div>
@@ -109,4 +173,13 @@
             </div>
         </section>
     </main>
+    <script>
+        function ready() {
+            var foopicker = new FooPicker({
+                id: 'inputDate',
+                dateFormat: 'dd.MM.yyyy',
+            });
+        }
+        document.addEventListener("DOMContentLoaded", ready);
+    </script>
 {% endblock %}

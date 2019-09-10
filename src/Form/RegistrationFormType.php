@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -29,32 +30,23 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName', TextType::class, [
-                'constraints' => [
-                    new Length(['min' => 2, 'max' => 32])
-                ]
+            ->add('lastName', TextType::class, [                    
+                'required' => false                
             ])
-            ->add('firstName', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 2, 'max' => 32])
-                ]
+            ->add('firstName', TextType::class, [                
+                'required' => false
             ])
-            ->add('age', NumberType::class, [
-                'constraints' => [
-                    new Range(['min' => 13, 'max' => 102])
-                ]
+            ->add('birthday', TextType::class, [   
+                'required' => false            
             ])
             ->add('phone', TextType::class, [
+                'required' => false,
                 'constraints' => [
                     new Length(['min' => 10, 'max' => 13])
                 ]
             ])
             ->add('email', EmailType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Email()
-                ]
+                'required' => false
             ])
             ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,
@@ -62,7 +54,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'invalid_message' => 'Поля пароля должны совпадать.',
                 'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
+                'required' => false,
                 'first_options' => ['label' => 'Введите пароль'],
                 'second_options' => ['label' => 'Повторите пароль'],
                 'type' => PasswordType::class,

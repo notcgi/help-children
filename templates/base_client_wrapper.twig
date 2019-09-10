@@ -2,12 +2,13 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/style.bundle.css?v=0.0.4">
+    <link rel="stylesheet" href="/css/foopicker.css">
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
         (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
         ym(53180137,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
-    </script>
+    </script>    
 {% endblock %}
 
 {% block body %}
@@ -49,6 +50,10 @@
                                         <li class="nav-links-submenu__item">
                                             <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
                                         </li>
+                                        {# <li class="nav-links-submenu__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
+                                        </li> #}
                                     </ul>
                                 </div>
                             </li>
@@ -152,6 +157,10 @@
                                         <a href="{{ path('contacts') }}"
                                            class="nav-links-submenu__item-link">Реквизиты</a>
                                     </li>
+                                    {# <li class="nav-links-submenu__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
+                                    </li>                                     #}
                                 </ul>
                             </li>
                             <li class="nav-links__item">
@@ -285,6 +294,10 @@
                                         <a href="{{ path('contacts') }}"
                                            class="footernav-links__item-link">Реквизиты</a>
                                     </li>
+                                    {# <li class="footernav-links__item">
+                                        <a href="{{ path('sms') }}"
+                                           class="footernav-links__item-link">Оплата с помощью SMS</a>
+                                    </li> #}
                                 </ul>
                             </nav>
                         </div>
@@ -319,7 +332,7 @@
                                 ОГРН 1132100001054<br/>
                                 ИНН/КПП 2124999727/212401001 </p>
                             <img class="img-responsive"
-                                    src="images/partners-alfagenesis.png"
+                                    src="/images/partners-alfagenesis.png"
                                     alt="Партнер ALFA GENESIS"
                                     width="180">
                         </div>
@@ -329,4 +342,6 @@
         </div>
     </footer>
     <script src="/js/bundle.js?v=0.0.4"></script>
+    <script src="/js/validate.js"></script>
+    <script src="/js/foopicker.js"></script>
 {% endblock %}

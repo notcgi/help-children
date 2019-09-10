@@ -22,14 +22,23 @@
                     {{ form_widget(form.lastName, {'attr': {'class':'form-control', 'placeholder': 'Иванов', 'value': user.lastName}}) }}
                 </div>
                 <div class="form-group">
-                    {{ form_label(form.age, 'Возраст') }}
-                    <div class="err_list form-text text-muted">{{ form_errors(form.age) }}</div>
-                    {{ form_widget(form.age, {'attr': {'class':'form-control', 'placeholder': 'Иванов', 'value': user.age}}) }}
+                    {{ form_label(form.birthday, 'Дата рождения') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.birthday) }}</div>
+                    {{ form_widget(form.birthday, {'attr': {'class':'form-control', 'placeholder': '01/01/1990', 'value': user.birthday|date('d.m.Y'), 'required': false}}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.email, 'Email') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.email) }}</div>
                     {{ form_widget(form.email, {'attr': {'class':'form-control', 'placeholder': 'name@example.com', 'value': user.email}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.rewardSum, 'Начисленные баллы') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.rewardSum) }}</div>
+                    {{ form_widget(form.rewardSum, {'attr': {'class':'form-control', 'placeholder': '50.00', 'value': user.rewardSum}}) }}
+                </div>
+                <div class="form-group" style='margin-left: 20px'>
+                    {{ form_widget(form.fundraiser, {'attr': {'class':'form-check-input', 'required':false}}) }}
+                    {{ form_label(form.fundraiser,  'Фандрайзер', {'label_attr': {'class':'form-check-label'}}) }}                    
                 </div>
                 <div class="form-group">
                     {{ form_label(form.roles, 'Roles') }}
@@ -38,7 +47,7 @@
                 </div>
                 <div class="form-group">
                     {{ form_widget(form.referrer, {'attr': {'class':'form-control'}}) }}
-                </div>
+                </div>                
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Дата
                         создания: {{ user.createdAt|date("Y-m-d h:i:s") }}</label>
@@ -65,4 +74,13 @@
             </div>
         </div>
     </div>
+    <script>
+        function ready() {
+            var foopicker = new FooPicker({
+                id: 'form_birthday',
+                dateFormat: 'dd.MM.yyyy',
+            });
+        }
+        document.addEventListener("DOMContentLoaded", ready);
+    </script>
 {% endblock %}

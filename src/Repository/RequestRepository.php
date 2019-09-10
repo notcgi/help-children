@@ -60,6 +60,55 @@ class RequestRepository extends ServiceEntityRepository
      * @return float
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    public function aggregateSumSuccessPaymentWithUser(User $user)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('SUM(r.sum)')
+            ->where('r.status = 2 AND r.user = :user')
+            ->setParameters([
+                'user' => $user->getId()
+            ])
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateCountChildWithUser($user)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('COUNT(DISTINCT r.child)')            
+            ->where('r.status = 2 AND r.user = :user')
+            ->setParameters([
+                'user' => $user->getId()
+            ])
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function aggregateCountReferWithUser($user)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('COUNT(DISTINCT r.user)')
+            ->leftJoin('r.user', 'u')
+            ->where('r.status = 2 AND u.referrer = :user')
+            ->setParameters([
+                'user' => $user->getId()
+            ])
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function aggregateSumSuccessPayment()
     {
         return $this->createQueryBuilder('r')
@@ -67,7 +116,7 @@ class RequestRepository extends ServiceEntityRepository
             ->where('r.status = 2')
             ->getQuery()
             ->getSingleScalarResult();
-    }
+    }     
 
     /**
      * @return float

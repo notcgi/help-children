@@ -1,0 +1,7 @@
+SELECT r.id AS 'request_id', u.referrer_id AS 'user_id', r.user_id AS 'donator_id', IF(r.recurent=1, r.sum*0.25, r.sum*0.15) AS 'sum', r.created_at AS 'created_at'
+FROM `requests` AS r
+LEFT JOIN `users` AS u ON r.user_id = u.id
+LEFT JOIN `referral_history` AS rh ON r.id = rh.request_id
+WHERE r.status=2 AND u.referrer_id IS NOT NULL AND rh.id IS NULL
+
+Скрипт выведет все недостающие строки таблицы referral_history. Их нужно будет забить через INSERT INTO SELECT либо руками, при этом не забывая обновлять reward_sum у пользователей в таблице users, если это первое сочетание user_id и donator_id.
