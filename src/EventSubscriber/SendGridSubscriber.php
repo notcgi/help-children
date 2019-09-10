@@ -304,8 +304,13 @@ class SendGridSubscriber implements EventSubscriberInterface
             ]
         );
         $mail->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5');
-
-        return $this->sendGrid->send($mail);
+        
+        try {
+            $this->sendGrid->send($mail);
+        }
+        catch {
+            $this->logger->error('Словили парашу: '.  $e->getMessage(). "\n");
+        }
     }
 
     public function onRecurringPaymentRemove(RecurringPaymentRemove $event)
