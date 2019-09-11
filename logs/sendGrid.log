@@ -1,0 +1,193 @@
+17.07.2019 14:00:20; Begin 
+17.07.2019 14:02:01; Begin 
+17.07.2019 14:04:16; Begin 
+17.07.2019 14:04:16; d-536b9f1c13cf4596a92513f67a076543 SendGrid\Response Object
+(
+    [statusCode:protected] => 400
+    [body:protected] => {"errors":[{"message":"The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {\"email\" : \"example@example.com\"}  or {\"email\" : \"example@example.com\", \"name\" : \"Example Recipient\"}.","field":"from.email","help":"http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from"}]}
+    [headers:protected] => Array
+        (
+            [0] => HTTP/1.1 400 Bad Request
+            [1] => Server: nginx
+            [2] => Date: Wed, 17 Jul 2019 11:04:16 GMT
+            [3] => Content-Type: application/json
+            [4] => Content-Length: 402
+            [5] => Connection: keep-alive
+            [6] => Access-Control-Allow-Origin: https://sendgrid.api-docs.io
+            [7] => Access-Control-Allow-Methods: POST
+            [8] => Access-Control-Allow-Headers: Authorization, Content-Type, On-behalf-of, x-sg-elas-acl
+            [9] => Access-Control-Max-Age: 600
+            [10] => X-No-CORS-Reason: https://sendgrid.com/docs/Classroom/Basics/API/cors.html
+            [11] => 
+            [12] => 
+        )
+
+    [from] => fond.detyam@mail.ru
+)
+avtor@avtorkoda.com.ua
+17.07.2019 14:04:16; SendGrid\Mail\Mail Object
+(
+    [from:SendGrid\Mail\Mail:private] => SendGrid\Mail\From Object
+        (
+            [name:SendGrid\Mail\EmailAddress:private] => 
+            [email:SendGrid\Mail\EmailAddress:private] => 
+            [substitutions:SendGrid\Mail\EmailAddress:private] => 
+            [subject:SendGrid\Mail\EmailAddress:private] => 
+        )
+
+    [subject:SendGrid\Mail\Mail:private] => 
+    [contents:SendGrid\Mail\Mail:private] => 
+    [attachments:SendGrid\Mail\Mail:private] => 
+    [template_id:SendGrid\Mail\Mail:private] => SendGrid\Mail\TemplateId Object
+        (
+            [template_id:SendGrid\Mail\TemplateId:private] => d-536b9f1c13cf4596a92513f67a076543
+        )
+
+    [sections:SendGrid\Mail\Mail:private] => 
+    [headers:SendGrid\Mail\Mail:private] => 
+    [categories:SendGrid\Mail\Mail:private] => 
+    [custom_args:SendGrid\Mail\Mail:private] => 
+    [substitutions:SendGrid\Mail\Mail:private] => 
+    [send_at:SendGrid\Mail\Mail:private] => 
+    [batch_id:SendGrid\Mail\Mail:private] => 
+    [asm:SendGrid\Mail\Mail:private] => 
+    [ip_pool_name:SendGrid\Mail\Mail:private] => 
+    [mail_settings:SendGrid\Mail\Mail:private] => 
+    [tracking_settings:SendGrid\Mail\Mail:private] => 
+    [reply_to:SendGrid\Mail\Mail:private] => 
+    [personalization:SendGrid\Mail\Mail:private] => Array
+        (
+            [0] => SendGrid\Mail\Personalization Object
+                (
+                    [tos:SendGrid\Mail\Personalization:private] => Array
+                        (
+                            [0] => SendGrid\Mail\To Object
+                                (
+                                    [name:SendGrid\Mail\EmailAddress:private] => koda
+                                    [email:SendGrid\Mail\EmailAddress:private] => avtor@avtorkoda.com.ua
+                                    [substitutions:SendGrid\Mail\EmailAddress:private] => Array
+                                        (
+                                            [first_name] => koda
+                                            [confirm_url] => /user/confirm?code=mPt3bUdHBtFur6fW&email=avtor@avtorkoda.com.ua
+                                        )
+
+                                    [subject:SendGrid\Mail\EmailAddress:private] => 
+                                )
+
+                        )
+
+                    [ccs:SendGrid\Mail\Personalization:private] => 
+                    [bccs:SendGrid\Mail\Personalization:private] => 
+                    [subject:SendGrid\Mail\Personalization:private] => 
+                    [headers:SendGrid\Mail\Personalization:private] => 
+                    [substitutions:SendGrid\Mail\Personalization:private] => Array
+                        (
+                            [first_name] => koda
+                            [confirm_url] => /user/confirm?code=mPt3bUdHBtFur6fW&email=avtor@avtorkoda.com.ua
+                        )
+
+                    [dynamic_template_data:SendGrid\Mail\Personalization:private] => 
+                    [has_dynamic_template:SendGrid\Mail\Personalization:private] => 1
+                    [custom_args:SendGrid\Mail\Personalization:private] => 
+                    [send_at:SendGrid\Mail\Personalization:private] => 
+                )
+
+        )
+
+)
+avtor@avtorkoda.com.ua
+17.07.2019 16:52:52; Begin 
+17.07.2019 16:52:52; d-536b9f1c13cf4596a92513f67a076543 SendGrid\Response Object
+(
+    [statusCode:protected] => 400
+    [body:protected] => {"errors":[{"message":"The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {\"email\" : \"example@example.com\"}  or {\"email\" : \"example@example.com\", \"name\" : \"Example Recipient\"}.","field":"from.email","help":"http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from"}]}
+    [headers:protected] => Array
+        (
+            [0] => HTTP/1.1 400 Bad Request
+            [1] => Server: nginx
+            [2] => Date: Wed, 17 Jul 2019 13:52:52 GMT
+            [3] => Content-Type: application/json
+            [4] => Content-Length: 402
+            [5] => Connection: keep-alive
+            [6] => Access-Control-Allow-Origin: https://sendgrid.api-docs.io
+            [7] => Access-Control-Allow-Methods: POST
+            [8] => Access-Control-Allow-Headers: Authorization, Content-Type, On-behalf-of, x-sg-elas-acl
+            [9] => Access-Control-Max-Age: 600
+            [10] => X-No-CORS-Reason: https://sendgrid.com/docs/Classroom/Basics/API/cors.html
+            [11] => 
+            [12] => 
+        )
+
+)
+svyatoslav.gorshkov@gmail.com
+17.07.2019 16:52:52; SendGrid\Mail\Mail Object
+(
+    [from:SendGrid\Mail\Mail:private] => SendGrid\Mail\From Object
+        (
+            [name:SendGrid\Mail\EmailAddress:private] => 
+            [email:SendGrid\Mail\EmailAddress:private] => 
+            [substitutions:SendGrid\Mail\EmailAddress:private] => 
+            [subject:SendGrid\Mail\EmailAddress:private] => 
+        )
+
+    [subject:SendGrid\Mail\Mail:private] => 
+    [contents:SendGrid\Mail\Mail:private] => 
+    [attachments:SendGrid\Mail\Mail:private] => 
+    [template_id:SendGrid\Mail\Mail:private] => SendGrid\Mail\TemplateId Object
+        (
+            [template_id:SendGrid\Mail\TemplateId:private] => d-536b9f1c13cf4596a92513f67a076543
+        )
+
+    [sections:SendGrid\Mail\Mail:private] => 
+    [headers:SendGrid\Mail\Mail:private] => 
+    [categories:SendGrid\Mail\Mail:private] => 
+    [custom_args:SendGrid\Mail\Mail:private] => 
+    [substitutions:SendGrid\Mail\Mail:private] => 
+    [send_at:SendGrid\Mail\Mail:private] => 
+    [batch_id:SendGrid\Mail\Mail:private] => 
+    [asm:SendGrid\Mail\Mail:private] => 
+    [ip_pool_name:SendGrid\Mail\Mail:private] => 
+    [mail_settings:SendGrid\Mail\Mail:private] => 
+    [tracking_settings:SendGrid\Mail\Mail:private] => 
+    [reply_to:SendGrid\Mail\Mail:private] => 
+    [personalization:SendGrid\Mail\Mail:private] => Array
+        (
+            [0] => SendGrid\Mail\Personalization Object
+                (
+                    [tos:SendGrid\Mail\Personalization:private] => Array
+                        (
+                            [0] => SendGrid\Mail\To Object
+                                (
+                                    [name:SendGrid\Mail\EmailAddress:private] => Святослав
+                                    [email:SendGrid\Mail\EmailAddress:private] => svyatoslav.gorshkov@gmail.com
+                                    [substitutions:SendGrid\Mail\EmailAddress:private] => Array
+                                        (
+                                            [first_name] => Святослав
+                                            [confirm_url] => /user/confirm?code=skCqqbBJ3Mb63tZd&email=svyatoslav.gorshkov@gmail.com
+                                        )
+
+                                    [subject:SendGrid\Mail\EmailAddress:private] => 
+                                )
+
+                        )
+
+                    [ccs:SendGrid\Mail\Personalization:private] => 
+                    [bccs:SendGrid\Mail\Personalization:private] => 
+                    [subject:SendGrid\Mail\Personalization:private] => 
+                    [headers:SendGrid\Mail\Personalization:private] => 
+                    [substitutions:SendGrid\Mail\Personalization:private] => Array
+                        (
+                            [first_name] => Святослав
+                            [confirm_url] => /user/confirm?code=skCqqbBJ3Mb63tZd&email=svyatoslav.gorshkov@gmail.com
+                        )
+
+                    [dynamic_template_data:SendGrid\Mail\Personalization:private] => 
+                    [has_dynamic_template:SendGrid\Mail\Personalization:private] => 1
+                    [custom_args:SendGrid\Mail\Personalization:private] => 
+                    [send_at:SendGrid\Mail\Personalization:private] => 
+                )
+
+        )
+
+)
+svyatoslav.gorshkov@gmail.com

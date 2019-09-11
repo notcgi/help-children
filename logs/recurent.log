@@ -1,0 +1,172 @@
+13.07.2019 15:04:03; POST Array
+(
+    [TransactionId] => 171112249
+    [Amount] => 60.00
+    [Currency] => RUB
+    [PaymentAmount] => 60.00
+    [PaymentCurrency] => RUB
+    [OperationType] => Payment
+    [InvoiceId] => 657
+    [AccountId] => 2
+    [SubscriptionId] => sc_4e22efdc088cf0752e0dc4a932802
+    [Name] => 
+    [Email] => 
+    [DateTime] => 2019-07-13 12:03:56
+    [IpAddress] => 178.176.186.194
+    [IpCountry] => RU
+    [IpCity] => Москва
+    [IpRegion] => Москва
+    [IpDistrict] => Центральный федеральный округ
+    [IpLatitude] => 55.755787
+    [IpLongitude] => 37.617634
+    [CardFirstSix] => 480110
+    [CardLastFour] => 6765
+    [CardType] => Visa
+    [CardExpDate] => 05/23
+    [Issuer] => Apple Pay
+    [IssuerBankCountry] => RU
+    [Description] => Благотворительная помощь
+    [AuthCode] => 217422
+    [Token] => 534446479
+    [TestMode] => 0
+    [Status] => Completed
+    [GatewayName] => Tinkoff
+    [Data] => {"cloudPayments":{"recurrent":{"interval":"Month","period":1}},"email":"ersh@nxt.ru","lastname":"Ерощенко","firstname":"Сергей","phone":"+79876660006"}
+    [TotalFee] => 2.34
+    [CardProduct] => N
+)
+
+ GET Array
+(
+)
+
+ form{"Success":false,"Message":"\u0027Email\u0027 must not be empty.; Email is required"}
+13.07.2019 15:18:14; POST Array
+(
+    [TransactionId] => 171118195
+    [Amount] => 69.00
+    [Currency] => RUB
+    [PaymentAmount] => 69.00
+    [PaymentCurrency] => RUB
+    [OperationType] => Payment
+    [InvoiceId] => 659
+    [AccountId] => 1
+    [SubscriptionId] => sc_17d44cd97541baee573353043d48d
+    [Name] => EROSHCHENKO SERGEY
+    [Email] => 
+    [DateTime] => 2019-07-13 12:18:06
+    [IpAddress] => 178.176.186.194
+    [IpCountry] => RU
+    [IpCity] => Москва
+    [IpRegion] => Москва
+    [IpDistrict] => Центральный федеральный округ
+    [IpLatitude] => 55.755787
+    [IpLongitude] => 37.617634
+    [CardFirstSix] => 427427
+    [CardLastFour] => 6765
+    [CardType] => Visa
+    [CardExpDate] => 05/20
+    [Issuer] => SBERBANK of Russia
+    [IssuerBankCountry] => RU
+    [Description] => Благотворительная помощь
+    [AuthCode] => 223785
+    [Token] => 534451553
+    [TestMode] => 0
+    [Status] => Completed
+    [GatewayName] => Tinkoff
+    [Data] => {"cloudPayments":{"recurrent":{"interval":"Month","period":1}},"email":"fond.detyam@mail.ru","lastname":"Аккаунт","firstname":"Админ","phone":"89876660006"}
+    [TotalFee] => 2.69
+    [CardProduct] => N
+)
+
+ GET Array
+(
+)
+
+ form{"Success":false,"Message":"\u0027Email\u0027 must not be empty.; Email is required"}
+18.07.2019 16:22:09; POST Array
+(
+    [TransactionId] => 173609489
+    [Amount] => 100.00
+    [Currency] => RUB
+    [PaymentAmount] => 100.00
+    [PaymentCurrency] => RUB
+    [OperationType] => Payment
+    [InvoiceId] => 719
+    [AccountId] => 419
+    [SubscriptionId] => sc_59240edcb085e994c6d7df6d178af
+    [Name] => ALEXANDRA VASILEVA
+    [Email] => 
+    [DateTime] => 2019-07-18 13:22:07
+    [IpAddress] => 31.13.144.105
+    [IpCountry] => RU
+    [IpCity] => Самара
+    [IpRegion] => Самарская область
+    [IpDistrict] => Приволжский федеральный округ
+    [IpLatitude] => 53.20216
+    [IpLongitude] => 50.159618
+    [CardFirstSix] => 427675
+    [CardLastFour] => 2263
+    [CardType] => Visa
+    [CardExpDate] => 06/22
+    [Issuer] => SBERBANK of Russia
+    [IssuerBankCountry] => RU
+    [Description] => Благотворительная помощь
+    [AuthCode] => 229008
+    [Token] => 536450186
+    [TestMode] => 0
+    [Status] => Completed
+    [GatewayName] => Tinkoff
+    [Data] => {"cloudPayments":{"recurrent":{"interval":"Month","period":1}},"email":"vasilevaav08@mail.ru","lastname":"","firstname":"Александра","phone":"+79603072138"}
+    [TotalFee] => 3.90
+    [CardProduct] => F
+)
+
+ GET Array
+(
+)
+
+ form{"Success":false,"Message":"\u0027Email\u0027 must not be empty.; Email is required"}
+18.07.2019 16:45:23; POST Array
+(
+    [TransactionId] => 173618432
+    [Amount] => 200.00
+    [Currency] => RUB
+    [PaymentAmount] => 200.00
+    [PaymentCurrency] => RUB
+    [OperationType] => Payment
+    [InvoiceId] => 720
+    [AccountId] => 420
+    [SubscriptionId] => sc_403a51f35042c10546cb3f9b3585a
+    [Name] => 
+    [Email] => 
+    [DateTime] => 2019-07-18 13:45:22
+    [IpAddress] => 31.13.144.8
+    [IpCountry] => RU
+    [IpCity] => Самара
+    [IpRegion] => Самарская область
+    [IpDistrict] => Приволжский федеральный округ
+    [IpLatitude] => 53.20216
+    [IpLongitude] => 50.159618
+    [CardFirstSix] => 427675
+    [CardLastFour] => 7418
+    [CardType] => Visa
+    [CardExpDate] => 08/19
+    [Issuer] => SBERBANK of Russia
+    [IssuerBankCountry] => RU
+    [Description] => Благотворительная помощь
+    [AuthCode] => 227215
+    [Token] => 536458732
+    [TestMode] => 0
+    [Status] => Completed
+    [GatewayName] => Tinkoff
+    [Data] => {"cloudPayments":{"recurrent":{"interval":"Month","period":1}},"email":"gerasimovaanastasia02@gmail.com","lastname":"Герасимова","firstname":"Анастасия","phone":"+79033463195"}
+    [TotalFee] => 7.80
+    [CardProduct] => F
+)
+
+ GET Array
+(
+)
+
+ form{"Success":false,"Message":"\u0027Email\u0027 must not be empty.; Email is required"}
