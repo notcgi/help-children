@@ -79,7 +79,7 @@ class UserController extends AbstractController
                 TextType::class,
                 [
                     'constraints' => [
-                        new NotBlank()
+//                        new NotBlank()
                     ]
                 ]
             )
