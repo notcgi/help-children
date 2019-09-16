@@ -364,9 +364,12 @@
         setPaymentMethod('{{ form['payment-type'] }}');
 
         switch (0 | sum.value) {
-            case 500:
-                radioSums[0].checked = true;
-                break;
+          case 300:
+            radioSums[0].checked = true;
+            break;
+          case 500:
+            radioSums[0].checked = true;
+            break;
             case 700:
                 radioSums[1].checked = true;
                 break;
