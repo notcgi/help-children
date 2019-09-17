@@ -1,0 +1,38 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% import 'panel/documents/table.twig' as table %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Редактор документов:</h1>
+
+                {{ form_start(form) }}
+                {{ form_widget(form.id, {'value': document.id }) }}
+                <div class="form-group">
+                    {{ form_label(form.title, 'Название') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.title) }}</div>
+                    {{ form_widget(form.title, {'attr': {'class':'form-control', 'placeholder': 'Документ', 'value': document.title }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.category, 'Категория') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.category) }}</div>
+                    {{ form_widget(form.category, {'attr': {'class':'form-control', 'value': document.category}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.description, 'Описание') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.description) }}</div>
+                    {{ form_widget(form.description, {'attr': {'class':'form-control', 'placeholder': 'Описание документа', 'value': document.description, 'required': false}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.file, 'Файл') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.file) }}</div>
+                    {{ form_widget(form.file, {'attr': {'class':'form-control', 'value': document.file}}) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

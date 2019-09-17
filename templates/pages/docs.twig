@@ -17,161 +17,25 @@
                 <h2 class="section-title">Учредительные документы</h2>
                 <div class="reports-content">
                     <ul class="report-list">
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Electronic_version_EGRUL.pdf"
-                                       target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Электронная версия ЕГРЮЛ</h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Electronic_version_EGRUL.pdf" Скачать</a>
+                        {% for document in documents %}
+                            <li class="report-list__item">
+                                <div class="report">
+                                    <div class="report-doc">
+                                        <img class="report-doc__image" src="/images/doc-example.png" alt="Документ" width="208" height="250">
+                                        <a class="show-doc-button" href="{{ document.file }}" target="_blank">
+                                            <span class="show-doc-button__circle"><span class="icon icon-doc"></span></span>
+                                        </a>
                                     </div>
-                                    <div class="report-description__size">97 кб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Charter_BF__help_children.pdf"
-                                       target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Устав фонда “Помогите детям”</h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Charter_BF__help_children.pdf">Скачать</a>
+                                    <div class="report-description">
+                                        <h3 class="report-description__title">{{ document.title }}</h3>
+                                        <div class="report-description__download">
+                                            <a class="report-description__download-link" target="_blank" href="{{ document.file }}">Скачать</a>
+                                        </div>
+                                        <div class="report-description__size">97 кб.</div>
                                     </div>
-                                    <div class="report-description__size">2.7 мб.</div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Tax_registration_certificate.jpeg"
-                                       target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">
-                                        Свидетельство о государственной регистрации благотворительного фонда помощи
-                                        детям "Помогите детям" </h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Tax_registration_certificate.jpeg">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">6.1 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/tax_filing_certificate.jpeg" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">
-                                        Свидетельство о постановке на учёт благотворительного фонда помощи детям
-                                        "Помогите детям" </h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/tax_filing_certificate.jpeg">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">6.1 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Testimony_from_the_Ministry_of_Justice.jpg"
-                                       target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">
-                                        Свидетельство о государственной регистрации некоммерческого благотворительного
-                                        фонда помощи детям
-                                        "Помогите детям" </h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Testimony_from_the_Ministry_of_Justice.jpg">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3.4 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Документ"
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Public_offer.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Публичная оферта</h3>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" href="/docs/Public_offer.pdf"
-                                           target="_blank">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">16.2 мб.</div>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="container container--small">

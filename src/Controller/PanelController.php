@@ -72,4 +72,16 @@ class PanelController extends AbstractController
             ]
         );
     }
+
+    public function documents() {
+        /** @var RequestRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Document::class);
+
+        return $this->render(
+            'panel/documents.twig',
+            [
+                'documents' => $repository->findAll()
+            ]
+        );
+    }
 }

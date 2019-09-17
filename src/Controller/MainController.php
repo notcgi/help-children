@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\RequestRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
@@ -39,7 +40,12 @@ class MainController extends AbstractController
      */
     public function docs()
     {
-        return $this->render('pages/docs.twig');
+        /** @var RequestRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(\App\Entity\Document::class);
+
+        return $this->render('pages/docs.twig', [
+            'documents' => $repository->findAll()
+        ]);
     }
 
     /**
