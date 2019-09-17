@@ -155,7 +155,8 @@
                             </div>
                         </div>
                         {% if not app.user %}
-                        <div class="ohf-row">
+                        <div class="ohf-row showVISA"
+                             style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">4</div>
                                 <div class="ohf-col-label__notice">
