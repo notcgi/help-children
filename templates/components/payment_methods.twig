@@ -28,13 +28,12 @@
             disabled>
         <div class="toggle-field__text">Интернет сервисы</div>
     </label> #}
-    <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
+    <label class="payment-type-fieldgroup__label toggle-field">
         <input class="toggle-field__input"
             type="radio"
             name="payment-type"
             value="sms"
-            {{ form['payment-type'] == 'sms' ? 'checked' }}
-            disabled>
+            {{ form['payment-type'] == 'sms' ? 'checked' }}>
         <div class="toggle-field__text">Sms оплата</div>
     </label>
     <label class="payment-type-fieldgroup__label toggle-field toggle-field--disabled">
