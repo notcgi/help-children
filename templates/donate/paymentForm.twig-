@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments"></script>
+    <script>
+     this.pay = function () {
+    var widget = new cp.CloudPayments();
+
+    var data = {};
+        {% if fields.IsRecurrentStart == 1 %}
+        data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки
+        {% endif %}
+        data.email = '{{ fields.Email }}';
+        data.lastname = '{{ fields.LastName }}';
+        data.firstname = '{{ fields.FirstName }}';
+        data.phone = '{{ fields.Phone }}';
+
+    widget.charge({ // options
+            publicId: 'pk_51de50fd3991dbf5b3610e65935d1',  //id из личного кабинета
+            description: 'Благотворительная помощь', //назначение
+            amount: {{ fields.Subtotal_P }}, //сумма
+            currency: 'RUB', //валюта
+            invoiceId: '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
+            accountId: '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
+            skin: "mini", //дизайн виджета
+            data: data
+        },
+        function (options) { // success
+            //действие при успешной оплате
+            window.location.href = '{{ fields.URL_RETURN_OK }}';
+        },
+        function (reason, options) { // fail
+            //действие при неуспешной оплате
+            window.location.href = '{{ fields.URL_RETURN_NO }}';
+        });
+};
+    </script>
+    <!--<form action="https://wpay.uniteller.ru/pay/" method="POST">
+        {% for key, value in fields %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+    </form>-->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            //document.forms[0].submit();/
+            pay();
+        });
+    </script>
+{% endblock %}

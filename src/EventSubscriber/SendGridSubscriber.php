@@ -304,13 +304,8 @@ class SendGridSubscriber implements EventSubscriberInterface
             ]
         );
         $mail->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5');
-        
-        try {
-            $this->sendGrid->send($mail);
-        }
-        catch {
-            $this->logger->error('Словили парашу: '.  $e->getMessage(). "\n");
-        }
+
+        return $this->sendGrid->send($mail);
     }
 
     public function onRecurringPaymentRemove(RecurringPaymentRemove $event)
@@ -334,7 +329,7 @@ class SendGridSubscriber implements EventSubscriberInterface
     }
 
     public function onSendReminder(SendReminderEvent $event) {    
-        /*$this->em->persist((new SendGridSchedule())
+        $this->em->persist((new SendGridSchedule())
             ->setEmail($event->getEmail())
             ->setName($event->getName())
             ->setBody([
@@ -353,35 +348,6 @@ class SendGridSubscriber implements EventSubscriberInterface
                     (new \DateTime($event->getDate()))        
                     ->setTime(12, 0, 0)            
                 )
-            ));
-        $this->em->flush();
-        return true;*/
-        $eventDate = new \DateTime($event->getDate());
-        $nowDate = new Date();
-        $resDateTime = (new \DateTime($event->getDate()))        
-        ->setTime(12, 0, 0);
-        
-        if ($eventDate === $nowDate) {
-            $resDateTime = (new \DateTime())
-                ->add(new \DateInterval('PT5M'));
-        }
-
-        $this->em->persist((new SendGridSchedule())
-            ->setEmail($event->getEmail())
-            ->setName($event->getName())
-            ->setBody([
-                'first_name' => $event->getName(),
-                'donate_url' => $this->generator->generate('donate', [                                        
-                    'email' => $event->getEmail(),  
-                    'name' => $event->getName(),
-                    'lastName' => $event->getLastName(),
-                    'phone' => $event->getPhone(),   
-                    'code' => $event->getCode()               
-                ], 0)              
-            ])
-            ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
-            ->setSendAt(
-                \DateTimeImmutable::createFromMutable($resDateTime)
             ));
         $this->em->flush();
         return true;

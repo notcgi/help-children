@@ -297,7 +297,7 @@ class AccountController extends AbstractController
         $w_child = 525 - 80 * strlen($childCount);
         $h_child = 1040;
 
-        $w_refer = 330 - 110 * strlen($referrCount);
+        $w_refer = 330 - 120 * strlen($referrCount);
         $h_refer = 1280;
                 
         ImageFTtext($image, 50, 0, $w_name, $h_name, $color_name, $font, $name);
