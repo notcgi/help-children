@@ -1,0 +1,15 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% import 'panel/documents/table.twig' as table %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Документы:</h1>
+                {{ table.table(documents) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
