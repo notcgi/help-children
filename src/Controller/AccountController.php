@@ -186,7 +186,7 @@ class AccountController extends AbstractController
 
         $this->updateResults($this->getUser());
         $result_path = $this->getRealPath($this->getUser());
-                        
+	                        
         return $this->render(
             'account/referrals.twig',
             [                
@@ -263,7 +263,7 @@ class AccountController extends AbstractController
 
     private function getResultPath($hash)
     {        
-        $path = dirname(dirname(__DIR__)) . '/public/images/results/' . $hash . '.jpg';
+        $path = './images/results/' . $hash . '.jpg';
         return $path;
     }    
 
@@ -276,12 +276,12 @@ class AccountController extends AbstractController
 
     private function updateResultImage($name, $donateSum, $childCount, $referrCount, $path)
     {        
-        $font = dirname(__DIR__) . '/../public/fonts/MuseoSans Cyrillic/MuseoSansCyrl-700.otf';
-        $template_path = dirname(__DIR__) . '/../public/images/account-results.jpg';
+        $font = './fonts/MuseoSans Cyrillic/MuseoSansCyrl-700.otf';
+        $template_path = './images/account-results.jpg';
 
-        $image = ImageCreateFromjpeg($template_path);
-        
-        $color_name = ImageColorAllocate($image, 255, 255, 255);    
+        $image = imagecreatefromjpeg($template_path);
+    
+        $color_name = imagecolorallocate($image, 255, 255, 255);    
         $w_name = 210; //ширина
         $h_name = 375; //высота    
 
@@ -290,7 +290,7 @@ class AccountController extends AbstractController
             $h_name -= 50;
         }
 
-        $color = ImageColorAllocate($image, 255, 173, 4);
+        $color = imagecolorallocate($image, 255, 173, 4);
         $w_donate = 210;
         $h_donate = 840;        
 
