@@ -1,6 +1,7 @@
 <form action="/dist/online-help.html" method="GET" class="donate-form">
-    <div class="donate-form-title" style="padding-bottom: 1em">Я хочу помочь</div>
+   
     <div class="donate-form-row">
+         <div class="donate-form-title" style="padding-bottom: 1em">Я хочу помочь</div>
         <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup" style="margin-left: 0;">
             <label class="donate-sum-fieldgroup__label toggle-field">
                 <input class="toggle-field__input" type="radio" name="sum" value="300" checked>
@@ -18,31 +19,24 @@
                 <input class="donate-text-field" type="text" name="sum-other" value="" placeholder="Другая сумма" autocomplete="off" />
             </label>
         </div>
-        <button class="donate-form-row__col btn btn-dark donate-form-submit js-donate-form-submit">
+        <button class="donate-form-row__col btn btn-dark donate-form-submit js-donate-form-submit" style="margin: 0px;padding: 0 20px;">
             <span class="donate-form-submit__text">Пожертвовать</span>
             <span class="icon icon-arrow-right"></span>
         </button>
     </div>
-    <div class="donate-form-row">
-        <div class="donate-form-payment-systems">
-            <div class="donate-form-payment-systems__cards">
-                <span class="donate-form-payment-systems__cards-title">Оплата с карты</span>
-                <ul class="payment-system-list">
-                    <li class="payment-system-list__item">
-                        <img class="ps-mastercard"
-                             src="/images/mastercard.png"
-                             alt="Mastercard"
-                             width="20">
-                    </li>
-                    <li class="payment-system-list__item">
-                        <img class="ps-visa" src="/images/visa.png" alt="visa" width="24">
-                    </li>
-                    <li class="payment-system-list__item">
-                        <img class="ps-mir" src="/images/mir.png" alt="mir" width="24">
-                    </li>
-                </ul>
+ <div class="donate-form-row" style="margin: 0px auto;">
+	        <div class="donate-form-payment-systems" style="height: 40px;margin: 0px auto;">
+	            <div class="donate-form-payment-systems__cards" style="width: 300px;padding-left: 20px;margin: 0px;"><div id="paymentByVisa" class="toggle-field__text" style="opacity: 0.7;border-right: none;padding-left: 0px;/* opacity: 0.4; *//* width: 150px; */text-align: center;font-size: 1.2rem;
+	color: #707070 !important;text-transform: none;">
+	            <div style="padding-left: 10;padding-right: 10px;">
+	                Оплата с карт
+	                </div><img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Apple_Pay.png" width="50"><img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Google_Pay.png" width="50"><img class="toggle-field__text-image" src="/images/mastercard.png" width="30">
+	
+	
+	            <img class="toggle-field__text-image" src="/images/visa.png" width="40">
+	        </div>
             </div>
-            <div class="donate-form-payment-systems__notice">
+            <div class="donate-form-payment-systems__notice" style="width: 25rem;">
                 <div class="icon-wrapper">
                     <span class="icon icon-lock"></span>
                 </div>
