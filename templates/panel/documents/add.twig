@@ -8,7 +8,6 @@
                 <h1>Редактор документов:</h1>
 
                 {{ form_start(form) }}
-                {{ form_widget(form.id, {'value': document.id }) }}
                 <div class="form-group">
                     {{ form_label(form.title, 'Название') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.title) }}</div>

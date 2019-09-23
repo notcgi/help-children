@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Form\AddDocumentTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Repository\DocumentRepository;
@@ -12,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,6 +31,42 @@ class DocumentController extends AbstractController
             'panel/documents/index.twig',
             [
                 'documents' => $this->getDoctrine()->getRepository(Document::class)->findAll()
+            ]
+        );
+    }
+
+    public function add(Request $request) {
+        $documentData = new Document();
+        $form = $this->createForm(AddDocumentTypes::class, $documentData);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $image */
+            if ($image = $form['file']->getData()) {
+                $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
+                $fName.= '-'.uniqid().'.'.$image->guessExtension();
+
+                try {
+                    $image->move($this->getParameter('documents_directory'), $fName);
+                } catch (FileException $e) {
+                    // Here is reclaim :-+
+                }
+
+                $documentData->setFile($fName);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($documentData);
+            $entityManager->flush();
+
+            return $this->redirect('/panel/documents');
+        }
+
+        return $this->render(
+            'panel/documents/add.twig',
+            [
+                'form' => $form->createView()
             ]
         );
     }
@@ -57,28 +96,13 @@ class DocumentController extends AbstractController
             ->add('id', HiddenType::class, ['mapped' => false, 'constraints' => [new NotBlank()]])
             ->add('title', TextType::class, ['constraints' => [new NotBlank()]])
             ->add('description', TextareaType::class, ['constraints' => []])
-            ->add('category', ChoiceType::class, ['choices' => [
-                'Финансовые отчёты'      => 'financial',
-                'Аудиторские заключения' => 'auditor'
-            ]])
+            ->add('category', ChoiceType::class, ['choices' => Document::TYPES])
             ->add('file', FileType::class, [
                 'multiple' => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(
-                        new Assert\File([
-                            'maxSize' => '5120k',
-/*                            'mimeTypes' => [
-                                'image/png',
-                                'image/jpeg',
-                                'image/jpg',
-                                'image/gif'
-                            ],
-                            'mimeTypesMessage' => 'Загружаемый файл должен быть изображением в формает PNG, JPG или GIF ' */
-                        ])
-                    )
+                    new Assert\All(new Assert\File(Document::FILE_FIELD))
                 ]
-
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',

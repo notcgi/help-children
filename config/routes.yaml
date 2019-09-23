@@ -183,6 +183,10 @@ panel_documents:
     path: /panel/documents
     controller: App\Controller\DocumentController::index
 
+panel_documents_add:
+    path: /panel/documents/add
+    controller: App\Controller\DocumentController::add
+
 panel_documents_edit:
     path: /panel/documents/{id}
     controller: App\Controller\DocumentController::edit

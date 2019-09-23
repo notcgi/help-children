@@ -8,6 +8,8 @@
         <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
             <div class="col-sm">
                 <h1>Документы:</h1>
+                <a class="btn btn-primary" href="{{ path('panel_documents_add') }}" role="button">+ Добавить документ</a>
+                <br><br>
                 {{ table.table(documents) }}
             </div>
         </div>

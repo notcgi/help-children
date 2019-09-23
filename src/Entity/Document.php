@@ -10,6 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Document
 {
+    const FILE_FIELD = [
+        'maxSize' => '10000k',
+        /*                            'mimeTypes' => [
+                                        'image/png',
+                                        'image/jpeg',
+                                        'image/jpg',
+                                        'image/gif'
+                                    ],
+                                    'mimeTypesMessage' => 'Загружаемый файл должен быть изображением в формает PNG, JPG или GIF ' */
+    ];
+
+    const TYPES = [
+        'Финансовые отчёты'      => 'financial',
+        'Аудиторские заключения' => 'auditor'
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -33,7 +49,7 @@ class Document
     private $category;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     private $file;
 
