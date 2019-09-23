@@ -179,6 +179,22 @@ panel_user_delete:
     requirements:
         id: '\d+'
 
+panel_documents:
+    path: /panel/documents
+    controller: App\Controller\DocumentController::index
+
+panel_documents_edit:
+    path: /panel/documents/{id}
+    controller: App\Controller\DocumentController::edit
+    requirements:
+        id: '\d+'
+
+panel_documents_delete:
+    path: /panel/documents/{id}/delete
+    controller: App\Controller\DocumentController:delete
+    requirements:
+        id: '\d+'
+
 panel_requests:
     path: /panel/requests
     controller: App\Controller\PanelController::requests
