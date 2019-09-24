@@ -29,7 +29,6 @@ class DonateController extends AbstractController
 
     /**
      * @param Request          $request
-     *
      * @return Response
      * @throws \InvalidArgumentException
      * @throws \LogicException
@@ -38,51 +37,32 @@ class DonateController extends AbstractController
     public function ok(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('account/history.twig');
 
-        try {
-            $form = $request->request->all();
-        } catch (\JsonException $e) {
-            return new Response('invalid data', 400);
+        if ($request->isMethod('post')) {
+            $orderId  = $request->request->get('order_id');
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $requests = $entityManager->getRepository(\App\Entity\Request::class)->findBy(
+                ['order_id' => $orderId]
+            );
+
+            if (!$requests) return new Response('order not found', 404);
+
+            foreach ($requests as $req) {
+                $req->setStatus(2);
+                $this->referralHistory($req);
+                $this->childHistory($req);
+                $entityManager->persist($req);
+            }
+
+            $entityManager->flush();
         }
-        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
-        file_put_contents(dirname(__DIR__)."/../var/logs/ok.log", date("d.m.Y H:i:s")."; ".print_r($request->query->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
-        /*if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
-            return $this->render('account/history.twig');
-        }*/
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
-        
-
-        if (!$req) {
-            return new Response('order not found', 404);
-        }        
-
-        if ($form['Status'] == 'Completed') {
-            $req->setStatus(2);
-            $this->refHistory($req->getUser(), $req->getSum());
-
-            // Add child history
-            $childHistory = new \App\Entity\ChildHistory();
-            $childHistory->setSum($req->getSum())
-                ->setChild($req->getChild());
-            $entityManager->persist($childHistory);
-        } elseif ($form['Status'] != '') {
-            $req->setStatus(1);
-        }
-
-        $entityManager->persist($req);
-        $entityManager->flush();
-
         #help https://symfony.com/doc/current/components/http_foundation.html
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
     /**
      * @param Request          $request
-     *
      * @return Response
      * @throws \InvalidArgumentException
      * @throws \LogicException
@@ -91,49 +71,27 @@ class DonateController extends AbstractController
     public function no(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('account/history.twig');
-      
-        try {
-            $form = $request->request->all();
-        } catch (\JsonException $e) {
-            return new Response('invalid data', 400);
+
+        if ($request->isMethod('post')) {
+            $orderId  = $request->request->get('order_id');
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $requests = $entityManager->getRepository(\App\Entity\Request::class)->findBy(
+                ['order_id' => $orderId]
+            );
+
+            if (!$requests) return new Response('order not found', 404);
+
+            foreach ($requests as $req) {
+                $req->setStatus(1);
+//                $this->referralHistory($req);
+//                $this->childHistory($req);
+                $entityManager->persist($req);
+            }
+
+            $entityManager->flush();
         }
-       /*
-        $form = [
-            'Order_ID' => (int) $request->request->filter('Order_ID', null, FILTER_VALIDATE_INT),
-            // Status может принимать основные значения: authorized, paid, canceled, waiting
-            'Status' => $request->request->get('Status', ''),
-            'Signature' => $request->request->get('Signature', '')
-        ];*/
-
-        /*if ($form['Signature'] != $unitellerService->signatureVerification($form)) {
-            return $this->render('account/history.twig');
-        }*/
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
-
-        if (!$req) {
-            return new Response('', 404);
-        }
-
-        if ($form['Status'] == 'paid') {
-            $req->setStatus(2);
-            $this->refHistory($req->getUser(), $req->getSum());
-
-            // Add child history
-            $childHistory = new \App\Entity\ChildHistory();
-            $childHistory->setSum($req->getSum())
-                ->setChild($req->getChild());
-            $entityManager->persist($childHistory);
-        } elseif ($form['Status'] != '') {// canceled
-            $req->setStatus(1);
-        }
-
-        $entityManager->persist($req);
-        $entityManager->flush();
-
-        #return new Response('OK');
+        #help https://symfony.com/doc/current/components/http_foundation.html
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
@@ -171,7 +129,6 @@ class DonateController extends AbstractController
      * @param Request                  $request
      * @param UnitellerService         $unitellerService
      * @param EventDispatcherInterface $dispatcher
-     *
      * @return Response
      * @throws \Exception
      */
@@ -345,7 +302,6 @@ class DonateController extends AbstractController
      * @param EventDispatcherInterface  $dispatcher
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator    $authenticator
-     *
      * @return Response
      * @throws \LogicException
      * @throws \RuntimeException
@@ -424,26 +380,40 @@ class DonateController extends AbstractController
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $user          = $usersService->findOrCreateUser($form);
+                $dto           = (new \DateTime())->format('Y-m-d H:i:s.u');
+                $oid           = md5($user->getId().':'.$dto.':'.$form['sum']);
 
                 $children = $this->getDoctrine()->getRepository(Child::class)->getOpened();
                 $sum_part = $form['sum'] / count($children);
+                $req_ids  = array();
+                $ch_ids   = array();
                 foreach ($children as $child) {
                     $req = new \App\Entity\Request();
                     $req->setSum($sum_part)
+                        ->setOrderId($oid)
                         ->setRecurent($form['recurent'])
                         ->setUser($user)
                         ->setChild($child);
                     $entityManager->persist($req);
+                    $entityManager->flush();
+                    $req_ids[] = $req->getId();
+                    $ch_ids[]  = $child->getId();
                 }
 
-                $entityManager->flush();
                 // For Uniteller
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
+                    ->setOrderId($oid)
                     ->setRecurent($form['recurent'])
                     ->setUser($user);
 
-                return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
+                return $this->render(
+                    'donate/paymentForm.twig', [
+                        'fields'     => $unitellerService->getFromData($req),
+                        'request_id' => implode(',', $req_ids),
+                        'child_id'   => implode(',', $ch_ids)
+                    ]
+                );
             }
         }
 
@@ -451,36 +421,38 @@ class DonateController extends AbstractController
     }
 
     /**
-     * @param User  $user
-     * @param float $sum
-     *
+     * @param \App\Entity\Request $request
      * @return bool
-     * @throws \LogicException
      * @throws \Exception
      */
-    private function refHistory(User $user, float $sum): bool
+    private function referralHistory(\App\Entity\Request $request): bool
     {
-        if ($user->getReferrer() === null) {
-            return false;
-        }
+        if ($request->getUser()->getReferrer() === null) return false;
+        $this->getDoctrine()->getManager()->persist(
+            (new \App\Entity\ReferralHistory())
+                ->setSum($request->getSum() * self::REF_RATE)
+                ->setUser($request->getUser())
+        );
+        return true;
+    }
 
-        $refSum = $sum * self::REF_RATE;
-
-        // Add referral;
-        $this->getDoctrine()
-            ->getManager()
-            ->persist(
-                (new \App\Entity\ReferralHistory())
-                    ->setSum($refSum)
-                    ->setUser($user)
-            );
-
+    /**
+     * @param \App\Entity\Request $request
+     * @return bool
+     * @throws \Exception
+     */
+    private function childHistory(\App\Entity\Request $request): bool
+    {
+        $this->getDoctrine()->getManager()->persist(
+            (new \App\Entity\ChildHistory())
+                ->setSum($request->getSum())
+                ->setChild($request->getChild())
+        );
         return true;
     }
 
     /**
      * @param array $data
-     *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException

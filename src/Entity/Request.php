@@ -18,6 +18,11 @@ class Request
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=64, options={"collation":"utf8mb4_unicode_ci"})
+     */
+    private $order_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Child", inversedBy="history", fetch="LAZY")
      * @ORM\JoinColumn(name="child_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -87,6 +92,17 @@ class Request
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getOrderId(): ?string
+    {
+        return $this->order_id;
+    }
+
+    public function setOrderId($id)
+    {
+        $this->order_id = $id;
+        return $this;
     }
 
     public function getChild(): ?Child
