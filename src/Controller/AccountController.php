@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
 use App\Repository\ChildHistoryRepository;
-use App\Repository\ChildRepository;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
