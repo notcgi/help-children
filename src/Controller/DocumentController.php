@@ -64,7 +64,7 @@ class DocumentController extends AbstractController
 
         return $this->render('panel/documents/add.twig', [
             'form'  => $form->createView(),
-            'files' => var_export($_FILES, true)
+            'files' => empty($_FILES) ? 'no_files' : var_export($_FILES, true)
         ]);
     }
 
