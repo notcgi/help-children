@@ -41,34 +41,32 @@ class DocumentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $ffn = 'add_document_types';
-            if (!empty($_FILES[$ffn]['tmp_name'])) {
-                $ff = $_FILES[$ffn];
+            if (!empty($_FILES[$ffn]['tmp_name']['file'])) {
                 $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
-                $fn = $dd.uniqid().'-'.preg_replace('~\s+~si', '_', $this->translit(basename($ff['name']['file'])));
-                if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
-                    $document->setFile($fn);
-                    $EM = $this->getDoctrine()->getManager();
-                    $EM->persist($document);
-                    $EM->flush();
-                    return $this->redirect('/panel/documents');
-                } else {
-                    $ec = $_FILES[$ffn]['error']['file'];
-                    if (empty($ec)) {
-                        if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
-                        if (!is_dir($dd))      $ec = 'is not dir';
-                        if (!is_writable($dd)) $ec = 'not writable';
+                $fn = $this->translit(basename($_FILES[$ffn]['name']['file']));
+                $fn = $dd.uniqid().'-'.preg_replace('~\s+~si', '_', $fn);
+                if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
+                if (!is_dir($dd))                                         $ec = 'is not dir';
+                if (!is_writable($dd))                                    $ec = 'not writable';
+                if (empty($ec)) {
+                    if (move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
+                        $document->setFile($fn);
+                        $EM = $this->getDoctrine()->getManager();
+                        $EM->persist($document);
+                        $EM->flush();
+                        return $this->redirect('/panel/documents');
+                    } else {
+                        $ec = $_FILES[$ffn]['error']['file'];
+                        $dmp = array(
+                            'files' => $_FILES,
+                            'name'  => $fn,
+                            'dir'   => $dd
+                        );
+                        $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
+                        $form->get('file')->addError(new FormError($msg));
                     }
-                    $dmp = array(
-                        'files' => $_FILES,
-                        'name'  => $fn,
-                        'dir'   => $dd
-                    );
-                    $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
-                    $form->get('file')->addError(new FormError($msg));
-                }
-            } else {
-                $form->get('file')->addError(new FormError('No file to upload!'));
-            }
+                } else { $form->get('file')->addError(new FormError('Error: '.$ec)); }
+            } else { $form->get('file')->addError(new FormError('No file to upload!')); }
         }
 
         return $this->render('panel/documents/add.twig', [
