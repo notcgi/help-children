@@ -27,15 +27,13 @@ class AddDocumentTypes extends AbstractType
             ->add('description', TextareaType::class, ['constraints' => []])
             ->add('category', ChoiceType::class, ['choices' => Document::TYPES])
             ->add('file', FileType::class, [
-                'multiple' => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new Assert\All(new Assert\File(Document::FILE_FIELD))
-                ]
+                'multiple'    => false,
+                'mapped'      => false,
+                'constraints' => [new Assert\All(new Assert\File(Document::FILE_FIELD))]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
-                'attr' => ['class' => 'btn btn-primary']
+                'attr'  => ['class' => 'btn btn-primary']
             ]);
     }
 
