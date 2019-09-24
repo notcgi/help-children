@@ -44,7 +44,7 @@ class DocumentController extends AbstractController
                 $ff = $_FILES['add_document_types'];
                 $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
                 $fn = $dd.uniqid().'-'.($this->translit(basename($ff['name']['file'])));
-                if (\move_uploaded_file($ff['tmp_name']['file'], $fn)) {
+                if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
                     $document->setFile($fn);
                     $EM = $this->getDoctrine()->getManager();
                     $EM->persist($document);
@@ -57,7 +57,13 @@ class DocumentController extends AbstractController
                         if (!is_dir($dd))      $ec = 'is not dir';
                         if (!is_writable($dd)) $ec = 'not writable';
                     }
-                    $form->get('file')->addError(new FormError('Error file upload ('.$ec.')!'));
+                    $dmp = array(
+                        'files' => $_FILES,
+                        'name'  => $fn,
+                        'dir'   => $dd
+                    );
+                    $msg = empty($ec) ? '<pre>'.var_export($dmp, true).'</pre>' : 'Upload error: '.$ec.'!';
+                    $form->get('file')->addError(new FormError($msg));
                 }
             } else {
                 $form->get('file')->addError(new FormError('No file to upload!'));
