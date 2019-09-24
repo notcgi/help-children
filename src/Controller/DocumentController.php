@@ -52,6 +52,11 @@ class DocumentController extends AbstractController
                     return $this->redirect('/panel/documents');
                 } else {
                     $ec = $_FILES['add_document_types']['error']['file'];
+                    if (empty($ec)) {
+                        if (!is_uploaded_file($_FILES['add_document_types']['tmp_name']['file'])) $ec = 'not uploaded';
+                        if (!is_dir($dd))      $ec = 'is not dir';
+                        if (!is_writable($dd)) $ec = 'not writable';
+                    }
                     $form->get('file')->addError(new FormError('Error file upload ('.$ec.')!'));
                 }
             } else {
