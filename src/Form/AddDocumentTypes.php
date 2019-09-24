@@ -8,11 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-// use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-// use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AddDocumentTypes extends AbstractType
 {
@@ -23,16 +23,16 @@ class AddDocumentTypes extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title'      , TextType::class    , ['constraints' => [new NotBlank()]])
-            ->add('description', TextareaType::class, ['constraints' => []])
-            ->add('category'   , ChoiceType::class  , ['choices' => Document::TYPES])
-            /*
-            ->add('file', FileType::class, [
+            ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
+            ->add('description' , TextareaType::class)
+            ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
+            ->add('images'      , FileType::class     , [
                 'multiple'    => false,
-                'mapped'      => false,
-                'constraints' => [new Assert\All(new Assert\File(Document::FILE_FIELD))]
+                'constraints' => [
+                    new NotBlank(),
+                    new Assert\All(new Assert\File(['maxSize' => '5120k']))
+                ]
             ])
-            */
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
                 'attr'  => ['class' => 'btn btn-primary']

@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,20 +89,20 @@ class DocumentController extends AbstractController
         if (!$document) throw $this->createNotFoundException('Нет документа с id '.$id);
 
         $form = $this->createFormBuilder($document)
-            ->add('id', HiddenType::class, ['mapped' => false, 'constraints' => [new NotBlank()]])
-            ->add('title', TextType::class, ['constraints' => [new NotBlank()]])
-            ->add('description', TextareaType::class, ['constraints' => []])
-            ->add('category', ChoiceType::class, ['choices' => Document::TYPES])
-            ->add('file', FileType::class, [
-                'multiple' => false,
+            ->add('id'          , HiddenType::class   , ['mapped' => false, 'constraints' => [new NotBlank()]])
+            ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
+            ->add('description' , TextareaType::class)
+            ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
+            ->add('file'        , FileType::class     , [
+                'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(new Assert\File(Document::FILE_FIELD))
+                    new Assert\All(new Assert\File(['maxSize' => '5120k']))
                 ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
-                'attr' => ['class' => 'btn btn-primary']
+                'attr'  => ['class' => 'btn btn-primary']
             ])
             ->getForm();
 
