@@ -13,8 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,59 +35,30 @@ class DocumentController extends AbstractController
     }
 
     public function add(Request $request) {
-        $documentData = new Document();
-        $form = $this->createForm(AddDocumentTypes::class, $documentData);
+        $document = new Document();
+        $form = $this->createForm(AddDocumentTypes::class, $document);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (false) {
-                /*
-'add_document_types' =>
-  array (
-    'name' =>
-    array (
-      'file' => 'Наш Сосед.pdf',
-    ),
-    'type' =>
-    array (
-      'file' => 'application/pdf',
-    ),
-    'tmp_name' =>
-    array (
-      'file' => '/tmp/phpgn81qc',
-    ),
-    'error' =>
-    array (
-      'file' => 0,
-    ),
-    'size' =>
-    array (
-      'file' => 329848,
-    ),
-  ),
-                                 */
-                /** @var UploadedFile $image */
-                if ($image = $form['file']->getData()) {
-                    $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
-                    $fName.= '-'.uniqid().'.'.$image->guessExtension();
-                    try {
-                        $image->move($this->getParameter('documents_directory'), $fName);
-                        $documentData->setFile($fName);
-                    } catch (FileException $e) {
-                        // Here is reclaim :-+
-                    }
-                }
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($documentData);
-                $entityManager->flush();
-                return $this->redirect('/panel/documents');
-            }
+            if (!empty($_FILES['add_document_types']['tmp_name'])) {
+                $ff = $_FILES['add_document_types'];
+                $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
+                $fn = $dd.uniqid().'-'.transliterator_transliterate(
+                    'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
+                    basename($ff['name']['file'])
+                );
+                if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
+                    $document->setFile($fn);
+                    $EM = $this->getDoctrine()->getManager();
+                    $EM->persist($document);
+                    $EM->flush();
+                    return $this->redirect('/panel/documents');
+                } else { $form->addError(new FormError('Error file upload!')); }
+            } else { $form->addError(new FormError('No file to upload!')); }
         }
 
         return $this->render('panel/documents/add.twig', [
-            'form'  => $form->createView(),
-            'files' => empty($_FILES) ? 'no_files' : var_export($_FILES, true)
+            'form'  => $form->createView()
         ]);
     }
 
@@ -122,7 +92,7 @@ class DocumentController extends AbstractController
                 'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(new Assert\File(['maxSize' => '40000k']))
+                    new Assert\File(['maxSize' => '40000k'])
                 ]
             ])
             ->add('save', SubmitType::class, [
