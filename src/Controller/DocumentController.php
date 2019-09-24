@@ -40,7 +40,7 @@ class DocumentController extends AbstractController
         $form = $this->createForm(AddDocumentTypes::class, $documentData);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (false) if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $image */
             if ($image = $form['file']->getData()) {
                 $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);

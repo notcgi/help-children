@@ -11,14 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Document
 {
     const FILE_FIELD = [
-        'maxSize' => '40000k',
-        /*                            'mimeTypes' => [
-                                        'image/png',
-                                        'image/jpeg',
-                                        'image/jpg',
-                                        'image/gif'
-                                    ],
-                                    'mimeTypesMessage' => 'Загружаемый файл должен быть изображением в формает PNG, JPG или GIF ' */
+        'maxSize' => '40000k'
     ];
 
     const TYPES = [
