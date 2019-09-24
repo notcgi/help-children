@@ -26,11 +26,11 @@ class AddDocumentTypes extends AbstractType
             ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
             ->add('description' , TextareaType::class)
             ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
-            ->add('images'      , FileType::class     , [
+            ->add('file'        , FileType::class     , [
                 'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(new Assert\File(['maxSize' => '5120k']))
+                    new Assert\All(new Assert\File(['maxSize' => '40000k']))
                 ]
             ])
             ->add('save', SubmitType::class, [
