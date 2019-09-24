@@ -42,9 +42,6 @@ class DocumentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->addError(new FormError(
-                var_export($_FILES, true)
-            ));
             if (false) {
                 /** @var UploadedFile $image */
                 if ($image = $form['file']->getData()) {
@@ -65,7 +62,10 @@ class DocumentController extends AbstractController
             }
         }
 
-        return $this->render('panel/documents/add.twig', ['form' => $form->createView()]);
+        return $this->render('panel/documents/add.twig', [
+            'form'  => $form->createView(),
+            'files' => var_export($_FILES, true)
+        ]);
     }
 
     /**
