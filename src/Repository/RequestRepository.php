@@ -79,13 +79,14 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function getChildrenSuccessPaymentWithUser($uid)
     {
-        return $this->createQueryBuilder('r')
+        $q = $this->createQueryBuilder('r')
             ->select('r.child')
             ->where('r.status = 2 AND r.user = :user')
-            ->setParameters(['user' => $uid])
             ->groupBy('r.child')
+            ->setParameters(['user' => $uid])
             ->getQuery()
-            ->getResult()->count();
+            ->getResult();
+        return 0;
     }
 
     /**
