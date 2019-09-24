@@ -6,7 +6,6 @@
         <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
             <div class="col-sm">
                 <h1>Редактор документов:</h1>
-
                 {{ form_start(form) }}
                 <div class="form-group">
                     {{ form_label(form.title, 'Название') }}
@@ -24,9 +23,9 @@
                     {{ form_widget(form.description, {'attr': {'class':'form-control', 'placeholder': 'Описание документа', 'value': document.description, 'required': false}}) }}
                 </div>
                 <div class="form-group">
-                    {{ form_label(form.file, 'Файл') }}
-                    <div class="err_list form-text text-muted">{{ form_errors(form.file) }}</div>
-                    {{ form_widget(form.file, {'attr': {'class':'form-control', 'value': document.file}}) }}
+                    <label for="add_document_types_file" class="required">Файл</label>
+                    <div class="err_list form-text text-muted"></div>
+                    <input type="file" id="add_document_types_file" name="document-file" required="required" class="form-control" value="">
                 </div>
                 {{ form_end(form) }}
             </div>

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,23 +41,28 @@ class DocumentController extends AbstractController
         $form = $this->createForm(AddDocumentTypes::class, $documentData);
         $form->handleRequest($request);
 
-        if (false) if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $image */
-            if ($image = $form['file']->getData()) {
-                $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
-                $fName.= '-'.uniqid().'.'.$image->guessExtension();
-                try {
-                    $image->move($this->getParameter('documents_directory'), $fName);
-                    $documentData->setFile($fName);
-                } catch (FileException $e) {
-                    // Here is reclaim :-+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $form->addError(new FormError(
+                var_export($_FILES, true)
+            ));
+            if (false) {
+                /** @var UploadedFile $image */
+                if ($image = $form['file']->getData()) {
+                    $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
+                    $fName.= '-'.uniqid().'.'.$image->guessExtension();
+                    try {
+                        $image->move($this->getParameter('documents_directory'), $fName);
+                        $documentData->setFile($fName);
+                    } catch (FileException $e) {
+                        // Here is reclaim :-+
+                    }
                 }
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($documentData);
+                $entityManager->flush();
+                return $this->redirect('/panel/documents');
             }
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($documentData);
-            $entityManager->flush();
-            return $this->redirect('/panel/documents');
         }
 
         return $this->render('panel/documents/add.twig', ['form' => $form->createView()]);
