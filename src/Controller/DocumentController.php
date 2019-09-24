@@ -51,7 +51,8 @@ class DocumentController extends AbstractController
                     $EM->flush();
                     return $this->redirect('/panel/documents');
                 } else {
-                    $form->get('file')->addError(new FormError('Error file upload ('.$ff['error']['file'].')!'));
+                    $ec = $_FILES['add_document_types']['error']['file'];
+                    $form->get('file')->addError(new FormError('Error file upload ('.$ec.')!'));
                 }
             } else {
                 $form->get('file')->addError(new FormError('No file to upload!'));
