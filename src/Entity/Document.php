@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Document
 {
     const FILE_FIELD = [
-        'maxSize' => '10000k',
+        'maxSize' => '40000k',
         /*                            'mimeTypes' => [
                                         'image/png',
                                         'image/jpeg',

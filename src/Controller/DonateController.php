@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Child;
 use App\Entity\User;
 use App\Entity\SendGridSchedule;
-use App\Event\RegistrationEvent;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\RecurringPaymentFailure;
@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\LoginFormAuthenticator;
@@ -30,7 +29,6 @@ class DonateController extends AbstractController
 
     /**
      * @param Request          $request
-     * @param UnitellerService $unitellerService
      *
      * @return Response
      * @throws \InvalidArgumentException
@@ -84,7 +82,6 @@ class DonateController extends AbstractController
 
     /**
      * @param Request          $request
-     * @param UnitellerService $unitellerService
      *
      * @return Response
      * @throws \InvalidArgumentException
@@ -140,21 +137,23 @@ class DonateController extends AbstractController
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @return Response
+     * @throws \Exception
+     */
     public function fail(Request $request, EventDispatcherInterface $dispatcher)
     {
-        try {
-            $form = $request->request->all();
-        } catch (\JsonException $e) {
-            file_put_contents(dirname(__DIR__)."/../var/logs/fail.log", date("d.m.Y H:i:s")."; "."Invalid data"."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
-            return new Response('invalid data', 400);
-        }
+        $form = $request->request->all();
 
         file_put_contents(dirname(__DIR__)."/../var/logs/fail.log", date("d.m.Y H:i:s")."; ".print_r($request->request->all(), true)."\n", FILE_APPEND);# FILE_APPEND | LOCK_EX
 
         $entityManager = $this->getDoctrine()->getManager();
         $user_id = $form['AccountId'];
-        $user = $entityManager->getRepository(\App\Entity\User::class)->find($user_id);        
+        $user = $entityManager->getRepository(User::class)->find($user_id);
         $req = (new \App\Entity\Request())->setUser($user);
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
         $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);
         
         // Убрать напоминание о завершении платежа
@@ -178,11 +177,7 @@ class DonateController extends AbstractController
      */
     public function status(Request $request, UnitellerService $unitellerService, EventDispatcherInterface $dispatcher)
     {
-        try {
-            $form = $request->request->all();
-        } catch (\JsonException $e) {
-            return new Response('invalid data', 400);
-        }
+        $form = $request->request->all();
 
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
@@ -214,8 +209,10 @@ class DonateController extends AbstractController
                 ->setRecurent(0);            
 
             $rp->setWithdrawalAt(new \DateTime());
-
-            $entityManager->persist($req)->persist($rp)->flush();
+            $entityManager->persist($req);
+            $entityManager->persist($rp);
+            $entityManager->flush();
+            /** @noinspection PhpMethodParametersCountMismatchInspection */
             $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
 
             $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
@@ -223,9 +220,13 @@ class DonateController extends AbstractController
             $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
 
             if ($numberOfMonths == 6)
+                /** @noinspection PhpMethodParametersCountMismatchInspection */
+                /** @noinspection PhpParamsInspection */
                 $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
             
             if ($numberOfMonths == 12)
+                /** @noinspection PhpMethodParametersCountMismatchInspection */
+                /** @noinspection PhpParamsInspection */
                 $dispatcher->dispatch(new YearRecurrentEvent($req), YearRecurrentEvent::NAME);
 
             return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
@@ -248,10 +249,12 @@ class DonateController extends AbstractController
                 }
                 $entityManager->flush();
 
-                if (count($req->getUser()->getRequests()) > 1) {                    
+                if (count($req->getUser()->getRequests()) > 1) {
+                    /** @noinspection PhpMethodParametersCountMismatchInspection */
                     $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
                 }
                 else {
+                    /** @noinspection PhpMethodParametersCountMismatchInspection */
                     $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
                     if (!$req -> isRecurent()) {
                         // Письмо №10
@@ -352,6 +355,7 @@ class DonateController extends AbstractController
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @throws \Symfony\Component\Validator\Exception\InvalidOptionsException
      * @throws \Symfony\Component\Validator\Exception\MissingOptionsException
+     * @throws \Exception
      */
     public function main(
         Request $request,
@@ -413,20 +417,31 @@ class DonateController extends AbstractController
             $form_errors = $this->validate($form);
 
             if (0 === count($form_errors)) {
-                if (0 !== (int) $form['ref-code']) {
-                    $session->set('referral', (int) $form['ref-code']);
-                }
+                if (0 !== (int) $form['ref-code']) $session->set('referral', (int) $form['ref-code']);
 
                 $form['referral'] = $form['ref-code'] ?: $request->cookies->get('referral');
                 $form['ref_code'] = substr(base64_encode(random_bytes(20)), 0, 16);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $user          = $usersService->findOrCreateUser($form);
+
+                $children = $this->getDoctrine()->getRepository(Child::class)->getOpened();
+                $sum_part = $form['sum'] / count($children);
+                foreach ($children as $child) {
+                    $req = new \App\Entity\Request();
+                    $req->setSum($sum_part)
+                        ->setRecurent($form['recurent'])
+                        ->setUser($user)
+                        ->setChild($child);
+                    $entityManager->persist($req);
+                }
+
+                $entityManager->flush();
+                // For Uniteller
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
-                    ->setUser($usersService->findOrCreateUser($form));
-
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($req);
-                $entityManager->flush();                
+                    ->setUser($user);
 
                 return $this->render('donate/paymentForm.twig', ['fields' => $unitellerService->getFromData($req)]);
             }
@@ -490,6 +505,12 @@ class DonateController extends AbstractController
         );
     }
 
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @return Response
+     * @throws \Exception
+     */
     public function sendReminder(Request $request, EventDispatcherInterface $dispatcher) {
         $email = $request->request->get('email');
         $name = $request->request->get('name');
@@ -515,6 +536,7 @@ class DonateController extends AbstractController
         if (!isset($email) || !isset($name) || !isset($date))
             return new Response('false');
 
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
         $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone, $code), SendReminderEvent::NAME);
         return new Response('true');
     }
