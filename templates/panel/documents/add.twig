@@ -26,9 +26,9 @@
                     {{ form_widget(form.description, {'attr': {'class':'form-control', 'placeholder': 'Описание документа', 'value': document.description, 'required': false}}) }}
                 </div>
                 <div class="form-group">
-                    <label for="add_document_types_file" class="required">Файл</label>
-                    <div class="err_list form-text text-muted"></div>
-                    <input type="file" name="document-file" required="required" class="form-control" value="">
+                    {{ form_label(form.file, 'Изображение') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.file) }}</div>
+                    {{ form_widget(form.file, {'attr': {'class':'form-control', 'placeholder': 'Файл' }}) }}
                 </div>
                 {{ form_end(form) }}
             </div>
