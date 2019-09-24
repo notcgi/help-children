@@ -42,6 +42,31 @@ class DocumentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (false) {
+                /*
+'add_document_types' =>
+  array (
+    'name' =>
+    array (
+      'file' => 'Наш Сосед.pdf',
+    ),
+    'type' =>
+    array (
+      'file' => 'application/pdf',
+    ),
+    'tmp_name' =>
+    array (
+      'file' => '/tmp/phpgn81qc',
+    ),
+    'error' =>
+    array (
+      'file' => 0,
+    ),
+    'size' =>
+    array (
+      'file' => 329848,
+    ),
+  ),
+                                 */
                 /** @var UploadedFile $image */
                 if ($image = $form['file']->getData()) {
                     $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);

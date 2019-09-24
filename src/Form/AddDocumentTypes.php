@@ -30,7 +30,9 @@ class AddDocumentTypes extends AbstractType
                 'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(new Assert\File(['maxSize' => '40000k']))
+//                    new Assert\All(
+                        new Assert\File(['maxSize' => '40000k'])
+ //                   )
                 ]
             ])
             ->add('save', SubmitType::class, [
