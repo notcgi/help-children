@@ -19,3 +19,10 @@
         </nav>
     </div>
 </div>
+<div class="row">
+    <pre>
+        {% for item in app.request.get('_route') %}
+        {{ item }}
+        [% endfor %}
+    </pre>
+</div>
