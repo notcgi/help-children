@@ -50,8 +50,12 @@ class DocumentController extends AbstractController
                     $EM->persist($document);
                     $EM->flush();
                     return $this->redirect('/panel/documents');
-                } else { $form->addError(new FormError('Error file upload!')); }
-            } else { $form->addError(new FormError('No file to upload!')); }
+                } else {
+                    $form->get('file')->addError(new FormError('Error file upload!'));
+                }
+            } else {
+                $form->get('file')->addError(new FormError('No file to upload!'));
+            }
         }
 
         return $this->render('panel/documents/add.twig', [
