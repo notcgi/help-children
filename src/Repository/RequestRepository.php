@@ -76,7 +76,6 @@ class RequestRepository extends ServiceEntityRepository
     /**
      * @param $uid
      * @return float
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getChildrenSuccessPaymentWithUser($uid)
     {
@@ -86,7 +85,7 @@ class RequestRepository extends ServiceEntityRepository
             ->setParameters(['user' => $uid])
             ->groupBy('r.child')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getResult()->count();
     }
 
     /**
