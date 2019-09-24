@@ -14,8 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,34 +35,27 @@ class DocumentController extends AbstractController
     }
 
     public function add(Request $request) {
-        $documentData = new Document();
-        $form = $this->createForm(AddDocumentTypes::class, $documentData);
+        $document = new Document();
+        $form = $this->createForm(AddDocumentTypes::class, $document);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (false) {
-                /** @var UploadedFile $image */
-                if ($image = $form['file']->getData()) {
-                    $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
-                    $fName.= '-'.uniqid().'.'.$image->guessExtension();
-                    try {
-                        $image->move($this->getParameter('documents_directory'), $fName);
-                        $documentData->setFile($fName);
-                    } catch (FileException $e) {
-                        // Here is reclaim :-+
-                    }
-                }
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($documentData);
-                $entityManager->flush();
-                return $this->redirect('/panel/documents');
-            }
+            if (!empty($_FILES['add_document_types']['tmp_name'])) {
+                $ff = $_FILES['add_document_types'];
+                $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
+                $fn = $dd.uniqid().'-'.($this->translit(basename($ff['name']['file'])));
+                if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
+                    $document->setFile($fn);
+                    $EM = $this->getDoctrine()->getManager();
+                    $EM->persist($document);
+                    $EM->flush();
+                    return $this->redirect('/panel/documents');
+                } else { $form->addError(new FormError('Error file upload!')); }
+            } else { $form->addError(new FormError('No file to upload!')); }
         }
 
         return $this->render('panel/documents/add.twig', [
-            'form'  => $form->createView(),
-            'files' => var_export($_FILES, true)
+            'form'  => $form->createView()
         ]);
     }
 
@@ -90,20 +81,20 @@ class DocumentController extends AbstractController
         if (!$document) throw $this->createNotFoundException('Нет документа с id '.$id);
 
         $form = $this->createFormBuilder($document)
-            ->add('id', HiddenType::class, ['mapped' => false, 'constraints' => [new NotBlank()]])
-            ->add('title', TextType::class, ['constraints' => [new NotBlank()]])
-            ->add('description', TextareaType::class, ['constraints' => []])
-            ->add('category', ChoiceType::class, ['choices' => Document::TYPES])
-            ->add('file', FileType::class, [
-                'multiple' => false,
+            ->add('id'          , HiddenType::class   , ['mapped' => false, 'constraints' => [new NotBlank()]])
+            ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
+            ->add('description' , TextareaType::class)
+            ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
+            ->add('file'        , FileType::class     , [
+                'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\All(new Assert\File(Document::FILE_FIELD))
+                    new Assert\File(['maxSize' => '40M'])
                 ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
-                'attr' => ['class' => 'btn btn-primary']
+                'attr'  => ['class' => 'btn btn-primary']
             ])
             ->getForm();
 
@@ -143,5 +134,11 @@ class DocumentController extends AbstractController
         $entityManager->flush();
 
         return $this->redirect('/panel/documents');
+    }
+
+    public function translit($str) {
+        $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+        $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
+        return str_replace($rus, $lat, $str);
     }
 }

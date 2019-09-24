@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Document
 {
-    const FILE_FIELD = [
-        'maxSize' => '40000k'
-    ];
-
     const TYPES = [
         'Финансовые отчёты'      => 'financial',
         'Аудиторские заключения' => 'auditor'
