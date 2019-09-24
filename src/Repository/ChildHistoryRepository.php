@@ -32,6 +32,7 @@ class ChildHistoryRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getChildrenForUser($uid) {
+        return '-';
         return $this->createQueryBuilder('c')
             ->select('COUNT(c)')
             ->andWhere('c.donator = :donator')
