@@ -43,10 +43,10 @@ class DocumentController extends AbstractController
             if (!empty($_FILES['add_document_types']['tmp_name'])) {
                 $ff = $_FILES['add_document_types'];
                 $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
-                $fn = $dd.uniqid().'-'.transliterator_transliterate(
+                $fn = $dd.uniqid().'-'.(\transliterator_transliterate(
                     'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
                     basename($ff['name']['file'])
-                );
+                ));
                 if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
                     $document->setFile($fn);
                     $EM = $this->getDoctrine()->getManager();
