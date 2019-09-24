@@ -44,14 +44,14 @@ class DocumentController extends AbstractController
                 $ff = $_FILES['add_document_types'];
                 $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
                 $fn = $dd.uniqid().'-'.($this->translit(basename($ff['name']['file'])));
-                if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
+                if (\move_uploaded_file($ff['tmp_name']['file'], $fn)) {
                     $document->setFile($fn);
                     $EM = $this->getDoctrine()->getManager();
                     $EM->persist($document);
                     $EM->flush();
                     return $this->redirect('/panel/documents');
                 } else {
-                    $form->get('file')->addError(new FormError('Error file upload!'));
+                    $form->get('file')->addError(new FormError('Error file upload ('.$ff['error']['file'].')!'));
                 }
             } else {
                 $form->get('file')->addError(new FormError('No file to upload!'));
