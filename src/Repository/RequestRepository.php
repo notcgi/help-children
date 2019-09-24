@@ -85,8 +85,8 @@ class RequestRepository extends ServiceEntityRepository
             ->groupBy('r.child')
             ->setParameters(['user' => $uid])
             ->getQuery()
-            ->getResult()->count();
-        return $q;
+            ->getResult();
+        return count($q);
     }
 
     /**
