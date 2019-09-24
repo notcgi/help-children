@@ -320,7 +320,7 @@ class AccountController extends AbstractController
                 
         ImageFTtext($image, 50, 0, $w_name, $h_name, $color_name, $font, $name);
         ImageFTtext($image, 95, 0, $w_donate, $h_donate, $color, $font, $donateSum);
-        ImageFTtext($image, 115, 0, $w_child, $h_child, $color, $font, 'c'.$childCount);
+        ImageFTtext($image, 115, 0, $w_child, $h_child, $color, $font, $childCount);
         ImageFTtext($image, 198, 0, $w_refer, $h_refer, $color, $font, $referrCount);
         Header("Content-type: image/jpeg"); //указываем на тип передаваемых данных
         Imagejpeg($image, $path); //сохраняем рисунок в формате JPEG

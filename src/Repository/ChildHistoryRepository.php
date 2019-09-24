@@ -26,14 +26,18 @@ class ChildHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, ChildHistory::class);
     }
 
+    /**
+     * @param $uid
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getChildrenForUser($uid) {
-        return '-';
         return $this->createQueryBuilder('c')
             ->select('COUNT(c)')
             ->andWhere('c.donator = :donator')
             ->setParameter('donator', $uid)
             ->groupBy('c.child')
             ->getQuery()
-            ->getScalarResult();
+            ->getSingleScalarResult();
     }
 }
