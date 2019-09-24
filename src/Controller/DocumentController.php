@@ -40,8 +40,9 @@ class DocumentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!empty($_FILES['add_document_types']['tmp_name'])) {
-                $ff = $_FILES['add_document_types'];
+            $ffn = 'add_document_types';
+            if (!empty($_FILES[$ffn]['tmp_name'])) {
+                $ff = $_FILES[$ffn];
                 $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
                 $fn = $dd.uniqid().'-'.preg_replace('~\s+~si', '_', $this->translit(basename($ff['name']['file'])));
                 if (move_uploaded_file($ff['tmp_name']['file'], $fn)) {
@@ -51,9 +52,9 @@ class DocumentController extends AbstractController
                     $EM->flush();
                     return $this->redirect('/panel/documents');
                 } else {
-                    $ec = $_FILES['add_document_types']['error']['file'];
+                    $ec = $_FILES[$ffn]['error']['file'];
                     if (empty($ec)) {
-                        if (!is_uploaded_file($_FILES['add_document_types']['tmp_name']['file'])) $ec = 'not uploaded';
+                        if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
                         if (!is_dir($dd))      $ec = 'is not dir';
                         if (!is_writable($dd)) $ec = 'not writable';
                     }
@@ -62,7 +63,7 @@ class DocumentController extends AbstractController
                         'name'  => $fn,
                         'dir'   => $dd
                     );
-                    $msg = empty($ec) ? '<pre>'.var_export($dmp, true).'</pre>' : 'Upload error: '.$ec.'!';
+                    $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
                     $form->get('file')->addError(new FormError($msg));
                 }
             } else {
