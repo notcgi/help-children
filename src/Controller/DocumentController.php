@@ -46,29 +46,20 @@ class DocumentController extends AbstractController
                 $fName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $fName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $fName);
                 $fName.= '-'.uniqid().'.'.$image->guessExtension();
-
                 try {
                     $image->move($this->getParameter('documents_directory'), $fName);
+                    $documentData->setFile($fName);
                 } catch (FileException $e) {
                     // Here is reclaim :-+
                 }
-
-                $documentData->setFile($fName);
             }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($documentData);
             $entityManager->flush();
-
             return $this->redirect('/panel/documents');
         }
 
-        return $this->render(
-            'panel/documents/add.twig',
-            [
-                'form' => $form->createView()
-            ]
-        );
+        return $this->render('panel/documents/add.twig', ['form' => $form->createView()]);
     }
 
     /**
