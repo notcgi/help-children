@@ -218,7 +218,7 @@ class AccountController extends AbstractController
         // Выводим общее число нуждающихся детей
         /** @var RequestRepository $history_repository */
         $history_repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
-        $childCount = $history_repository->getChildrenSuccessPaymentWithUser($user->getId());
+        $childCount = 0; // $history_repository->getChildrenSuccessPaymentWithUser($user->getId());
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
