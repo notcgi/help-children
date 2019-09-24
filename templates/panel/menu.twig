@@ -21,8 +21,7 @@
 </div>
 <div class="row">
     <pre>
-        {% for item in app.request.get('_route') %}
-        {{ dump(item) }}
-        {% endfor %}
+        {{ app.request.get('_route')[:11] }}
+        {{ app.request.get('_route')[:12] }}
     </pre>
 </div>
