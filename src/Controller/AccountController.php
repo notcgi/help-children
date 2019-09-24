@@ -7,6 +7,8 @@ use App\Entity\SendGridSchedule;
 use App\Entity\User;
 use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
+use App\Repository\ChildHistoryRepository;
+use App\Repository\ChildRepository;
 use App\Repository\RequestRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -177,6 +179,7 @@ class AccountController extends AbstractController
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function referrals(Request $request, UrlGeneratorInterface $generator)
     {
@@ -200,9 +203,14 @@ class AccountController extends AbstractController
         );
     }
 
+    /**
+     * @param User $user
+     * @return bool|void
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     function updateResults($user)
-    {        
-        $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';       
+    {
+        $name = $user->getFirstName() . ' ' . $user->getLastName() . ',';
         
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $donate = $this->getTotalDonate($user);
@@ -210,8 +218,9 @@ class AccountController extends AbstractController
         $donateSum = '+ ' . round($donate) . ' ¤';        
         // $childCount = $repository->aggregateCountChildWithUser($user);
         // Выводим общее число нуждающихся детей
-        $child_repository = $this->getDoctrine()->getRepository(\App\Entity\Child::class);
-        $childCount = $child_repository->aggregateTotalCountChild();
+        /** @var ChildHistoryRepository $history_repository */
+        $history_repository = $this->getDoctrine()->getRepository(\App\Entity\ChildHistory::class);
+        $childCount = $history_repository->getChildrenForUser($user->getId());
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
@@ -235,16 +244,25 @@ class AccountController extends AbstractController
         return true;
     }
 
+    /**
+     * @param User $user
+     * @return string
+     */
     function getRealPath($user) {
         $real_path = '/images/results/' . $user->getResultHash() . '.jpg';
         return $real_path;
     }
 
+    /**
+     * @param $user
+     * @return float|int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     function getTotalDonate($user)
     {
         $repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $userDonate = $repository->aggregateSumSuccessPaymentWithUser($user);
-        $repository = $this->getDoctrine()->getRepository(\App\Entity\User::class);
+        $repository = $this->getDoctrine()->getRepository(User::class);
         $referrals = $repository->findReferralsWithSum($user);
         $refDonate = 0;
         foreach ($referrals as $referral) {
@@ -341,6 +359,7 @@ class AccountController extends AbstractController
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
      * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @throws \Exception
      */
     public function recurrent_remove(
         int $id,
@@ -392,7 +411,7 @@ class AccountController extends AbstractController
               $email = $req->getUser()->getEmail();  
               $template_id = 'd-1836d6b43e9c437d8f7e436776d1a489';
               
-              $sgs_ten = $entityManager->getRepository(\App\Entity\SendGridSchedule::class)->findOneBy([
+              $sgs_ten = $entityManager->getRepository(SendGridSchedule::class)->findOneBy([
                   'email' => $email,
                   'sendAt' => $mail_date,
                   'template_id' => $template_id
@@ -403,6 +422,7 @@ class AccountController extends AbstractController
 
               $entityManager->remove($payment);
 
+              /** @noinspection PhpMethodParametersCountMismatchInspection */
               $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
               $entityManager->flush();
           }
@@ -424,6 +444,7 @@ class AccountController extends AbstractController
         if (!$user)
             return new Response('false');
 
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
         $dispatcher->dispatch(new PayoutRequestEvent($user), PayoutRequestEvent::NAME);
         return new Response('true');
     }
