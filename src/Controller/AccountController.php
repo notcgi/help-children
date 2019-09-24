@@ -215,11 +215,10 @@ class AccountController extends AbstractController
         $donate = $this->getTotalDonate($user);
         // Символ тот, в шрифте посажен не туда
         $donateSum = '+ ' . round($donate) . ' ¤';        
-        // $childCount = $repository->aggregateCountChildWithUser($user);
         // Выводим общее число нуждающихся детей
-        /** @var ChildHistoryRepository $history_repository */
-        $history_repository = $this->getDoctrine()->getRepository(\App\Entity\ChildHistory::class);
-        $childCount = $history_repository->getChildrenForUser($user->getId());
+        /** @var RequestRepository $history_repository */
+        $history_repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
+        $childCount = $history_repository->getChildrenSuccessPaymentWithUser($user->getId());
         $referrCount = $repository->aggregateCountReferWithUser($user);
 
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        

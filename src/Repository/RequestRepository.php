@@ -57,6 +57,7 @@ class RequestRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param User $user
      * @return float
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -73,10 +74,27 @@ class RequestRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $uid
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getChildrenSuccessPaymentWithUser($uid)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.child')
+            ->where('r.status = 2 AND r.user = :user')
+            ->setParameters(['user' => $uid])
+            ->groupBy('r.child')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param User $user
      * @return int
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function aggregateCountChildWithUser($user)
+    public function aggregateCountChildWithUser(User $user)
     {
         return $this->createQueryBuilder('r')
             ->select('COUNT(DISTINCT r.child)')            
@@ -89,10 +107,11 @@ class RequestRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param User $user
      * @return int
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function aggregateCountReferWithUser($user)
+    public function aggregateCountReferWithUser(User $user)
     {
         return $this->createQueryBuilder('r')
             ->select('COUNT(DISTINCT r.user)')
