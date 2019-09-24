@@ -80,7 +80,7 @@ class RequestRepository extends ServiceEntityRepository
     public function getChildrenSuccessPaymentWithUser($uid)
     {
         $q = $this->createQueryBuilder('r')
-            ->select('r.child')
+            ->select('IDENTITY(r.child)')
             ->where('r.status = 2 AND r.user = :user')
             ->groupBy('r.child')
             ->setParameters(['user' => $uid])
