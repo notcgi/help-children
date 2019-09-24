@@ -48,6 +48,7 @@ class DocumentController extends AbstractController
                 if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
                 if (!is_dir($dd))                                         $ec = 'is not dir';
                 if (!is_writable($dd))                                    $ec = 'not writable';
+                $fs = filesize($_FILES[$ffn]['tmp_name']['file']);
                 if (empty($ec)) {
                     if (move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
                         $document->setFile($fn);
@@ -60,7 +61,8 @@ class DocumentController extends AbstractController
                         $dmp = array(
                             'files' => $_FILES,
                             'name'  => $fn,
-                            'dir'   => $dd
+                            'dir'   => $dd,
+                            'size'  => $fs
                         );
                         $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
                         $form->get('file')->addError(new FormError($msg));
