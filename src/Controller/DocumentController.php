@@ -89,7 +89,7 @@ class DocumentController extends AbstractController
                 'multiple'    => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Assert\File(['maxSize' => '40000k'])
+                    new Assert\File(['maxSize' => '40M'])
                 ]
             ])
             ->add('save', SubmitType::class, [
