@@ -46,23 +46,11 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function getRequestsWithUsers()
     {
-        /* Когда-нибудь и я пойму, как это сделать по уму
-        return $this->createQueryBuilder('r')
-            ->select(array(
-                'r.order_id',
-//                'u.referrer',
-                'u.email',
-                'r.status',
-                'r.recurent',
-                'SUM(r.sum) as total_sum'
-            ))
-            ->leftJoin('r.user', 'u')
-            ->where('r.order_id <> :order_id')
-            ->groupBy('r.order_id')
-            ->orderBy('r.createdAt', 'DESC')
-            ->setParameters(['order_id' => ''])
-            ->getQuery()
-            ->getResult(); */
+        /*
+        Сидя под сакурой самурай,
+        Всё тщился найти просветленье,
+        А пока написал костылём
+          */
         $ret = $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
             ->where('r.order_id <> :order_id')

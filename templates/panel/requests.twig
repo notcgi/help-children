@@ -23,7 +23,12 @@
                     {% set recurents = {0: 'Обычный', 1: 'Рекуррент'} %}
                     {% for req in entities %}
                         <tr>
-                            <th scope="row">{{ req.order_id|default('n/a') }}</th>
+                            <th scope="row">
+                                {% if req.order_id|length %}
+                                    <button class="order_id-copy" data-id="{{ req.order_id }}">Копировать</button>
+                                    <span id="order-id-{{ req.order_id }}">{{ req.order_id }}</span>
+                                {% endif %}
+                            </th>
                             <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ statuses[req.status] }}</td>
@@ -48,4 +53,26 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function copyOrderID(id){
+            var ta = document.getElementById('order-id-' + id);
+            var range = document.createRange();
+            range.selectNode(ta);
+            window.getSelection().addRange(range);
+            try {
+                document.execCommand('copy');
+                alert('Идентификатор скопирован в буфер');
+            } catch (err) {
+                alert('Ошибка копирования в буфер обмена');
+            }
+            window.getSelection().removeAllRanges();
+        }
+
+        $(function(){
+            $('body').on('click', 'button.order_id-copy', function(){
+               var oid = $(this).attr('data-id');
+               copyOrderID(oid);
+            });
+        });
+    </script>
 {% endblock %}
