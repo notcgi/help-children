@@ -128,13 +128,6 @@ class DocumentController extends AbstractController
             ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
             ->add('description' , TextareaType::class)
             ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
-            ->add('file'        , FileType::class     , [
-                'multiple'    => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new Assert\File(['maxSize' => '40M'])
-                ]
-            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
                 'attr'  => ['class' => 'btn btn-primary']
