@@ -433,6 +433,7 @@ class DonateController extends AbstractController
                 ->setRequest($request)
                 ->setSum($request->getSum() * self::REF_RATE)
                 ->setUser($request->getUser())
+                ->setDonator($request->getUser())
         );
         return true;
     }
