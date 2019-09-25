@@ -94,12 +94,12 @@ class Request
         return $this->id;
     }
 
-    public function getOrderId(): ?string
+    public function getOrder_id(): ?string
     {
         return $this->order_id;
     }
 
-    public function setOrderId($id)
+    public function setOrder_id($id)
     {
         $this->order_id = $id;
         return $this;

@@ -46,6 +46,7 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function getRequestsWithUsers()
     {
+        /* Когда-нибудь и я пойму, как это сделать по уму
         return $this->createQueryBuilder('r')
             ->select(array(
                 'r.order_id',
@@ -61,7 +62,28 @@ class RequestRepository extends ServiceEntityRepository
             ->orderBy('r.createdAt', 'DESC')
             ->setParameters(['order_id' => ''])
             ->getQuery()
+            ->getResult(); */
+        $ret = $this->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->where('r.order_id = :order_id')
+            ->orderBy('r.createdAt', 'DESC')
+            ->setParameters(['order_id' => ''])
+            ->getQuery()
             ->getResult();
+        $result = array();
+        foreach ($ret as $req) {
+            /** @var Request $req */
+            /** @var Request[] $result */
+            $oid = $req->getOrder_id();
+            if (empty($result[$oid])) {
+                $result[$oid] = $req;
+            } else {
+                $sum = $result[$oid]->getSum();
+                $add = $req->getSum();
+                $result[$oid]->setSum($sum + $add);
+            }
+        }
+        return $result;
     }
 
     /**

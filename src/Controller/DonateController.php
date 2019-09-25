@@ -390,7 +390,7 @@ class DonateController extends AbstractController
                 foreach ($children as $child) {
                     $req = new \App\Entity\Request();
                     $req->setSum($sum_part)
-                        ->setOrderId($oid)
+                        ->setOrder_id($oid)
                         ->setRecurent($form['recurent'])
                         ->setUser($user)
                         ->setChild($child);
@@ -403,7 +403,7 @@ class DonateController extends AbstractController
                 // For Uniteller
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
-                    ->setOrderId($oid)
+                    ->setOrder_id($oid)
                     ->setRecurent($form['recurent'])
                     ->setUser($user);
 
