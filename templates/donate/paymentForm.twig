@@ -49,6 +49,7 @@
                     });
                 },
                 function (reason, options) {
+                    alert('Причина: ' + reason);
                     $.post('{{ fields.URL_RETURN_NO }}', {
                         'request_id' : '{{ request_id }}',
                         'child_id'   : '{{ child_id }}',
