@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Document;
 use App\Form\AddDocumentTypes;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Repository\DocumentRepository;
@@ -14,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,47 +38,68 @@ class DocumentController extends AbstractController
         );
     }
 
-    public function add(Request $request) {
+    public function add(Request $request, FileUploader $uploader) {
         $document = new Document();
         $form = $this->createForm(AddDocumentTypes::class, $document);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $ffn = 'add_document_types';
-            if (!empty($_FILES[$ffn]['tmp_name']['file'])) {
-                $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
-                $fn = $this->translit(basename($_FILES[$ffn]['name']['file']));
-                $fn = $dd.uniqid().'-'.preg_replace('~\s+~si', '_', $fn);
-                if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
-                if (!is_dir($dd))                                         $ec = 'is not dir';
-                if (!is_writable($dd))                                    $ec = 'not writable';
-                $fs = filesize($_FILES[$ffn]['tmp_name']['file']);
-                if (empty($ec)) {
-                    if (\move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
-                        $document->setFile($fn);
-                        $EM = $this->getDoctrine()->getManager();
-                        $EM->persist($document);
-                        $EM->flush();
-                        return $this->redirect('/panel/documents');
-                    } else {
-                        $ec = $_FILES[$ffn]['error']['file'];
-                        $dmp = array(
-                            'files' => $_FILES,
-                            'name'  => $fn,
-                            'dir'   => $dd,
-                            'size'  => $fs
-                        );
-                        $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
-                        $form->get('file')->addError(new FormError($msg));
-                    }
-                } else { $form->get('file')->addError(new FormError('Error: '.$ec)); }
-            } else { $form->get('file')->addError(new FormError('No file to upload!')); }
+            /** @var UploadedFile $doc */
+            $doc = $form->get('file')->getData();
+            $fn  = $this->translit(pathinfo($doc->getClientOriginalName(), PATHINFO_FILENAME));
+            $fn  = $fn.'-'.uniqid().'.'.$doc->guessExtension();
+            try {
+                $doc->move($this->getParameter('documents_directory'), $fn);
+                $document->setFile($fn);
+                $EM = $this->getDoctrine()->getManager();
+                $EM->persist($document);
+                $EM->flush();
+                return $this->redirect('/panel/documents');
+            } catch (FileException $e) {
+                $form->get('file')->addError(new FormError($e->getMessage()));
+            }
         }
 
         return $this->render('panel/documents/add.twig', [
-            'form'  => $form->createView(),
-            'files' => empty($_FILES) ? '' : var_export($_FILES, true)
+            'form'  => $form->createView()
         ]);
+    }
+
+    protected function old_upload(FormInterface $form, Document $document, $ffn) {
+        if (!empty($_FILES[$ffn]['tmp_name']['file'])) {
+            $dd = rtrim($this->getParameter('documents_directory'), '/').'/';
+            $fn = $this->translit(basename($_FILES[$ffn]['name']['file']));
+            $fn = $dd.uniqid().'-'.preg_replace('~\s+~si', '_', $fn);
+            if (!is_uploaded_file($_FILES[$ffn]['tmp_name']['file'])) $ec = 'not uploaded';
+            if (!is_dir($dd))                                         $ec = 'is not dir';
+            if (!is_writable($dd))                                    $ec = 'not writable';
+            $fs = filesize($_FILES[$ffn]['tmp_name']['file']);
+            if (empty($ec)) {
+                if (\move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
+                    $document->setFile($fn);
+                    $EM = $this->getDoctrine()->getManager();
+                    $EM->persist($document);
+                    $EM->flush();
+                    return $this->redirect('/panel/documents');
+                } else {
+                    $ec = $_FILES[$ffn]['error']['file'];
+                    $dmp = array(
+                        'files' => $_FILES,
+                        'name'  => $fn,
+                        'dir'   => $dd,
+                        'size'  => $fs
+                    );
+                    $msg = empty($ec) ? var_export($dmp, true) : 'Upload error: '.$ec.'!';
+                    $form->get('file')->addError(new FormError($msg));
+                }
+            } else { $form->get('file')->addError(new FormError('Error: '.$ec)); }
+        } else { $form->get('file')->addError(new FormError('No file to upload!')); }
+    }
+
+    protected function correctName($fn, $dir = '') {
+        $fn = $this->translit(basename($fn));
+        if (!empty($dir)) $dir = (rtrim($dir, '/').'/');
+        return $dir.uniqid().'-'.preg_replace('~\s+~si', '_', $fn);
     }
 
     /**
