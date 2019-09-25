@@ -47,7 +47,7 @@ class RequestRepository extends ServiceEntityRepository
     public function getRequestsWithUsers()
     {
         return $this->createQueryBuilder('r')
-            ->select('r, SUM(r.sum) as total_sum')
+            ->select('r, u, SUM(r.sum) as total_sum')
             ->leftJoin('r.user', 'u')
             ->where('r.order_id <> :order_id')
             ->groupBy('r.order_id')
