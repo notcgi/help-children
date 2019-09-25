@@ -48,7 +48,7 @@ class DonateController extends AbstractController
             $ti = array();
             foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().')';
             $sql = 'insert into children_requests (`child`,`request`) values '.implode(',', $ti);
-            $EM->createQuery($sql)->execute();
+            $EM->getConnection()->prepare($sql)->execute();
             $req->setStatus(2);
             $this->referralHistory($req);
 //            $this->childHistory($req);
