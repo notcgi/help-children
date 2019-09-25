@@ -49,8 +49,8 @@ class RequestRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->select(array(
                 'r.order_id',
-                'u.referrer.id',
-                'u.email',
+//                'u.referrer.id',
+//                'u.email',
                 'r.status',
                 'r.recurent',
                 'SUM(r.sum) as total_sum'
