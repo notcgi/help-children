@@ -40,12 +40,7 @@ class MainController extends AbstractController
      */
     public function docs()
     {
-        return $this->render(
-            'pages/docs.twig',
-            [
-                'documents' => $this->getDoctrine()->getRepository(Document::class)->findAll()
-            ]
-        );
+        return $this->render('pages/docs.twig');
     }
 
     /**
@@ -72,6 +67,11 @@ class MainController extends AbstractController
      */
     public function reports()
     {
-        return $this->render('pages/reports.twig');
+        return $this->render(
+            'pages/reports.twig',
+            [
+                'documents' => $this->getDoctrine()->getRepository(Document::class)->findAll()
+            ]
+        );
     }
 }
