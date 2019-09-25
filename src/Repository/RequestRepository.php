@@ -116,7 +116,7 @@ class RequestRepository extends ServiceEntityRepository
     {
         $q = $this->createQueryBuilder('r')
             ->select('IDENTITY(r.child)')
-            ->where('r.status = 2 AND r.user = :user')
+            ->where('r.status = 2 AND r.user = :user AND r.child is not null')
             ->groupBy('r.child')
             ->setParameters(['user' => $uid])
             ->getQuery()
