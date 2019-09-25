@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Document;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
@@ -39,7 +40,12 @@ class MainController extends AbstractController
      */
     public function docs()
     {
-        return $this->render('pages/docs.twig');
+        return $this->render(
+            'pages/docs.twig',
+            [
+                'documents' => $this->getDoctrine()->getRepository(Document::class)->findAll()
+            ]
+        );
     }
 
     /**
