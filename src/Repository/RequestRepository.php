@@ -65,7 +65,7 @@ class RequestRepository extends ServiceEntityRepository
             ->getResult(); */
         $ret = $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
-            ->where('r.order_id = :order_id')
+            ->where('r.order_id <> :order_id')
             ->orderBy('r.createdAt', 'DESC')
             ->setParameters(['order_id' => ''])
             ->getQuery()
