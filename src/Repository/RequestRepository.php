@@ -30,10 +30,25 @@ class RequestRepository extends ServiceEntityRepository
     /**
      * @return Request[]
      */
+    public function getRequestsWithUsersOld()
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->where("r.order_id = ''")
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Request[]
+     */
     public function getRequestsWithUsers()
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
+            ->where("r.order_id <> '")
+            ->groupBy('r.order_id')
             ->orderBy('r.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
