@@ -18,7 +18,7 @@
             <h2 class="section-title">Финансовые отчеты</h2>
                 <div class="reports-content">
                     <ul class="report-list">
-                        {% for document in documents %}
+                        {% for document in financial %}
                             <li class="report-list__item">
                                 <div class="report">
                                     <div class="report-doc">
@@ -235,7 +235,27 @@
                 <h2 class="section-title">Аудиторские заключения</h2>
                 <div class="reports-content">
                     <ul class="report-list">
-                        <li class="report-list__item">
+                        {% for document in auditor %}
+                            <li class="report-list__item">
+                                <div class="report">
+                                    <div class="report-doc">
+                                        <img class="report-doc__image" src="/images/doc-example.png" alt="{{ document.title }}" width="208" height="250"/>
+                                        <a class="show-doc-button" href="{{ document.file }}" target="_blank">
+                                            <span class="show-doc-button__circle"><span class="icon icon-doc"></span></span>
+                                        </a>
+                                    </div>
+                                    <div class="report-description">
+                                        <h3 class="report-description__title">{{ document.title }}</h3>
+                                        <div class="report-description__download">
+                                            <a class="report-description__download-link" target="_blank"
+                                               href="{{ document.file }}">Скачать</a>
+                                        </div>
+                                        <!-- div class="report-description__size">3 мб.</div -->
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        <!-- li class="report-list__item">
                             <div class="report">
                                 <div class="report-doc">
                                     <img class="report-doc__image"
@@ -309,7 +329,7 @@
                                     <div class="report-description__size">32,9 мб.</div>
                                 </div>
                             </div>
-                        </li>                        
+                        </li -->
                     </ul>
                 </div>
                 <div class="container container--small">

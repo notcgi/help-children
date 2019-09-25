@@ -70,7 +70,12 @@ class MainController extends AbstractController
         return $this->render(
             'pages/reports.twig',
             [
-                'documents' => $this->getDoctrine()->getRepository(Document::class)->findAll()
+                'financial' => $this->getDoctrine()->getRepository(Document::class)->findBy([
+                    'category' => 'financial'
+                ]),
+                'auditor' => $this->getDoctrine()->getRepository(Document::class)->findBy([
+                    'category' => 'auditor'
+                ]),
             ]
         );
     }
