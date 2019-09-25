@@ -140,6 +140,7 @@ class DocumentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($document);
             $entityManager->flush();
+            return $this->redirect('/panel/documents');
         }
 
         return $this->render(
