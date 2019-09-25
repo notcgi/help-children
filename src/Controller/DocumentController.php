@@ -50,7 +50,7 @@ class DocumentController extends AbstractController
                 if (!is_writable($dd))                                    $ec = 'not writable';
                 $fs = filesize($_FILES[$ffn]['tmp_name']['file']);
                 if (empty($ec)) {
-                    if (move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
+                    if (\move_uploaded_file($_FILES[$ffn]['tmp_name']['file'], $fn)) {
                         $document->setFile($fn);
                         $EM = $this->getDoctrine()->getManager();
                         $EM->persist($document);
