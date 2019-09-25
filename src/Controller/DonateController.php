@@ -447,6 +447,7 @@ class DonateController extends AbstractController
             (new \App\Entity\ChildHistory())
                 ->setSum($request->getSum())
                 ->setChild($request->getChild())
+                ->setDonator($request->getUser())
         );
         return true;
     }
