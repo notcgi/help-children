@@ -49,7 +49,7 @@ class RequestRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->select(array(
                 'r.order_id',
-                'u.referrer',
+//                'u.referrer',
                 'u.email',
                 'r.status',
                 'r.recurent',
