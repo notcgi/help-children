@@ -9,11 +9,6 @@
         exit;
     }
 
-    if (isset($_GET['correct'])) if (intval($_GET['correct']) == 5437894) {
-        require 'correct.php';
-        exit;
-    }
-
     use App\Kernel;
     use Symfony\Component\Debug\Debug;
     use Symfony\Component\HttpFoundation\Request;
