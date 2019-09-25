@@ -430,6 +430,7 @@ class DonateController extends AbstractController
         if ($request->getUser()->getReferrer() === null) return false;
         $this->getDoctrine()->getManager()->persist(
             (new \App\Entity\ReferralHistory())
+                ->setRequest($request)
                 ->setSum($request->getSum() * self::REF_RATE)
                 ->setUser($request->getUser())
         );
