@@ -34,8 +34,9 @@ class RequestRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
-            ->where("r.order_id = ''")
+            ->where('r.order_id = :order_id')
             ->orderBy('r.createdAt', 'DESC')
+            ->setParameters(['order_id' => ''])
             ->getQuery()
             ->getResult();
     }
@@ -46,11 +47,12 @@ class RequestRepository extends ServiceEntityRepository
     public function getRequestsWithUsers()
     {
         return $this->createQueryBuilder('r')
-            ->select('*, SUM(r.sum) as `total_sum`')
+            ->select('*, SUM(r.sum) as total_sum')
             ->leftJoin('r.user', 'u')
-            ->where("r.order_id <> '")
+            ->where('r.order_id <> :order_id')
             ->groupBy('r.order_id')
             ->orderBy('r.createdAt', 'DESC')
+            ->setParameters(['order_id' => ''])
             ->getQuery()
             ->getResult();
     }

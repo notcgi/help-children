@@ -23,7 +23,7 @@
                     {% set recurents = {0: 'Обычный', 1: 'Рекуррент'} %}
                     {% for req in entities %}
                         <tr>
-                            <th scope="row">{{ req.order_id }}</th>
+                            <th scope="row">{{ req.order_id|default('n/a') }}</th>
                             <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ statuses[req.status] }}</td>
