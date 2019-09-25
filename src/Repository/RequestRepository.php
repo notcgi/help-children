@@ -80,7 +80,7 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function findRequestsDonateWithUser(User $user)
     {
-        return $this->createQueryBuilder('r')
+        $rows = $this->createQueryBuilder('r')
             ->where('r.status = 2 AND r.user = :user')
             ->leftJoin('r.user', 'u')
             ->leftJoin('r.child', 'id')
@@ -89,6 +89,21 @@ class RequestRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getResult();
+        /** @var Request[] $result */
+        $result = array();
+        foreach ($rows as $row) {
+            /** @var Request $row */
+            $dt = $row->getCreatedAt()->format('Y-m-d H:i:s');
+            if (empty($result[$dt])) {
+                $result[$dt] = $row;
+                $result[$dt]->setChild(null);
+            } else {
+                $sum = $result[$dt]->getSum();
+                $add = $row->getSum();
+                $result[$dt]->setSum($sum + $add);
+            }
+        }
+        return $result;
     }
 
     /**
