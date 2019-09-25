@@ -50,7 +50,7 @@ class RequestRepository extends ServiceEntityRepository
             ->select(array(
                 'r.order_id',
 //                'u.referrer.id',
-//                'u.email',
+                'u.email',
                 'r.status',
                 'r.recurent',
                 'SUM(r.sum) as total_sum'
