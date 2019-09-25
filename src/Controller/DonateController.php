@@ -387,6 +387,7 @@ class DonateController extends AbstractController
                 $sum_part = $form['sum'] / count($children);
                 $req_ids  = array();
                 $ch_ids   = array();
+                $rec_req  = null;
                 foreach ($children as $child) {
                     $req = new \App\Entity\Request();
                     $req->setSum($sum_part)
@@ -398,18 +399,15 @@ class DonateController extends AbstractController
                     $entityManager->flush();
                     $req_ids[] = $req->getId();
                     $ch_ids[]  = $child->getId();
+                    if (empty($rec_req)) $rec_req = $req;
                 }
 
                 // For Uniteller
-                $req = new \App\Entity\Request();
-                $req->setSum($form['sum'])
-                    ->setOrder_id($oid)
-                    ->setRecurent($form['recurent'])
-                    ->setUser($user);
+                $rec_req->setSum($form['sum'])->setChild(null);
 
                 return $this->render(
                     'donate/paymentForm.twig', [
-                        'fields'     => $unitellerService->getFromData($req),
+                        'fields'     => $unitellerService->getFromData($rec_req),
                         'request_id' => implode(',', $req_ids),
                         'child_id'   => implode(',', $ch_ids)
                     ]

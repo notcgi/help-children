@@ -60,8 +60,8 @@ class RecurringPayment
     public function setRequest(Request $request): self
     {
         $this->request = $request;
-        $this->id = $request->getId();
-        $this->user = $request->getUser();
+        $this->id      = $request->getId();
+        $this->user    = $request->getUser();
 
         return $this;
     }
