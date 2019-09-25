@@ -27,7 +27,7 @@
                             <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ statuses[req.status] }}</td>
-                            <td>{{ req.total_sum|number_format(2, '.', ' ') }}</td>
+                            <td>{{ req.sum|number_format(2, '.', ' ') }}</td>
                             <td>{{ recurents[req.recurent]}}</td>
                             <td>{{ req.createdAt|date('d m Y H:i') }}</td>
                         </tr>
