@@ -50,7 +50,7 @@ class DocumentController extends AbstractController
             $fn  = $fn.'-'.uniqid().'.'.$doc->guessExtension();
             try {
                 $doc->move($this->getParameter('documents_directory'), $fn);
-                $document->setFile($fn);
+                $document->setFile('/docs/'.$fn);
                 $EM = $this->getDoctrine()->getManager();
                 $EM->persist($document);
                 $EM->flush();
