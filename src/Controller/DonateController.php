@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Child;
 use App\Entity\User;
 use App\Entity\SendGridSchedule;
 use App\Event\FirstRequestSuccessEvent;
@@ -13,6 +12,7 @@ use App\Event\HalfYearRecurrentEvent;
 use App\Event\YearRecurrentEvent;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,23 +39,21 @@ class DonateController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('post')) {
-            $orderId  = $request->request->get('order_id');
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $requests = $entityManager->getRepository(\App\Entity\Request::class)->findBy(
-                ['order_id' => $orderId]
-            );
-
-            if (!$requests) return new Response('order not found', 404);
-
-            foreach ($requests as $req) {
-                $req->setStatus(2);
-                $this->referralHistory($req);
-                $this->childHistory($req);
-                $entityManager->persist($req);
-            }
-
-            $entityManager->flush();
+            $id  = $request->request->get('order_id');
+            /** @var EntityManager $EM */
+            $EM  = $this->getDoctrine()->getManager();
+            $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            if (!$req) return new Response('order not found', 404);
+            $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
+            $ti = array();
+            foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().')';
+            $sql = 'insert into children_requests (`child`,`request`) values '.implode(',', $ti);
+            $EM->createQuery($sql)->execute();
+            $req->setStatus(2);
+            $this->referralHistory($req);
+//            $this->childHistory($req);
+            $EM->persist($req);
+            $EM->flush();
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
@@ -73,23 +71,13 @@ class DonateController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('post')) {
-            $orderId  = $request->request->get('order_id');
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $requests = $entityManager->getRepository(\App\Entity\Request::class)->findBy(
-                ['order_id' => $orderId]
-            );
-
-            if (!$requests) return new Response('order not found', 404);
-
-            foreach ($requests as $req) {
-                $req->setStatus(1);
-//                $this->referralHistory($req);
-//                $this->childHistory($req);
-                $entityManager->persist($req);
-            }
-
-            $entityManager->flush();
+            $id  = $request->request->get('order_id');
+            $EM  = $this->getDoctrine()->getManager();
+            $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            if (!$req) return new Response('order not found', 404);
+            $req->setStatus(1);
+            $EM->persist($req);
+            $EM->flush();
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
@@ -383,33 +371,19 @@ class DonateController extends AbstractController
                 $dto           = (new \DateTime())->format('Y-m-d H:i:s.u');
                 $oid           = md5($user->getId().':'.$dto.':'.$form['sum']);
 
-                $children = $this->getDoctrine()->getRepository(Child::class)->getOpened();
-                $sum_part = $form['sum'] / count($children);
-                $req_ids  = array();
-                $ch_ids   = array();
-                $rec_req  = null;
-                foreach ($children as $child) {
-                    $req = new \App\Entity\Request();
-                    $req->setSum($sum_part)
-                        ->setOrder_id($oid)
-                        ->setRecurent($form['recurent'])
-                        ->setUser($user)
-                        ->setChild($child);
-                    $entityManager->persist($req);
-                    $entityManager->flush();
-                    $req_ids[] = $req->getId();
-                    $ch_ids[]  = $child->getId();
-                    if (empty($rec_req)) $rec_req = $req;
-                }
+                $req = new \App\Entity\Request();
+                $req->setSum($form['sum'])
+                    ->setOrder_id($oid)
+                    ->setRecurent($form['recurent'])
+                    ->setUser($user);
+                $entityManager->persist($req);
+                $entityManager->flush();
 
                 // For Uniteller
-                $rec_req->setSum($form['sum'])->setChild(null);
-
                 return $this->render(
-                    'donate/paymentForm.twig', [
-                        'fields'     => $unitellerService->getFromData($rec_req),
-                        'request_id' => implode(',', $req_ids),
-                        'child_id'   => implode(',', $ch_ids)
+                    'donate/paymentForm.twig',
+                    [
+                        'fields' => $unitellerService->getFromData($req)
                     ]
                 );
             }
@@ -441,7 +415,7 @@ class DonateController extends AbstractController
      * @return bool
      * @throws \Exception
      */
-    private function childHistory(\App\Entity\Request $request): bool
+    protected function childHistory(\App\Entity\Request $request): bool
     {
         $this->getDoctrine()->getManager()->persist(
             (new \App\Entity\ChildHistory())

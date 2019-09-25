@@ -39,9 +39,7 @@
                 wopt,
                 function (options) {
                     $.post('{{ fields.URL_RETURN_OK }}', {
-                        'request_id' : '{{ request_id }}',
-                        'child_id'   : '{{ child_id }}',
-                        'order_id'   : '{{ fields.Order_IDP }}'
+                        'order_id': '{{ fields.Order_IDP }}'
                     }).success(function(ret){
                         window.location.href = '/account/history';
                     }).error(function (req) {
@@ -51,9 +49,7 @@
                 function (reason, options) {
                     alert('Причина: ' + reason);
                     $.post('{{ fields.URL_RETURN_NO }}', {
-                        'request_id' : '{{ request_id }}',
-                        'child_id'   : '{{ child_id }}',
-                        'order_id'   : '{{ fields.Order_IDP }}'
+                        'order_id': '{{ fields.Order_IDP }}'
                     }).success(function(ret){
                         window.location.href = '/account/history';
                     }).error(function (req) {

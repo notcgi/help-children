@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Request;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -30,48 +31,13 @@ class RequestRepository extends ServiceEntityRepository
     /**
      * @return Request[]
      */
-    public function getRequestsWithUsersOld()
+    public function getRequestsWithUsers()
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.user', 'u')
-            ->where('r.order_id = :order_id')
             ->orderBy('r.createdAt', 'DESC')
-            ->setParameters(['order_id' => ''])
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * @return Request[]
-     */
-    public function getRequestsWithUsers()
-    {
-        /*
-        Сидя под сакурой самурай,
-        Всё тщился найти просветленье,
-        А пока написал костылём
-          */
-        $ret = $this->createQueryBuilder('r')
-            ->leftJoin('r.user', 'u')
-            ->where('r.order_id <> :order_id')
-            ->orderBy('r.createdAt', 'DESC')
-            ->setParameters(['order_id' => ''])
-            ->getQuery()
-            ->getResult();
-        $result = array();
-        foreach ($ret as $req) {
-            /** @var Request $req */
-            /** @var Request[] $result */
-            $oid = $req->getOrder_id();
-            if (empty($result[$oid])) {
-                $result[$oid] = $req;
-            } else {
-                $sum = $result[$oid]->getSum();
-                $add = $req->getSum();
-                $result[$oid]->setSum($sum + $add);
-            }
-        }
-        return $result;
     }
 
     /**
@@ -80,30 +46,13 @@ class RequestRepository extends ServiceEntityRepository
      */
     public function findRequestsDonateWithUser(User $user)
     {
-        $rows = $this->createQueryBuilder('r')
+        return $this->createQueryBuilder('r')
             ->where('r.status = 2 AND r.user = :user')
             ->leftJoin('r.user', 'u')
             ->leftJoin('r.child', 'id')
-            ->setParameters([
-                'user' => $user->getId()
-            ])
+            ->setParameters(['user' => $user->getId()])
             ->getQuery()
             ->getResult();
-        /** @var Request[] $result */
-        $result = array();
-        foreach ($rows as $row) {
-            /** @var Request $row */
-            $dt = $row->getCreatedAt()->format('Y-m-d H:i:s');
-            if (empty($result[$dt])) {
-                $result[$dt] = $row;
-                $result[$dt]->setChild(null);
-            } else {
-                $sum = $result[$dt]->getSum();
-                $add = $row->getSum();
-                $result[$dt]->setSum($sum + $add);
-            }
-        }
-        return $result;
     }
 
     /**
@@ -116,9 +65,7 @@ class RequestRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->select('SUM(r.sum)')
             ->where('r.status = 2 AND r.user = :user')
-            ->setParameters([
-                'user' => $user->getId()
-            ])
+            ->setParameters(['user' => $user->getId()])
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -126,17 +73,32 @@ class RequestRepository extends ServiceEntityRepository
     /**
      * @param $uid
      * @return float
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getChildrenSuccessPaymentWithUser($uid)
     {
-        $q = $this->createQueryBuilder('r')
-            ->select('IDENTITY(r.child)')
-            ->where('r.status = 2 AND r.user = :user AND r.child is not null')
-            ->groupBy('r.child')
-            ->setParameters(['user' => $uid])
-            ->getQuery()
-            ->getResult();
-        return count($q);
+        // TODO
+        /** @var EntityManager $EM */
+        $EM = $this->getEntityManager();
+        $DB = $EM->getConnection();
+        $sql = <<<sql
+select
+  tm.child   as child,
+  tm.request as request
+from children_requests as tm
+left join requests as tr on (tr.id = tm.request)
+where tr.status = 2 and tr.user = :user
+sql;
+        $Q = $DB->prepare($sql);
+        $Q->execute(['user' => $uid]);
+        $rows = $Q->fetchAll(\Doctrine\DBAL\FetchMode::ASSOCIATIVE);
+        $ret  = array();
+        foreach ($rows as $row) {
+            $cid = intval($row['child']);
+            if (in_array($cid, $ret)) continue;
+            $ret[] = $cid;
+        }
+        return count($ret);
     }
 
     /**

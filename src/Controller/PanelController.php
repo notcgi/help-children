@@ -68,8 +68,7 @@ class PanelController extends AbstractController
         return $this->render(
             'panel/requests.twig',
             [
-                'entities'    => $repository->getRequestsWithUsers(),
-                'entitiesOld' => $repository->getRequestsWithUsersOld(),
+                'entities' => $repository->getRequestsWithUsers()
             ]
         );
     }

@@ -27,19 +27,10 @@
                                 {% if req.order_id|length %}
                                     <button class="order_id-copy" data-id="{{ req.order_id }}">Копировать</button>
                                     <span id="order-id-{{ req.order_id }}">{{ req.order_id }}</span>
+                                {% else %}
+                                    {{ req.id }}
                                 {% endif %}
                             </th>
-                            <td>{{ req.user.referrer.id|default('') }}</td>
-                            <td>{{ req.user.email }}</td>
-                            <td>{{ statuses[req.status] }}</td>
-                            <td>{{ req.sum|number_format(2, '.', ' ') }}</td>
-                            <td>{{ recurents[req.recurent]}}</td>
-                            <td>{{ req.createdAt|date('d m Y H:i') }}</td>
-                        </tr>
-                    {% endfor %}
-                    {% for req in entitiesOld %}
-                        <tr>
-                            <th scope="row">{{ req.id }}</th>
                             <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ statuses[req.status] }}</td>

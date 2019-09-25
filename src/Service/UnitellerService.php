@@ -46,7 +46,7 @@ class UnitellerService
         $user = $req->getUser();
         $fields = [
             'Shop_IDP'         => $this->shop_idp,
-            'Order_IDP'        => $req->getOrder_id(),
+            'Order_IDP'        => $req->getId(),
             'Subtotal_P'       => number_format($req->getSum(), 2, '.', ''),
             'Lifetime'         => self::LIFE_TIME,
             'Customer_IDP'     => $user->getId(),
