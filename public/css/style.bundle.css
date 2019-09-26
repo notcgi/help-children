@@ -7494,7 +7494,7 @@ body {
         flex-direction: column;
     }
     .donate-form-payment-systems__cards {
-        width: initial;
+        width: initial !important;
     }
     #paymentByVisa {
         padding: 0;
