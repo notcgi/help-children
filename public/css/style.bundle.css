@@ -7477,6 +7477,9 @@ body {
     .donate-form-payment-systems__cards {
         width: 220px;
     }
+    .little-paragraph {
+        padding: 0 5rem;
+    }
 }
 
 @media (max-width: 767px) {
@@ -7502,7 +7505,7 @@ body {
     }
     .little-paragraph {
         line-height: 2.5;
-        padding: 0 2rem;
+        padding: 0 5rem;
     }
     #paymentByVisa img {
         margin: 0 auto;
