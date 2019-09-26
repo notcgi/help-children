@@ -7501,7 +7501,26 @@ body {
         flex-wrap: wrap;
     }
     .little-paragraph {
-        line-height: 3;
+        line-height: 2.5;
+        padding: 0 2rem;
+    }
+    #paymentByVisa img {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width:448px) {
+    #paymentByVisa img {
+        width: 20px;
+    }
+    .toggle-field__text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width:422px) {
+    #paymentByVisa img {
+        width: 15px;
     }
 }
 
