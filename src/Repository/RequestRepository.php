@@ -87,7 +87,7 @@ select
   tm.request as request
 from children_requests as tm
 left join requests as tr on (tr.id = tm.request)
-where tr.status = 2 and tr.user = :user
+where tr.status = 2 and tr.user_id = :user
 sql;
         $Q = $DB->prepare($sql);
         $Q->execute(['user' => $uid]);
