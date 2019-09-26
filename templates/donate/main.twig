@@ -331,11 +331,13 @@
             textSum = form.elements['textSum'],
             formBlocks = Array.from(document.querySelectorAll('.showVISA')),
             requisites = document.getElementById('requisitesContent'),
+            smsBlock = Array.from(document.querySelector('.showSMS')),
             sms = document.getElementById('smsContent'),
             setPaymentMethod = e => {
                 if ('visa' === e) {
                     requisites.style.display = 'none';
                     sms.style.display = 'none';
+                    smsBlock.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'flex';
@@ -344,6 +346,7 @@
                 else if ('sms' === e) {
                     requisites.style.display = 'none';
                     sms.style.display = 'block';
+                    smsBlock.style.display = 'block';
 
                     for (const el of formBlocks) {
                         el.style.display = 'none';
@@ -352,6 +355,7 @@
                 else{
                     requisites.style.display = 'block';
                     sms.style.display = 'none';
+                    smsBlock.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'none';

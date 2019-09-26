@@ -7506,7 +7506,7 @@ body {
         flex-direction: column;
     }
     .donate-form-payment-systems {
-        display: inline-block !important;
+        flex-direction: column;
     }
 }
 
