@@ -371,7 +371,8 @@ class DonateController extends AbstractController
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
-                    ->setUser($user);
+                    ->setUser($user)
+                    ->setOrder_id('');
                 $entityManager->persist($req);
                 $entityManager->flush();
 
