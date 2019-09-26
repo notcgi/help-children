@@ -7512,9 +7512,12 @@ body {
     }
 }
 
-@media (max-width:448px) {
+@media (max-width:456px) {
     .toggle-field__text {
         font-size: 1rem;
+    }
+    .paymentimg {
+        width: 20px;
     }
 }
 
