@@ -51,7 +51,6 @@ class DonateController extends AbstractController
             $EM->getConnection()->prepare($sql)->execute();
             $req->setStatus(2);
             $this->referralHistory($req);
-//            $this->childHistory($req);
             $EM->persist($req);
             $EM->flush();
         }
@@ -368,12 +367,9 @@ class DonateController extends AbstractController
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $user          = $usersService->findOrCreateUser($form);
-                $dto           = (new \DateTime())->format('Y-m-d H:i:s.u');
-                $oid           = md5($user->getId().':'.$dto.':'.$form['sum']);
 
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
-                    ->setOrder_id($oid)
                     ->setRecurent($form['recurent'])
                     ->setUser($user);
                 $entityManager->persist($req);
