@@ -331,7 +331,7 @@
             textSum = form.elements['textSum'],
             formBlocks = Array.from(document.querySelectorAll('.showVISA')),
             requisites = document.getElementById('requisitesContent'),
-            smsBlock = Array.from(document.querySelector('.showSMS')),
+            smsBlock = document.querySelector('.showSMS'),
             sms = document.getElementById('smsContent'),
             setPaymentMethod = e => {
                 if ('visa' === e) {
