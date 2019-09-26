@@ -7513,17 +7513,8 @@ body {
 }
 
 @media (max-width:448px) {
-    #paymentByVisa img {
-        width: 20px;
-    }
     .toggle-field__text {
         font-size: 1rem;
-    }
-}
-
-@media (max-width:422px) {
-    #paymentByVisa img {
-        width: 15px;
     }
 }
 
