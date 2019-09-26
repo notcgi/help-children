@@ -7497,7 +7497,11 @@ body {
         width: initial !important;
     }
     #paymentByVisa {
-        padding: 0;
+        padding: 0 15px;
+        flex-wrap: wrap;
+    }
+    .little-paragraph {
+        line-height: 3;
     }
 }
 
