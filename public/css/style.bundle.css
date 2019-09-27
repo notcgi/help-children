@@ -7630,7 +7630,7 @@ body {
     .WantHelpButtonBlock {
         display: block;
         position: sticky;
-        bottom: 0;
+        bottom: 30;
     }
     .WantHelpButton {
         display: block;
@@ -7643,6 +7643,8 @@ body {
         width: 50%;
         padding: 15px 0;
         text-align: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 }
 
