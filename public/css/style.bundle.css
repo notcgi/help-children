@@ -7466,6 +7466,22 @@ body {
     background-image: url(../images/flags.png)
 }
 
+.donate-form-payment-systems__cards-onDonatPage {
+    margin-left: 30px;
+}
+
+.donate-form-payment-systems__cards-onDonatPage div:first-child {
+    opacity: 0.7;
+    border-right: none;
+    padding-left: 0;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #707070 !important;
+    text-transform: none;
+}
+
+.donate-form-payment-systems__cards-onDonatPage div:last-child {}
+
 @media (-webkit-min-device-pixel-ratio:2),
 (min-resolution:192dpi) {
     .iti-flag {
