@@ -5052,7 +5052,7 @@ body {
 
 .partners-main-container {
     padding-top: 120px;
-    padding-bottom: 140px;
+    padding-bottom: 60px;
     -webkit-transition: -webkit-filter .3s linear;
     transition: -webkit-filter .3s linear;
     transition: filter .3s linear;
