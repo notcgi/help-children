@@ -344,7 +344,7 @@ class SendGridSubscriber implements EventSubscriberInterface
                     'code' => $event->getCode()
                 ], 0)
             ])
-            ->setTemplateId('d-7e5881310e7447599243855b1c12d2af');
+            ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
             ->setSendAt(
                 \DateTimeImmutable::createFromMutable(
                     (new \DateTime('NOW'))
@@ -366,7 +366,7 @@ class SendGridSubscriber implements EventSubscriberInterface
                         'code' => $event->getCode()
                     ], 0)
                 ])
-                ->setTemplateId('d-7e5881310e7447599243855b1c12d2af');
+                ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime($event->getDate()))
