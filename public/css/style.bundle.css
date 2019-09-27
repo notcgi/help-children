@@ -7467,14 +7467,14 @@ body {
 }
 
 .donate-form-payment-systems__cards-onDonatPage {
-    margin-left: 30px;
+    margin-left: 30px !important;
+    margin-top: 10px !important;
 }
 
 .donate-form-payment-systems__cards-onDonatPage div:first-child {
     opacity: 0.7;
     border-right: none;
     padding-left: 0;
-    text-align: center;
     font-size: 1.2rem;
     color: #707070 !important;
     text-transform: none;
