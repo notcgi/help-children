@@ -3134,7 +3134,8 @@ body {
     height: 270px;
     padding-top: 30px;
     background-image: url(../../images/bg-orange-medium.png);
-    background-size: cover
+    background-size: cover;
+    background-position: center;
 }
 
 .hero-medium__title {
