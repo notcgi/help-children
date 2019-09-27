@@ -3110,7 +3110,8 @@ body {
     padding-top: 35px;
     padding-bottom: 35px;
     background-image: url(../../images/bg-orange-small.png);
-    background-size: cover
+    background-size: cover;
+    background-position: center;
 }
 
 .hero-small__title {
