@@ -100,9 +100,9 @@ class DonateController extends AbstractController
         $req = (new \App\Entity\Request())->setUser($user);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);
-        
+
         // Убрать напоминание о завершении платежа
-        $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());                        
+        $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
         foreach ($urs as $ur) {
             $entityManager->remove($ur);
         }
@@ -142,15 +142,15 @@ class DonateController extends AbstractController
                 file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form UNREGISTERED IN SYSTEM".print_r($form, true)."\n", FILE_APPEND);
                 return new Response('', 404); // Незарегистрированная в базе подписка
             }
-            
+
             $req = new \App\Entity\Request();
             $req->setChild($subscr_req->getChild)
-                ->setUser($subscr_req->getUser())                    
+                ->setUser($subscr_req->getUser())
                 ->setSum($subscr_req->getSum())
                 ->setTransactionId($form['TransactionId'])
                 ->setJson(json_encode($form))
                 ->setStatus(2)
-                ->setRecurent(0);            
+                ->setRecurent(0);
 
             $rp->setWithdrawalAt(new \DateTime());
             $entityManager->persist($req);
@@ -160,14 +160,14 @@ class DonateController extends AbstractController
             $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
 
             $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
-            $endDate = new \DateTime();        
+            $endDate = new \DateTime();
             $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
 
             if ($numberOfMonths == 6)
                 /** @noinspection PhpMethodParametersCountMismatchInspection */
                 /** @noinspection PhpParamsInspection */
                 $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
-            
+
             if ($numberOfMonths == 12)
                 /** @noinspection PhpMethodParametersCountMismatchInspection */
                 /** @noinspection PhpParamsInspection */
@@ -185,7 +185,7 @@ class DonateController extends AbstractController
                 $req->setStatus(2);
                 $req->setTransactionId($form['TransactionId']); #avtorkoda
                 $req->setJson(json_encode($form));              #avtorkoda
-                
+
                 // Убрать напоминание о завершении платежа
                 $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
                 foreach ($urs as $ur) {
@@ -193,14 +193,15 @@ class DonateController extends AbstractController
                 }
                 $entityManager->flush();
 
-                if (count($req->getUser()->getRequests()) > 1) {
+                $user_requests = $entityManager->getRepository(RequestRepository::class)->findRequestsWithUser($req->getUser());
+                if (count($user_requests) > 1) {
                     /** @noinspection PhpMethodParametersCountMismatchInspection */
                     $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
                 }
                 else {
                     /** @noinspection PhpMethodParametersCountMismatchInspection */
                     $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
-                    if (!$req -> isRecurent()) {
+                    if (!$req->isRecurent()) {
                         // Письмо №10
                         $user = $req->getUser();
                         $entityManager->persist(
@@ -218,22 +219,22 @@ class DonateController extends AbstractController
                                     ->setTime(12, 0, 0)
                                 )
                             )
-                        ); 
-                        $entityManager->flush();               
+                        );
+                        $entityManager->flush();
                     }
                 }
 
                 if ($req -> isRecurent()) {//оформление подписки
 
                     // $ch = curl_init("https://api.cloudpayments.ru/subscriptions/create");
-                    // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");                    
+                    // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
                     // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
                     // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
                     // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
                     // curl_setopt($ch, CURLOPT_POST, true);
-                    // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");                    
+                    // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
                     // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                
+                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     // $server_output = curl_exec ($ch);
                     // curl_close ($ch);
                     // $a = file_get_contents('php://input');
@@ -248,7 +249,7 @@ class DonateController extends AbstractController
                     $req->setSubscriptionsId($subscription_id);
 
                     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n", FILE_APPEND);
-                    
+
                     $user = $req->getUser();
                     // Увеличение
                     $entityManager->persist(
@@ -309,18 +310,18 @@ class DonateController extends AbstractController
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator
     ) {
-        $name = $request->query->get('name');  
+        $name = $request->query->get('name');
         $email = $request->query->get('email');
-        $code = $request->query->get('code');   
-        $lastName = $request->query->get('lastName');   
-        $phone = $request->query->get('phone');   
+        $code = $request->query->get('code');
+        $lastName = $request->query->get('lastName');
+        $phone = $request->query->get('phone');
 
-        if (!$this->isGranted('ROLE_USER') && isset($code)) {                     
-            $doctrine = $this->getDoctrine();            
+        if (!$this->isGranted('ROLE_USER') && isset($code)) {
+            $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository(User::class)->findOneBy([
                 'ref_code' => $code,
                 'email' => $email
-            ]);                               
+            ]);
 
             if ($user) {
                 $guardHandler->authenticateUserAndHandleSuccess(
@@ -328,8 +329,8 @@ class DonateController extends AbstractController
                     $request,
                     $authenticator,
                     'main' // firewall name in security.yaml
-                );     
-            }        
+                );
+            }
         }
 
         $user = $this->getUser();
@@ -458,15 +459,24 @@ class DonateController extends AbstractController
     public function sendReminder(Request $request, EventDispatcherInterface $dispatcher) {
         $email = $request->request->get('email');
         $name = $request->request->get('name');
-        $date = $request->request->get('date');
+        $date = new DateTime($request->request->get('date'));
+
+        $match_date = new DateTime($timestamp);
+        $interval = $date->diff($match_date);
+
+        $today = false;
+
+        if ($interval->days == 0)
+            $today = true;
+
         $lastName = $request->request->get('lastName');
-        $phone = $request->request->get('phone');        
+        $phone = $request->request->get('phone');
         $code = null;
 
-        $doctrine = $this->getDoctrine();            
-        $user = $doctrine->getRepository(User::class)->findOneBy([            
+        $doctrine = $this->getDoctrine();
+        $user = $doctrine->getRepository(User::class)->findOneBy([
             'email' => $email
-        ]);      
+        ]);
 
         if (null !== $user->getRefCode())
             $code = $user->getRefCode();
@@ -481,7 +491,7 @@ class DonateController extends AbstractController
             return new Response('false');
 
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone, $code), SendReminderEvent::NAME);
+        $dispatcher->dispatch(new SendReminderEvent($email, $name, $date, $lastName, $phone, $code, $today), SendReminderEvent::NAME);
         return new Response('true');
     }
 }

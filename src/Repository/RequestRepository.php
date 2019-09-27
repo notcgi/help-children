@@ -55,6 +55,19 @@ class RequestRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+       /**
+     * @param  User      $user
+     * @return Request[]
+     */
+    public function findRequestsWithUser(User $user)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.status = 2 AND r.user = :user')
+            ->setParameters(['user' => $user->getId()])
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @param User $user
      * @return float
@@ -109,7 +122,7 @@ sql;
     public function aggregateCountChildWithUser(User $user)
     {
         return $this->createQueryBuilder('r')
-            ->select('COUNT(DISTINCT r.child)')            
+            ->select('COUNT(DISTINCT r.child)')
             ->where('r.status = 2 AND r.user = :user')
             ->setParameters([
                 'user' => $user->getId()
@@ -147,7 +160,7 @@ sql;
             ->where('r.status = 2')
             ->getQuery()
             ->getSingleScalarResult();
-    }     
+    }
 
     /**
      * @return float
