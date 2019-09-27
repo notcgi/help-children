@@ -7657,6 +7657,12 @@ body {
     }
 }
 
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .intl-tel-input.allow-dropdown input {
     padding-left: 60px !important
 }
