@@ -7635,6 +7635,9 @@ body {
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
+    .WantHelpButtonBlock a {
+        text-decoration: none;
+    }
     .WantHelpButton {
         display: block;
         margin: 0 auto;
