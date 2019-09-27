@@ -3482,7 +3482,6 @@ body {
 .container.container--small {
     padding-left: 175px;
     padding-right: 175px;
-    height: 80px;
 }
 
 @media (max-width:1440px) {
