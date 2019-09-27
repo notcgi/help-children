@@ -7496,11 +7496,14 @@ body {
     .donate-form-payment-systems {
         flex-direction: column;
     }
+    .donate-form-payment-systems__cards:first-child {
+        width: 220px !important;
+    }
     .donate-form-payment-systems__cards {
         width: initial !important;
     }
     .donate-form-row:nth-child(2) {
-        padding: 15px 0;
+        padding: 20px 0;
     }
     #paymentByVisa {
         padding: 0 15px;
@@ -7517,7 +7520,7 @@ body {
         width: 155px;
     }
     .donate-form-payment-systems__notice {
-        padding-top: 10px;
+        padding-top: 15px;
     }
 }
 
