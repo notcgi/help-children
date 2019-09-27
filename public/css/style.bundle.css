@@ -3139,6 +3139,13 @@ body {
     background-position: center;
 }
 
+@media (max-width:992px) {
+    .hero-medium {
+        background-position: -200px -20px;
+        background-size: initial;
+    }
+}
+
 .hero-medium__title {
     margin-top: 0;
     margin-bottom: 0;
