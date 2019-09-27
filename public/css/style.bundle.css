@@ -7630,7 +7630,7 @@ body {
     .WantHelpButtonBlock {
         display: block;
         position: sticky;
-        bottom: 30;
+        bottom: 30px;
     }
     .WantHelpButton {
         display: block;
