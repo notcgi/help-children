@@ -7499,9 +7499,8 @@ body {
     .donate-form-payment-systems__cards {
         width: initial !important;
     }
-    .donate-form-payment-systems__cards div:first-child {
-        padding-top: 40px;
-        padding-bottom: 10px;
+    .donate-form-row:nth-child(2) {
+        padding: 10px 0;
     }
     #paymentByVisa {
         padding: 0 15px;
@@ -7516,9 +7515,6 @@ body {
     }
     .paymentimgBlock {
         width: 155px;
-    }
-    .donate-form-payment-systems__notice {
-        padding-bottom: 5px;
     }
 }
 
