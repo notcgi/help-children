@@ -7616,12 +7616,36 @@ body {
     }
 }
 
+.WantHelpButtonBlock {
+    display: none;
+}
+
 @media (max-width:520px) {
     .donate-form-row {
         flex-direction: column;
     }
     .donate-form-payment-systems {
         flex-direction: column;
+    }
+    .WantHelpButtonBlock {
+        display: block;
+        position: sticky;
+        top: 300px;
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+    }
+    .WantHelpButton {
+        display: block;
+        margin: 0 auto;
+        color: #fff;
+        background-image: linear-gradient(0deg, #2d0e73, #5728b4);
+        background: -webkit-gradient(linear, left bottom, left top, from(#320677), to(#6323b9));
+        background: linear-gradient(0deg, #320677, #6323b9);
+        border-radius: 40px;
+        width: 50%;
+        padding: 15px 0;
     }
 }
 
