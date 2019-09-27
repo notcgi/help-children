@@ -7670,6 +7670,11 @@ body {
     animation: pulse 7s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
 }
 
+.needhelpPage {
+    margin: 0;
+    padding: 0;
+}
+
 @media (max-width:992px) {
     .header {
         position: inherit;
