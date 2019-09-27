@@ -7662,7 +7662,7 @@ body {
     position: -webkit-sticky;
     top: 0;
     z-index: 10;
-    box-shadow: 0 4 4 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
 }
 
 .header__buttons a:nth-child(2) {
