@@ -7510,6 +7510,10 @@ body {
     .donate-form-payment-systems__cards-onDonatPage div:nth-child(2) {
         padding-right: 0 !important;
     }
+    .online-help-form-payment-systems__notice {
+        margin: 0 auto;
+        width: fit-content;
+    }
 }
 
 @media (max-width: 767px) {
