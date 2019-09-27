@@ -5480,12 +5480,13 @@ body {
         left: -4rem;
         width: 100vw
     }
-    .container--small {
+}
+
+@media (max-width:640px) {
+    .container.container--small {
         height: 160px;
     }
 }
-
-@media (max-width:640px) {}
 
 .contacts {
     position: relative;
