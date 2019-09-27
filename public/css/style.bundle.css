@@ -3131,8 +3131,8 @@ body {
 }
 
 .hero-medium {
-    height: 310px;
-    padding-top: 80px;
+    height: 270px;
+    padding-top: 30px;
     background-image: url(../../images/bg-orange-medium.png);
     background-size: cover
 }
@@ -5485,7 +5485,6 @@ body {
         left: -4rem;
         width: 100vw
     }
-    .container--small {}
 }
 
 @media (max-width:640px) {}
@@ -6069,6 +6068,14 @@ body {
     font-size: 1.4rem;
     color: #fff;
     text-decoration: none
+}
+
+@media (max-width:769px) {
+    .link-back {
+        display: block;
+        padding-left: 20px;
+        padding-bottom: 20px;
+    }
 }
 
 .link-back>.icon {
