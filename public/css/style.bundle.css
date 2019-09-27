@@ -7630,11 +7630,7 @@ body {
     .WantHelpButtonBlock {
         display: block;
         position: sticky;
-        top: 300px;
-        -webkit-filter: blur(5px);
-        -moz-filter: blur(5px);
-        -o-filter: blur(5px);
-        -ms-filter: blur(5px);
+        bottom: 0;
     }
     .WantHelpButton {
         display: block;
@@ -7646,6 +7642,7 @@ body {
         border-radius: 40px;
         width: 50%;
         padding: 15px 0;
+        text-align: center;
     }
 }
 
