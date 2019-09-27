@@ -7631,8 +7631,8 @@ body {
         display: block;
         position: sticky;
         bottom: 15px;
-        filter: blur(8px);
-        -webkit-filter: blur(8px);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
     .WantHelpButton {
         display: block;
