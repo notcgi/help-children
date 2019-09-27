@@ -7556,6 +7556,9 @@ body {
     .donate-form-payment-systems__notice {
         padding-top: 15px;
     }
+    .donate-form-payment-systems__cards-onDonatPage:first-child {
+        display: none;
+    }
     .donate-form-payment-systems__cards-onDonatPage img {
         margin: 0 5px !important;
     }
