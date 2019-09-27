@@ -7480,8 +7480,6 @@ body {
     text-transform: none;
 }
 
-.donate-form-payment-systems__cards-onDonatPage div:last-child {}
-
 @media (-webkit-min-device-pixel-ratio:2),
 (min-resolution:192dpi) {
     .iti-flag {
@@ -7495,6 +7493,22 @@ body {
     }
     .little-paragraph {
         padding: 0 5rem;
+    }
+    .donate-form-payment-systems__cards-onDonatPage {
+        margin-left: 0 auto !important;
+        margin-top: 10px !important;
+        width: initial !important;
+    }
+    .donate-form-payment-systems__cards-onDonatPage div:first-child {
+        opacity: 0.7;
+        border-right: none;
+        padding-left: 0;
+        font-size: 1.2rem;
+        color: #707070 !important;
+        text-transform: none;
+    }
+    .donate-form-payment-systems__cards-onDonatPage div:nth-child(2) {
+        padding-right: 0 !important;
     }
 }
 
