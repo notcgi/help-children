@@ -4267,6 +4267,12 @@ body {
     }
 }
 
+@media (max-width:640px) {
+    .footer-inner {
+        padding-top: 170px;
+    }
+}
+
 .footer-left {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5479,9 +5485,7 @@ body {
         left: -4rem;
         width: 100vw
     }
-    .container--small {
-        height: 160px;
-    }
+    .container--small {}
 }
 
 @media (max-width:640px) {}
