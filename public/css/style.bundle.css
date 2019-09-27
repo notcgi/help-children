@@ -4263,7 +4263,7 @@ body {
         -webkit-box-direction: reverse;
         -ms-flex-direction: row-reverse;
         flex-direction: row-reverse;
-        padding-top: 30px;
+        padding-top: 90px;
         padding-bottom: 70px
     }
 }
@@ -5476,11 +5476,16 @@ body {
 
 @media (max-width:992px) {
     .reports-donate-form-wrapper {
-        top: -20px;
+        top: 0px;
         left: -4rem;
         width: 100vw
     }
+    .container--small {
+        height: 160px;
+    }
 }
+
+@media (max-width:640px) {}
 
 .contacts {
     position: relative;
