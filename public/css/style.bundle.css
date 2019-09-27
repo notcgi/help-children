@@ -7591,7 +7591,7 @@ body {
 
 @media (max-width:456px) {
     .toggle-field__text {
-        font-size: 1rem;
+        font-size: 1.4rem;
     }
     .paymentimg {
         width: 20px;
