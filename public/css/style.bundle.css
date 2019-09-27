@@ -7518,9 +7518,6 @@ body {
 }
 
 @media (max-width:456px) {
-    .paymentimgBlock {
-        padding: 0 15px 0 20px;
-    }
     .toggle-field__text {
         font-size: 1rem;
     }
@@ -7529,6 +7526,7 @@ body {
     }
     .paymentimgBlock {
         width: 80px !important;
+        padding: 0 15px 0 20px !important;
     }
     .paymentimg:first-child {
         margin-top: 5px !important;
