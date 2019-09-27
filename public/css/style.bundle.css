@@ -3481,7 +3481,8 @@ body {
 
 .container.container--small {
     padding-left: 175px;
-    padding-right: 175px
+    padding-right: 175px;
+    height: 80px;
 }
 
 @media (max-width:1440px) {
@@ -5329,7 +5330,7 @@ body {
 
 .reports-content {
     padding-top: 60px;
-    padding-bottom: 150px
+    padding-bottom: 0px
 }
 
 @media (max-width:992px) {
@@ -5467,7 +5468,7 @@ body {
 }
 
 .reports-donate-form-wrapper {
-    top: 130px;
+    top: 20px;
     border-radius: 15px;
     -webkit-box-shadow: 0 0 24px rgba(142, 53, 36, .1);
     box-shadow: 0 0 24px rgba(142, 53, 36, .1)
@@ -5475,7 +5476,7 @@ body {
 
 @media (max-width:992px) {
     .reports-donate-form-wrapper {
-        top: 85px;
+        top: -20px;
         left: -4rem;
         width: 100vw
     }
@@ -5631,7 +5632,7 @@ body {
 
 .help-wrapper {
     position: relative;
-    top: -370px;
+    top: -470px;
     background: #fff;
     -webkit-box-shadow: 0 0 50px rgba(142, 53, 36, .1);
     box-shadow: 0 0 50px rgba(142, 53, 36, .1);
