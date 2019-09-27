@@ -7630,9 +7630,10 @@ body {
     .WantHelpButtonBlock {
         display: block;
         position: sticky;
-        bottom: 15px;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+        bottom: 0px;
+        padding: 15px 0;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
     .WantHelpButton {
         display: block;
@@ -7645,8 +7646,6 @@ body {
         width: 50%;
         padding: 15px 0;
         text-align: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
         z-index: 10;
     }
     .WantHelpButton span:first-child {
