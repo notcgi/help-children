@@ -7518,6 +7518,9 @@ body {
 }
 
 @media (max-width:456px) {
+    .paymentimgBlock {
+        padding: 0 15px 0 20px;
+    }
     .toggle-field__text {
         font-size: 1rem;
     }
@@ -7526,6 +7529,20 @@ body {
     }
     .paymentimgBlock {
         width: 80px !important;
+    }
+    .paymentimg:first-child {
+        margin-top: 5px;
+        width: 16px;
+    }
+    .paymentimg:nth-child(2) {
+        margin-top: 10px;
+        width: 16px;
+    }
+    .paymentimg:nth-child(3) {
+        margin-bottom: 10px;
+    }
+    .paymentimg:nth-child(4) {
+        margin-bottom: 10px;
     }
 }
 
