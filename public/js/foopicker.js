@@ -649,7 +649,7 @@ var FooPicker = (function() {
 var blurHelpButton = $('WantHelpButtonBlock');
 window.addEventListener('scroll', function() {
 
-    if (body.scrollTop <= 0) {
+    if ($(window).scrollTop <= 0) {
         WantHelpButtonBlock.css("display", "none");
     } else {
         WantHelpButtonBlock.css("display", "block");
