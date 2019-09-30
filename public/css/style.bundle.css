@@ -4531,6 +4531,10 @@ body {
     z-index: 5
 }
 
+.donate-form-wrapper-partners {
+    top: 200px !important;
+}
+
 @media (max-width:1440px) {
     .donate-form-wrapper {
         top: -50px
