@@ -646,7 +646,7 @@ var FooPicker = (function() {
     return FooPicker;
 })();
 
-var blurHelpButton = $('WantHelpButtonBlock');
+var blurHelpButton = $('#WantHelpButtonBlock');
 window.addEventListener('scroll', function() {
 
     if ($(window).scrollTop <= 0) {
