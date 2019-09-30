@@ -6079,11 +6079,16 @@ body {
     text-decoration: none
 }
 
+#children-link-back:hover {
+    border-bottom: none;
+}
+
 @media (max-width:769px) {
     .link-back {
         display: block;
-        padding-left: 20px;
-        padding-bottom: 20px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        width: fit-content;
     }
 }
 

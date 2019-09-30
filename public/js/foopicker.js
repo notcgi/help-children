@@ -649,7 +649,7 @@ var FooPicker = (function() {
 var WantHelpButtonBlock = $('#WantHelpButtonBlock');
 window.addEventListener('scroll', function() {
     console.log($(window).scrollTop());
-    if ($(window).scrollTop() == 0) {
+    if ($(window).scrollTop() <= 10) {
         WantHelpButtonBlock.css("display", "none");
     } else {
         WantHelpButtonBlock.css("display", "block");
