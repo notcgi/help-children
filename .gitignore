@@ -30,6 +30,6 @@
 /.env
 /.php-version
 *.bak
-.htaccess 
+.htaccess
 
-.vscode/
+/.vscode/
