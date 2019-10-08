@@ -55,8 +55,6 @@
         });
     </script>
     {% else %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-type="text/javascript"></script>
 <form action="https://wpay.uniteller.ru/pay/" method="POST" id='f'>
 <input type="hidden" name="Shop_IDP" value="{{ fields.Shop_IDP }}">
 <input type="hidden" name="Order_IDP" value="{{ fields.Order_IDP }}">
@@ -71,7 +69,7 @@ type="text/javascript"></script>
 <input type="hidden" name="URL_RETURN_NO" value="{{ fields.URL_RETURN_NO }}">
 </form>
 <script type="text/javascript">
-$('#f').submit();
+document.getElementById('f').submit();
 </script>
     {% endif %}
 {% endblock %}
