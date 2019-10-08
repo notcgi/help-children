@@ -1,4 +1,5 @@
 /.idea/
+/public/images/results/
 /public/docs/
 /error.log
 /composer.phar
