@@ -57,8 +57,8 @@ class DonateController extends AbstractController
             $EM->flush();
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        //return new Response(json_encode(["code"=>'2']), Response::HTTP_OK, ['content-type' => 'text/html']);
-        return $this->redirectToRoute('account_history');
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        // return $this->redirectToRoute('account_history');
     }
 
     /**
@@ -70,15 +70,10 @@ class DonateController extends AbstractController
      */
     public function no(Request $request)
     {
-        echo 1;
-        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        echo 2;
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isMethod('post')) {
             $id  = $request->request->get('order_id');
             $EM  = $this->getDoctrine()->getManager();
-            // $child = $this->getDoctrine()
-            // ->getRepository(Child::class)
-            // ->find($id);
             $req = $this->getDoctrine()>getRepository(\App\Entity\Request::class)->find($id);
             if (!$req) return new Response('order not found', 404);
             $req->setStatus(1);
@@ -95,8 +90,8 @@ class DonateController extends AbstractController
         //     $EM->flush();
         // }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        //return new Response(json_encode(["code"=>'1', 'test'=>$request->request->get('order_id')]), Response::HTTP_OK, ['content-type' => 'text/html']);
-        return $this->redirectToRoute('account_history');
+        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        // return $this->redirectToRoute('account_history');
     }
 
     /**

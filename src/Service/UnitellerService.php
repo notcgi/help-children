@@ -65,7 +65,6 @@ class UnitellerService
         ];
 
         if ($req->isRecurent()) $fields['IsRecurrentStart'] = 1;
-        //$fields['EMoneyType'] =$EMoneyType ? $EMoneyType : '0';
 
         $fields['Signature'] = $this->getSignature($fields);
 
