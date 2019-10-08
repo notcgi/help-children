@@ -41,7 +41,7 @@ class UnitellerService
      * @param Request $req
      * @return array
      */
-    public function getFromData(Request $req)
+    public function getFromData(Request $req, $EMoneyType=null)
     {
         $user = $req->getUser();
         $fields = [
@@ -55,6 +55,7 @@ class UnitellerService
             'URL_RETURN_NO'    => $this->urlGenerator->generate('donate_no', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'Email'            => $user->getEmail(),
             'CallbackFormat'   => 'json',
+            'EMoneyType'       => $EMoneyType,
             'Name'             => $user->getLastName(),
             'LastName'         => $user->getLastName(),
             'FirstName'        => $user->getFirstName(),
@@ -64,6 +65,7 @@ class UnitellerService
         ];
 
         if ($req->isRecurent()) $fields['IsRecurrentStart'] = 1;
+        //$fields['EMoneyType'] =$EMoneyType ? $EMoneyType : '0';
 
         $fields['Signature'] = $this->getSignature($fields);
 
@@ -148,7 +150,7 @@ class UnitellerService
             $data['Order_IDP'],
             $data['Subtotal_P'],
             $data['MeanType'] ?? '',
-            $data['EMoneyType'] ?? '',
+            $data['EMoneyType'],
             $data['Lifetime'] ?? '',
             $data['Customer_IDP'] ?? '',
             $data['Card_IDP'] ?? '',

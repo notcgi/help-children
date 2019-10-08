@@ -22,6 +22,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
+use Psr\Log\LoggerInterface;
 
 class DonateController extends AbstractController
 {
@@ -36,6 +37,7 @@ class DonateController extends AbstractController
      */
     public function ok(Request $request)
     {
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('post')) {
@@ -55,7 +57,8 @@ class DonateController extends AbstractController
             $EM->flush();
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        //return new Response(json_encode(["code"=>'2']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        return $this->redirectToRoute('account_history');
     }
 
     /**
@@ -67,19 +70,33 @@ class DonateController extends AbstractController
      */
     public function no(Request $request)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        echo 1;
+        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        echo 2;
         if ($request->isMethod('post')) {
             $id  = $request->request->get('order_id');
             $EM  = $this->getDoctrine()->getManager();
-            $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            // $child = $this->getDoctrine()
+            // ->getRepository(Child::class)
+            // ->find($id);
+            $req = $this->getDoctrine()>getRepository(\App\Entity\Request::class)->find($id);
             if (!$req) return new Response('order not found', 404);
             $req->setStatus(1);
             $EM->persist($req);
             $EM->flush();
         }
+        // if ($request->isMethod('get')) {
+        //     $id  = $request->request->get('Order_ID');
+        //     $EM  = $this->getDoctrine()->getManager();
+        //     $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+        //     if (!$req) return new Response('order not found', 404);
+        //     $req->setStatus(1);
+        //     $EM->persist($req);
+        //     $EM->flush();
+        // }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        //return new Response(json_encode(["code"=>'1', 'test'=>$request->request->get('order_id')]), Response::HTTP_OK, ['content-type' => 'text/html']);
+        return $this->redirectToRoute('account_history');
     }
 
     /**
@@ -376,12 +393,12 @@ class DonateController extends AbstractController
                     ->setOrder_id('');
                 $entityManager->persist($req);
                 $entityManager->flush();
-
                 // For Uniteller
                 return $this->render(
                     'donate/paymentForm.twig',
                     [
-                        'fields' => $unitellerService->getFromData($req)
+                        'fields' => $unitellerService->getFromData($req, $request->request->get('EMoneyType', '0')),
+                        'pm' => ['type' => $form['payment-type']]
                     ]
                 );
             }
@@ -436,7 +453,7 @@ class DonateController extends AbstractController
         return Validation::createValidator()->validate(
             $data,
             new Assert\Collection([
-                'payment-type' => new Assert\Choice(['visa', 'requisite-services', 'sms']),
+                'payment-type' => new Assert\Choice(['visa', 'requisite-services', 'sms', 'eq']),
                 'ref-code' => new Assert\Length(['min' => 0, 'max' => 14]),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
                 'name' => new Assert\Length(['min' => 0, 'max' => 128]),

@@ -249,4 +249,24 @@ class Request
 
         return $this;
     }
+
+    /**
+     * @return EMoneyType
+     */
+    // public function getEMoneyType(): ?EMoneyType
+    // {
+    //     return $this->EMoneyType;
+    // }
+    
+    // /**
+    //  * @param EMoneyType $EMoneyType
+    //  *
+    //  * @return Request
+    //  */
+    // public function setEMoneyType(EMoneyType $EMoneyType): self
+    // {
+    //     $this->EMoneyType = $EMoneyType;
+
+    //     return $this;
+    // }
 }

@@ -34,24 +34,6 @@
                             <div class="ohf-row__col ohf-col-input">
                                 {% include 'components/payment_methods.twig' %}
                             </div>
-
-
-                        <div class="ohf-row uni"
-                             style="display:{{ 'eq' == form['payment-type'] ? 'flex' : 'flex' }}">
-                            <div class="ohf-row__col emoney">
-                                <label>
-                                <input class="toggle-field__input" type="radio" name="EMoneyType" value="1" checked>
-                                <img src="/images/yamoney140.gif">
-                                </label><label>
-                                <input class="toggle-field__input" type="radio" name="EMoneyType" value="13">
-                                <img src="/images/ymcash140.gif">
-                                </label><label>
-                                <input class="toggle-field__input" type="radio" name="EMoneyType" value="29">
-                                <img src="/images/wm140.gif">
-                                </label>
-                            </div>
-                        </div>
-
                         </div>
                         <div class="ohf-row showVISA"
                              style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
@@ -159,7 +141,7 @@
                                                    value="{{ form.sum ?: 0 }}">
                                         </label>
                                     </div>
-                                    <button id='buttonLater' class='btn btn-link' style="margin: 0 auto; display:{{ 'visa' == form['payment-type'] ? 'block' : 'none' }}" type='button' onclick='showCalendar();'>Совершить пожертвование позже</button>
+                                    <button id='buttonLater' class='btn btn-link' style='margin: 0 auto;' type='button' onclick='showCalendar();'>Совершить пожертвование позже</button>
                                     <div id='blockWhen' style='display:none; margin: 0 auto;'>
                                         <button id='buttonWhen' class='btn btn-link' style='margin: 0 auto; pointer-events:none;' type='button' disabled>Когда вам напомнить о пожертвовании?</button>
                                         <div id='blockDate' style="text-align:center">
@@ -171,7 +153,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="ohf-col-input__row ohf-col-input__row--start" style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
+                                <div class="ohf-col-input__row ohf-col-input__row--start">
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
                                             <input class="input-radio__input" type="radio" name="recurent" value="true"
@@ -239,7 +221,7 @@
                                     <button class="btn btn-dark btn--big online-help-form__submit js-online-help-button-submit" type="submit" onclick="ym(53180137, 'reachGoal', 'pozhertvovat'); return validate_donate();">
                                         Пожертвовать
                                     </button>
-                                    <div class="donate-form-payment-systems__cards-onDonatPage" style="width: 300px; margin: 0;display:{{  'visa' == form['payment-type'] ? 'inline' : 'none' }}">
+                                    <div class="donate-form-payment-systems__cards-onDonatPage" style="width: 300px; margin: 0;">
                                         <div>Оплата с карт</div>
                                         <div id="paymentByVisa" class="toggle-field__text" style="opacity: 0.7; border-right: none; padding-left: 0; text-align: center; font-size: 1.2rem; color: #707070 !important; text-transform: none;">
                                             <img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Apple_Pay.png" width="50"><img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Google_Pay.png" width="50"><img class="toggle-field__text-image" src="/images/mastercard.png" width="30"><img class="toggle-field__text-image" src="/images/visa.png" width="40">
@@ -296,8 +278,10 @@
 
 
 
-                         <div id="uniteller" class="ohf-row "
+                         <div id="uniteller"
                              style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
+                            <div class="ohf-row" 
+                             style="display:{{ 'visa' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
@@ -338,12 +322,34 @@
                                             <p class="form-error-tooltip__notice">Введите правильный email</p>
                                         </div>
                                     </div>
-                                
+                                </div>
                             </div>
                         </div>
-                    </div><div id="uniteller" class="ohf-row "
+                    </div><div id="uniteller"
                              style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
-                            
+                        <div class="ohf-row " >
+                            <div class="ohf-row__col ohf-col-label">
+                                <div class="ohf-col-label__number">3</div>
+                                <div class="ohf-col-label__notice">
+                                    <div class="ohf-col-label__notice-title">Сумма пожертвования</div>
+                                    <p class="ohf-col-label__notice-subtitle">Выберите тип оплаты</p>
+                                </div>
+
+                            <div class="ohf-row__col ohf-col-input">
+                                <div class="ohf-row__col ohf-col-input">
+                                <div class="ohf-col-input__row" style='flex-direction:column'>
+                                    <div class="donate-sum-fieldgroup toggle-fieldgroup" style="overflow: hidden">
+                                        TEST
+                                    </div>
+                                    
+                                </div>
+
+
+                            </div>
+                        </div>
+
+<!--
+<div class="ohf-row " style="display:{{ 'eq' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label">
                                 <div class="ohf-col-label__number">3</div>
                                 <div class="ohf-col-label__notice">
@@ -369,7 +375,7 @@
                                         <label class="donate-sum-fieldgroup__label">
                                             <input class="donate-text-field"
                                                    type="number"
-                                                   name="textSum2"
+                                                   name="textSum"
                                                    min="50"
                                                    max="1000000"
                                                    maxlength="7"
@@ -377,7 +383,7 @@
                                                    value=""
                                                    placeholder="Другая сумма">
                                             <input type="hidden"
-                                                   name="sum2"
+                                                   name="sum"
                                                    min="50"
                                                    max="1000000"
                                                    maxlength="7"
@@ -390,11 +396,9 @@
                                 
                             </div>
                         </div>
-                   
-
                         {% if not app.user %}
-                            <div id="uniteller" class="ohf-row "
-                             style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
+                            <div class="ohf-row"
+                                 style="display:{{ 'eq' == form['payment-type'] ? 'flex' : 'none' }}">
                                 <div class="ohf-row__col ohf-col-label">
                                     <div class="ohf-col-label__number">4</div>
                                     <div class="ohf-col-label__notice">
@@ -411,8 +415,8 @@
                                 </div>
                             </div>
                         {% endif %}
-                       <div id="uniteller" class="ohf-row "
-                             style="display:{{ 'requisite-services' == form['payment-type'] ? 'flex' : 'none' }}">
+                        <div class="ohf-row"
+                             style="display:{{ 'eq' == form['payment-type'] ? 'flex' : 'none' }}">
                             <div class="ohf-row__col ohf-col-label"></div>
                             <div class="ohf-row__col ohf-col-input">
                                 <div class="ohf-col-input__row ohf-col-input__row--start">
@@ -440,7 +444,18 @@
                                     <button class="btn btn-dark btn--big online-help-form__submit js-online-help-button-submit" type="submit" onclick="ym(53180137, 'reachGoal', 'pozhertvovat'); return validate_donate();">
                                         Пожертвовать
                                     </button>
-                                    
+                                    <div class="donate-form-payment-systems__cards-onDonatPage" style="width: 300px; margin: 0;">
+                                        <div>Оплата с карт</div>
+                                        <div id="paymentByVisa" class="toggle-field__text" style="opacity: 0.7; border-right: none; padding-left: 0; text-align: center; font-size: 1.2rem; color: #707070 !important; text-transform: none;">
+                                            <img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Apple_Pay.png" width="50"><img class="toggle-field__text-image" src="http://test.pomogitedetyam.ru/Google_Pay.png" width="50"><img class="toggle-field__text-image" src="/images/mastercard.png" width="30"><img class="toggle-field__text-image" src="/images/visa.png" width="40">
+                                        </div>
+                                    </div>
+
+                                    {# <span class="online-help-form__or">или</span>
+                                    <button class="btn btn-black btn--big btn-withicon online-help-form__applepay js-online-help-button-applepay"
+                                        type="button">
+                                        <span class="icon icon-apple"></span> <span>Оплатить</span>
+                                    </button> #}
                                 </div>
                                 <div
                                         class="donate-form-payment-systems__notice online-help-form-payment-systems__notice">
@@ -451,6 +466,17 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+-->
+
+
+
+
+
+
+
 
 </div> 
 
@@ -545,11 +571,13 @@
             requisites = document.getElementById('requisitesContent'),
             smsBlock = document.querySelector('.showSMS'),
             sms = document.getElementById('smsContent'),
+            uniteller = document.getElementById('uniteller'),
             setPaymentMethod = e => {
-                if (('visa' === e) || ('eq' === e)){
+                if ('visa' === e) {
                     requisites.style.display = 'none';
                     sms.style.display = 'none';
                     smsBlock.style.display = 'none';
+                    uniteller.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'flex';
@@ -559,42 +587,32 @@
                     requisites.style.display = 'none';
                     sms.style.display = 'block';
                     smsBlock.style.display = 'flex';
+                    uniteller.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'none';
                     }
                 }
-                // else if ('eq' === e) {
-                //     requisites.style.display = 'none';
-                //     sms.style.display = 'none';
-                //     smsBlock.style.display = 'none';
+                else if ('eq' === e) {
+                    requisites.style.display = 'none';
+                    sms.style.display = 'none';
+                    smsBlock.style.display = 'none';
+                    uniteller.style.display = 'flex';
 
-                //     for (const el of formBlocks) {
-                //         el.style.display = 'flex';
-                //     }
-                // }
+                    for (const el of formBlocks) {
+                        el.style.display = 'none';
+                    }
+                }
                 else {
                     requisites.style.display = 'block';
                     sms.style.display = 'none';
                     smsBlock.style.display = 'none';
+                    uniteller.style.display = 'none';
 
                     for (const el of formBlocks) {
                         el.style.display = 'none';
                     }
                 }
-                 if ('eq' === e) {
-                    $('#buttonLater')[0].style.display = 'none';
-                    $('.ohf-col-input__row--start')[0].style.display = 'none';
-                    $('.donate-form-payment-systems__cards-onDonatPage')[0].style.display = 'none';
-                    $('.uni')[0].style.display = 'flex';
-                 }
-                 else{
-                    $('#buttonLater')[0].style.display = 'block';
-                    $('.ohf-col-input__row--start')[0].style.display = 'flex';
-                    $('.donate-form-payment-systems__cards-onDonatPage')[0].style.display = 'inline';
-                    $('.uni')[0].style.display = 'none';
-                    
-                 }
             },
             radioSumChangeHandler = e => {
                 textSum.classList.remove('checked');

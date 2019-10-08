@@ -1,62 +1,105 @@
-{% extends 'base.html.twig' %}
 
+{% extends (pm.type == 'visa') ? "base.html.twig" : "base_client_wrapper.twig" %}
 {% block body %}
-    <!--<form action="https://wpay.uniteller.ru/pay/" method="POST">
-        {% for key, value in fields %}
-            <input type="hidden" name="{{ key }}" value="{{ value }}">
-        {% endfor %}
-    </form>-->
+    {% if pm.type == 'visa' %}
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://widget.cloudpayments.ru/bundles/cloudpayments"></script>
     <script type="text/javascript">
         $(function(){
-            var widget = new cp.CloudPayments();
+                var widget = new cp.CloudPayments();
 
-            var data = {
-                email     : '{{ fields.Email }}',
-                name      : '{{ fields.Name }}',
-                lastname  : '{{ fields.LastName }}',
-                firstname : '{{ fields.FirstName }}',
-                phone     : '{{ fields.Phone }}'
-            };
-            {% if fields.IsRecurrentStart == 1 %}
-            data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки
-            {% endif %}
+                var data = {
+                    email     : '{{ fields.Email }}',
+                    name      : '{{ fields.Name }}',
+                    lastname  : '{{ fields.LastName }}',
+                    firstname : '{{ fields.FirstName }}',
+                    phone     : '{{ fields.Phone }}'
+                };
+                {% if fields.IsRecurrentStart == 1 %}
+                data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки
+                {% endif %}
 
-            var wopt   = {
-                publicId    : 'pk_51de50fd3991dbf5b3610e65935d1',  //id из личного кабинета
-                description : 'Благотворительная помощь', //назначение
-                amount      : {{ fields.Subtotal_P }}, //сумма
-                currency    : 'RUB', //валюта
-                email       : '{{ fields.Email }}',
-                invoiceId   : '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
-                accountId   : '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
-                skin        : "mini", //дизайн виджета
-                data        : data
-            };
+                var wopt   = {
+                    publicId    : 'pk_51de50fd3991dbf5b3610e65935d1',  //id из личного кабинета
+                    description : 'Благотворительная помощь', //назначение
+                    amount      : {{ fields.Subtotal_P }}, //сумма
+                    currency    : 'RUB', //валюта
+                    email       : '{{ fields.Email }}',
+                    invoiceId   : '{{ fields.Order_IDP }}', //номер заказа  (необязательно)
+                    accountId   : '{{ fields.Customer_IDP }}', //идентификатор плательщика (необязательно)
+                    skin        : "mini", //дизайн виджета
+                    data        : data
+                };
 
-            widget.charge(
-                wopt,
-                function (options) {
-                    $.post('{{ fields.URL_RETURN_OK }}', {
-                        'order_id': '{{ fields.Order_IDP }}'
-                    }).success(function(ret){
-                        window.location.href = '/account/history';
-                    }).error(function (req) {
-                        window.location.href = '/account/history';
-                    });
-                },
-                function (reason, options) {
-                    alert('Причина: ' + reason);
-                    $.post('{{ fields.URL_RETURN_NO }}', {
-                        'order_id': '{{ fields.Order_IDP }}'
-                    }).success(function(ret){
-                        window.location.href = '/account/history';
-                    }).error(function (req) {
-                        window.location.href = '/account/history';
-                    });
-                }
-            );
+                widget.charge(
+                    wopt,
+                    function (options) {
+                        $.post('{{ fields.URL_RETURN_OK }}', {
+                            'order_id': '{{ fields.Order_IDP }}'
+                        }).success(function(ret){
+                            window.location.href = '/account/history';
+                        }).error(function (req) {
+                            window.location.href = '/account/history';
+                        });
+                    },
+                    function (reason, options) {
+                        alert('Причина: ' + reason);
+                        $.post('{{ fields.URL_RETURN_NO }}', {
+                            'order_id': '{{ fields.Order_IDP }}'
+                        }).success(function(ret){
+                            window.location.href = '/account/history';
+                        }).error(function (req) {
+                            window.location.href = '/account/history';
+                        });
+                    }
+                );
         });
     </script>
+    {% else %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+type="text/javascript"></script>
+<form action="https://wpay.uniteller.ru/pay/" method="POST" id='f'>
+<input type="hidden" name="Shop_IDP" value="{{ fields.Shop_IDP }}">
+<input type="hidden" name="Order_IDP" value="{{ fields.Order_IDP }}">
+<input type="hidden" name="Subtotal_P" value="{{ fields.Subtotal_P }}">
+<!--<input type="hidden" name="MeanType" value="0">-->
+<input type="hidden" name="EMoneyType" value="{{ fields.EMoneyType }}"> 
+<input type="hidden" name="Lifetime" value="{{ fields.Lifetime }}">
+<input type="hidden" name="Customer_IDP" value="{{ fields.Customer_IDP }}">
+<input type="hidden" name="Signature" value="{{ fields.Signature }}">
+<!-- <input type="submit" name="Submit" value="Оплатить">
+ --><input type="hidden" name="URL_RETURN_OK" value="{{ fields.URL_RETURN_OK }}">
+<input type="hidden" name="URL_RETURN_NO" value="{{ fields.URL_RETURN_NO }}">
+</form>
+<script type="text/javascript">
+$('#f').submit();
+function listener(event) {
+// if ( event.origin !== 'https://wpay.uniteller.ru' ) {
+// return;
+// }
+// $('#pay_iframe').animate({height: event.data + 'px'}, 500);
+// }
+// if (window.addEventListener) {
+// window.addEventListener('message', listener, false);
+// } else {
+// window.attachEvent('onmessage', listener);
+}
+</script>
+
+<!-- <iframe width="100%" height="100%" name="pay_iframe" id="pay_iframe" style="border: none; height: 95vh; width: 95vw;"></iframe>
+ <script type="text/javascript">
+if ($.browser.msie && Number($.browser.version) < 9) {
+$('#pay_iframe').width(630 + 4);
+$('#pay_iframe').height(999);
+}
+if ($.browser.webkit) {
+// Chrome добавляет перед body отступ.
+$('#pay_iframe').height(332 + 10);
+}
+$('#f').submit();
+</script>
+-->
+
+    {% endif %}
 {% endblock %}
