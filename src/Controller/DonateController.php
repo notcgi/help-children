@@ -74,8 +74,8 @@ class DonateController extends AbstractController
             $EM->flush();
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-        // return $this->redirectToRoute('account_history');
+        // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        return $this->redirectToRoute('account_history');
     }
 
     /**
@@ -107,8 +107,8 @@ class DonateController extends AbstractController
         //     $EM->flush();
         // }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-        // return $this->redirectToRoute('account_history');
+        // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        return $this->redirectToRoute('account_history');
     }
 
     /**
