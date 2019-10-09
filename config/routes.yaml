@@ -234,3 +234,7 @@ panel_child_delete:
 panel_config:
     path: /panel/config
     controller: App\Controller\ConfigController::edit
+
+paysms:
+    path: /paysms
+    controller: \App\Controller\DonateController::sms

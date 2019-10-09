@@ -35,6 +35,23 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
+    public function sms(Request $request)
+    {
+        $fp = fopen('../sms_req.txt', 'a');
+        fwrite($fp, json_encode($request->request->all()) . PHP_EOL);
+        fclose($fp);
+        return new Response(json_encode(["status"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+    }
+
+
+
+    /**
+     * @param Request          $request
+     * @return Response
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
+     * @throws \Exception
+     */
     public function ok(Request $request)
     {
 
@@ -507,3 +524,5 @@ class DonateController extends AbstractController
         return new Response('true');
     }
 }
+
+
