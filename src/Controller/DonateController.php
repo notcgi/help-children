@@ -185,85 +185,134 @@ class DonateController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
-        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
+        if (array_key_exists('InvoiceId', $form)){
+            $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
 
-        // Если не нашёл такого платежа - возможно, он рекуррентный
-        if (!$req) {
-            $subscription_id = $form['SubscriptionId'];
-            if (null === $subscription_id)
-                return new Response('', 404); // Если нет Id подписки, всё-таки ерунда
-            $subscr_req = $entityManager->getRepository(\App\Entity\Request::class)->findOneBy([
-                    'SubscriptionsId' => $subscription_id
-                ]);
-            if (!$subscr_req)
-                return new Response('', 404); // Не судьба...
-            $rp = $entityManager->getRepository(\App\Entity\RecurringPayment::class)->find($subscr_req->getId());
-            if (!$rp) {
-                file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form UNREGISTERED IN SYSTEM".print_r($form, true)."\n", FILE_APPEND);
-                return new Response('', 404); // Незарегистрированная в базе подписка
+            // Если не нашёл такого платежа - возможно, он рекуррентный
+            if (!$req) {
+                $subscription_id = $form['SubscriptionId'];
+                if (null === $subscription_id)
+                    return new Response('', 404); // Если нет Id подписки, всё-таки ерунда
+                $subscr_req = $entityManager->getRepository(\App\Entity\Request::class)->findOneBy([
+                        'SubscriptionsId' => $subscription_id
+                    ]);
+                if (!$subscr_req)
+                    return new Response('', 404); // Не судьба...
+                $rp = $entityManager->getRepository(\App\Entity\RecurringPayment::class)->find($subscr_req->getId());
+                if (!$rp) {
+                    file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form UNREGISTERED IN SYSTEM".print_r($form, true)."\n", FILE_APPEND);
+                    return new Response('', 404); // Незарегистрированная в базе подписка
+                }
+
+                $req = new \App\Entity\Request();
+                $req->setChild($subscr_req->getChild)
+                    ->setUser($subscr_req->getUser())
+                    ->setSum($subscr_req->getSum())
+                    ->setTransactionId($form['TransactionId'])
+                    ->setJson(json_encode($form))
+                    ->setStatus(2)
+                    ->setRecurent(0);
+
+                $rp->setWithdrawalAt(new \DateTime());
+                $entityManager->persist($req);
+                $entityManager->persist($rp);
+                $entityManager->flush();
+                /** @noinspection PhpMethodParametersCountMismatchInspection */
+                $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+
+                $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
+                $endDate = new \DateTime();
+                $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
+
+                if ($numberOfMonths == 6)
+                    /** @noinspection PhpMethodParametersCountMismatchInspection */
+                    /** @noinspection PhpParamsInspection */
+                    $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
+
+                if ($numberOfMonths == 12)
+                    /** @noinspection PhpMethodParametersCountMismatchInspection */
+                    /** @noinspection PhpParamsInspection */
+                    $dispatcher->dispatch(new YearRecurrentEvent($req), YearRecurrentEvent::NAME);
+
+                return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
             }
 
-            $req = new \App\Entity\Request();
-            $req->setChild($subscr_req->getChild)
-                ->setUser($subscr_req->getUser())
-                ->setSum($subscr_req->getSum())
-                ->setTransactionId($form['TransactionId'])
-                ->setJson(json_encode($form))
-                ->setStatus(2)
-                ->setRecurent(0);
+            file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
 
-            $rp->setWithdrawalAt(new \DateTime());
-            $entityManager->persist($req);
-            $entityManager->persist($rp);
-            $entityManager->flush();
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+            switch ($form['Status']) {
+                #case 'paid':
+                #case 'authorized':
+                case 'Completed':
+                    $req->setStatus(2);
+                    $req->setTransactionId($form['TransactionId']); #avtorkoda
+                    $req->setJson(json_encode($form));              #avtorkoda
 
-            $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
-            $endDate = new \DateTime();
-            $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
+                    // Убрать напоминание о завершении платежа
+                    $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
+                    foreach ($urs as $ur) {
+                        $entityManager->remove($ur);
+                    }
+                    $entityManager->flush();
 
-            if ($numberOfMonths == 6)
-                /** @noinspection PhpMethodParametersCountMismatchInspection */
-                /** @noinspection PhpParamsInspection */
-                $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
+                    $user_requests = $entityManager->getRepository(RequestRepository::class)->findRequestsWithUser($req->getUser());
+                    if (count($user_requests) > 1) {
+                        /** @noinspection PhpMethodParametersCountMismatchInspection */
+                        $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+                    }
+                    else {
+                        /** @noinspection PhpMethodParametersCountMismatchInspection */
+                        $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
+                        if (!$req->isRecurent()) {
+                            // Письмо №10
+                            $user = $req->getUser();
+                            $entityManager->persist(
+                                (new SendGridSchedule())
+                                ->setEmail($user->getEmail())
+                                ->setName($user->getFirstName())
+                                ->setBody([
+                                    'first_name' => $user->getFirstName()
+                                ])
+                                ->setTemplateId('d-1836d6b43e9c437d8f7e436776d1a489')
+                                ->setSendAt(
+                                    \DateTimeImmutable::createFromMutable(
+                                        (new \DateTime())
+                                        ->add(new \DateInterval('P28D'))
+                                        ->setTime(12, 0, 0)
+                                    )
+                                )
+                            );
+                            $entityManager->flush();
+                        }
+                    }
 
-            if ($numberOfMonths == 12)
-                /** @noinspection PhpMethodParametersCountMismatchInspection */
-                /** @noinspection PhpParamsInspection */
-                $dispatcher->dispatch(new YearRecurrentEvent($req), YearRecurrentEvent::NAME);
+                    if ($req -> isRecurent()) {//оформление подписки
 
-            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-        }
+                        // $ch = curl_init("https://api.cloudpayments.ru/subscriptions/create");
+                        // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
+                        // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                        // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+                        // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                        // curl_setopt($ch, CURLOPT_POST, true);
+                        // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
+                        // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+                        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        // $server_output = curl_exec ($ch);
+                        // curl_close ($ch);
+                        // $a = file_get_contents('php://input');
+                        // if (!$server_output)
+                        //     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; Error curl"."\n", FILE_APPEND);
+                        // $json = json_decode($server_output, true);
+                        // file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s").";".print_r($json, true)."\n".print_r($a, true)."\n".print_r($server_output, true)."\n", FILE_APPEND);
+                        // $success = $json['Success'];
 
-        file_put_contents(dirname(__DIR__)."/../var/logs/status.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+                        // $subscription_id = $json['Model']['Id'];
+                        $subscription_id = $form['SubscriptionId'];
+                        $req->setSubscriptionsId($subscription_id);
 
-        switch ($form['Status']) {
-            #case 'paid':
-            #case 'authorized':
-            case 'Completed':
-                $req->setStatus(2);
-                $req->setTransactionId($form['TransactionId']); #avtorkoda
-                $req->setJson(json_encode($form));              #avtorkoda
+                        file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n", FILE_APPEND);
 
-                // Убрать напоминание о завершении платежа
-                $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
-                foreach ($urs as $ur) {
-                    $entityManager->remove($ur);
-                }
-                $entityManager->flush();
-
-                $user_requests = $entityManager->getRepository(RequestRepository::class)->findRequestsWithUser($req->getUser());
-                if (count($user_requests) > 1) {
-                    /** @noinspection PhpMethodParametersCountMismatchInspection */
-                    $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
-                }
-                else {
-                    /** @noinspection PhpMethodParametersCountMismatchInspection */
-                    $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
-                    if (!$req->isRecurent()) {
-                        // Письмо №10
                         $user = $req->getUser();
+                        // Увеличение
                         $entityManager->persist(
                             (new SendGridSchedule())
                             ->setEmail($user->getEmail())
@@ -271,75 +320,33 @@ class DonateController extends AbstractController
                             ->setBody([
                                 'first_name' => $user->getFirstName()
                             ])
-                            ->setTemplateId('d-1836d6b43e9c437d8f7e436776d1a489')
+                            ->setTemplateId('d-b12bbbbdfd2c4747b6b96b2243ffaad7')
                             ->setSendAt(
                                 \DateTimeImmutable::createFromMutable(
                                     (new \DateTime())
-                                    ->add(new \DateInterval('P28D'))
+                                    ->add(new \DateInterval('P4M3D'))
                                     ->setTime(12, 0, 0)
                                 )
                             )
                         );
                         $entityManager->flush();
                     }
-                }
+                break;
+                case 'canceled':// ?
+                    $req->setStatus(1);
+            }
 
-                if ($req -> isRecurent()) {//оформление подписки
+            $entityManager->persist($req->setUpdatedAt(new \DateTime()));
+            $entityManager->flush();
 
-                    // $ch = curl_init("https://api.cloudpayments.ru/subscriptions/create");
-                    // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
-                    // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                    // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
-                    // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-                    // curl_setopt($ch, CURLOPT_POST, true);
-                    // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
-                    // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    // $server_output = curl_exec ($ch);
-                    // curl_close ($ch);
-                    // $a = file_get_contents('php://input');
-                    // if (!$server_output)
-                    //     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; Error curl"."\n", FILE_APPEND);
-                    // $json = json_decode($server_output, true);
-                    // file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s").";".print_r($json, true)."\n".print_r($a, true)."\n".print_r($server_output, true)."\n", FILE_APPEND);
-                    // $success = $json['Success'];
-
-                    // $subscription_id = $json['Model']['Id'];
-                    $subscription_id = $form['SubscriptionId'];
-                    $req->setSubscriptionsId($subscription_id);
-
-                    file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n", FILE_APPEND);
-
-                    $user = $req->getUser();
-                    // Увеличение
-                    $entityManager->persist(
-                        (new SendGridSchedule())
-                        ->setEmail($user->getEmail())
-                        ->setName($user->getFirstName())
-                        ->setBody([
-                            'first_name' => $user->getFirstName()
-                        ])
-                        ->setTemplateId('d-b12bbbbdfd2c4747b6b96b2243ffaad7')
-                        ->setSendAt(
-                            \DateTimeImmutable::createFromMutable(
-                                (new \DateTime())
-                                ->add(new \DateInterval('P4M3D'))
-                                ->setTime(12, 0, 0)
-                            )
-                        )
-                    );
-                    $entityManager->flush();
-                }
-            break;
-            case 'canceled':// ?
-                $req->setStatus(1);
+            #help https://symfony.com/doc/current/components/http_foundation.html
+            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
-
-        $entityManager->persist($req->setUpdatedAt(new \DateTime()));
-        $entityManager->flush();
-
-        #help https://symfony.com/doc/current/components/http_foundation.html
-        return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        else{
+            file_put_contents(dirname(__DIR__)."/../var/logs/status_uni.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+            // $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+            return new Response(json_encode([json_encode($form)]), Response::HTTP_OK, ['content-type' => 'text/html']);
+        }
     }
 
     /**
