@@ -39,17 +39,26 @@ class DonateController extends AbstractController
      */
     public function sms(Request $request)
     {
-        $fp = fopen('../sms_req.txt', 'a');
-        fwrite($fp, json_encode($request->request->all()) . PHP_EOL);
-        fclose($fp);
         $EM  = $this->getDoctrine()->getManager();
-        $user=$EM->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ".$request->request->get('phone'))
+
+        $order_id   = $request->request->get('order_id');
+        $data       = $request->request->get('data');
+        $phone      = $request->request->get('phone');
+        $operator   = $request->request->get("operator");
+        $amount     = $request->request->get('amount');
+        $sign       = $request->request->get('sign');
+        $key='e727f56f56c37539bab0b6318b5beb5d3842ea24';
+        $osign=md5($data.$phone.$operator.$amount.$key);
+        $fp = fopen('/home/children/help-children/sms_req.txt', 'a');
+        fwrite($fp, json_encode($request->request->all()).$osign . PHP_EOL);
+        fclose($fp);
+        $user=$EM->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ".$phone)
             ->getResult()[0];
         $req = new \App\Entity\Request();
-                $req->setSum($request->request->get('Amount'))
+                $req->setSum($amount)
                     ->setUser($user)
                     ->setStatus(2)
-                    ->setOrder_id('');
+                    ->setOrder_id();
             $this->referralHistory($req);
                 $EM->persist($req);
                 $EM->flush();

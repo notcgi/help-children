@@ -42,13 +42,13 @@
                             <div class="ohf-row__col emoney">
                                 <label>
                                 <input class="toggle-field__input" type="radio" name="EMoneyType" value="1" checked>
-                                <img src="/images/ya.svg">
+                                <div class="emon"><img src="/images/ya.svg"  height="68px" width="113px"></div>
                                 </label><label>
                                 <input class="toggle-field__input" type="radio" name="EMoneyType" value="13">
-                                <img src="/images/cash.svg">
+                                <div class="emon">&nbsp<img src="/images/cash.svg"><label>Оплата наличными</label></div>
                                 </label><label>
                                 <input class="toggle-field__input" type="radio" name="EMoneyType" value="29">
-                                <img src="/images/wm.svg">
+                                <div class="emon"><img src="/images/wm.svg" height="68px" width="113px"></div>
                                 </label>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                     </div>
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
-                                            <input class="input-radio__input" type="radio" name="recurent" value=""
+                                            <input class="input-radio__input" type="radio" name="recurent" id="rad_not_rec" value=""
                                                     {{ not form.recurent ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Единоразовая оплата</span>
@@ -397,6 +397,7 @@
                     $('.ohf-col-input__row--start')[0].style.display = 'none';
                     $('.donate-form-payment-systems__cards-onDonatPage')[0].style.display = 'none';
                     $('.uni')[0].style.display = 'flex';
+                    $('#rad_not_rec').click();
                  }
                  else{
                     $('#buttonLater')[0].style.display = 'block';
