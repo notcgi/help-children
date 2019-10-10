@@ -96,8 +96,8 @@ class DonateController extends AbstractController
             if (!$req) return new Response('order not found', 404);
             $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
             $ti = array();
-            foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().')';
-            $sql = 'insert into children_requests (`child`,`request`) values '.implode(',', $ti);
+            foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
+            $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
             $EM->getConnection()->prepare($sql)->execute();
             $req->setStatus(2);
             $this->referralHistory($req);
@@ -343,9 +343,25 @@ class DonateController extends AbstractController
             return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
         else{
-            file_put_contents(dirname(__DIR__)."/../var/logs/status_uni.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
-            // $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
-            return new Response(json_encode([json_encode($form)]), Response::HTTP_OK, ['content-type' => 'text/html']);
+            if ($unitellerService->validateStatusSignature($form)){
+                file_put_contents(dirname(__DIR__)."/../var/logs/status_uni.log", date("d.m.Y H:i:s")."; POST ".print_r($_POST, true). "\n GET ".print_r($_GET, true)."\n form".print_r($form, true)."\n", FILE_APPEND);
+                $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['Order_ID']);
+                if (!$req) return new Response('order not found', 404);
+                if($form['Status']=='paid'){
+                    $children = $entityManager->getRepository(\App\Entity\Child::class)->getOpened();
+                    $ti = array();
+                    foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
+                    $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
+                    $entityManager->getConnection()->prepare($sql)->execute();
+                    $req->setStatus(2);
+                    $this->referralHistory($req);
+                    $entityManager->persist($req);
+                    $entityManager->flush();
+                }
+                return new Response(json_encode(['status'=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+            } else{
+                return new Response(json_encode(['status'=>'not valid sign']), Response::HTTP_BAD_REQUEST, ['content-type' => 'text/html']);
+            }
         }
     }
 
