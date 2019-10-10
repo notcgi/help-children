@@ -22,7 +22,9 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
-use Psr\Log\LoggerInterface;
+// use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb as DqlFunctions;
+// use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb\JsonValue;
+
 
 class DonateController extends AbstractController
 {
@@ -40,6 +42,17 @@ class DonateController extends AbstractController
         $fp = fopen('../sms_req.txt', 'a');
         fwrite($fp, json_encode($request->request->all()) . PHP_EOL);
         fclose($fp);
+        $EM  = $this->getDoctrine()->getManager();
+        $user=$EM->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ".$request->request->get('phone'))
+            ->getResult()[0];
+        $req = new \App\Entity\Request();
+                $req->setSum($request->request->get('Amount'))
+                    ->setUser($user)
+                    ->setStatus(2)
+                    ->setOrder_id('');
+            $this->referralHistory($req);
+                $EM->persist($req);
+                $EM->flush();
         return new Response(json_encode(["status"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
     }
 

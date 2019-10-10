@@ -189,6 +189,9 @@
     "psr/log": {
         "version": "1.1.0"
     },
+    "scienta/doctrine-json-functions": {
+        "version": "4.0.2"
+    },
     "sendgrid/php-http-client": {
         "version": "3.9.6"
     },
@@ -558,6 +561,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.1"
+    },
+    "syslogic/doctrine-json-functions": {
+        "version": "4.0.2"
     },
     "twig/twig": {
         "version": "v2.11.3"

@@ -6,6 +6,12 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+// use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
+
+// $config = new \Doctrine\ORM\Configuration();
+// $config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
+// $config->addCustomStringFunction(DqlFunctions\JsonValue::FUNCTION_NAME, DqlFunctions\JsonValue::class);
+
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
@@ -106,6 +112,15 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // public function findByPhone()
+    // {
+    //     return $this->createQueryBuilder('u')
+    //         ->where('JSON_VALUE(u.meta, "$.phone") = "+79999999999"')
+    //         // ->setParameter('phone', $phone)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
     public function findUserSelecting(int $id)
     {

@@ -24,6 +24,7 @@ doctrine:
                 DAY: DoctrineExtensions\Query\Mysql\Day
                 MONTH: DoctrineExtensions\Query\Mysql\Month
                 YEAR: DoctrineExtensions\Query\Mysql\Year
+                json_value: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb\JsonValue
         mappings:
             App:
                 is_bundle: false
