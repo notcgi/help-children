@@ -7790,4 +7790,16 @@ body {
     font-weight: 300;
 }
 
+@media (max-width:500px) {
+    .uni{
+        transform: scale(0.8);
+        margin-left: -10%;
+    }
+@media (max-width:420px) {
+    .uni{
+        transform: scale(0.65);
+        margin-left: -18%;
+    }
+
+}
 /*# sourceMappingURL=style.bundle.css.map*/
