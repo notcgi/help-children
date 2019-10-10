@@ -502,3 +502,4 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 }
+//SELECT r.user_id, r.sum, c.name FROM requests as r right join children as c on r.child_id=c.id 

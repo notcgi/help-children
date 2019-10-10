@@ -7,6 +7,7 @@ parameters:
     locale: 'en'
     images_directory: '%kernel.project_dir%/public/uploads/images'
     documents_directory: '%kernel.project_dir%/public/docs'
+    gmm: '%env(GMM)%'
 
 services:
     # default configuration for services in *this* file
@@ -41,3 +42,6 @@ services:
         arguments:
             $api_key: '%env(SENDGRID_API_KEY)%'
             $from: 'info@xn--c1accbmwfjbh2bd3o.xn--p1ai'
+    App\Controller\DonateController:
+        arguments:
+            $gmm: '%env(GMM)%'

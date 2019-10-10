@@ -30,6 +30,12 @@ class DonateController extends AbstractController
 {
     const REF_RATE = .06;
 
+    private $gmm;
+
+    public function __construct($gmm)
+    {
+        $this->gmm = $gmm;
+    }
     /**
      * @param Request          $request
      * @return Response
@@ -40,29 +46,32 @@ class DonateController extends AbstractController
     public function sms(Request $request)
     {
         $EM  = $this->getDoctrine()->getManager();
-
         $order_id   = $request->request->get('order_id');
         $data       = $request->request->get('data');
         $phone      = $request->request->get('phone');
         $operator   = $request->request->get("operator");
         $amount     = $request->request->get('amount');
         $sign       = $request->request->get('sign');
-        $key='e727f56f56c37539bab0b6318b5beb5d3842ea24';
-        $osign=md5($data.$phone.$operator.$amount.$key);
-        $fp = fopen('/home/children/help-children/sms_req.txt', 'a');
-        fwrite($fp, json_encode($request->request->all()).$osign . PHP_EOL);
-        fclose($fp);
-        $user=$EM->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ".$phone)
-            ->getResult()[0];
-        $req = new \App\Entity\Request();
-                $req->setSum($amount)
-                    ->setUser($user)
-                    ->setStatus(2)
-                    ->setOrder_id();
-            $this->referralHistory($req);
-                $EM->persist($req);
-                $EM->flush();
-        return new Response(json_encode(["status"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        $key=$this->getParameter('gmm');
+        $osign=md5($order_id.$data.$phone.$operator.$amount.$key);
+            $fp = fopen('/home/children/help-children/sms_req.txt', 'a');
+            fwrite($fp, json_encode($request->request->all()).$osign.PHP_EOL);
+            fclose($fp);
+        if ($sign!==$osign){
+            return new Response(json_encode(["status"=>'fail']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        } else{
+            $user=$EM->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ".$phone)
+                ->getResult()[0];
+            $req = new \App\Entity\Request();
+                    $req->setSum($amount)
+                        ->setUser($user)
+                        ->setStatus(2)
+                        ->setOrder_id($order_id);
+                $this->referralHistory($req);
+                    $EM->persist($req);
+                    $EM->flush();
+            return new Response(json_encode(["status"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        }
     }
 
 
