@@ -66,7 +66,7 @@ class DonateController extends AbstractController
                     $req->setSum($amount)
                         ->setUser($user)
                         ->setStatus(2)
-                        ->setOrder_id($order_id);
+                        ->setOrder_id('');
                 $this->referralHistory($req);
                     $EM->persist($req);
                     $EM->flush();
