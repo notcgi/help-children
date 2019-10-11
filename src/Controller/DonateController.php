@@ -117,7 +117,7 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    public function no(Request $request, EventDispatcherInterface $dispatcher)
+    public function no(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isMethod('post')) {
@@ -128,20 +128,21 @@ class DonateController extends AbstractController
             $req->setStatus(1);
             $EM->persist($req);
             $EM->flush();
-        $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
+            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
-        // if ($request->isMethod('get')) {
-        //     $id  = $request->request->get('Order_ID');
-        //     $EM  = $this->getDoctrine()->getManager();
-        //     $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
-        //     if (!$req) return new Response('order not found', 404);
-        //     $req->setStatus(1);
-        //     $EM->persist($req);
-        //     $EM->flush();
-        // }
+        if ($request->isMethod('get')) {
+            $id  = $request->query->get('Order_ID');
+            $EM  = $this->getDoctrine()->getManager();
+            $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            if (!$req) return new Response('order not found', 404);
+            $req->setStatus(1);
+            $EM->persist($req);
+            $EM->flush();
+            // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+            return $this->redirectToRoute('account_history');
+        }
         #help https://symfony.com/doc/current/components/http_foundation.html
-        // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-        return $this->redirectToRoute('account_history');
+        // return $this->redirectToRoute('account_history');
     }
 
     /**
