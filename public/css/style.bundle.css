@@ -7756,7 +7756,6 @@ body {
 }
 .emoney {
     align-items: center;
-    text-align: center;
     display: flex;
 }
 .emoney [type=radio] + img{
@@ -7784,7 +7783,7 @@ body {
     align-items: center;
 }
 .emon label{
-    font-size: 14px;
+    font-size: 13px;
     color: #5A5A5A;
     margin-left: 8px;
     font-weight: 300;

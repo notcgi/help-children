@@ -157,4 +157,14 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+
+    // public function findChildren($uid)
+    // {
+    //     return $this->createQuery('SELECT distinct c.name FROM children_requests as cr left join requests as r on cr.request = r.id right join children as c on cr.child=c.id where r.user_id='.$uid)->execute();
+    // }
+
+//SELECT r.user_id, r.sum, c.name FROM requests as r right join children as c on r.child_id=c.id 
+//SELECT distinct c.name FROM children_requests as cr left join requests as r on cr.request = r.id right join children as c on cr.child=c.id where r.user_id=871
+
 }

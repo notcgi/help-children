@@ -501,5 +501,6 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    
 }
-//SELECT r.user_id, r.sum, c.name FROM requests as r right join children as c on r.child_id=c.id 

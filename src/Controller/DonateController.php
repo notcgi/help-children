@@ -7,6 +7,7 @@ use App\Entity\SendGridSchedule;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\RecurringPaymentFailure;
+use App\Event\PaymentFailure;
 use App\Event\SendReminderEvent;
 use App\Event\HalfYearRecurrentEvent;
 use App\Event\YearRecurrentEvent;
@@ -116,7 +117,7 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    public function no(Request $request)
+    public function no(Request $request, EventDispatcherInterface $dispatcher)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isMethod('post')) {
@@ -127,6 +128,7 @@ class DonateController extends AbstractController
             $req->setStatus(1);
             $EM->persist($req);
             $EM->flush();
+        $dispatcher->dispatch(new HalfYearRecurrentEvent($req), HalfYearRecurrentEvent::NAME);
         }
         // if ($request->isMethod('get')) {
         //     $id  = $request->request->get('Order_ID');
@@ -159,7 +161,10 @@ class DonateController extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($user_id);
         $req = (new \App\Entity\Request())->setUser($user);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);
+        if ($req -> isRecurent()) {
+            $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
+        else{
+                $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
 
         // Убрать напоминание о завершении платежа
         $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
