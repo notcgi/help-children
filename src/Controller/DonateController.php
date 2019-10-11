@@ -117,7 +117,7 @@ class DonateController extends AbstractController
      * @throws \LogicException
      * @throws \Exception
      */
-    public function no(Request $request)
+    public function no(Request $request, EventDispatcherInterface $dispatcher)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isMethod('post')) {
@@ -138,6 +138,10 @@ class DonateController extends AbstractController
             $req->setStatus(1);
             $EM->persist($req);
             $EM->flush();
+            if ($req -> isRecurent()) {
+            $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
+            else{
+                $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
             // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
             return $this->redirectToRoute('account_history');
         }

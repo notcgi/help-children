@@ -6,6 +6,7 @@ use App\Entity\SendGridSchedule;
 use App\Entity\Child;
 use App\Event\EmailConfirm;
 use App\Event\RecurringPaymentFailure;
+use App\Event\PaymentFailure;
 use App\Event\RecurringPaymentRemove;
 use App\Event\DonateReminderEvent;
 use App\Event\PayoutRequestEvent;
