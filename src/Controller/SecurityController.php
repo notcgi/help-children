@@ -152,13 +152,14 @@ class SecurityController extends AbstractController
         $current_user = $this->getUser();
         $doctrine = $this->getDoctrine();
         $mail = $request->request->get('email');
+        $phone = $request->request->get('phone');
         $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $mail]);
         if ($user) {
             if ($current_user && ($mail === $current_user->getEmail()))
                 return new Response('same');
             return new Response('exist');
         }
-        $old_user = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $regform['phone'])->getResult();
+        $old_user = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $phone)->getResult();
         if ($old_user) {
             return new Response('phone');
         }
