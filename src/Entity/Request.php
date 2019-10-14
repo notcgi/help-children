@@ -184,7 +184,7 @@ class Request
 
     public function setJson($Json): self
     {
-        $this->json = $Json;
+        $this->json = json_encode($Json);
 
         return $this;
     }
@@ -192,6 +192,12 @@ class Request
     public function getJson()
     {
         return $this->json;
+    }
+    public function getPm()
+    {
+        $names=["eq"=>"Интернет сервисы", "sms"=>"SMS", "visa"=>"Карта"];
+        if ($this->getJson()) return $names[json_decode($this->json)->{"payment-type"}];
+        else return '';
     }
 
     public function isRecurent(): ?bool

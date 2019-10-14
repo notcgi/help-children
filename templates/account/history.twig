@@ -21,6 +21,7 @@
                                 <tr>
                                     <th class="donation-list-table__head-col">Название</th>
                                     <th class="donation-list-table__head-col">Сумма</th>
+                                    <th class="donation-list-table__head-col">Тип пожертвования</th>
                                     <th class="donation-list-table__head-col">Дата</th>
                                 </tr>
                                 </thead>
@@ -34,6 +35,7 @@
                                             <td class="donation-list-table__body-col">
                                                 {{ req.sum|number_format(2, '.', ' ') }} руб.
                                             </td>
+                                            <td class="donation-list-table__body-col">{{ req.pm }}</td>
                                             <td class="donation-list-table__body-col">{{ req.createdAt|date('d m Y') }}</td>
                                         </tr>
                                     {% endfor %}

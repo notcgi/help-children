@@ -7758,8 +7758,11 @@ body {
     align-items: center;
     display: flex;
 }
-.emoney [type=radio] + img{
+.cash img{
     /*display: flex;*/
+    width: 30px;
+    height: 55px;
+    margin-right: 10px;
 }
 .emoney [type=radio]:checked + .emon{
     -webkit-box-shadow: 0px 0px 8px 5px rgba(0,0,0,0.07);
@@ -7782,11 +7785,11 @@ body {
     height: 78px;
     align-items: center;
 }
-.emon label{
-    font-size: 13px;
+.emon {
+    font-size: 12px;
     color: #5A5A5A;
-    margin-left: 8px;
     font-weight: 300;
+    /*margin-left: 8px;*/
 }
 
 @media (max-width:500px) {

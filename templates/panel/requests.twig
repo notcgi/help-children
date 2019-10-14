@@ -15,6 +15,7 @@
                         <th scope="col">Статус</th>
                         <th scope="col">Сумма</th>
                         <th scope="col">Тип платежа</th>
+                        <th scope="col">Способ платежа</th>
                         <th scope="col">Дата создания</th>
                     </tr>
                     </thead>
@@ -36,6 +37,7 @@
                             <td>{{ statuses[req.status] }}</td>
                             <td>{{ req.sum|number_format(2, '.', ' ') }}</td>
                             <td>{{ recurents[req.recurent]}}</td>
+                            <td>{{ req.pm}}</td>
                             <td>{{ req.createdAt|date('d m Y H:i') }}</td>
                         </tr>
                     {% endfor %}

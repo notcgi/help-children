@@ -3,8 +3,8 @@
 namespace App\Event;
 
 use App\Entity\Request;
-use Symfony\Component\EventDispatcher\Event;
-
+// use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 class PaymentFailure extends Event
 {
     const NAME = 'payment.failure';

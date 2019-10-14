@@ -67,6 +67,7 @@ class DonateController extends AbstractController
                     $req->setSum($amount)
                         ->setUser($user)
                         ->setStatus(2)
+                        ->setJson(["payment-type"=>"sms"])
                         ->setOrder_id('');
                 $this->referralHistory($req);
                     $EM->persist($req);
@@ -142,8 +143,8 @@ class DonateController extends AbstractController
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
             else{
                 $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
-            // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-            return $this->redirectToRoute('account_history');
+            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+            // return $this->redirectToRoute('account_history');
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         // return $this->redirectToRoute('account_history');
@@ -466,6 +467,7 @@ class DonateController extends AbstractController
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
                     ->setUser($user)
+                    ->setJson($form)
                     ->setOrder_id('');
                 $entityManager->persist($req);
                 $entityManager->flush();
