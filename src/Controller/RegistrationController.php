@@ -76,16 +76,16 @@ class RegistrationController extends AbstractController
                         $form->addError(new FormError('E-mail уже занят'));
                     }
                 }
-                // $old_user = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $regform['phone'])
-                // ->getResult();
-                // if ($old_user) {
-                //     if (!$old_user->getPass()) {
-                //         $user = $old_user;
-                //     } else {
-                //         $valid = false;
-                //         $form->addError(new FormError('Такой номер телефона уже существует'));
-                //     }
-                // }
+                $old_user = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $regform['phone'])
+                ->getResult();
+                if ($old_user) {
+                    if (!$old_user->getPass()) {
+                        $user = $old_user;
+                    } else {
+                        $valid = false;
+                        $form->addError(new FormError('Такой номер телефона уже существует'));
+                    }
+                }
             }
 
             if ($valid) {                
