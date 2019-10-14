@@ -220,6 +220,9 @@ function modalRegistration() {
         else if (xhr.responseText === 'false (email)') {
             document.querySelector('#emailExist').style.display = 'block';
         }
+        else if (xhr.responseText === 'false (phone)') {
+            document.querySelector('#phoneExist').style.display = 'block';
+        }
     }
     });
     
