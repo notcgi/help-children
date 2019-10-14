@@ -399,6 +399,10 @@ function checkEmailExisting(element) {
         document.getElementById('emailExist').style.display = 'block';
         return false;
     }
+    if (xhr.responseText === 'phone') {
+        document.getElementById('phoneExist').style.display = 'block';
+        return false;
+    }
     return true;
 }
 

@@ -158,6 +158,10 @@ class SecurityController extends AbstractController
                 return new Response('same');
             return new Response('exist');
         }
+        $old_user = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $regform['phone'])->getResult();
+        if ($old_user) {
+            return new Response('phone');
+        }
         return new Response('free');
     }
 }
