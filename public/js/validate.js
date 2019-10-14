@@ -379,11 +379,12 @@ function validate_myAccount() {
 }
 
 function checkEmailExisting(element) {
-    let emailInput = document.getElementById(element).value;   
+    let emailInput = document.getElementById(element).value;  
+    let phoneInput = document.getElementById('registration_form_phone').value;   
 
     document.getElementById('emailExist').style.display = 'none';    
     
-    var data = "email=" + emailInput;
+    var data = "email=" + emailInput  + "&phone=" + phone;
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;    
