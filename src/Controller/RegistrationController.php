@@ -52,6 +52,11 @@ class RegistrationController extends AbstractController
                 '',
                 $regform['phone']
             );
+            $regform['phone'] = preg_replace(
+                '/^[78]/',
+                '+7',
+                $regform['phone']
+            );
             if ($regform['birthday'] !== null)
                 $regform['birthday'] = \DateTime::createFromFormat("d.m.Y", $regform['birthday']);
             $request->request->set('registration_form', $regform);
@@ -252,6 +257,11 @@ class RegistrationController extends AbstractController
         $check = $request->request->get('check');
         $fund = $request->request->get('fund');
 
+            $phone = preg_replace(
+                '/^[78]/',
+                '+7',
+                $phone
+            );
         if (!$email || !$phone || strlen($phone) < 10)
             return new Response('false');
 
