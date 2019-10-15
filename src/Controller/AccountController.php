@@ -219,7 +219,7 @@ class AccountController extends AbstractController
         $history_repository = $this->getDoctrine()->getRepository(\App\Entity\Request::class);
         $childCount = $history_repository->getChildrenSuccessPaymentWithUser($user->getId());
         $referrCount = $repository->aggregateCountReferWithUser($user);
-
+        if ($childCount==0 && $donate!==0) $childCount = $this->getDoctrine()->getRepository(\App\Entity\Child::class)->aggregateTotalCountChild();
         $hash = $this->getResultHash($user->getId(), $donateSum, $childCount, $referrCount, $name);        
 
         if ($user->getResultHash() === $hash) {

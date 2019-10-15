@@ -73,7 +73,7 @@ class DocumentController extends AbstractController
                     ->setSendAt(
                         \DateTimeImmutable::createFromMutable(
                             (new \DateTime())
-                            ->add(new \DateInterval('PT15S'))
+                            ->add(new \DateInterval('PT30S'))
                         )
                     )
                 );
