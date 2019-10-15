@@ -183,7 +183,7 @@ function validate_modal_registration() {
         isValid = false;
     }
 
-    if (phoneInput.length < 10 || phoneInput.length > 13) {        
+    if (phoneInput.length < 10 || phoneInput.length > 13|| phoneInput.indexOf('+7')!=0)) {        
         document.getElementById('phone').style.display = 'block';
         isValid = false;
     }

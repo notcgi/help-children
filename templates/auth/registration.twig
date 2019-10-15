@@ -28,7 +28,7 @@
                         </div>
                     </div>                    
                     <div class="login-form-row registration-form-row" style="align-items:flex-start">                                            
-                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения', 'readonly': 'true'}}) }}
+                        {{ form_widget(form.birthday, {'attr': {'class':'input-rounded registration-form-input', 'placeholder': 'Введите дату рождения', 'readonly': 'true', 'value':''}}) }}
                         <div class="form-group registration-form-field">
                             <label class="registration-form-field registration-form-phone">
                                 {{ form_widget(form.phone, {'attr': {'class':'registration-form-input input-rounded input-type-phone', 'placeholder': 'Введите номер телефона*',
