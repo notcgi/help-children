@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
      * @return Response
      * @throws \LogicException
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirect('/account');
@@ -29,7 +29,7 @@ class SecurityController extends AbstractController
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $request->query->get('inputEmail') ?? $authenticationUtils->getLastUsername();
 
         return $this->render('auth/login.twig', ['email' => $lastUsername, 'error' => $error]);
     }

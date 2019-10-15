@@ -83,6 +83,30 @@ class UsersService
 
             return $user;
         }
+        $user = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getResult()[0];
+        if ($user) {
+            $entityManager = $this->doctrine->getManager();            
+    
+            // Завершение платежа
+            $entityManager->persist(
+                (new SendGridSchedule())
+                ->setEmail($user->getEmail())
+                ->setName($user->getFirstName())
+                ->setBody([
+                    'first_name' => $user->getFirstName()
+                ])
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setSendAt(
+                    \DateTimeImmutable::createFromMutable(
+                        (new \DateTime())
+                        ->add(new \DateInterval('PT2H'))                            
+                    )
+                )                    
+            );
+            $entityManager->flush();
+
+            return $user;
+        }
 
         $user = new User();
         $user->setEmail($data['email'])

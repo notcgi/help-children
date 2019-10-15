@@ -410,6 +410,11 @@ class DonateController extends AbstractController
         $lastName = $request->query->get('lastName');
         $phone = $request->query->get('phone');
 
+            $phone = preg_replace(
+                '/^[78]/',
+                '+7',
+                $phone
+            );
         if (!$this->isGranted('ROLE_USER') && isset($code)) {
             $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository(User::class)->findOneBy([
@@ -437,9 +442,12 @@ class DonateController extends AbstractController
             'name'         => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
             'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $lastName)),
             'phone' => preg_replace(
-                '/[^+0-9]/',
-                '',
-                $request->request->get('phone', $user ? $user->getPhone() : $phone)
+                '/^[78]/',
+                '+7',
+                    preg_replace(
+                    '/[^+0-9]/',
+                    '',
+                    $request->request->get('phone', $user ? $user->getPhone() : $phone))
             ),
             'ref-code' => substr(trim($request->query->get('ref-code', '')), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : $email, FILTER_VALIDATE_EMAIL)),
@@ -451,7 +459,6 @@ class DonateController extends AbstractController
             'recurent' => (bool) $request->request->get('recurent', true),
             'agree' => $request->request->get('agree', 'false')
         ];
-
         if ($request->isMethod('post')) {
             $form_errors = $this->validate($form);
 
@@ -463,7 +470,9 @@ class DonateController extends AbstractController
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $user          = $usersService->findOrCreateUser($form);
-
+                if ($user !== $this->getUser()){
+                    return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
+                }
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
