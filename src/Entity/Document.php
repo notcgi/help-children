@@ -42,6 +42,16 @@ class Document
      */
     private $file;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filesize;
+
     public function __construct() {}
 
     public function getId(): ?int { return $this->id; }
@@ -67,6 +77,45 @@ class Document
     public function getFile(): string { return (string) $this->file; }
     public function setFile(string $file): self {
         $this->file = $file;
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function getTextDate()
+    {
+        return $this->date ? $this->date->format('d.m.Y') : '';
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getFilesize(): ?string
+    {
+        $filesize=filesize('../public'.$this->file);
+        $formats = array('Б','КБ','МБ','ГБ','ТБ');
+        $format = 0;
+        while ($filesize > 1024 && count($formats) != ++$format)
+        {
+            $filesize = round($filesize / 1024, 2);
+        }
+        $formats[] = 'ТБ';
+        
+        return $filesize.' '.$formats[$format]; 
+        return filesize('../public'.$this->file);
+    }
+
+    public function setFilesize(?string $filesize): self
+    {
+        $this->filesize = $filesize;
+
         return $this;
     }
 }

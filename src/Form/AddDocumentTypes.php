@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,6 +25,13 @@ class AddDocumentTypes extends AbstractType
     {
         $builder
             ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
+            ->add('date'        , DateType::class    , [
+                'html5' => True,
+                'widget' => 'choice',
+                'placeholder' => [
+                    'year' => 'Год', 'month' => 'Месяц', 'day' => 'День',
+                ],
+                'format' => 'dd . MM . yyyy'])
             ->add('description' , TextareaType::class)
             ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
             ->add('file'        , FileType::class     , [

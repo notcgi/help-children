@@ -144,7 +144,7 @@ class DonateController extends AbstractController
             else{
                 $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
             // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-            return $this->redirectToRoute('account_history');
+            return $this->redirectToRoute('donate');
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         // return $this->redirectToRoute('account_history');
@@ -407,7 +407,7 @@ class DonateController extends AbstractController
         $name = $request->query->get('name');
         $email = $request->query->get('email');
         $code = $request->query->get('code');
-        $lastName = $request->query->get('lastName');
+        $firstName = $request->query->get('firstname');
         $phone = $request->query->get('phone');
 
             $phone = preg_replace(
@@ -440,7 +440,7 @@ class DonateController extends AbstractController
             'EMoneyType'   =>      $request->request->get('EMoneyType', '0'),
             'child_id'     => $child_id === 0 ? null : $child_id,
             'name'         => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
-            'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $lastName)),
+            'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $firstName)),
             'phone' => preg_replace(
                 '/^[78]/',
                 '+7',
@@ -449,7 +449,7 @@ class DonateController extends AbstractController
                     '',
                     $request->request->get('phone', $user ? $user->getPhone() : $phone))
             ),
-            'ref-code' => substr(trim($request->query->get('ref-code', '')), 4),
+            'ref-code' => substr(trim($request->query->get('ref-code', $code)), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : $email, FILTER_VALIDATE_EMAIL)),
             'sum' => round(
                 $request->query->filter('sum', null, FILTER_VALIDATE_FLOAT)

@@ -5470,7 +5470,8 @@ body {
 }
 
 .report-description__download {
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
+    margin-top: 1rem
 }
 
 .report-description__download-link {

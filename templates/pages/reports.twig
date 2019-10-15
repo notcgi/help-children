@@ -29,207 +29,17 @@
                                     </div>
                                     <div class="report-description">
                                         <h3 class="report-description__title">{{ document.title }}</h3>
+                                        <span class="report-description__size" style="color: #424851;">От {{ document.textdate }}</span>
                                         <div class="report-description__download">
                                             <a class="report-description__download-link" target="_blank"
                                                href="{{ document.file }}">Скачать</a>
                                         </div>
-                                        <!-- div class="report-description__size">3 мб.</div -->
+                                        <div class="report-description__size">{{ document.Filesize }}</div>
                                     </div>
                                 </div>
                             </li>
                         {% endfor %}
-                        <!-- li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за август 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_august_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за август 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_august_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за июль 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_jule_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за июль 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_jule_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за июнь 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_june_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за июнь 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_june_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за май 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_may_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за май 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_may_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за апрель 2019 года."
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Financial_report_april_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за апрель 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_april_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за март 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_march_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за март 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_march_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за февраль 2019 года."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Financial_report_february_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за февраль 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_february_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Финансовый отчёт за январь 2019 года."
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Financial_report_january_2019.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Финансовый отчёт за январь 2019 года.</h3>                                    
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Financial_report_january_2019.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">3 мб.</div>
-                                </div>
-                            </div>
-                        </li -->
+                       
                     </ul>
                 </div>
                 <h2 class="section-title">Аудиторские заключения</h2>
@@ -241,95 +51,22 @@
                                     <div class="report-doc">
                                         <img class="report-doc__image" src="/images/doc-example.png" alt="{{ document.title }}" width="208" height="250"/>
                                         <a class="show-doc-button" href="{{ document.file }}" target="_blank">
-                                            <span class="show-doc-button__circle"><span class="icon icon-doc"></span></span>
+                                        <span class="show-doc-button__circle"><span class="icon icon-doc"></span></span>
                                         </a>
                                     </div>
                                     <div class="report-description">
                                         <h3 class="report-description__title">{{ document.title }}</h3>
                                         <div class="report-description__download">
+                                            <span class="report-description__size">От {{ document.textdate }}</span><br>
                                             <a class="report-description__download-link" target="_blank"
                                                href="{{ document.file }}">Скачать</a>
                                         </div>
-                                        <!-- div class="report-description__size">3 мб.</div -->
+                                        <div class="report-description__size">{{ document.Filesize }}</div>
                                     </div>
                                 </div>
                             </li>
                         {% endfor %}
-                        <!-- li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Аудиторское заключение о годовой бухгалтерской отчетности за 2018 год."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Audit_conclusion_2018.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Аудиторское заключение о годовой бухгалтерской отчетности за 2018 год.</h3>
-                                    <p class="report-description__date">От 25.01.2019</p>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Audit_conclusion_2018.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">31 мб.</div>
-                                </div>
-                            </div>
-                        </li> 
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Аудиторское заключение о годовой бухгалтерской отчетности за 2017 год."
-                                         width="208"
-                                         height="250"/>
-                                    <a class="show-doc-button" href="/docs/Audit_conclusion_2017.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Аудиторское заключение о годовой бухгалтерской отчетности за 2017 год.</h3>
-                                    <p class="report-description__date">От 30.03.2018</p>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Audit_conclusion_2017.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">35,9 мб.</div>
-                                </div>
-                            </div>
-                        </li>                                           
-                        <li class="report-list__item">
-                            <div class="report">
-                                <div class="report-doc">
-                                    <img class="report-doc__image"
-                                         src="/images/doc-example.png"
-                                         alt="Аудиторское заключение о годовой бухгалтерской отчетности за 2016 год."
-                                         width="208"
-                                         height="250">
-                                    <a class="show-doc-button" href="/docs/Audit_conclusion_2016.pdf" target="_blank">
-                                        <span class="show-doc-button__circle">
-                                            <span class="icon icon-doc"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="report-description">
-                                    <h3 class="report-description__title">Аудиторское заключение о годовой бухгалтерской отчетности за 2016 год.</h3>
-                                    <p class="report-description__date">От 28.03.2017</p>
-                                    <div class="report-description__download">
-                                        <a class="report-description__download-link" target="_blank"
-                                           href="/docs/Audit_conclusion_2016.pdf">Скачать</a>
-                                    </div>
-                                    <div class="report-description__size">32,9 мб.</div>
-                                </div>
-                            </div>
-                        </li -->
+                        
                     </ul>
                 </div>
                 <div class="container container--small">

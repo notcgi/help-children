@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
@@ -59,7 +60,8 @@ class DocumentController extends AbstractController
         }
 
         return $this->render('panel/documents/add.twig', [
-            'form'  => $form->createView()
+            'form'  => $form->createView(),
+            'document'=>$document
         ]);
     }
 
@@ -125,6 +127,13 @@ class DocumentController extends AbstractController
             ->add('id'          , HiddenType::class   , ['mapped' => false, 'constraints' => [new NotBlank()]])
             ->add('title'       , TextType::class     , ['constraints' => [new NotBlank()]])
             ->add('description' , TextareaType::class)
+            ->add('date'        , DateType::class    , [
+                'html5' => True,
+                'widget' => 'choice',
+                'placeholder' => [
+                    'year' => 'Год', 'month' => 'Месяц', 'day' => 'День',
+                ],
+                'format' => 'dd . MM . yyyy'])
             ->add('category'    , ChoiceType::class   , ['choices' => Document::TYPES])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
