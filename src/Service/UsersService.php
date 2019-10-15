@@ -50,7 +50,7 @@ class UsersService
      * @throws \Exception
      * @throws \RuntimeException
      */
-    public function findOrCreateUser(array $data): User
+    public function findOrCreateUser(array $data)
     {
         if (!isset($data['email'])) {
             throw new \RuntimeException('Email undefined');
@@ -81,19 +81,18 @@ class UsersService
             );
             $entityManager->flush();
 
-            return $user;
+            return [$user,False];
         }
-        $user = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getResult()[0];
-        if ($user) {
-            $entityManager = $this->doctrine->getManager();            
-    
+        $puser = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult();
+        if (isset($puser)) {
+            $entityManager = $this->doctrine->getManager();
             // Завершение платежа
             $entityManager->persist(
                 (new SendGridSchedule())
-                ->setEmail($user->getEmail())
-                ->setName($user->getFirstName())
+                ->setEmail($puser->getEmail())
+                ->setName($puser->getFirstName())
                 ->setBody([
-                    'first_name' => $user->getFirstName()
+                    'first_name' => $puser->getFirstName()
                 ])
                 ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
                 ->setSendAt(
@@ -105,8 +104,9 @@ class UsersService
             );
             $entityManager->flush();
 
-            return $user;
+            return [$puser,False];
         }
+        // if ($user!==$puser) return False;
 
         $user = new User();
         $user->setEmail($data['email'])
@@ -162,6 +162,6 @@ class UsersService
 
         $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
 
-        return $user;
+        return [$user,True];
     }
 }

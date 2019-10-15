@@ -469,8 +469,9 @@ class DonateController extends AbstractController
                 $form['ref_code'] = substr(base64_encode(random_bytes(20)), 0, 16);
 
                 $entityManager = $this->getDoctrine()->getManager();
-                $user          = $usersService->findOrCreateUser($form);
-                if ($user !== $this->getUser()){
+                [$user, $new]  = $usersService->findOrCreateUser($form);
+
+                if (null==$this->getUser() && !$new){
                     return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
                 }
                 $req = new \App\Entity\Request();
