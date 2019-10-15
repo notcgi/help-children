@@ -17,6 +17,7 @@
                         <th scope="col">Диагноз</th>
                         <th scope="col">Дата добавления</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,7 @@
                             <td>{{ child.diagnosis }}</td>
                             <td>{{ child.CreatedAt|date('Y.m.d') }}</td>
                             <td><a href="/panel/child/{{ child.id }}">Изменить</a></td>
+                            <td><a href="/panel/child/del/{{ child.id }}">Удалить</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>

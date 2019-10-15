@@ -143,8 +143,8 @@ class DonateController extends AbstractController
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
             else{
                 $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
-            return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-            // return $this->redirectToRoute('account_history');
+            // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+            return $this->redirectToRoute('account_history');
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         // return $this->redirectToRoute('account_history');
@@ -432,8 +432,9 @@ class DonateController extends AbstractController
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
         $form = [
             'payment-type' => trim($request->request->get('payment-type', 'visa')),
-            'child_id' => $child_id === 0 ? null : $child_id,
-            'name' => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
+            'EMoneyType'   =>      $request->request->get('EMoneyType', '0'),
+            'child_id'     => $child_id === 0 ? null : $child_id,
+            'name'         => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
             'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $lastName)),
             'phone' => preg_replace(
                 '/[^+0-9]/',
@@ -532,6 +533,7 @@ class DonateController extends AbstractController
             $data,
             new Assert\Collection([
                 'payment-type' => new Assert\Choice(['visa', 'requisite-services', 'sms', 'eq']),
+                'EMoneyType' => new Assert\Choice(['1', '13', '29', '0']),
                 'ref-code' => new Assert\Length(['min' => 0, 'max' => 14]),
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
                 'name' => new Assert\Length(['min' => 0, 'max' => 128]),

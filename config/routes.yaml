@@ -221,10 +221,17 @@ panel_child_edit:
     requirements:
         id: '\d+'
 
+panel_child_del:
+    path: /panel/child/del/{id}
+    controller: App\Controller\ChildController::delete
+    requirements:
+        id: '\d+'
+
 panel_recurring:
     path: /panel/recurring
     controller: App\Controller\RecurringController::list
 
+# ???!
 panel_child_delete:
     path: /panel/recurring/{id}
     controller: App\Controller\RecurringController::delete

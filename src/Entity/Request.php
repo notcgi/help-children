@@ -195,8 +195,14 @@ class Request
     }
     public function getPm()
     {
-        $names=["eq"=>"Интернет сервисы", "sms"=>"SMS", "visa"=>"Карта"];
-        if ($this->getJson()) return $names[json_decode($this->json)->{"payment-type"}];
+        $names=["eq"=>"Интернет сервисы", "sms"=>"СМС-оплата", "visa"=>"Оплата картой", "1"=>"Яндекс.Деньги", "13"=>"Наличные", "29"=>"WebMoney"];
+        if ($this->getJson()) {
+            if (json_decode($this->json)->{"payment-type"}=='eq') 
+                return $names[json_decode($this->json)->{"EMoneyType"}];
+            else
+                return $names[json_decode($this->json)->{"payment-type"}];
+        }
+
         else return '';
     }
 

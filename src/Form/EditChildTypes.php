@@ -111,7 +111,7 @@ class EditChildTypes extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Range([
-                            'min' => 1,
+                            'min' => 0,
                             'max' => 10000000
                         ])
                     ]

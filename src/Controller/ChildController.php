@@ -113,6 +113,24 @@ class ChildController extends AbstractController
         );
     }
 
+    public function delete(int $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $child = $entityManager->getRepository(Child::class)->find($id);
+
+        if (null !== $child) {
+            $entityManager->remove($child);
+            $entityManager->flush();
+        }
+        return $this->render(
+            'panel/child/list.twig',
+            [
+                'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
+            ]
+        );
+    }
+
+
     /**
      * @param Request      $request
      * @param FileUploader $fileUploader

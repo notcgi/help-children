@@ -356,7 +356,7 @@ class SendGridSubscriber implements EventSubscriberInterface
             ->setName($user->getFirstName())
             ->setBody([
                 'first_name' => $user->getFirstName(),
-                'childs' => implode("<br>", $chnames)
+                'childs' => implode(", ", $chnames)
             ])
             ->setTemplateId('d-eaae4848c985425f90e2b968d9364630')
             ->setSendAt(
