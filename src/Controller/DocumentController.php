@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\User;
 use App\Form\AddDocumentTypes;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use App\Entity\SendGridSchedule;
 use App\Repository\DocumentRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -53,6 +54,30 @@ class DocumentController extends AbstractController
                 $EM = $this->getDoctrine()->getManager();
                 $EM->persist($document);
                 $EM->flush();
+
+                // SEND MAIL 12
+                $user = $this->getDoctrine()->getRepository(User::class)->find(2);
+                // $user = $req->getUser();
+                $EM->persist(
+                    (new SendGridSchedule())
+                    ->setEmail($user->getEmail())
+                    ->setName($user->getFirstName())
+                    ->setBody([
+                        'first_name' => $user->getFirstName(),
+                        'docdate'    => $document->getTextDate(),
+                        'docname'    => $document->getTitle(),
+                        'docsrc'     => $document->getFile(),
+                        'fs'         => $document->getFilesize()
+                    ])
+                    ->setTemplateId('d-af64459f4a5c46158550ce4336c17892')
+                    ->setSendAt(
+                        \DateTimeImmutable::createFromMutable(
+                            (new \DateTime())
+                            ->add(new \DateInterval('PT15S'))
+                        )
+                    )
+                );
+                // END SEND
                 return $this->redirect('/panel/documents');
             } catch (FileException $e) {
                 $form->get('file')->addError(new FormError($e->getMessage()));

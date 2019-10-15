@@ -120,11 +120,11 @@ class DonateController extends AbstractController
      */
     public function no(Request $request, EventDispatcherInterface $dispatcher)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isMethod('post')) {
             $id  = $request->request->get('order_id');
             $EM  = $this->getDoctrine()->getManager();
-            $req = $this->getDoctrine()>getRepository(\App\Entity\Request::class)->find($id);
+            $req = $this->getDoctrine()->getRepository(\App\Entity\Request::class)->find($id);
             if (!$req) return new Response('order not found', 404);
             $req->setStatus(1);
             $EM->persist($req);
@@ -135,6 +135,14 @@ class DonateController extends AbstractController
             $id  = $request->query->get('Order_ID');
             $EM  = $this->getDoctrine()->getManager();
             $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            $jsn = json_decode($req->getJson());
+            $data=[
+                "email"     => $jsn->email,
+                "name"      => $jsn->name,
+            // "lastname"   => $jsn->lastname,
+                "firstname"   => $jsn->surname,
+                "phone"     => $jsn->phone,
+            ];
             if (!$req) return new Response('order not found', 404);
             $req->setStatus(1);
             $EM->persist($req);
@@ -144,7 +152,7 @@ class DonateController extends AbstractController
             else{
                 $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
             // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
-            return $this->redirectToRoute('donate');
+            return $this->redirectToRoute('donate', $data);
         }
         #help https://symfony.com/doc/current/components/http_foundation.html
         // return $this->redirectToRoute('account_history');
