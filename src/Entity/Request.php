@@ -204,7 +204,7 @@ class Request
                 return $names[$pm->{"payment-type"}] ?? 'Оплата картой';
         }
 
-        else return '';
+        else return 'Оплата картой';
     }
 
     public function isRecurent(): ?bool
