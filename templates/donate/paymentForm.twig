@@ -12,7 +12,8 @@
                     name      : '{{ fields.Name }}',
                     lastname  : '{{ fields.LastName }}',
                     firstname : '{{ fields.FirstName }}',
-                    phone     : '{{ fields.Phone }}'
+                    phone     : '{{ fields.Phone }}',
+                    sum       : '{{ fields.Subtotal_P }}'
                 };
                 {% if fields.IsRecurrentStart == 1 %}
                 data.cloudPayments = {recurrent: { interval: 'Month', period: 1}}; //создание ежемесячной подписки

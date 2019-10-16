@@ -441,6 +441,9 @@
             case 700: radioSums[2].checked = true; break;
             default:
                 textSum.classList.add('checked');
+                radioSums[0].checked = false
+                radioSums[1].checked = false
+                radioSums[2].checked = false
                 textSum.value = sum.value;
         }
 
