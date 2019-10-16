@@ -197,10 +197,11 @@ class Request
     {
         $names=["eq"=>"Интернет сервисы", "sms"=>"СМС-оплата", "visa"=>"Оплата картой", "1"=>"Яндекс.Деньги", "13"=>"Наличные", "29"=>"WebMoney"];
         if ($this->getJson()) {
-            if (json_decode($this->json)->{"payment-type"}=='eq') 
-                return $names[json_decode($this->json)->{"EMoneyType"}];
+            $pm=json_decode($this->json);
+            if ($pm->{"payment-type"}=='eq') 
+                return $names[$pm->{"EMoneyType"}] ?? 'Яндекс.Деньги';
             else
-                return $names[json_decode($this->json)->{"payment-type"}];
+                return $names[$pm->{"payment-type"}] ?? 'Оплата картой';
         }
 
         else return '';

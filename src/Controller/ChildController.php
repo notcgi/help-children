@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Child;
+use App\Entity\User;
 use App\Form\AddChildTypes;
 use App\Form\EditChildTypes;
+use App\Service\SendGridService;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,7 +140,7 @@ class ChildController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function add(Request $request, FileUploader $fileUploader)
+    public function add(Request $request, FileUploader $fileUploader, SendGridService $sg)
     {
         $userData = new Child();
         $form = $this->createForm(AddChildTypes::class, $userData);
@@ -158,6 +160,28 @@ class ChildController extends AbstractController
             $entityManager->persist($userData);
             $entityManager->flush();
 
+                // SEND MAIL 12
+                $users = $this->getDoctrine()->getRepository(User::class)->getAll();
+                foreach ($users as $user) {
+                    $mail = $sg->getMail(
+                        $user->getEmail(),
+                        $user->getFirstName(),
+                        [
+                            'first_name' => $user    ->getFirstName(),
+                            'name'       => $userData->getName(),
+                            'age'        => $userData->getAge(),
+                            'diag'       => $userData->getDiagnosis(),
+                            'place'      => $userData->getCity(),
+                            'goal'       => (int) $userData->getGoal(),
+                            'photo'      => $userData->getImages()[0],
+                            'id'         => $userData->getId()
+                        ]
+                    );
+                    $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
+                    $sg->send($mail);
+                }
+                // END SEND
+                
             return $this->redirect('/panel/child');
         }
 
