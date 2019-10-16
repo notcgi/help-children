@@ -90,6 +90,13 @@ class Document
         return $this->date ? $this->date->format('d.m.Y') : '';
     }
 
+    public function getNameDate()
+    {
+        $names = ['','январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+
+        return $this->date ? $names[(int) $this->date->format('m')].' '.$this->date->format('Y') : '';
+    }
+
     public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
