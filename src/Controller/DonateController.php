@@ -142,6 +142,8 @@ class DonateController extends AbstractController
             // "lastname"   => $jsn->lastname,
                 "firstname"   => $jsn->surname,
                 "phone"     => $jsn->phone,
+                "payment-type"     => $jsn->{'payment-type'},
+                "EMoneyType"     => $jsn->EMoneyType
             ];
             if (!$req) return new Response('order not found', 404);
             $req->setStatus(1);
@@ -444,8 +446,8 @@ class DonateController extends AbstractController
         $form_errors = [];
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
         $form = [
-            'payment-type' => trim($request->request->get('payment-type', 'visa')),
-            'EMoneyType'   =>      $request->request->get('EMoneyType', '0'),
+            'payment-type' => trim($request->request->get('payment-type', $request->query->get('payment-type') ?? 'visa')),
+            'EMoneyType'   =>      $request->request->get('EMoneyType', $request->query->get('EMoneyType') ),
             'child_id'     => $child_id === 0 ? null : $child_id,
             'name'         => trim($request->request->get('name', $user ? $user->getFirstName() : $name)),
             'surname' => trim($request->request->get('surname', $user ? $user->getLastName() : $firstName)),
