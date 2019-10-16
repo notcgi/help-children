@@ -81,7 +81,7 @@ class UsersService
             );
             $entityManager->flush();
 
-            return [$user,False];
+            // return [$user,False];
         }
         $puser = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult();
         if (isset($puser)) {
@@ -104,64 +104,68 @@ class UsersService
             );
             $entityManager->flush();
 
-            return [$puser,False];
+            // return [$puser,False];
         }
-        // if ($user!==$puser) return False;
+        if (($user==$puser) && $user && $puser) return [$user,True];
+        else if ($user)  return [$user, False];
+        else if ($puser) return [$puser,False];
+        else{
 
-        $user = new User();
-        $user->setEmail($data['email'])
-            ->setFirstName($data['name'] ?? '')
-            ->setLastName($data['surname'] ?? '')
-            ->setPhone($data['phone'] ?? '');
+            $user = new User();
+            $user->setEmail($data['email'])
+                ->setFirstName($data['name'] ?? '')
+                ->setLastName($data['surname'] ?? '')
+                ->setPhone($data['phone'] ?? '');
 
-        if (isset($data['ref_code'])) {
-            $user->setRefCode($data['ref_code']);
-        }
-
-        if (isset($data['pass'])) {
-            $user->setPass(
-                $this->passwordEncoder->encodePassword(
-                    $user,
-                    $data['pass']
-                )
-            );
-        }
-
-        if (isset($data['referral'])) {
-            $referrerId = (int) $data['referral'];
-            /** @var User $referrer */
-            $referrer = $userRepository->find($referrerId);
-
-            if ($referrer) {
-                $user->setReferrer($referrer);
-                $this->session->remove('referral');
+            if (isset($data['ref_code'])) {
+                $user->setRefCode($data['ref_code']);
             }
+
+            if (isset($data['pass'])) {
+                $user->setPass(
+                    $this->passwordEncoder->encodePassword(
+                        $user,
+                        $data['pass']
+                    )
+                );
+            }
+
+            if (isset($data['referral'])) {
+                $referrerId = (int) $data['referral'];
+                /** @var User $referrer */
+                $referrer = $userRepository->find($referrerId);
+
+                if ($referrer) {
+                    $user->setReferrer($referrer);
+                    $this->session->remove('referral');
+                }
+            }
+
+            $entityManager = $this->doctrine->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Завершение платежа
+            $entityManager->persist(
+                (new SendGridSchedule())
+                ->setEmail($user->getEmail())
+                ->setName($user->getFirstName())
+                ->setBody([
+                    'first_name' => $user->getFirstName()
+                ])
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setSendAt(
+                    \DateTimeImmutable::createFromMutable(
+                        (new \DateTime())
+                        ->add(new \DateInterval('PT2H'))                            
+                    )
+                )                    
+            );
+            $entityManager->flush();
+
+            $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
+
+            return [$user,True];
         }
-
-        $entityManager = $this->doctrine->getManager();
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        // Завершение платежа
-        $entityManager->persist(
-            (new SendGridSchedule())
-            ->setEmail($user->getEmail())
-            ->setName($user->getFirstName())
-            ->setBody([
-                'first_name' => $user->getFirstName()
-            ])
-            ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
-            ->setSendAt(
-                \DateTimeImmutable::createFromMutable(
-                    (new \DateTime())
-                    ->add(new \DateInterval('PT2H'))                            
-                )
-            )                    
-        );
-        $entityManager->flush();
-
-        $this->dispatcher->dispatch(new RegistrationEvent($user), RegistrationEvent::NAME);
-
-        return [$user,True];
     }
 }

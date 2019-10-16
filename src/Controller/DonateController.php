@@ -445,6 +445,7 @@ class DonateController extends AbstractController
 
         $user = $this->getUser();
         $form_errors = [];
+        $auth_errors='';
         $child_id = (int) $request->request->filter('child_id', null, FILTER_VALIDATE_INT);
         $form = [
             'payment-type' => trim($request->request->get('payment-type', $request->query->get('payment-type') ?? 'visa')),
@@ -483,7 +484,9 @@ class DonateController extends AbstractController
                 [$user, $new]  = $usersService->findOrCreateUser($form);
 
                 if (null==$this->getUser() && !$new){
-                    return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
+                    // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
+                    $auth_errors='Неверно введены почта или телефон';
+                    return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors]);
                 }
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
@@ -504,7 +507,7 @@ class DonateController extends AbstractController
             }
         }
 
-        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors]);
+        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors]);
     }
 
     /**
