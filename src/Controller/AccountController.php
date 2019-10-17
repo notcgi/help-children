@@ -74,6 +74,8 @@ class AccountController extends AbstractController
 
         if ($request->isMethod('post')) {            
             $form_errors = $this->validate($form);
+            // $puser = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult();
+            // $phoneEr=
             if (!$encoder->isPasswordValid($user, $form['oldPassword']))
                 $errors[] = 'Неверный текущий пароль';
             $current_user = $this->getUser();
@@ -86,7 +88,7 @@ class AccountController extends AbstractController
                 if ($user1) {
                     return $this->render('account/myAccount.twig', [
                         'userData' => $user,
-                        'errors' => $errors,
+                        'errors' => $errors[]='Email уже зарегистрирован',
                         'formErrors' => $form_errors,
                         'referral_url' => $request->getScheme()
                             .'://'
@@ -96,6 +98,22 @@ class AccountController extends AbstractController
                 }
                 $doctrine->getManager()->getRepository(SendGridSchedule::class)->changeEmail($current_email, $form['email']);  
                 $user->setConfirmed(0);
+            }
+            $current_phone = $current_user->getPhone();
+            if ($form['phone'] !== $current_email) {
+                $doctrine = $this->getDoctrine();
+                $user1 = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $form['phone'])->getOneOrNullResult();
+                if ($user1) {
+                    return $this->render('account/myAccount.twig', [
+                        'userData' => $user,
+                        'errors' => $errors[]='Номер телефона уже зарегистрирован',
+                        'formErrors' => $form_errors,
+                        'referral_url' => $request->getScheme()
+                            .'://'
+                            .idn_to_utf8($request->getHost())
+                            .$generator->generate('referral', ['id' => $this->getUser()->getId()])
+                    ]);
+                }
             }
             
             if ($form_errors->count() === 0 && $encoder->isPasswordValid($user, $form['oldPassword'])) {
