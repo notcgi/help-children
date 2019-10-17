@@ -141,6 +141,7 @@ class DonateController extends AbstractController
                 "name"      => $jsn->name,
             // "lastname"   => $jsn->lastname,
                 "firstname"   => $jsn->surname,
+                "recurent"     => $jsn->recurent,
                 "phone"     => $jsn->phone,
                 "sum"     => $jsn->sum,
                 "payment-type"     => $jsn->{'payment-type'},
