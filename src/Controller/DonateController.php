@@ -208,7 +208,7 @@ class DonateController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
-        if (array_key_exists('InvoiceId', $form)){
+        if (array_key_exists('SubscriptionId', $form)){
             $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
 
             // Если не нашёл такого платежа - возможно, он рекуррентный
@@ -228,11 +228,12 @@ class DonateController extends AbstractController
                 }
 
                 $req = new \App\Entity\Request();
-                $req->setChild($subscr_req->getChild)
+                $req->setChild($subscr_req->getChild())
                     ->setUser($subscr_req->getUser())
                     ->setSum($subscr_req->getSum())
                     ->setTransactionId($form['TransactionId'])
-                    ->setJson(json_encode($form))
+                    // ->setJson(json_encode($form))
+                    ->setOrder_id('')
                     ->setStatus(2)
                     ->setRecurent(0);
 
@@ -243,8 +244,8 @@ class DonateController extends AbstractController
                 /** @noinspection PhpMethodParametersCountMismatchInspection */
                 $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
 
-                $startDate = new \DateTime($rp->getCreatedAt()->format('Y-m-d'));
-                $endDate = new \DateTime();
+                $startDate = (new \DateTime($rp->getCreatedAt()->format('Y-m-d')))->getTimestamp();
+                $endDate = (new \DateTime())->getTimestamp();
                 $numberOfMonths = abs((date('Y', $endDate) - date('Y', $startDate))*12 + (date('m', $endDate) - date('m', $startDate)));
 
                 if ($numberOfMonths == 6)
@@ -268,7 +269,7 @@ class DonateController extends AbstractController
                 case 'Completed':
                     $req->setStatus(2);
                     $req->setTransactionId($form['TransactionId']); #avtorkoda
-                    $req->setJson(json_encode($form));              #avtorkoda
+                    // $req->setJson(json_encode($form));              #avtorkoda
 
                     // Убрать напоминание о завершении платежа
                     $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
@@ -309,25 +310,6 @@ class DonateController extends AbstractController
 
                     if ($req -> isRecurent()) {//оформление подписки
 
-                        // $ch = curl_init("https://api.cloudpayments.ru/subscriptions/create");
-                        // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/create");
-                        // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                        // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
-                        // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-                        // curl_setopt($ch, CURLOPT_POST, true);
-                        // curl_setopt($ch, CURLOPT_POSTFIELDS, "token=".$form['Token']."&accountId=".$form['AccountId']."&description=Ежемесячня подписка на сервис ПомогитеДетям.рф&email=".$form['Email']."&amount=".$form['Amount']."&currency=RUB&requireConfirmation=false&startDate=".gmdate("Y-m-d\TH:i:s\Z", strtotime("+1 month"))."&interval=Month&period=1");
-                        // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
-                        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        // $server_output = curl_exec ($ch);
-                        // curl_close ($ch);
-                        // $a = file_get_contents('php://input');
-                        // if (!$server_output)
-                        //     file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s")."; Error curl"."\n", FILE_APPEND);
-                        // $json = json_decode($server_output, true);
-                        // file_put_contents(dirname(__DIR__)."/../var/logs/recurent.log", date("d.m.Y H:i:s").";".print_r($json, true)."\n".print_r($a, true)."\n".print_r($server_output, true)."\n", FILE_APPEND);
-                        // $success = $json['Success'];
-
-                        // $subscription_id = $json['Model']['Id'];
                         $subscription_id = $form['SubscriptionId'];
                         $req->setSubscriptionsId($subscription_id);
 

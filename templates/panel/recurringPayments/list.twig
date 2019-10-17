@@ -9,17 +9,27 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>                        
+                        <th scope="col">#</th>                          
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Телефон</th>    
+                        <th scope="col">Статус</th>
+                        <th scope="col">Число платежей</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Дата последнего платежа</th>
+                        <th scope="col">Дата следующего платежа</th>
+
+
+                        <!-- <th scope="col">#</th>                        
                         <th scope="col">E-mail</th>
                         <th scope="col">Телефон</th>
                         <th scope="col">Статус</th>
                         <th scope="col">Дата создания</th>
                         <th scope="col">Дата последнего платежа</th>
                         <th scope="col">Дата следующего платежа</th>
-                        <th scope="col">Дата удаления</th>
+                        <th scope="col">Дата удаления</th> 
                         <th scope="col"></th>
 
-                        <!-- <th scope="col">id пользователя</th>
+                        <th scope="col">id пользователя</th>
                         <th scope="col">id реферера</th>
                         <th scope="col">Имя</th>
                         <th scope="col">Фамилия</th>
@@ -27,23 +37,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for req in recurring %}
+                    {% for rs in rrs %}
+                        {% set rs.status = {'Active': 'Активна', 'PastDue': 'Просрочена', 'Cancelled': 'Отменена', 'Rejected': 'Отклонена', 'Expired': 'Завершена'} %}
                         <tr>
-                            <th scope="row">{{ req.id }}</th>
+                            <th scope="row">{{ rs.uid }}</th>
+                            <td>{{ rs.mail}}</td>
+                            <td>{{ rs.phone }}</td>
+                            <td>{{ rs.status}}</td>
+                            <td>{{ rs.nsuc}}</td>
+                            <td>{{ rs.dtstart }}</td>
+                            <td>{{ rs.dtlast}}</td>
+                            <td>{{ rs.dtnext }}</td>
+                            {# note: 
+                            <td><a href="{{ path('panel_child_delete', {id: rs.uid}) }}">Удалить</a></td>
+                            <!-- <th scope="row">{{ req.id }}</th>
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.user.phone }}</td>
                             <td>{{ req.delAt ? 'Удалён' : 'Активен' }}</td>
                             <td>{{ req.CreatedAt|date('Y.m.d H:i') }}</td>
                             <td>{{ req.withdrawalAt|date('Y.m.d H:i') }}</td>
                             <td>{{ not req.delAt ? req.withdrawalAt|date_modify("+1 month")|date('Y.m.d H:i') }}</td>
-                            <td>{{ req.delAt ? req.delAt|date('Y.m.d H:i') }}</td>
-                            <td><a href="{{ path('panel_child_delete', {id: req.id}) }}">Удалить</a></td>
+                            <td>{{ req.delAt ? req.delAt|date('Y.m.d H:i') }}</td> -->
 
                             <!-- <td>{{ req.user.id }}</td>
                             <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.firstName }}</td>
                             <td>{{ req.user.lastName }}</td>
-                            <td>{{ req.request.sum }}</td> -->
+                            <td>{{ req.request.sum }}</td> -->#}
                         </tr>
                     {% endfor %}
                     </tbody>
