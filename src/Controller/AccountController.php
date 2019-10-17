@@ -86,9 +86,10 @@ class AccountController extends AbstractController
                     'email' => $form['email']
                 ]);
                 if ($user1) {
+                    $errors[]='Email уже зарегистрирован';
                     return $this->render('account/myAccount.twig', [
                         'userData' => $user,
-                        'errors' => $errors[]='Email уже зарегистрирован',
+                        'errors' => $errors,
                         'formErrors' => $form_errors,
                         'referral_url' => $request->getScheme()
                             .'://'
@@ -100,13 +101,14 @@ class AccountController extends AbstractController
                 $user->setConfirmed(0);
             }
             $current_phone = $current_user->getPhone();
-            if ($form['phone'] !== $current_email) {
+            if ($form['phone'] !== $current_phone) {
                 $doctrine = $this->getDoctrine();
                 $user1 = $doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $form['phone'])->getOneOrNullResult();
                 if ($user1) {
+                    $errors[]='Номер телефона уже зарегистрирован';
                     return $this->render('account/myAccount.twig', [
                         'userData' => $user,
-                        'errors' => $errors[]='Номер телефона уже зарегистрирован',
+                        'errors' => $errors,
                         'formErrors' => $form_errors,
                         'referral_url' => $request->getScheme()
                             .'://'
