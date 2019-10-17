@@ -57,7 +57,7 @@
                                             id="inputDate"
                                             type="text"                                            
                                             name="birthday"
-                                            {% if userData.birthday != '' %}
+                                            {% if userData.birthday != null %}
                                                 value="{{ userData.birthday|date('d.m.Y') }}"
                                             {% endif %}                                                                                    
                                             placeholder="Введите дату рождения"

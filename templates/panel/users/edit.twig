@@ -24,7 +24,7 @@
                 <div class="form-group">
                     {{ form_label(form.birthday, 'Дата рождения') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.birthday) }}</div>
-                    {{ form_widget(form.birthday, {'attr': {'class':'form-control', 'placeholder': '01/01/1990', 'value': user.birthday|date('d.m.Y'), 'required': false}}) }}
+                    {{ form_widget(form.birthday, {'attr': {'class':'form-control', 'placeholder': '01/01/1990', 'value': user.birthday? user.birthday|date('Y.m.d') : '', 'required': false}}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.email, 'Email') }}
