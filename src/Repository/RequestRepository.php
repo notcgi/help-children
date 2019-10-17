@@ -51,6 +51,19 @@ class RequestRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    /**
+     * @return Request[]
+     */
+    public function getRecRequestsbyUsers(User $user)
+    {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->where('r.status = 2 AND  r.recurent=1 AND r.user = :user')
+            ->setParameters(['user' => $user->getId()])
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
     /**
      * @param  User      $user

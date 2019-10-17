@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RecurringPayment;
 use App\Entity\SendGridSchedule;
 use App\Entity\User;
+use App\Entity\Request as Req;
 use App\Event\PayoutRequestEvent;
 use App\Event\RecurringPaymentRemove;
 use App\Repository\RequestRepository;
@@ -336,10 +337,8 @@ class AccountController extends AbstractController
             'account/recurrent.twig',
             [
                 'payments' => $this->getDoctrine()
-                    ->getRepository(RecurringPayment::class)
-                    ->findBy([
-                        'user' => $this->getUser()
-                    ])
+                    ->getRepository(Req::class)
+                    ->getRecRequestsbyUsers($this->getUser())
             ]
         );
     }
