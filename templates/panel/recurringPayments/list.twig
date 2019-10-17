@@ -19,8 +19,8 @@
                         <th scope="col">Дата удаления</th>
                         <th scope="col"></th>
 
-                        <!-- <th scope="col">id пользователя</th>
-                        <th scope="col">id реферера</th>
+                        <th scope="col">id пользователя</th>
+                        <!-- <th scope="col">id реферера</th>
                         <th scope="col">Имя</th>
                         <th scope="col">Фамилия</th>
                         <th scope="col">Сумма</th> -->
@@ -39,8 +39,8 @@
                             <td>{{ req.delAt ? req.delAt|date('Y.m.d H:i') }}</td>
                             <td><a href="{{ path('panel_child_delete', {id: req.id}) }}">Удалить</a></td>
 
-                            <!-- <td>{{ req.user.id }}</td>
-                            <td>{{ req.user.referrer.id|default('') }}</td>
+                            <td>{{ req.user.id }}</td>
+                            <!-- <td>{{ req.user.referrer.id|default('') }}</td>
                             <td>{{ req.user.firstName }}</td>
                             <td>{{ req.user.lastName }}</td>
                             <td>{{ req.request.sum }}</td> -->
