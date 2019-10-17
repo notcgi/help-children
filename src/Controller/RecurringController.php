@@ -18,14 +18,14 @@ class RecurringController extends AbstractController
         
         $repository = $this->getDoctrine()->getRepository(Request::class);
         return $this->render(
-            // 'panel/recurringPayments/list.twig',
-            // [
-            //     'recurring' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findAll()
-            // ]
-            'panel/requests.twig',
+            'panel/recurringPayments/list.twig',
             [
-                'entities' => $repository->getRecRequestsWithUsers()
+                'recurring' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findAll()
             ]
+            // 'panel/requests.twig',
+            // [
+            //     'entities' => $repository->getRecRequestsWithUsers()
+            // ]
         );
     }
 

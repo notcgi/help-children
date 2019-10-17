@@ -276,8 +276,7 @@ class DonateController extends AbstractController
                         $entityManager->remove($ur);
                     }
                     $entityManager->flush();
-
-                    $user_requests = $entityManager->getRepository(RequestRepository::class)->findRequestsWithUser($req->getUser());
+                    $user_requests = $entityManager->getRepository(\App\Entity\Request::class)->findRequestsWithUser($req->getUser());
                     if (count($user_requests) > 1) {
                         /** @noinspection PhpMethodParametersCountMismatchInspection */
                         $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
