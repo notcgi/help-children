@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RecurringPayment;
+use App\Entity\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecurringController extends AbstractController
@@ -14,10 +15,16 @@ class RecurringController extends AbstractController
      */
     public function list()
     {
+        
+        $repository = $this->getDoctrine()->getRepository(Request::class);
         return $this->render(
-            'panel/recurringPayments/list.twig',
+            // 'panel/recurringPayments/list.twig',
+            // [
+            //     'recurring' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findAll()
+            // ]
+            'panel/requests.twig',
             [
-                'recurring' => $this->getDoctrine()->getRepository(RecurringPayment::class)->findAll()
+                'entities' => $repository->getRecRequestsWithUsers()
             ]
         );
     }
