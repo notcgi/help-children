@@ -39,7 +39,7 @@
                     <tbody>
                     {% set statuses = {'Active': 'Активна', 'PastDue': 'Просрочена', 'Cancelled': 'Отменена', 'Rejected': 'Отклонена', 'Expired': 'Завершена'} %}
                     {% for rs in rrs %}
-                        <tr {{'Active'==rs.status ? 'style="background: #79ff6120;"'}}>
+                        <tr {{'Active'==rs.status and rs.nsuc ? 'style="background: #79ff6120;"'}}>
                             <!-- <th scope="row">{{ rs.uid }}</th> -->
                             <td>{{ rs.mail}}</td>
                             <td>{{ rs.phone }}</td>

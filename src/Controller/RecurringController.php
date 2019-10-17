@@ -49,7 +49,7 @@ class RecurringController extends AbstractController
                     'dtnext' => substr($urr->NextTransactionDateIso,0,10),
                     'nsuc' => $urr->SuccessfulTransactionsNumber
                 ];
-                $dat[]=substr($urr->LastTransactionDateIso,0,10);
+                $dat[]=substr($urr->LastTransactionDateIso,0,10) ?? 0;
               }
           }
         }
