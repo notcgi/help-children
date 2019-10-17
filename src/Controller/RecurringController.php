@@ -53,7 +53,9 @@ class RecurringController extends AbstractController
               }
           }
         }
+        echo json_encode($dat).PHP_EOL;
         array_multisort($dat, SORT_DESC,$rrs); 
+        echo json_encode($dat);
         return $this->render(
             'panel/recurringPayments/list.twig',
             [
