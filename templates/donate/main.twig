@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="ohf-col-input__row">
-                                    {% if auth_errors %}  <span style="width: 100%;text-align: center;margin-bottom: 1rem;"> {{auth_errors}} </span> {% endif %}
+                                    {% if auth_errors %} <div class="form-error-tooltip" style="bottom: -18px !important;"> <p class="form-error-tooltip__notice"> {{auth_errors}} </p> </div>{% endif %}
                                     <div class="form-group ohf-col-input__row-item">
                                         <input id='phone' class="input-rounded input-fullwidth input-type-phone" type="text" name="phone"
                                                placeholder="Введите номер телефона*" data-type="phone"

@@ -485,7 +485,7 @@ class DonateController extends AbstractController
 
                 if (null==$this->getUser() && !$new){
                     // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
-                    $auth_errors='Неверно введены почта или телефон';
+                    $auth_errors='Указанный номер телефона привязан к другой почте';
                     return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors]);
                 }
                 $req = new \App\Entity\Request();
