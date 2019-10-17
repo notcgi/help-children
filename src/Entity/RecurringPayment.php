@@ -39,6 +39,11 @@ class RecurringPayment
     private $createdAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $del_at;
+
+    /**
      * RecurringPayment constructor.
      * @throws \Exception
      */
@@ -98,6 +103,18 @@ class RecurringPayment
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getDelAt(): ?\DateTimeInterface
+    {
+        return $this->del_at;
+    }
+
+    public function setDelAt(?\DateTimeInterface $del_at): self
+    {
+        $this->del_at = $del_at;
 
         return $this;
     }

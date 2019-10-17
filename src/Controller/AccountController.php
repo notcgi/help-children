@@ -358,7 +358,8 @@ class AccountController extends AbstractController
                 'payments' => $this->getDoctrine()
                     ->getRepository(RecurringPayment::class)
                     ->findBy([
-                        'user' => $this->getUser()
+                        'user'   => $this->getUser(),
+                        'del_at' => null
                     ])
             ]
         );
@@ -437,7 +438,7 @@ class AccountController extends AbstractController
               if ($sgs_ten)
                 $entityManager->remove($sgs_ten);
 
-              $entityManager->remove($payment);
+              $payment->setDelAt(new \DateTime());
 
               /** @noinspection PhpMethodParametersCountMismatchInspection */
               $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
