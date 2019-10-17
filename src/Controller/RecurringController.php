@@ -23,6 +23,7 @@ class RecurringController extends AbstractController
             if(!in_array($ru['id'], $uids))  {$uids[]=$ru['id'];}
         }
         $rrs=[];
+        $dat=[];
         foreach ($uids as $uid) {
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/find");
@@ -34,7 +35,7 @@ class RecurringController extends AbstractController
           $urrs = json_decode(curl_exec ($ch))->Model;
 
         // echo json_encode($urrs);
-          $dat=[];
+          
           curl_close ($ch);
           if ($urrs) {
               foreach ($urrs as $urr) {
