@@ -34,6 +34,7 @@ class RecurringController extends AbstractController
           $urrs = json_decode(curl_exec ($ch))->Model;
 
         // echo json_encode($urrs);
+          $dat=[];
           curl_close ($ch);
           if ($urrs) {
               foreach ($urrs as $urr) {
@@ -48,9 +49,11 @@ class RecurringController extends AbstractController
                     'dtnext' => substr($urr->NextTransactionDateIso,0,10),
                     'nsuc' => $urr->SuccessfulTransactionsNumber
                 ];
+                $dat[]=substr($urr->LastTransactionDateIso,0,10);
               }
           }
         }
+        array_multisort($dat, SORT_DESC,$rrs); 
         return $this->render(
             'panel/recurringPayments/list.twig',
             [
