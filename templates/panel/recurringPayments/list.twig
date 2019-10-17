@@ -9,7 +9,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>                          
+                        <!-- <th scope="col">#</th>    -->                       
                         <th scope="col">E-mail</th>
                         <th scope="col">Телефон</th>    
                         <th scope="col">Статус</th>
@@ -39,8 +39,8 @@
                     <tbody>
                     {% set statuses = {'Active': 'Активна', 'PastDue': 'Просрочена', 'Cancelled': 'Отменена', 'Rejected': 'Отклонена', 'Expired': 'Завершена'} %}
                     {% for rs in rrs %}
-                        <tr>
-                            <th scope="row">{{ rs.uid }}</th>
+                        <tr {{'Active'==rs.status ? 'style="background: #79ff6120;"'}}>
+                            <!-- <th scope="row">{{ rs.uid }}</th> -->
                             <td>{{ rs.mail}}</td>
                             <td>{{ rs.phone }}</td>
                             <td>{{ statuses[rs.status]}}</td>
