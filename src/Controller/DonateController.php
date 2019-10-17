@@ -469,7 +469,7 @@ class DonateController extends AbstractController
                     ?: $request->request->filter('sum', 300, FILTER_VALIDATE_FLOAT),
                 2
             ),
-            'recurent' => (bool) $request->request->get('recurent', true),
+            'recurent' => (bool) $request->request->get('recurent',  $request->query->get('recurent') ??  true),
             'agree' => $request->request->get('agree', 'false')
         ];
         if ($request->isMethod('post')) {

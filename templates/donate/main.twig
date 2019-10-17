@@ -89,7 +89,6 @@
                                             <p class="form-error-tooltip__notice">Введите правильный номер</p>
                                         </div>{% if auth_errors %} <div class="form-error-tooltip" style="display: block; position: relative; left: 0; top: -1px; width: 265px"><div class="form-error-tooltip__arrow"></div> <p class="form-error-tooltip__notice"> {{auth_errors}} </p> </div>{% endif %}
                                     </div>
-                                    
                                     <div class="form-group ohf-col-input__row-item ohf-col-input__row-item__notfirst">
                                         <input id='email' class="input-rounded input-fullwidth" type="email" name="email"
                                                placeholder="Введите E-mail*" value="{{ form.email }}" onclick="hideError('emailError');">
@@ -178,7 +177,7 @@
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
                                             <input class="input-radio__input" type="radio" name="recurent" value="true"
-                                                    {{ form.recurent ? 'checked' }}>
+                                                    {{ form['recurent'] ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Ежемесячная оплата</span>
                                         </label>
@@ -186,7 +185,7 @@
                                     <div class="input-radio payment-count-field">
                                         <label class="input-radio__label">
                                             <input class="input-radio__input" type="radio" name="recurent" id="rad_not_rec" value=""
-                                                    {{ not form.recurent ? 'checked' }}>
+                                                    {{ not form['recurent'] ? 'checked' }}>
                                             <span class="input-radio__radiomark"></span>
                                             <span class="input-radio__label">Единоразовая оплата</span>
                                         </label>
