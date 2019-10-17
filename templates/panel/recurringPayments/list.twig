@@ -37,13 +37,13 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% set statuses = {'Active': 'Активна', 'PastDue': 'Просрочена', 'Cancelled': 'Отменена', 'Rejected': 'Отклонена', 'Expired': 'Завершена'} %}
                     {% for rs in rrs %}
-                        {% set rs.status = {'Active': 'Активна', 'PastDue': 'Просрочена', 'Cancelled': 'Отменена', 'Rejected': 'Отклонена', 'Expired': 'Завершена'} %}
                         <tr>
                             <th scope="row">{{ rs.uid }}</th>
                             <td>{{ rs.mail}}</td>
                             <td>{{ rs.phone }}</td>
-                            <td>{{ rs.status}}</td>
+                            <td>{{ statuses[rs.status]}}</td>
                             <td>{{ rs.nsuc}}</td>
                             <td>{{ rs.dtstart }}</td>
                             <td>{{ rs.dtlast}}</td>
