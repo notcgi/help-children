@@ -57,9 +57,9 @@ class RecurringController extends AbstractController
             $urrs= json_decode(curl_multi_getcontent($urrs))->Model;
             if ($urrs) {
               foreach ($urrs as $urr) {
-                $us=$this->getDoctrine()->getRepository(User::class)->findOneById($uid);
+                $us=$this->getDoctrine()->getRepository(User::class)->findOneById($uids[$idx]);
                 $rrs[]=[
-                    'uid'=> $uid,
+                    'uid'=> $uids[$idx],
                     'mail'=>$us->getEmail(),
                     'phone'=>$us->getPhone(),
                     'status'=>$urr->Status,
