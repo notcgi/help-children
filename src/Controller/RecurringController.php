@@ -24,6 +24,8 @@ class RecurringController extends AbstractController
         }
         $rrs=[];
         $dat=[];
+        $channels=[];
+        $multi = curl_multi_init();
         foreach ($uids as $uid) {
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/find");
@@ -32,12 +34,28 @@ class RecurringController extends AbstractController
           curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
           curl_setopt($ch, CURLOPT_POSTFIELDS, "accountId=".$uid);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          $urrs = json_decode(curl_exec ($ch))->Model;
+          // $urrs = json_decode(curl_exec ($ch))->Model;
+          curl_multi_add_handle($multi, $ch);
+          $channels[$uid] = $ch;
+      }
+      $active = null;
+        do {
+            $mrc = curl_multi_exec($multi, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+         
+        while ($active && $mrc == CURLM_OK) {
+            if (curl_multi_select($multi) == -1) {
+                continue;
+            }
 
-        // echo json_encode($urrs);
-          
-          curl_close ($ch);
-          if ($urrs) {
+            do {
+                $mrc = curl_multi_exec($multi, $active);
+            } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+        }
+        foreach ($channels as $idx=>$urrs) {
+            // echo json_encode((curl_multi_getcontent($urrs)));
+            $urrs= json_decode(curl_multi_getcontent($urrs))->Model;
+            if ($urrs) {
               foreach ($urrs as $urr) {
                 $us=$this->getDoctrine()->getRepository(User::class)->findOneById($uid);
                 $rrs[]=[
@@ -54,7 +72,16 @@ class RecurringController extends AbstractController
                 $dat[]=substr($urr->LastTransactionDateIso,0,10);
               }
           }
+            curl_multi_remove_handle($multi, $channels[$idx]);
         }
+         
+        curl_multi_close($multi);
+
+
+
+
+
+
         array_multisort($dat, SORT_DESC,$rrs); 
         return $this->render(
             'panel/recurringPayments/list.twig',
