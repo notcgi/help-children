@@ -13,6 +13,7 @@
                         <th scope="col">E-mail</th>
                         <th scope="col">Телефон</th>    
                         <th scope="col">Статус</th>
+                        <th scope="col">Сумма</th>
                         <th scope="col">Число платежей</th>
                         <th scope="col">Дата создания</th>
                         <th scope="col">Дата последнего платежа</th>
@@ -44,6 +45,7 @@
                             <td>{{ rs.mail}}</td>
                             <td>{{ rs.phone }}</td>
                             <td>{{ statuses[rs.status]}}</td>
+                            <td>{{ rs.sum}}</td>
                             <td>{{ rs.nsuc}}</td>
                             <td>{{ rs.dtstart }}</td>
                             <td>{{ rs.dtlast}}</td>

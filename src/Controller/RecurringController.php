@@ -45,6 +45,7 @@ class RecurringController extends AbstractController
                     'mail'=>$us->getEmail(),
                     'phone'=>$us->getPhone(),
                     'status'=>$urr->Status,
+                    'sum'=>$urr->Amount,
                     'dtstart' => substr($urr->StartDateIso,0,10),
                     'dtlast' => substr($urr->LastTransactionDateIso,0,10),
                     'dtnext' => substr($urr->NextTransactionDateIso,0,10),

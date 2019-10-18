@@ -352,15 +352,31 @@ class AccountController extends AbstractController
      */
     public function recurrent()
     {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/find");
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+          curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+          curl_setopt($ch, CURLOPT_POSTFIELDS, "accountId=".$this->getUser()->getId());
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $urrs = json_decode(curl_exec ($ch))->Model;
+
+          $rrs=[];
+          curl_close ($ch);
+          if ($urrs) {
+              foreach ($urrs as $urr) {
+                if ($urr->Status=="Active")
+                $rrs[]=[
+                    'id'=> $urr->Id,
+                    'status'=>$urr->Status,
+                    'sum'=>$urr->Amount,
+                ];
+              }
+          }
         return $this->render(
             'account/recurrent.twig',
             [
-                'payments' => $this->getDoctrine()
-                    ->getRepository(RecurringPayment::class)
-                    ->findBy([
-                        'user'   => $this->getUser(),
-                        'del_at' => null
-                    ])
+                'payments' => $rrs
             ]
         );
     }
@@ -380,30 +396,31 @@ class AccountController extends AbstractController
      * @throws \Exception
      */
     public function recurrent_remove(
-        int $id,
+        $id,
         Request $request,
         UrlGeneratorInterface $generator,
         EventDispatcherInterface $dispatcher
     ) {
+        $SubscriptionsId=$id;
         if (!$this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
             return $this->redirect($generator->generate('account_recurrent'));
         }
 
         $doctrine = $this->getDoctrine();
         /** @var RecurringPayment $payment */
-        $payment = $doctrine->getRepository(RecurringPayment::class)->find($id);
+        $payment = $doctrine->getRepository(RecurringPayment::class)->findOneById($this->getUser()->getId());
 
-        if (!$payment || $payment->getUser()->getId() !== $this->getUser()->getId()) {
-            throw $this->createNotFoundException(
-                'Нет платежа с id '.$id
-            );
-        }
+        // if (!$payment || $payment->getUser()->getId() !== $this->getUser()->getId()) {
+        //     throw $this->createNotFoundException(
+        //         'Нет платежа с id '.$id
+        //     );
+        // }
 
-        $entityManager = $this->getDoctrine()->getManager();
-        /** @var \App\Entity\Request $req */
-        $req = $entityManager->getRepository(\App\Entity\Request::class)->find($id);
+        // $entityManager = $this->getDoctrine()->getManager();
+        // /** @var \App\Entity\Request $req */
+        // $req = $entityManager->getRepository(\App\Entity\Request::class)->find($id);
 
-        $SubscriptionsId = $req->getSubscriptionsId();
+        // $SubscriptionsId = $req->getSubscriptionsId();
 
         if (trim($SubscriptionsId)) {
           $ch = curl_init();
@@ -422,11 +439,12 @@ class AccountController extends AbstractController
               $entityManager = $doctrine->getManager();
 
             // удаление соответствующего письма №10
-              $mail_date = \DateTimeImmutable::createFromMutable(
+              if($payment){
+                $mail_date = \DateTimeImmutable::createFromMutable(
                         (new \DateTime($payment->getCreatedAt()->format('Y-m-d')))
                             ->add(new \DateInterval('P28D'))
                             ->setTime(12, 0, 0));
-              $email = $req->getUser()->getEmail();  
+              $email = $this->getUser()->getEmail();  
               $template_id = 'd-1836d6b43e9c437d8f7e436776d1a489';
               
               $sgs_ten = $entityManager->getRepository(SendGridSchedule::class)->findOneBy([
@@ -439,10 +457,10 @@ class AccountController extends AbstractController
                 $entityManager->remove($sgs_ten);
 
               $payment->setDelAt(new \DateTime());
-
+            
               /** @noinspection PhpMethodParametersCountMismatchInspection */
               $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
-              $entityManager->flush();
+              $entityManager->flush();}
           }
         }
 
