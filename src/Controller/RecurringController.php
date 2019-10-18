@@ -16,7 +16,7 @@ class RecurringController extends AbstractController
      */
     public function list()
     {
-        set_time_limit(60)
+        set_time_limit(60);
         $rus=$this->getDoctrine()->getRepository(Request::class)->getRecRequestsWithUsers();
         $uids=[];
         foreach ($rus as $ru) {
