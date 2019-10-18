@@ -152,7 +152,7 @@ account_recurrent_remove:
     methods: post
     controller: App\Controller\AccountController::recurrent_remove
     requirements:
-        id: '\d+'
+        id: '.+'
 
 account_payout_request:
     path: /account/sendPayoutRequest
