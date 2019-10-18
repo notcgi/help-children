@@ -72,6 +72,12 @@ class DonateController extends AbstractController
                 $this->referralHistory($req);
                     $EM->persist($req);
                     $EM->flush();
+
+            $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
+            $ti = array();
+            foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
+            $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
+            $EM->getConnection()->prepare($sql)->execute();
             return new Response(json_encode(["status"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
         }
     }
@@ -88,7 +94,7 @@ class DonateController extends AbstractController
     public function ok(Request $request)
     {
 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isMethod('post')) {
             $id  = $request->request->get('order_id');
@@ -105,9 +111,27 @@ class DonateController extends AbstractController
             $this->referralHistory($req);
             $EM->persist($req);
             $EM->flush();
+            return new Response(json_encode(["code"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        } else{
+            $id  = $request->query->get('Order_ID');
+            /** @var EntityManager $EM */
+            $EM  = $this->getDoctrine()->getManager();
+            $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
+            if (!$req) return new Response('order not found', 404);
+            $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
+            $ti = array();
+            foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
+            $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
+            $EM->getConnection()->prepare($sql)->execute();
+            $req->setStatus(2);
+            $this->referralHistory($req);
+            $EM->persist($req);
+            $EM->flush();
+            return $this->redirectToRoute('account_history');
         }
+
         #help https://symfony.com/doc/current/components/http_foundation.html
-        // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
+        // return new Response(json_encode(["code"=>$sql]), Response::HTTP_OK, ['content-type' => 'text/html']);
         return $this->redirectToRoute('account_history');
     }
 
@@ -151,10 +175,10 @@ class DonateController extends AbstractController
             $req->setStatus(1);
             $EM->persist($req);
             $EM->flush();
-            if ($req -> isRecurent()) {
-            $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
-            else{
-                $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+            // if ($req -> isRecurent()) {
+            // $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
+            // else{
+                $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);//}
             // return new Response(json_encode(["code"=>'0']), Response::HTTP_OK, ['content-type' => 'text/html']);
             return $this->redirectToRoute('donate', $data);
         }
