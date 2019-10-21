@@ -7815,7 +7815,7 @@ body {
     /*margin-left: 8px;*/
 }
 #emError{
-    display: none; position: relative; left: 30%; top: 0px; width: 441px;
+    display: none; position: relative; left: 30%; top: 22px; width: 441px; flex-shrink: 0; min-width: 265px;
 }
 
 @media (max-width:992px) {
@@ -7825,15 +7825,27 @@ body {
 
 }
 @media (max-width:500px) {
+    #emError{
+        width: 100%;
+    }
+
+}
+@media (max-width:500px) {
     .uni{
         transform: scale(0.8);
         margin-left: -10%;
     }
+    #emError{
+        transform: scale(1.25); left: 41px !important; width: 346px;
+    }
+}
 @media (max-width:420px) {
     .uni{
         transform: scale(0.65);
         margin-left: -18%;
     }
-
+    #emError{
+        transform: scale(1.54); left: 88px !important; width: 100%;
+    }
 }
 /*# sourceMappingURL=style.bundle.css.map*/
