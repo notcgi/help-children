@@ -7815,37 +7815,14 @@ body {
     /*margin-left: 8px;*/
 }
 #emError{
-    display: none; position: relative; left: 0; top: -73px; width: 265px; margin-bottom: -73px;
-}
-#emError .form-error-tooltip__arrow{
-    top: 20px; left: 100%; transform: rotate(90deg);
+    display: none; position: relative; left: 30%; top: 0px; width: 441px;
 }
 
 @media (max-width:992px) {
     #emError{
-        display: none;
-        position: relative;
         left: 0;
-        top: 16px;
-        width: 265px;
-        margin-bottom: auto;
-    }
-    #emError .form-error-tooltip__arrow{
-        top: 20px; left: -12px; transform: rotate(-90deg);
     }
 
-}
-@media (max-width:868px) {
-    #emError{
-        display: none;
-        position: relative;
-        width: 265px;   
-    }
-    #emError .form-error-tooltip__arrow{
-        top: -12px;
-        left: 50%;
-        transform: rotate(0);
-    }
 }
 @media (max-width:500px) {
     .uni{
