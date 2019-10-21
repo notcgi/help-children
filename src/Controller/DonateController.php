@@ -300,11 +300,11 @@ class DonateController extends AbstractController
                     foreach ($urs as $ur) {
                         $entityManager->remove($ur);
                     }
-                    $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
+                    $children = $entityManager->getRepository(\App\Entity\Child::class)->getOpened();
                     $ti = array();
                     foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
                     $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
-                    $EM->getConnection()->prepare($sql)->execute();
+                    $entityManager->getConnection()->prepare($sql)->execute();
                     $entityManager->flush();
                     $user_requests = $entityManager->getRepository(\App\Entity\Request::class)->findRequestsWithUser($req->getUser());
                     if (count($user_requests) > 1) {
