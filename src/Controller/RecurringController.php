@@ -58,13 +58,42 @@ class RecurringController extends AbstractController
             if ($urrs) {
               foreach ($urrs as $urr) {
                 $us=$this->getDoctrine()->getRepository(User::class)->findOneById($idx);
+
+
+                // $ch = curl_init();
+                // curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/payments/list");
+                // curl_setopt($ch, CURLOPT_POST, 1);
+                // curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+                // curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                // curl_setopt($ch, CURLOPT_POSTFIELDS, "Date=".$this->getUser()->getId());
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                // $urrs = json_decode(curl_exec ($ch))->Model;
+
+                // $rrs=[];
+                // curl_close ($ch);
+                // if ($urrs) {
+                //   foreach ($urrs as $urr) {
+                //     if ($urr->Status=="Active")
+                //     $rrs[]=[
+                //         'id'=> $urr->Id,
+                //         'status'=>$urr->Status,
+                //         'sum'=>$urr->Amount,
+                //     ];
+                //   }
+                // }
+
+
+                $newDtStart=substr($urr->StartDateIso,0,10);
+                $month= (int) substr($newDtStart,5,2);
+                $newDtStart=substr($newDtStart,0,5).( $month>10 ? $month-1 : '0'.($month-1)).substr($newDtStart,7);
+                echo $newDtStart;
                 $rrs[]=[
                     'uid'=> $idx,
                     'mail'=>$us->getEmail(),
                     'phone'=>$us->getPhone(),
                     'status'=>$urr->Status,
                     'sum'=>$urr->Amount,
-                    'dtstart' => substr($urr->StartDateIso,0,10),
+                    'dtstart' => $newDtStart,
                     'dtlast' => substr($urr->LastTransactionDateIso,0,10),
                     'dtnext' => substr($urr->NextTransactionDateIso,0,10),
                     'nsuc' => $urr->SuccessfulTransactionsNumber

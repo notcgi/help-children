@@ -39,7 +39,7 @@
                         <div class="ohf-row uni"
                              style="display:{{ 'eq' == form['payment-type'] ? 'flex' : 'none' }}; width: 100%">
                              <div class="ohf-row__col ohf-col-label"><span>&nbsp</span></div>
-                            <div class="ohf-row__col emoney">
+                            <div class="ohf-row__col emoney" onclick="hideError('emError');">
                                 <label>
                                 <input class="toggle-field__input" type="radio" name="EMoneyType" required value="1" {{ form.EMoneyType==1 ? 'checked' }}>
                                 <div class="emon"><img src="/images/ya.svg"  height="68px" width="113px"></div>
