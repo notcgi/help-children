@@ -314,6 +314,24 @@ class DonateController extends AbstractController
                     else {
                         /** @noinspection PhpMethodParametersCountMismatchInspection */
                         $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
+                            $user = $req->getUser();
+                            $entityManager->persist(
+                                (new SendGridSchedule())
+                                ->setEmail($user->getEmail())
+                                ->setName($user->getFirstName())
+                                ->setBody([
+                                    'first_name' => $user->getFirstName()
+                                ])
+                                ->setTemplateId('d-31208c031e6e43f3adbc3aa10c196121')
+                                ->setSendAt(
+                                    \DateTimeImmutable::createFromMutable(
+                                        (new \DateTime())
+                                        ->add(new \DateInterval('P21D'))
+                                        ->setTime(12, 0, 0)
+                                    )
+                                )
+                            );
+                            $entityManager->flush();
                         if (!$req->isRecurent()) {
                             // Письмо №10
                             $user = $req->getUser();
@@ -386,6 +404,40 @@ class DonateController extends AbstractController
                     foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
                     $sql = 'insert into children_requests (`child`,`request`, `sum`) values '.implode(',', $ti);
                     $entityManager->getConnection()->prepare($sql)->execute();
+
+
+                    $user_requests = $entityManager->getRepository(\App\Entity\Request::class)->findRequestsWithUser($req->getUser());
+                    if (count($user_requests) > 1) {
+                        /** @noinspection PhpMethodParametersCountMismatchInspection */
+                        $dispatcher->dispatch(new RequestSuccessEvent($req), RequestSuccessEvent::NAME);
+                    }
+                    else {
+                        /** @noinspection PhpMethodParametersCountMismatchInspection */
+                        $dispatcher->dispatch(new FirstRequestSuccessEvent($req), FirstRequestSuccessEvent::NAME);
+                            $user = $req->getUser();
+                            $entityManager->persist(
+                                (new SendGridSchedule())
+                                ->setEmail($user->getEmail())
+                                ->setName($user->getFirstName())
+                                ->setBody([
+                                    'first_name' => $user->getFirstName()
+                                ])
+                                ->setTemplateId('d-31208c031e6e43f3adbc3aa10c196121')
+                                ->setSendAt(
+                                    \DateTimeImmutable::createFromMutable(
+                                        (new \DateTime())
+                                        ->add(new \DateInterval('P21D'))
+                                        ->setTime(12, 0, 0)
+                                    )
+                                )
+                            );
+                            $entityManager->flush();
+                        }
+
+
+
+
+
                     $req->setStatus(2);
                     $this->referralHistory($req);
                     $entityManager->persist($req);
