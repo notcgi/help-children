@@ -427,7 +427,10 @@ function validate_donate() {
         document.getElementById('checkboxError').style.display = 'block';
         isValid = false;
     }
-
+    if (!document.querySelector('input[name="EMoneyType"]:checked')) {
+        document.getElementById('emError').style.display = 'block';
+        isValid = false;        
+    }
     let firstNameInput = document.querySelector('#name').value;    
     let emailInput = document.querySelector('#email').value;
     let phoneInput = document.querySelector('#phone').value.replace(/\D/gi, '');
