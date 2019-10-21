@@ -86,7 +86,6 @@ class RecurringController extends AbstractController
                 $newDtStart=substr($urr->StartDateIso,0,10);
                 $month= (int) substr($newDtStart,5,2);
                 $newDtStart=substr($newDtStart,0,5).( $month>10 ? $month-1 : '0'.($month-1)).substr($newDtStart,7);
-                echo $newDtStart;
                 $rrs[]=[
                     'uid'=> $idx,
                     'mail'=>$us->getEmail(),
