@@ -4459,7 +4459,7 @@ body {
     .hero-row {
         background: url(/images/children.png) no-repeat bottom right;
         background-size: 350px;
-        background-position-x: 310px;
+        background-position-x: 270px;
         padding-right: 0rem;
         margin-right: -13px;
     }
@@ -6089,6 +6089,14 @@ body {
     border-bottom: none;
 }
 
+				.link-back-mobile {
+            display: none !important;
+        }
+
+        .link-back-desktop {
+            display: block !important;
+        }
+
 @media (max-width:769px) {
     .link-back {
         display: block;
@@ -6096,6 +6104,12 @@ body {
         margin-bottom: 20px;
         width: fit-content;
     }
+						.link-back-mobile {
+                display: block !important;
+            }
+            .link-back-desktop {
+                display: none !important;
+            }
 }
 
 .link-back>.icon {
