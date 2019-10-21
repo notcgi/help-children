@@ -7649,7 +7649,7 @@ body {
 }
 
 .WantHelpButtonBlock {
-    display: none;
+    display: none !important;
 }
 
 @media (max-width:520px) {
