@@ -46,9 +46,9 @@
                             <td>{{ rs.phone }}</td>
                             <td>{{ statuses[rs.status]}}</td>
                             <td>{{ rs.sum}}</td>
-                            <td>{{ rs.nsuc}}</td>
-                            <td>{{ rs.dtstart }}</td>
-                            <td>{{ rs.dtlast}}</td>
+                            <td>{{ rs.nsuc+1}}</td>
+                            <td>{{ rs.dtstart==rs.dtnext ? '' : rs.dtstart }}</td>
+                            <td>{{ rs.dtlast }}</td>
                             <td>{{ rs.dtnext }}</td>
                             {# note: 
                             <td><a href="{{ path('panel_child_delete', {id: rs.uid}) }}">Удалить</a></td>
