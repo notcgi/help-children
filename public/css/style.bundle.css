@@ -2630,6 +2630,10 @@ a.pswp__share--download:hover {
     color: #BBB;
 }
 
+@media (max-width:400px) .hero-row {
+   background-position-x: 230px !important;
+}
+
 .pswp__caption__center {
     text-align: left;
     max-width: 420px;
