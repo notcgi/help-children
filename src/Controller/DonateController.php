@@ -326,8 +326,7 @@ class DonateController extends AbstractController
                                 ->setSendAt(
                                     \DateTimeImmutable::createFromMutable(
                                         (new \DateTime())
-                                        ->add(new \DateInterval('P21D'))
-                                        ->setTime(12, 0, 0)
+                                        ->add(new \DateInterval('PT3M'))
                                     )
                                 )
                             );
