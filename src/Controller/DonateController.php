@@ -232,7 +232,7 @@ class DonateController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         /** @var \App\Entity\Request $req */
-        if (array_key_exists('SubscriptionId', $form)){
+        if (array_key_exists('InvoiceId', $form)){
             $req = $entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId']);
 
             // Если не нашёл такого платежа - возможно, он рекуррентный
