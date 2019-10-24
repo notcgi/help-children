@@ -206,7 +206,7 @@ class DonateController extends AbstractController
         if ($req -> isRecurent()) {
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
         else{
-                $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+            $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
 
         // Убрать напоминание о завершении платежа
         $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
@@ -326,7 +326,7 @@ class DonateController extends AbstractController
                                 ->setSendAt(
                                     \DateTimeImmutable::createFromMutable(
                                         (new \DateTime())
-                                        ->add(new \DateInterval('PT3M'))
+                                        ->add(new \DateInterval('P21D'))
                                     )
                                 )
                             );
@@ -384,6 +384,11 @@ class DonateController extends AbstractController
                 break;
                 case 'canceled':// ?
                     $req->setStatus(1);
+                    if ($req -> isRecurent()) {
+                        $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
+                    else{
+                        $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+
             }
 
             $entityManager->persist($req->setUpdatedAt(new \DateTime()));
@@ -642,9 +647,9 @@ class DonateController extends AbstractController
     public function sendReminder(Request $request, EventDispatcherInterface $dispatcher) {
         $email = $request->request->get('email');
         $name = $request->request->get('name');
-        $date = new DateTime($request->request->get('date'));
+        $date = new \DateTime($request->request->get('date'));
 
-        $match_date = new DateTime($timestamp);
+        $match_date = new \DateTime($timestamp);
         $interval = $date->diff($match_date);
 
         $today = false;
