@@ -201,7 +201,8 @@ class DonateController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user_id = $form['AccountId'];
         $user = $entityManager->getRepository(User::class)->find($user_id);
-        $req = (new \App\Entity\Request())->setUser($user);
+        // $req = (new \App\Entity\Request())->setUser($user);
+        $req = ($entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId'])) ?? (new \App\Entity\Request())->setUser($user);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         if ($req -> isRecurent()) {
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
