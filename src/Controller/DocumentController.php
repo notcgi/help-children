@@ -57,22 +57,20 @@ class DocumentController extends AbstractController
                 $EM->flush();
 
                 // SEND MAIL 12
-                // $users = $this->getDoctrine()->getRepository(User::class)->getAll();
-                $users=[];
-                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => 'ersh@nxt.ru']);
-                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => 'fond.detyam@mail.ru']);
-                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => 'salomonersh@gmail.com']);
-                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => 'ivanovpetr667@gmail.com']);
-                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => 'kolesniko.r@yandex.ru']);
+                $users = $this->getDoctrine()->getRepository(User::class)->getAll();
                 foreach ($users as $user) {
                     $mail = $sg->getMail(
                         $user->getEmail(),
                         $user->getFirstName(),
                         [
-                                    'first_name' => $user->getFirstName()
+                            'first_name' => $user->getFirstName(),
+                            'docdate'    => $document->getNameDate(),
+                            'docname'    => $document->getTitle(),
+                            'docsrc'     => $document->getFile(),
+                            'fs'         => $document->getFilesize()
                         ]
                     );
-                    $mail->setTemplateId('d-31208c031e6e43f3adbc3aa10c196121');
+                    $mail->setTemplateId('d-af64459f4a5c46158550ce4336c17892');
                     $sg->send($mail);
                 }
                 // END SEND
