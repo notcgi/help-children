@@ -57,7 +57,13 @@ class DocumentController extends AbstractController
                 $EM->flush();
 
                 // SEND MAIL 12
-                $users = $this->getDoctrine()->getRepository(User::class)->getAll();
+                // $users = $this->getDoctrine()->getRepository(User::class)->getAll();
+                $users=[];
+                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneByEmail('ersh@nxt.ru');
+                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneByEmail('fond.detyam@mail.ru');
+                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneByEmail('salomonersh@gmail.com');
+                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneByEmail('ivanovpetr667@gmail.com');
+                $users[]=$this->getDoctrine()->getRepository(User::class)->findOneByEmail('kolesniko.r@yandex.ru');
                 foreach ($users as $user) {
                     $mail = $sg->getMail(
                         $user->getEmail(),
