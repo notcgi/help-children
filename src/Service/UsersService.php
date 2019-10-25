@@ -71,7 +71,7 @@ class UsersService
                 ->setBody([
                     'first_name' => $user->getFirstName()
                 ])
-                ->setTemplateId(($data['recurent']) ? 'd-a48d63b8f41c4020bd112a9f1ad31426' :'d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -94,7 +94,7 @@ class UsersService
                 ->setBody([
                     'first_name' => $puser->getFirstName()
                 ])
-                ->setTemplateId(($data['recurent']) ? 'd-a48d63b8f41c4020bd112a9f1ad31426' :'d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -153,7 +153,7 @@ class UsersService
                 ->setBody([
                     'first_name' => $user->getFirstName()
                 ])
-                ->setTemplateId(($data['recurent']) ? 'd-a48d63b8f41c4020bd112a9f1ad31426' :'d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
