@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\SendGridSchedule;
 use App\Entity\User;
+use App\Entity\Child;
 use App\Event\RegistrationEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -60,6 +61,11 @@ class UsersService
         /** @var User $user */
         $user = $userRepository->findOneBy(['email' => $data['email']]);
 
+        $childs= $this->doctrine->getRepository(\App\Entity\Child::class)->getOpened();
+        $chnames=[];
+        foreach ($childs as $child) {
+            $chnames[]=$child->getName();
+        }
         if ($user) {
             $entityManager = $this->doctrine->getManager();            
     
@@ -68,8 +74,11 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
-                ->setBody([
+                ->setBody(($data['recurent']) ? [
                     'first_name' => $user->getFirstName()
+                ] : [
+                    'first_name' => $user->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
                 ])
                 ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -91,8 +100,11 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($puser->getEmail())
                 ->setName($puser->getFirstName())
-                ->setBody([
+                ->setBody(($data['recurent']) ? [
                     'first_name' => $puser->getFirstName()
+                ] : [
+                    'first_name' => $user->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
                 ])
                 ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -150,8 +162,11 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
-                ->setBody([
+                ->setBody(($data['recurent']) ? [
                     'first_name' => $user->getFirstName()
+                ] : [
+                    'first_name' => $user->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
                 ])
                 ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
