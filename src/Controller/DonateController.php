@@ -206,9 +206,10 @@ class DonateController extends AbstractController
         /** @noinspection PhpMethodParametersCountMismatchInspection */
         if (!($req -> isRecurent())) {
             $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
-
         else{
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
+        file_put_contents(dirname(__DIR__)."/../var/logs/failreq.log", date("d.m.Y H:i:s")."rec?".($req -> isRecurent()).'fail \n', FILE_APPEND);
+
         // Убрать напоминание о завершении платежа
         $urs = $entityManager->getRepository(SendGridSchedule::class)->findUnfinished($req->getUser()->getEmail());
         foreach ($urs as $ur) {
@@ -385,12 +386,11 @@ class DonateController extends AbstractController
                 break;
                 case 'canceled':// ?
                     $req->setStatus(1);
-                    if (!($req -> isRecurent())) {
-                        $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
-
-                    else{
+                    if ($req -> isRecurent()) {
                         $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
-
+                    else{
+                        $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+                    file_put_contents(dirname(__DIR__)."/../var/logs/failreq.log", date("d.m.Y H:i:s")."rec?".($req -> isRecurent()).'status \n', FILE_APPEND);
             }
 
             $entityManager->persist($req->setUpdatedAt(new \DateTime()));
