@@ -38,10 +38,11 @@ class SendGridScheduleRepository extends ServiceEntityRepository
     public function findUnfinished($email): array
     {
         return $this->createQueryBuilder('sgs')
-            ->where('sgs.email = :email AND sgs.sent=0 AND sgs.template_id=:template')            
+            ->where('sgs.email = :email AND sgs.sent=0 AND (sgs.template_id=:template OR sgs.template_id=:templater) ')            
             ->setParameters([
                 'email' => $email,
-                'template' => 'd-a5e99ed02f744cb1b2b8eb12ab4764b5'
+                'template' => 'd-a5e99ed02f744cb1b2b8eb12ab4764b5',
+                'templater' => 'd-a48d63b8f41c4020bd112a9f1ad31426'
             ])
             ->getQuery()
             ->getResult();
