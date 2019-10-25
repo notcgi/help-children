@@ -93,7 +93,7 @@ class UsersService
             // return [$user,False];
         }
         $puser = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult();
-        if (isset($puser)) {
+        if (isset($puser) and !$user) {
             $entityManager = $this->doctrine->getManager();
             // Завершение платежа
             $entityManager->persist(
