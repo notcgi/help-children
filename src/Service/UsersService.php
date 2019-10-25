@@ -75,7 +75,7 @@ class UsersService
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
-                        ->add(new \DateInterval('PT2S'))                            
+                        ->add(new \DateInterval('PT10M'))                            
                     )
                 )                    
             );
@@ -98,7 +98,7 @@ class UsersService
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
-                        ->add(new \DateInterval('PT2S'))                            
+                        ->add(new \DateInterval('PT10M'))                            
                     )
                 )                    
             );
@@ -157,7 +157,7 @@ class UsersService
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
-                        ->add(new \DateInterval('PT2S'))                            
+                        ->add(new \DateInterval('PT10M'))                            
                     )
                 )                    
             );
