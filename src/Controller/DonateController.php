@@ -385,10 +385,11 @@ class DonateController extends AbstractController
                 break;
                 case 'canceled':// ?
                     $req->setStatus(1);
-                    if (($req -> isRecurent())) {
-                        $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
-                    else{
+                    if (!($req -> isRecurent())) {
                         $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+
+                    else{
+                        $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
 
             }
 
