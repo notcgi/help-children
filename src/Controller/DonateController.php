@@ -204,7 +204,7 @@ class DonateController extends AbstractController
         // $req = (new \App\Entity\Request())->setUser($user);
         $req = ($entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId'])) ?? (new \App\Entity\Request())->setUser($user);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        if ($req -> isRecurent()) {
+        if (!($req -> isRecurent())) {
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
         else{
             $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
@@ -385,7 +385,7 @@ class DonateController extends AbstractController
                 break;
                 case 'canceled':// ?
                     $req->setStatus(1);
-                    if ($req -> isRecurent()) {
+                    if (!($req -> isRecurent())) {
                         $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
                     else{
                         $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
