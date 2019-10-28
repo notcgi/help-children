@@ -207,7 +207,7 @@ class DonateController extends AbstractController
         if ($form['Data']) {
             $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
         else{
-            $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);//}
+            $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);}
         file_put_contents(dirname(__DIR__)."/../var/logs/failreq.log", date("d.m.Y H:i:s")."rec?".($req -> isRecurent()).'fail \n', FILE_APPEND);
 
         // Убрать напоминание о завершении платежа
