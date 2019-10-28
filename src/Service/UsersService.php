@@ -75,9 +75,10 @@ class UsersService
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
                 ->setBody( [
-                    'first_name' => $user->getFirstName()
-                ] )
-                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                    'first_name' => $user->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
+                ])
+                ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -98,9 +99,10 @@ class UsersService
                 ->setEmail($puser->getEmail())
                 ->setName($puser->getFirstName())
                 ->setBody( [
-                    'first_name' => $puser->getFirstName()
-                ] )
-                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                    'first_name' => $puser->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
+                ])
+                ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -157,9 +159,10 @@ class UsersService
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
                 ->setBody( [
-                    'first_name' => $user->getFirstName()
-                ] )
-                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
+                    'first_name' => $user->getFirstName(),
+                    'childs' => implode("<br>", $chnames)
+                ])
+                ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
