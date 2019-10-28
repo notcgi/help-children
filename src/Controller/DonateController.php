@@ -204,9 +204,9 @@ class DonateController extends AbstractController
         // $req = (new \App\Entity\Request())->setUser($user);
         $req = ($entityManager->getRepository(\App\Entity\Request::class)->find($form['InvoiceId'])) ?? (new \App\Entity\Request())->setUser($user);
         /** @noinspection PhpMethodParametersCountMismatchInspection */
-        // if (!($req -> isRecurent())) {
-        //     $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
-        // else{
+        if ($form['Data']) {
+            $dispatcher->dispatch(new PaymentFailure($req), PaymentFailure::NAME);}
+        else{
             $dispatcher->dispatch(new RecurringPaymentFailure($req), RecurringPaymentFailure::NAME);//}
         file_put_contents(dirname(__DIR__)."/../var/logs/failreq.log", date("d.m.Y H:i:s")."rec?".($req -> isRecurent()).'fail \n', FILE_APPEND);
 
