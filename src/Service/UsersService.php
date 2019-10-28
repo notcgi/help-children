@@ -74,13 +74,10 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
-                ->setBody(($data['recurent']) ? [
+                ->setBody( [
                     'first_name' => $user->getFirstName()
-                ] : [
-                    'first_name' => $user->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
-                ])
-                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
+                ] )
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -100,13 +97,10 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($puser->getEmail())
                 ->setName($puser->getFirstName())
-                ->setBody(($data['recurent']) ? [
+                ->setBody( [
                     'first_name' => $puser->getFirstName()
-                ] : [
-                    'first_name' => $user->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
-                ])
-                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
+                ] )
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
@@ -162,13 +156,10 @@ class UsersService
                 (new SendGridSchedule())
                 ->setEmail($user->getEmail())
                 ->setName($user->getFirstName())
-                ->setBody(($data['recurent']) ? [
+                ->setBody( [
                     'first_name' => $user->getFirstName()
-                ] : [
-                    'first_name' => $user->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
-                ])
-                ->setTemplateId(($data['recurent']) ? 'd-a5e99ed02f744cb1b2b8eb12ab4764b5' :'d-a48d63b8f41c4020bd112a9f1ad31426')
+                ] )
+                ->setTemplateId('d-a5e99ed02f744cb1b2b8eb12ab4764b5')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
                         (new \DateTime())
