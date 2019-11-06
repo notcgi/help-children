@@ -651,7 +651,7 @@ class DonateController extends AbstractController
         $name = $request->request->get('name');
         $date = new \DateTime($request->request->get('date'));
 
-        $match_date = new \DateTime($timestamp);
+        $match_date = new \DateTime();
         $interval = $date->diff($match_date);
 
         $today = false;
@@ -667,14 +667,15 @@ class DonateController extends AbstractController
         $user = $doctrine->getRepository(User::class)->findOneBy([
             'email' => $email
         ]);
-
-        if (null !== $user->getRefCode())
-            $code = $user->getRefCode();
-        else {
-            $code = substr(md5(random_bytes(20)), 0, 16);
-            $user->setRefCode($code);
-            $doctrine->getManager()->persist($user);
-            $doctrine->getManager()->flush();
+        if ($user){
+            if (null !== $user->getRefCode())
+                $code = $user->getRefCode();
+            else {
+                $code = substr(md5(random_bytes(20)), 0, 16);
+                $user->setRefCode($code);
+                $doctrine->getManager()->persist($user);
+                $doctrine->getManager()->flush();
+            }
         }
 
         if (!isset($email) || !isset($name) || !isset($date))

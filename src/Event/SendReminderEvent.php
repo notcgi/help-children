@@ -18,7 +18,7 @@ class SendReminderEvent extends Event
     private $code;
     private $today;
 
-    function __construct($email, $name, $date, $lastName, $phone, $code) {
+    function __construct($email, $name, $date, $lastName, $phone, $code, $today) {
         $this->email = $email;
         $this->name = $name;
         $this->date = $date;
