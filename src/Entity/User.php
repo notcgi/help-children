@@ -271,6 +271,11 @@ class User implements UserInterface
 
     public function getRefCode(): ?string
     {
+        if (null !== $this->ref_code)
+            return $this->ref_code;
+        else { 
+            $this->ref_code = substr(md5(random_bytes(20)), 0, 16);
+        }
         return $this->ref_code;
     }
 

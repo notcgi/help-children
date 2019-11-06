@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UsersService
 {
@@ -24,6 +25,8 @@ class UsersService
      */
     public $doctrine;
 
+    private $generator;
+
     public $request;
 
     public $session;
@@ -35,6 +38,7 @@ class UsersService
     public function __construct(
         ManagerRegistry $doctrine,
         SessionInterface $session,
+        UrlGeneratorInterface $generator,
         UserPasswordEncoderInterface $passwordEncoder,
         EventDispatcherInterface $dispatcher
     ) {
@@ -42,6 +46,7 @@ class UsersService
         $this->session = $session;
         $this->passwordEncoder = $passwordEncoder;
         $this->dispatcher = $dispatcher;
+        $this->generator = $generator;
     }
 
     /**
@@ -76,7 +81,11 @@ class UsersService
                 ->setName($user->getFirstName())
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
+                    'childs' => implode("<br>", $chnames),
+                    'url' => $this->generator->generate('donate', [
+                        'code' => $user->getRefCode(),
+                        'email' => $user->getEmail()
+                    ], 0)
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -100,7 +109,11 @@ class UsersService
                 ->setName($puser->getFirstName())
                 ->setBody( [
                     'first_name' => $puser->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
+                    'childs' => implode("<br>", $chnames),
+                    'url' => $this->generator->generate('donate', [
+                        'code' => $puser->getRefCode(),
+                        'email' => $puser->getEmail()
+                    ], 0)
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -160,7 +173,11 @@ class UsersService
                 ->setName($user->getFirstName())
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
-                    'childs' => implode("<br>", $chnames)
+                    'childs' => implode("<br>", $chnames),
+                    'url' => $this->generator->generate('donate', [
+                        'code' => $user->getRefCode(),
+                        'email' => $user->getEmail()
+                    ], 0)
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(

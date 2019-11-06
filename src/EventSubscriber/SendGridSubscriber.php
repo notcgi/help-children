@@ -179,7 +179,11 @@ class SendGridSubscriber implements EventSubscriberInterface
             $user->getEmail(),
             $user->getFirstName(),
             [
-                'first_name' => $user->getFirstName()
+                'first_name' => $user->getFirstName(),
+                'url' => $this->generator->generate('reports', [
+                    'code' => $user->getRefCode(),
+                    'email' => $user->getEmail()
+                ], 0)
             ]
         );
         $mail->setTemplateId('d-07888ea4b98c44278e218c6d1f365549');
@@ -335,7 +339,11 @@ class SendGridSubscriber implements EventSubscriberInterface
             $user->getFirstName(),
             [
                 'first_name' => $user->getFirstName(),
-                'childs' => implode("<br>", $chnames)
+                'childs' => implode("<br>", $chnames),
+                'url' => $this->generator->generate('donate', [
+                    'code' => $user->getRefCode(),
+                    'email' => $user->getEmail()
+                ], 0)
             ]
         );
         $mail->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426');
