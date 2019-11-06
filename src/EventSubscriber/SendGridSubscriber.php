@@ -394,8 +394,7 @@ class SendGridSubscriber implements EventSubscriberInterface
             ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
             ->setSendAt(
                 \DateTimeImmutable::createFromMutable(
-                    (new \DateTime('NOW'))
-                    ->add(new DateInterval('PT2H'))
+                    (new \DateTime('NOW  +2 hour'))
                 )
             ));
         }
@@ -416,7 +415,7 @@ class SendGridSubscriber implements EventSubscriberInterface
                 ->setTemplateId('d-7e5881310e7447599243855b1c12d2af')
                 ->setSendAt(
                     \DateTimeImmutable::createFromMutable(
-                        (new \DateTime($event->getDate()))
+                        ($event->getDate())
                         ->setTime(12, 0, 0)
                     )
                 ));
