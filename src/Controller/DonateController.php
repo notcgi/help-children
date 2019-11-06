@@ -8,9 +8,12 @@ use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
 use App\Event\RecurringPaymentFailure;
 use App\Event\PaymentFailure;
+use App\Event\EmailConfirm;
 use App\Event\SendReminderEvent;
 use App\Event\HalfYearRecurrentEvent;
 use App\Event\YearRecurrentEvent;
+use App\Form\ResetPasswordFormType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Service\UnitellerService;
 use App\Service\UsersService;
 use Doctrine\ORM\EntityManager;
@@ -481,6 +484,7 @@ class DonateController extends AbstractController
         UnitellerService $unitellerService,
         SessionInterface $session,
         EventDispatcherInterface $dispatcher,
+        UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator
     ) {
@@ -495,7 +499,7 @@ class DonateController extends AbstractController
                 '+7',
                 $phone
             );
-        if (!$this->isGranted('ROLE_USER') && isset($code)) {
+        if (isset($code)) {
             $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository(User::class)->findOneBy([
                 'ref_code' => $code,
@@ -503,12 +507,34 @@ class DonateController extends AbstractController
             ]);
 
             if ($user) {
-                $guardHandler->authenticateUserAndHandleSuccess(
-                    $user,
-                    $request,
-                    $authenticator,
-                    'main' // firewall name in security.yaml
-                );
+                if ($user->getPass() == null) {
+                    $title = 'Завершение регистрации';
+                    $description = 'Для продолжения регистрации введите свой пароль';
+                    $value = 'Продолжить';
+                    
+                    $form1 = $this->createForm(ResetPasswordFormType::class, $user);
+                    $form1->handleRequest($request);
+
+                    if (!$form1->isSubmitted()) {
+                        return $this->render('auth/resetPassword.twig', 
+                        ['form' => $form1->createView(), 'title' => $title, 'description' => $description, 'value' => $value]);
+                    }                                 
+                    // encode the plain password
+                    $user->setPass(
+                        $passwordEncoder->encodePassword(
+                            $user,
+                            $form1->get('password')->getData()
+                        )
+                    );                
+                }
+
+                if ($user) {
+                    $doctrine->getManager()->persist($user->setRefCode(null));
+                    $doctrine->getManager()->persist($user->setConfirmed(1));
+                    $doctrine->getManager()->flush();
+                    $this->addFlash('code_confirm', 'E-mail подтверждён');
+                    $dispatcher->dispatch(new EmailConfirm($user), EmailConfirm::NAME);
+                }
             }
         }
 
