@@ -403,27 +403,27 @@ class AccountController extends AbstractController
         UrlGeneratorInterface $generator,
         EventDispatcherInterface $dispatcher
     ) {
-        $SubscriptionsId=$id;
         if (!$this->isCsrfTokenValid('delete-item', $request->request->get('token'))) {
             return $this->redirect($generator->generate('account_recurrent'));
         }
 
         $doctrine = $this->getDoctrine();
-        /** @var RecurringPayment $payment */
-        $payment = $doctrine->getRepository(RecurringPayment::class)->findOneById($this->getUser()->getId());
+        // /** @var RecurringPayment $payment */
+        $payment = $doctrine->getRepository(RecurringPayment::class)->findOneByUser($this->getUser()->getId());
 
-        // if (!$payment || $payment->getUser()->getId() !== $this->getUser()->getId()) {
-        //     throw $this->createNotFoundException(
-        //         'Нет платежа с id '.$id
-        //     );
-        // }
+        // // if (!$payment || $payment->getUser()->getId() !== $this->getUser()->getId()) {
+        // //     throw $this->createNotFoundException(
+        // //         'Нет платежа с id '.$id
+        // //     );
+        // // }
 
-        // $entityManager = $this->getDoctrine()->getManager();
-        // /** @var \App\Entity\Request $req */
-        // $req = $entityManager->getRepository(\App\Entity\Request::class)->find($id);
+        // // $entityManager = $this->getDoctrine()->getManager();
+        // // /** @var \App\Entity\Request $req */
+        // // $req = $entityManager->getRepository(\App\Entity\Request::class)->find($id);
 
-        // $SubscriptionsId = $req->getSubscriptionsId();
+        // // $SubscriptionsId = $req->getSubscriptionsId();
 
+        $SubscriptionsId=$id;
         if (trim($SubscriptionsId)) {
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/cancel");
@@ -462,10 +462,10 @@ class AccountController extends AbstractController
 
               /** @noinspection PhpMethodParametersCountMismatchInspection */
               $dispatcher->dispatch(new RecurringPaymentRemove($payment), RecurringPaymentRemove::NAME);
-              $entityManager->flush();}
+              $entityManager->flush();
           }
         }
-
+      }
         return $this->redirect($generator->generate('account_recurrent'));
     }
 
