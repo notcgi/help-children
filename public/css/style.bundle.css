@@ -7649,7 +7649,7 @@ body {
 }
 
 .WantHelpButtonBlock {
-    display: none !important;
+    display: none;
 }
 
 @media (max-width:520px) {
@@ -7848,4 +7848,13 @@ body {
         transform: scale(1.54); left: 88px !important; width: 100%;
     }
 }
+@media (max-width:350px) {
+  .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup {
+    width:300px;
+  }
+  .donate-form-wrapper {
+    padding:40px 0;
+  }
+}
+
 /*# sourceMappingURL=style.bundle.css.map*/
