@@ -7660,7 +7660,6 @@ body {
         flex-direction: column;
     }
     .WantHelpButtonBlock {
-        display: block;
         position: sticky;
         bottom: 0px;
         padding: 15px 0;
