@@ -7946,4 +7946,12 @@ body {
     }
 
 }
+@media (max-width:350px) {
+  .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup {
+    width:300px;
+  }
+  .donate-form-wrapper {
+    padding:40px 0;
+  }
+}
 /*# sourceMappingURL=style.bundle.css.map*/
