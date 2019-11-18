@@ -444,11 +444,11 @@ function validate_donate() {
     document.getElementById('phoneError').style.display = 'none';    
     document.getElementById('emError').style.display = 'none';    
     
-    if ((phoneInput.length < 10 || phoneInput.length > 13) && location.pathname!="/donate") {        
-        document.getElementById('phoneError').style.display = 'block';
-        $('#phoneError').scrollView();
-        isValid = false;
-    }
+    // if ((phoneInput.length < 10 || phoneInput.length > 13) && location.pathname!="/donate") {        
+    //     document.getElementById('phoneError').style.display = 'block';
+    //     $('#phoneError').scrollView();
+    //     isValid = false;
+    // }
 
     let emailPattern = ".+@.+\..+";              
     if (!emailInput.match(emailPattern)) {        
