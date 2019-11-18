@@ -106,6 +106,10 @@ donate:
 donate_ok:
     path: /donate/ok
     controller: App\Controller\DonateController::ok
+    
+thanks:
+    path: /donate/thanks
+    controller: App\Controller\DonateController::thanks
 
 donate_no:
     path: /donate/no

@@ -130,12 +130,17 @@ class DonateController extends AbstractController
             $this->referralHistory($req);
             $EM->persist($req);
             $EM->flush();
-            return $this->redirectToRoute('account_history');
+            return $this->redirectToRoute('thanks');
         }
 
         #help https://symfony.com/doc/current/components/http_foundation.html
         // return new Response(json_encode(["code"=>$sql]), Response::HTTP_OK, ['content-type' => 'text/html']);
         return $this->redirectToRoute('account_history');
+    }
+
+    public function thanks (Request $request, EventDispatcherInterface $dispatcher)
+    {
+        return $this->render('donate/thanks.twig');
     }
 
     /**
@@ -602,7 +607,7 @@ class DonateController extends AbstractController
             }
         }
 
-        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors]);
+        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user)]);
     }
 
     /**

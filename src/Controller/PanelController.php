@@ -48,10 +48,47 @@ class PanelController extends AbstractController
      */
     public function users()
     {
+        $data=[];
+        $users=$this->getDoctrine()->getRepository(User::class)->findBy([], ['createdAt' => 'DESC']);;
+        foreach ($users as $idx => $us) {
+
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/find");
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+          curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+          curl_setopt($ch, CURLOPT_POSTFIELDS, "accountId=".$this->getUser()->getId());
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $urrs = json_decode(curl_exec ($ch))->Model;
+
+          $rrs=[];
+          curl_close ($ch);
+          if ($urrs) {
+              foreach ($urrs as $urr) {
+                if ($urr->Status=="Active")
+                $rrs[]=[
+                    'id'=> $urr->Id,
+                    'status'=>$urr->Status,
+                    'sum'=>$urr->Amount,
+                ];
+              }
+          }
+          $hasrec= ($rrs!=[]);
+            $data[$idx]=[
+                "firstName"=>$us->getFirstName(),
+                "lastName"=>$us->getlastName(),
+                "email"=>$us->getemail(),
+                "birthday"=>$us->getbirthday(),
+                "Phone"=>$us->getPhone(),
+                "CreatedAt"=>$us->getCreatedAt(),
+                "id"=>$us->getid(),
+                "hasrec"=>$hasrec
+            ];
+        }
         return $this->render(
             'panel/users/users.twig',
             [
-                'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+                'users' => $data
             ]
         );
     }
