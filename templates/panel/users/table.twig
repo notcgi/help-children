@@ -10,6 +10,8 @@
             <th scope="col">Телефон</th>
             <th scope="col">Дата регистрации</th>
             <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -23,7 +25,8 @@
                 <td>{{ user.Phone }}</td>
                 <td>{{ user.CreatedAt|date('Y.m.d H:i') }}</td>
                 <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
-                <td><a href="/panel/users/{{ user.id }}/delete">Удалить</a></td>
+                <td>{% if user.hasrec %} Подписка {% else %}<a href="/panel/users/{{ user.id }}/delete">Удалить</a>{% endif %}</td>
+                <td>{{ user.hasrec }}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
+// use Symfony\Component\HttpFoundation\RequestStack;
+// use Symfony\Component\Security\Http\FirewallMap;
+
 
 class SecurityController extends AbstractController
 {
@@ -20,18 +24,33 @@ class SecurityController extends AbstractController
      * @return Response
      * @throws \LogicException
      */
+        use TargetPathTrait;
+
+    // public function __construct(FirewallMap $firewallMap, RequestStack $requestStack)
+    // {
+    //     $this->firewallMap = $firewallMap;
+    //     $this->requestStack = $requestStack;
+    // }
+
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
+        $url = $request->query->get('url') ?? 'account';
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirect('/account');
+            return $this->redirect('/'.$url);
         }
+        // $firewallConfig = $this->firewallMap->getFirewallConfig($this->requestStack->getMasterRequest());
+        // if (null === $firewallConfig) {
+        //     throw new \LogicException('Could not find firewall config for the current request');
+        // }
+        // $providerKey= $firewallConfig->getName();
 
+        $this->saveTargetPath($request->getSession(), 'fwForDonate', $url);
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $request->query->get('inputEmail') ?? $authenticationUtils->getLastUsername();
 
-        return $this->render('auth/login.twig', ['email' => $lastUsername, 'error' => $error]);
+        return $this->render('auth/login.twig', ['email' => $lastUsername, 'error' => $error, 'url'=>$url]);
     }
 
     /**

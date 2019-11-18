@@ -63,7 +63,10 @@
                                 <div class="ohf-col-label__number">2</div>
                                 <div class="ohf-col-label__notice">
                                     <div class="ohf-col-label__notice-title">Кто наш благотворитель?</div>
-                                    <p class="ohf-col-label__notice-subtitle">Мы хотим знать кого благодарить :)</p>
+                                    <p class="ohf-col-label__notice-subtitle">
+                                        {%if not log%}<button type="button" class="donate-form-row__col btn btn-dark" style="padding: 8px 20px;width: 100%;border-radius: 85px;margin-top: 24px;" onclick="location.href='/login?url=donate?payment-type='+document.querySelector('input[name=payment-type]:checked').value;">
+                                        <span>У меня уже<br>есть аккаунт</span>
+                                    </button>{% endif%}</p>
                                 </div>
                             </div>
                             <div class="ohf-row__col ohf-col-input">
@@ -85,7 +88,7 @@
 
                                     <div class="form-group ohf-col-input__row-item">
                                         <input id='phone' class="input-rounded input-fullwidth input-type-phone" type="text" name="phone"
-                                               placeholder="Введите номер телефона*" data-type="phone"
+                                               placeholder="Введите номер телефона" data-type="phone"
                                                value="{{ form.phone }}" onclick="hideError('phoneError');checkPhone();" onkeyup="checkPhone();">
                                         <div id="phoneError" class="form-error-tooltip" style="display: none; position: relative; left: 0; top: -1px; width: 265px">
                                             <div class="form-error-tooltip__arrow"></div>
