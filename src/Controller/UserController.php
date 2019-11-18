@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
 {
@@ -202,7 +203,26 @@ class UserController extends AbstractController
                 'Нет пользователя с id '.$id
             );
         }
+        $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL,"https://api.cloudpayments.ru/subscriptions/find");
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_USERPWD, "pk_51de50fd3991dbf5b3610e65935d1:ecbe13569e824fa22e85774015784592");
+          curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+          curl_setopt($ch, CURLOPT_POSTFIELDS, "accountId=".$id);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          $urrs = json_decode(curl_exec ($ch))->Model;
 
+          $rrs=[];
+          curl_close ($ch);
+          if ($urrs) {
+              foreach ($urrs as $urr) {
+                if ($urr->Status=="Active")
+                $rrs[]=[
+                    'id'=> $urr->Id
+                ];
+              }
+          }
+          if ($rrs!=[]) return new Response('subs', Response::HTTP_OK, ['content-type' => 'text/html']);
         $entityManager = $this->getDoctrine()->getManager();
 
         // Удаляем все неотправленные письма из очереди для этого юзера
@@ -217,7 +237,7 @@ class UserController extends AbstractController
 
         $entityManager->remove($userData);
         $entityManager->flush();
-
-        return $this->redirect('/panel/users');
+        return new Response('ok', Response::HTTP_OK, ['content-type' => 'text/html']);
+        // return $this->redirect('/panel/users');
     }
 }

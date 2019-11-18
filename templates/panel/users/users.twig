@@ -12,4 +12,17 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    	function delus(id) {
+	    	var xhr = new XMLHttpRequest();
+			xhr.open('GET', '/panel/users/'+id+'/delete', false);
+			xhr.send();
+			if (xhr.status != 200) {
+			  alert( xhr.status + ': ' + xhr.statusText ); 
+			} else {
+			  if (xhr.responseText=='ok') event.target.parentElement.parentElement.remove();
+			  if (xhr.responseText=='subs') event.target.parentElement.innerHTML='Подписка';
+			}
+		}
+    </script>
 {% endblock %}
