@@ -7660,7 +7660,6 @@ body {
         flex-direction: column;
     }
     .WantHelpButtonBlock {
-        display: block !important;
         position: sticky;
         bottom: 0px;
         padding: 15px 0;
@@ -7848,6 +7847,14 @@ body {
         transform: scale(1.54); left: 88px !important; width: 100%;
     }
 }
+@media (max-width:350px) {
+  .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup {
+    width:300px;
+  }
+  .donate-form-wrapper {
+    padding:40px 0;
+  }
+}
 
 /*THANKS PAGE STYLES*/
 .th-w {
@@ -7945,21 +7952,5 @@ body {
       width: 100% !important;
     }
 
-}
-@media (max-width:350px) {
-  .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup {
-    width:300px;
-  }
-  .donate-form-wrapper {
-    padding:40px 0;
-  }
-}
-@media (max-width:350px) {
-  .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup {
-    width:300px;
-  }
-  .donate-form-wrapper {
-    padding:40px 0;
-  }
 }
 /*# sourceMappingURL=style.bundle.css.map*/
