@@ -59,14 +59,12 @@ class SendMailOneOfDayCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // Отправка писем за день до списания рекурентного платежа
-        /** @var RecurringPayment[] $rps */
         $rus=$this->entityManager->getRepository(Request::class)->getRecRequestsWithUsers();
         $uids=[];
         foreach ($rus as $ru) {
             if(!in_array($ru['id'], $uids))  {$uids[]=$ru['id'];}
         }
         $tomorrow = (new \DateTime('tomorrow'))->format('Y-m-d');
-        $io->text('tmrw'.$tomorrow);
         $rrs=[];
         $dat=[];
         $channels=[];
@@ -98,7 +96,6 @@ class SendMailOneOfDayCommand extends Command
             } while ($mrc == CURLM_CALL_MULTI_PERFORM);
         }
         foreach ($channels as $idx=>$urrs) {
-            // echo json_encode((curl_multi_getcontent($urrs)));
             $urrs= json_decode(curl_multi_getcontent($urrs))->Model;
             if ($urrs) {
               foreach ($urrs as $urr) {
@@ -113,10 +110,9 @@ class SendMailOneOfDayCommand extends Command
                         ]
                     );
                     $mail->setTemplateId('d-bc1ab47fdb6c4b73861f6bc600d8487d');
-                    // $this->sg->send($mail);            
+                    $this->sg->send($mail);
                     $io->text('Send mail to: '.$user->getEmail().' with template: d-bc1ab47fdb6c4b73861f6bc600d8487d');
                 }
-                $io->text(substr($urr->StartDateIso,0,10));
               }
           }
             curl_multi_remove_handle($multi, $channels[$idx]);
@@ -140,8 +136,8 @@ class SendMailOneOfDayCommand extends Command
                 ]
             );
             $mail->setTemplateId('d-f85328a0fe9f4ceda97d0a1af3bafaf9');
-            // $this->sg->send($mail);
-            // $io->text('Send mail to: '.$user->getEmail().' with template: d-f85328a0fe9f4ceda97d0a1af3bafaf9');
+            $this->sg->send($mail);
+            $io->text('Send mail to: '.$user->getEmail().' with template: d-f85328a0fe9f4ceda97d0a1af3bafaf9');
         }
 
         $io->success('Success');
