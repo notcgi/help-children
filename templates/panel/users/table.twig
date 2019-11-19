@@ -25,7 +25,7 @@
                 <td>{{ user.CreatedAt|date('Y.m.d H:i') }}</td>
                 <td><a href="/panel/users/{{ user.id }}">Изменить</a></td>
                 {#<td>{% if user.hasrec %} Подписка {% else %}<a href="/panel/users/{{ user.id }}/delete">Удалить</a>{% endif %}</td>#}
-                <td><a id="del{{user.id}}" href="#" onclick="delus({{user.id}});">Удалить</a></td>
+                <td><a id="del{{user.id}}" style="cursor: pointer; color: #007bff;" onclick="delus({{user.id}});">Удалить</a></td>
             </tr>
         {% endfor %}
         </tbody>
