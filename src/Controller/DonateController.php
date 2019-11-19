@@ -585,11 +585,11 @@ class DonateController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 [$user, $new]  = $usersService->findOrCreateUser($form);
 
-                // if (null==$this->getUser() && !$new){
-                //     // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
-                //     $auth_errors='Указанный номер телефона привязан к другой почте';
-                //     return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user)]);
-                // }
+                if (null==$this->getUser() && !$new){
+                    // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
+                    $auth_errors='Указанный номер телефона привязан к другой почте';
+                    return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user)]);
+                }
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
