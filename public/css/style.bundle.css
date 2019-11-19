@@ -8011,15 +8011,14 @@ body {
     .th-w {
         font-size: 2.0rem;
     }
-    div.ohf-col-input__row:nth-child(2) {
+    .th-w div.ohf-col-input__row:nth-child(2) {
      width: 115%;
+    }
+    .th-w .ohf-col-label img{
+     width: 100%;
+
     }
 
 
-}
-@font-face {
-  font-family: 'emoji';
-  src: url('https://github.com/adobe-fonts/emojione-color/raw/master/EmojiOneColor.otf')
-  format('otf');
 }
 /*# sourceMappingURL=style.bundle.css.map*/
