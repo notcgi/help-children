@@ -161,26 +161,26 @@ class ChildController extends AbstractController
             $entityManager->flush();
 
                 // SEND MAIL 12
-                // $users = $this->getDoctrine()->getRepository(User::class)->getAll();
-                // foreach ($users as $user) {
-                //     $mail = $sg->getMail(
-                //         $user->getEmail(),
-                //         $user->getFirstName(),
-                //         [
-                //             'first_name' => $user    ->getFirstName(),
-                //             'name'       => $userData->getName(),
-                //             'age'        => $userData->getAge(),
-                //             'diag'       => $userData->getDiagnosis(),
-                //             'place'      => $userData->getCity(),
-                //             'goal'       => (int) $userData->getGoal(),
-                //             'photo'      => $userData->getImages()[0],
-                //             'id'         => $userData->getId(),
-                            // 'url' => $user->getDonateUrl()
-                //         ]
-                //     );
-                //     $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
-                //     $sg->send($mail);
-                // }
+                $users = $this->getDoctrine()->getRepository(User::class)->getAll();
+                foreach ($users as $user) {
+                    $mail = $sg->getMail(
+                        $user->getEmail(),
+                        $user->getFirstName(),
+                        [
+                            'first_name' => $user    ->getFirstName(),
+                            'name'       => $userData->getName(),
+                            'age'        => $userData->getAge(),
+                            'diag'       => $userData->getDiagnosis(),
+                            'place'      => $userData->getCity(),
+                            'goal'       => (int) $userData->getGoal(),
+                            'photo'      => $userData->getImages()[0],
+                            'id'         => $userData->getId(),
+                            'url' => $user->getDonateUrl()
+                        ]
+                    );
+                    $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
+                    $sg->send($mail);
+                }
                 // END SEND
                 
             return $this->redirect('/panel/child');
