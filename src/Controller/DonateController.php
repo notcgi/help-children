@@ -349,7 +349,8 @@ class DonateController extends AbstractController
                                 ->setEmail($user->getEmail())
                                 ->setName($user->getFirstName())
                                 ->setBody([
-                                    'first_name' => $user->getFirstName()
+                                    'first_name' => $user->getFirstName(),
+                                    'url' => $user->getDonateUrl()
                                 ])
                                 ->setTemplateId('d-1836d6b43e9c437d8f7e436776d1a489')
                                 ->setSendAt(
@@ -378,7 +379,8 @@ class DonateController extends AbstractController
                             ->setEmail($user->getEmail())
                             ->setName($user->getFirstName())
                             ->setBody([
-                                'first_name' => $user->getFirstName()
+                                'first_name' => $user->getFirstName(),
+                                'url' => $user->getDonateUrl()
                             ])
                             ->setTemplateId('d-b12bbbbdfd2c4747b6b96b2243ffaad7')
                             ->setSendAt(

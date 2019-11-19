@@ -82,10 +82,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $user->getRefCode(),
-                        'email' => $user->getEmail()
-                    ], 0)
+                    'url' => $user->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -110,10 +107,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $puser->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $puser->getRefCode(),
-                        'email' => $puser->getEmail()
-                    ], 0)
+                    'url' => $puser->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -174,10 +168,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $user->getRefCode(),
-                        'email' => $user->getEmail()
-                    ], 0)
+                    'url' => $user->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
