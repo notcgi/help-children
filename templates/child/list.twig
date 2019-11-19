@@ -45,7 +45,6 @@
                             </li>
                         {%- endfor %}
                     </ul>
-                    {% include 'components/donate_form.twig' %}
                 </div>
             </section>
         {%- endif %}
@@ -83,5 +82,10 @@
                 </div>
             </section>
         {%- endif %}
+            <div class="container container--small">
+                <div class="donate-form-wrapper news-detail-donate-form-wrapper">
+                    {% include '/components/donate_form.twig' %}
+                </div>
+            </div>
     </main>
 {%- endblock %}

@@ -507,5 +507,14 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    public function getDonateUrl()
+    {
+        return 'donate?email='.$this->email.
+                     '&name='.$this->getFirstName().
+                     '&lastname='.$this->getLastName().
+                     '&phone='.$this->getPhone().
+                     '&code='. $this->getRefCode();
+    }
+
     
 }

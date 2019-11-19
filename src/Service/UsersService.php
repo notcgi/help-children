@@ -82,10 +82,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $user->getRefCode(),
-                        'email' => $user->getEmail()
-                    ], 0)
+                    'url' => $user->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -99,7 +96,7 @@ class UsersService
 
             // return [$user,False];
         }
-        $puser = $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult();
+        $puser = (isset($phone)) ? $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult() : null;
         if (isset($puser) and !$user) {
             $entityManager = $this->doctrine->getManager();
             // Завершение платежа
@@ -110,10 +107,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $puser->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $puser->getRefCode(),
-                        'email' => $puser->getEmail()
-                    ], 0)
+                    'url' => $puser->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(
@@ -174,10 +168,7 @@ class UsersService
                 ->setBody( [
                     'first_name' => $user->getFirstName(),
                     'childs' => implode("<br>", $chnames),
-                    'url' => $this->generator->generate('donate', [
-                        'code' => $user->getRefCode(),
-                        'email' => $user->getEmail()
-                    ], 0)
+                    'url' => $user->getDonateUrl()
                 ])
                 ->setTemplateId('d-a48d63b8f41c4020bd112a9f1ad31426')
                 ->setSendAt(

@@ -7944,6 +7944,7 @@ body {
     
     .th-w {
       width: 100%;
+      border-radius: 0;
     }
 
     .th-cont {

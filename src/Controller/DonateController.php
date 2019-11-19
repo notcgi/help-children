@@ -349,7 +349,8 @@ class DonateController extends AbstractController
                                 ->setEmail($user->getEmail())
                                 ->setName($user->getFirstName())
                                 ->setBody([
-                                    'first_name' => $user->getFirstName()
+                                    'first_name' => $user->getFirstName(),
+                                    'url' => $user->getDonateUrl()
                                 ])
                                 ->setTemplateId('d-1836d6b43e9c437d8f7e436776d1a489')
                                 ->setSendAt(
@@ -378,7 +379,8 @@ class DonateController extends AbstractController
                             ->setEmail($user->getEmail())
                             ->setName($user->getFirstName())
                             ->setBody([
-                                'first_name' => $user->getFirstName()
+                                'first_name' => $user->getFirstName(),
+                                'url' => $user->getDonateUrl()
                             ])
                             ->setTemplateId('d-b12bbbbdfd2c4747b6b96b2243ffaad7')
                             ->setSendAt(
@@ -498,7 +500,7 @@ class DonateController extends AbstractController
         $code = $request->query->get('code');
         $firstName = $request->query->get('firstname');
         $phone = $request->query->get('phone');
-
+        
             $phone = preg_replace(
                 '/^[78]/',
                 '+7',
@@ -559,7 +561,7 @@ class DonateController extends AbstractController
                     preg_replace(
                     '/[^+0-9]/',
                     '',
-                    $request->request->get('phone', $user ? $user->getPhone() : $phone))
+                    $request->request->get('phone', $user ? $user->getPhone() : $phone ?? 'null'))
             ),
             'ref-code' => substr(trim($request->query->get('ref-code', $code)), 4),
             'email' => trim($request->request->filter('email', $user ? $user->getEmail() : $email, FILTER_VALIDATE_EMAIL)),
@@ -583,11 +585,11 @@ class DonateController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 [$user, $new]  = $usersService->findOrCreateUser($form);
 
-                if (null==$this->getUser() && !$new){
-                    // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
-                    $auth_errors='Указанный номер телефона привязан к другой почте';
-                    return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors]);
-                }
+                // if (null==$this->getUser() && !$new){
+                //     // return $this->redirectToRoute('app_login', ['inputEmail' => $form['email']]);
+                //     $auth_errors='Указанный номер телефона привязан к другой почте';
+                //     return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user)]);
+                // }
                 $req = new \App\Entity\Request();
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
@@ -662,7 +664,7 @@ class DonateController extends AbstractController
                 'child_id' => new Assert\GreaterThan(['value' => 0]),
                 'name' => new Assert\Length(['min' => 0, 'max' => 128]),
                 'surname' => new Assert\Length(['min' => 0, 'max' => 128]),
-                'phone' => [new Assert\NotBlank(), new Assert\Regex(['pattern' => '/^\+?\d{10,13}$/i'])],
+                'phone' => new Assert\Length(['min' => 0, 'max' => 128]),
                 'email' => [new Assert\NotBlank(), new Assert\Email()],
                 'sum' => new Assert\Range(['min' => 50, 'max' => 1000000]),
                 'recurent' => new Assert\Type(['type' => 'boolean']),
