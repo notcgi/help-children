@@ -7953,5 +7953,73 @@ body {
     }
 
 }
+@media (max-width:558px) {
+    
+    .th-w h1 ~ p{
+        margin: 0 auto;
+    }
 
+    /* style.bundle.css | http://127.0.0.1:8000/css/style.bundle.css?v=0.0.4 */
+
+    .th-row {
+      /* grid-template-columns: 232px auto; */
+      /* padding-top: 30px; */
+      grid-template-columns: 24% auto;
+      padding-top: 25px;
+    }
+
+      .ohf-col-input {
+        /* padding-top: 2rem; */
+        padding-top: 0rem;
+      }
+
+
+    .th-col-label__number {
+      /* left: 54px; */
+      /* top: 65px; */
+      left: 9%;
+      top: 39px;
+    }
+
+    .th-col-label__number ~ div {
+      /* padding-left: 110px; */
+      padding-left: 46%;
+    }
+
+    .ohf-col-input__row:not(:first-child) {
+      /* margin-top: 3rem; */
+      margin-top: -1rem;
+    }
+
+
+    .th-w div.ohf-row:nth-child(2) > div:nth-child(1) > img:nth-child(1) {
+      left: 0px !important;
+      width: 70px;
+      height: 70px;
+    }
+
+
+    .th-w div.ohf-row:nth-child(2) > div:nth-child(2) {
+      margin: ;
+      margin-top: -2rem;
+    }
+
+
+    .th-w div.ohf-row:nth-child(4) > div:nth-child(1) > img:nth-child(1) {
+      left: -13px !important;
+    }
+    .th-w {
+        font-size: 2.0rem;
+    }
+    div.ohf-col-input__row:nth-child(2) {
+     width: 115%;
+    }
+
+
+}
+@font-face {
+  font-family: 'emoji';
+  src: url('https://github.com/adobe-fonts/emojione-color/raw/master/EmojiOneColor.otf')
+  format('otf');
+}
 /*# sourceMappingURL=style.bundle.css.map*/
