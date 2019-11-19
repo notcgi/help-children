@@ -513,7 +513,7 @@ class DonateController extends AbstractController
                 'email' => $email
             ]);
 
-            if ($user) {
+            if ($user) if (!$user->getConfirmed()) {
                 if ($user->getPass() == null) {
                     $title = 'Завершение регистрации';
                     $description = 'Для продолжения регистрации введите свой пароль';
