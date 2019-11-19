@@ -96,7 +96,7 @@ class UsersService
 
             // return [$user,False];
         }
-        $puser = (isset($phone) && strlen($phone)>5) ? $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult() : null;
+        $puser = (isset($data['phone']) && strlen($data['phone'])>5) ? $this->doctrine->getManager()->createQuery("SELECT u FROM App\\Entity\\User u WHERE JSON_VALUE(u.meta, '$.phone') = ". $data['phone'])->getOneOrNullResult() : null;
         if (isset($puser) and !$user) {
             $entityManager = $this->doctrine->getManager();
             // Завершение платежа
@@ -122,6 +122,7 @@ class UsersService
             // return [$puser,False];
         }
         if (($user==$puser) && $user && $puser) return [$user,True];
+
         else if ($user)  return [$user, False];
         else if ($puser) return [$puser,False];
         else{
