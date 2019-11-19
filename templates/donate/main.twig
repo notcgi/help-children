@@ -64,7 +64,7 @@
                                 <div class="ohf-col-label__notice">
                                     <div class="ohf-col-label__notice-title">Кто наш благотворитель?</div>
                                     <p class="ohf-col-label__notice-subtitle">
-                                        {%if not log%}<button type="button" class="donate-form-row__col btn btn-dark" style="padding: 8px 20px;width: 100%;border-radius: 85px;margin-top: 24px;" onclick="location.href='/login?url=donate?payment-type='+document.querySelector('input[name=payment-type]:checked').value;">
+                                        {%if not log%}<button type="button" class="donate-form-row__col btn btn-dark" style="padding: 8px 20px;width: 100%;max-width: 200px;border-radius: 85px;margin-top: 24px;" onclick="location.href='/login?url=donate?payment-type='+document.querySelector('input[name=payment-type]:checked').value;">
                                         <span>У меня уже<br>есть аккаунт</span>
                                     </button>{% endif%}</p>
                                 </div>
