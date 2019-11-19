@@ -7969,7 +7969,7 @@ body {
       padding-top: 25px;
     }
 
-      .ohf-col-input {
+      .th-w .ohf-col-input {
         /* padding-top: 2rem; */
         padding-top: 0rem;
       }
@@ -7987,7 +7987,7 @@ body {
       padding-left: 46%;
     }
 
-    .ohf-col-input__row:not(:first-child) {
+    .th-w .ohf-col-input__row:not(:first-child) {
       /* margin-top: 3rem; */
       margin-top: 1rem;
     }
@@ -8019,6 +8019,15 @@ body {
      width: 100%;
 
     }
+}
+.showVISA .donate-form-row__col{
+    padding: 8px 20px;width: 100%;max-width: 200px;border-radius: 85px;margin-top: 31px;
+}
+@media (max-width:768px) {
+    .showVISA .donate-form-row__col{
+        margin-left: -37px;
+    }
+    
 
 
 }
