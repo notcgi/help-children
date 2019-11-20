@@ -3316,6 +3316,13 @@ body {
     src: local("MuseoSansCyrl Bold Italic"), local("MuseoSansCyrl-Bold-Italic"), url(../fonts/MuseoSans\ Cyrillic/MuseoSansCyrl-700Italic.otf) format("opentype")
 }
 
+@font-face {
+    font-family: MuseoSansCyrl;
+    font-style: normal;
+    font-weight: 900;
+    src: local("MuseoSansCyrl Bold"), local("MuseoSansCyrl-Bold"), url(../fonts/MuseoSans\ Cyrillic/MuseoSansCyrl-900.otf) format("opentype")
+}
+
 .icon {
     display: inline-block;
     vertical-align: middle;
@@ -7875,7 +7882,7 @@ body {
 .th-w h3 {
     font-size: 2.8rem;
     margin-bottom: 0;
-    font-weight: bold;
+    font-weight: 900;
 }
 .th-w p {
     margin-bottom: 0px;
@@ -7978,8 +7985,8 @@ body {
 }
 @media (max-width:558px) {
     .th-col-label__number{
-        font-size: 4vw;
-        padding: 1.7vw 3vw;
+        font-size: 4.3vw;
+        padding: 1.7vw 3.2vw;
     }
 
     
@@ -8037,7 +8044,7 @@ body {
     }
 
     .th-w {
-        font-size: 2.0rem;
+        font-size: 2.4rem;
     }
     .th-w div.ohf-col-input__row:nth-child(2) {
      width: 115%;
