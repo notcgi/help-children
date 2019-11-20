@@ -124,6 +124,7 @@ class UsersService
         }
         if (($user==$puser) && $user && $puser) return [$user,True];
 
+        else if ($user && $puser==null)  return [$user, True];
         else if ($user)  return [$user, False];
         else if ($puser) return [$puser,False];
         else{
