@@ -7900,6 +7900,7 @@ body {
 }
 .th_col{
     align-items: flex-start;
+    height: 100%;
 }
 .th-col-label__number{
  position: absolute;
