@@ -7876,25 +7876,25 @@ body {
 }
 .th-w h1 {
     font-family: Borsok, sans-serif;
-    font-size: 5rem;
+    font-size: 4rem;
     text-align: center;
     font-weight: normal;
 }
 .th-w h3 {
-    font-size: 2.8rem;
+    font-size: 2.2rem;
     margin-bottom: 0;
     font-weight: 900;
 }
 .th-w p {
     margin-bottom: 0px;
     margin-top: 16px;
-		/*font-size: 14px;*/
+	font-size: 16px;
 }
 .th-w h1 ~ p{
     /*font-family: Museo Sans Cyrl;*/
     font-style: normal;
     font-weight: normal;
-    /*font-size: 18px;*/
+    font-size: 18px;
     line-height: 24px;
     display: flex;
     align-items: center;
@@ -7964,6 +7964,17 @@ body {
     .th-w {
       width: 100%;
       border-radius: 0;
+      font-size: 2.4rem;
+    }
+    .th-w h1 {
+        font-size: 5rem;
+    }
+    .th-w h1 ~ p,
+    .th-w p {
+        font-size: 2.4rem;
+    }
+    .th-w h3 {
+        font-size: 2.8rem;
     }
 
     .th-cont {
