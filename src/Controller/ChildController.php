@@ -31,14 +31,14 @@ class ChildController extends AbstractController
                 'Нет ребенка с id '.$id
             );
         }
-
         return $this->render(
             'child/detail.twig',
             [
                 'child' => $child,
                 'form' => [
                     'payment-type' => 'visa'
-                ]
+                ],
+                'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]]
             ]
         );
     }
