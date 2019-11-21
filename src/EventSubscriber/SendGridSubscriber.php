@@ -131,7 +131,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=array_rand($chnames, 3);
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
@@ -154,7 +155,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=array_rand($chnames, 3);
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
@@ -337,7 +339,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=array_rand($chnames, 3);
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         $mail = $this->sendGrid->getMail(
             $user->getEmail(),
             $user->getFirstName(),
@@ -360,7 +363,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=array_rand($chnames, 3);
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         $this->em->persist((new SendGridSchedule())
             ->setEmail($user->getEmail())
             ->setName($user->getFirstName())
@@ -386,7 +390,8 @@ class SendGridSubscriber implements EventSubscriberInterface
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=array_rand($chnames, 3);
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         if ($today) {
             $this->em->persist((new SendGridSchedule())
             ->setEmail($event->getEmail())
