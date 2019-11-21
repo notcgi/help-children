@@ -71,7 +71,8 @@ class UsersService
         foreach ($childs as $child) {
             $chnames[]=$child->getName();
         }
-        $chnames=$chnames[array_rand($chnames, 3)];
+        shuffle($chnames);
+        $chnames=array_slice($chnames, 0, 3);
         if ($user) {
             $entityManager = $this->doctrine->getManager();            
     
