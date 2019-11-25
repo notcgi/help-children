@@ -175,7 +175,7 @@ class ChildController extends AbstractController
                             'goal'       => (int) $userData->getGoal(),
                             'photo'      => $userData->getImages()[0],
                             'id'         => $userData->getId(),
-                            'url' => $user->getDonateUrl()
+                            'url'        => $user->getDonateUrl()
                         ]
                     );
                     $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
