@@ -64,8 +64,7 @@ class SendMailChild11 extends Command
                 // SEND MAIL 12
                 $users = $this->entityManager->getRepository(User::class)->getAll();
                 foreach ($users as $user) {
-                    if($user->getEmail()!='unknow'){
-                        $io->text($user->getEmail());
+                    if($user->getEmail()!='unknown'){
                         $mail = $this->sg->getMail(
                             $user->getEmail(),
                             $user->getFirstName(),
