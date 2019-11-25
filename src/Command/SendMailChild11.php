@@ -82,7 +82,7 @@ class SendMailChild11 extends Command
                         );
                         $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
                         if ($user->getId()==876) $this->sg->send($mail);
-                    } catch (TypeException $e) {
+                    } catch (Exception $e) {
                         $io->text($user->getEmail());
                     }
                 }
