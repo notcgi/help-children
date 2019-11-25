@@ -64,6 +64,7 @@ class SendMailChild11 extends Command
                 // SEND MAIL 12
                 $users = $this->entityManager->getRepository(User::class)->getAll();
                 foreach ($users as $user) {
+                    $io->text($user->getEmail());
                     try {
                         $mail = $this->sg->getMail(
                             $user->getEmail(),
@@ -81,9 +82,10 @@ class SendMailChild11 extends Command
                             ]
                         );
                         $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
-                        if ($user->getId()==876) $this->sg->send($mail);
+                        // if ($user->getId()==876) $this->sg->send($mail);
                     } catch (Exception $e) {
-                        $io->text($user->getEmail());
+                    $io->text($user->getEmail());
+                        
                     }
                 }
         $io->success('Success');
