@@ -59,28 +59,32 @@ class SendMailChild11 extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $userData = $this->entityManager->getRepository(Child::class)->findOneById(3); // 11 !!!
+        $userData = $this->entityManager->getRepository(Child::class)->findOneById(11); // 11 !!!
 
                 // SEND MAIL 12
                 $users = $this->entityManager->getRepository(User::class)->getAll();
                 foreach ($users as $user) {
-                    $mail = $this->sg->getMail(
-                        $user->getEmail(),
-                        $user->getFirstName(),
-                        [
-                            'first_name' => $user    ->getFirstName(),
-                            'name'       => $userData->getName(),
-                            'age'        => $userData->getAge(),
-                            'diag'       => $userData->getDiagnosis(),
-                            'place'      => $userData->getCity(),
-                            'goal'       => (int) $userData->getGoal(),
-                            'photo'      => $userData->getImages()[0],
-                            'id'         => $userData->getId(),
-                            'url'        => $user->getDonateUrl()
-                        ]
-                    );
-                    $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
-                    if ($user->getId()==876) $this->sg->send($mail);
+                    try {
+                        $mail = $this->sg->getMail(
+                            $user->getEmail(),
+                            $user->getFirstName(),
+                            [
+                                'first_name' => $user    ->getFirstName(),
+                                'name'       => $userData->getName(),
+                                'age'        => $userData->getAge(),
+                                'diag'       => $userData->getDiagnosis(),
+                                'place'      => $userData->getCity(),
+                                'goal'       => (int) $userData->getGoal(),
+                                'photo'      => $userData->getImages()[0],
+                                'id'         => $userData->getId(),
+                                'url'        => $user->getDonateUrl()
+                            ]
+                        );
+                        $mail->setTemplateId('d-8b30e88d3754462790edc69f7fe55540');
+                        if ($user->getId()==876) $this->sg->send($mail);
+                    } catch (TypeException $e) {
+                        $io->text($user->getEmail());
+                    }
                 }
         $io->success('Success');
     }
