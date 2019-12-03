@@ -513,7 +513,7 @@ class User implements UserInterface
                      '&name='.$this->getFirstName().
                      '&lastname='.$this->getLastName().
                      '&phone='.$this->getPhone().
-                     '&code='. $this->getRefCode();
+                     (($this->getConfirmed()==1) ? '' : '&code='. $this->getRefCode());
     }
 
     
