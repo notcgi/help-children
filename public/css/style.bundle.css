@@ -8078,3 +8078,7 @@ body {
 
 }
 /*# sourceMappingURL=style.bundle.css.map*/
+
+iframe#ytplayer {
+    border-radius: 10px;
+}
