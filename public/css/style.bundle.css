@@ -8077,4 +8077,9 @@ body {
 
 
 }
+
+iframe#ytplayer {
+    border-radius: 10px;
+}
+
 /*# sourceMappingURL=style.bundle.css.map*/
