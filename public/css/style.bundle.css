@@ -5157,16 +5157,17 @@ body {
     -webkit-box-pack: start;
     -ms-flex-pack: start;
     justify-content: flex-start;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+    -ms-flex-wrap: wrap-reverse;
+    flex-wrap: wrap-reverse;
+		flex-direction: row-reverse;
     margin-top: 1rem;
     margin-left: -1.5rem;
     margin-right: -1.5rem
 }
 
 .aid-list__item {
-    -ms-flex-preferred-size: 25%;
-    flex-basis: 25%;
+    -ms-flex-preferred-size: 33%;
+    flex-basis: 33%;
     padding: 0 1.5rem 3rem
 }
 
