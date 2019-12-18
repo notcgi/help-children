@@ -5158,8 +5158,7 @@ body {
     -ms-flex-pack: start;
     justify-content: flex-start;
     -ms-flex-wrap: wrap-reverse;
-    flex-wrap: wrap-reverse;
-		flex-direction: row-reverse;
+    flex-wrap: wrap;
     margin-top: 1rem;
     margin-left: -1.5rem;
     margin-right: -1.5rem
