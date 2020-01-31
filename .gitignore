@@ -1,6 +1,8 @@
 /.idea/
+/pomogite/
 /public/images/results/
 /public/docs/
+/public/uploads/
 /error.log
 /composer.phar
 /project.iml

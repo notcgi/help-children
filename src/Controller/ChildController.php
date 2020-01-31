@@ -34,6 +34,15 @@ class ChildController extends AbstractController
             );
         }
         $trg=$this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child);
+        $ctarg=end($trg);
+        $child_lst=[];
+        if ($ctarg->getCollected()>=$ctarg->getGoal()) $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('close');
+        else ($ctarg->getRehabilitation()) ? $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('rehab') : $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('pmj');
+        echo array_search($child, $child_lst);
+        $key=0;
+        foreach ($child_lst as $key => $ch) {
+            if ($ch['id'] == $id)  break;
+        }
         return $this->render(
             'child/detail.twig',
             [
@@ -43,7 +52,8 @@ class ChildController extends AbstractController
                 ],
                 'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]],
                 'targets' => $trg,
-                'imgs' => json_decode(end($trg)->getAttach())
+                'imgs' => json_decode(end($trg)->getAttach()),
+                'prevnext'=>[($key==0) ? $child_lst[(count($child_lst)-1)]['id'] :  $child_lst[($key-1) % (count($child_lst)-1)]['id'],$child_lst[($key+1) % (count($child_lst))]['id']]
             ]
         );
     }
@@ -54,22 +64,23 @@ class ChildController extends AbstractController
      */
     public function list()
     {
-        $opened = $closed = [];
+        // $opened = $closed = [];
 
         /** @var Child $child */
+        // echo json_encode($this->getDoctrine()->getRepository(Child::class)->getCurCh('rehab'));
+        // foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
+        //     $chtrg=['child' => $child, 
+        //         'targets' => $this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child)];
+        //     $child->isOpened() ? $opened[] = $chtrg : $closed[] = $chtrg;
 
-        foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
-            $chtrg=['child' => $child, 
-                'targets' => $this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child)];
-            $child->isOpened() ? $opened[] = $chtrg : $closed[] = $chtrg;
-
-        }
+        // }
 
         return $this->render(
             'child/list.twig',
             [
-                'opened' => $opened,
-                'closed' => $closed
+                'opened' => $this->getDoctrine()->getRepository(Child::class)->getCurCh('rehab'),
+                'pmj' => $this->getDoctrine()->getRepository(Child::class)->getCurCh('pmj'),
+                'closed' => $this->getDoctrine()->getRepository(Child::class)->getCurCh('close')
             ]
         );  
     }
