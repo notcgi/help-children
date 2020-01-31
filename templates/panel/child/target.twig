@@ -97,9 +97,9 @@
                     <div class="err_list form-text text-muted">{{ form_errors(form.attach) }}</div>
                     {{ form_widget(form.attach, {'attr': {'class':'form-control', 'placeholder': 'Изображение' }}) }}
 
-                    {% for img in imgs %}
+                    {% if imgs %}{% for img in imgs %}
                         <img src="/uploads/images/{{img}}" width="300px">
-                    {% endfor %}
+                    {% endfor %}{% endif %}
                 </div>
 
                 {{ form_end(form) }}
