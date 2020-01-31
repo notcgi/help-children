@@ -35,10 +35,9 @@ class ChildController extends AbstractController
         }
         $trg=$this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child);
         $ctarg=end($trg);
-        $child_lst=[];
-        if ($ctarg->getCollected()>=$ctarg->getGoal()) $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('close');
-        else ($ctarg->getRehabilitation()) ? $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('rehab') : $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh('pmj');
-        echo array_search($child, $child_lst);
+        if ($ctarg->getCollected()>=$ctarg->getGoal()) $state='close';
+        else $state= ($ctarg->getRehabilitation()) ? 'rehab' : 'pmj';
+        $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh($state);
         $key=0;
         foreach ($child_lst as $key => $ch) {
             if ($ch['id'] == $id)  break;
@@ -53,7 +52,8 @@ class ChildController extends AbstractController
                 'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]],
                 'targets' => $trg,
                 'imgs' => json_decode(end($trg)->getAttach()),
-                'prevnext'=>[($key==0) ? $child_lst[(count($child_lst)-1)]['id'] :  $child_lst[($key-1) % (count($child_lst)-1)]['id'],$child_lst[($key+1) % (count($child_lst))]['id']]
+                'prevnext'=>[($key==0) ? $child_lst[(count($child_lst)-1)]['id'] :  $child_lst[($key-1) % (count($child_lst)-1)]['id'],$child_lst[($key+1) % (count($child_lst))]['id']],
+                'closed'=> $state=='close'
             ]
         );
     }

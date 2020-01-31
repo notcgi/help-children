@@ -18,6 +18,10 @@
                 <div class='active left'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>
                 <div class='center'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>
                 <div class='right'><span><a href='#we-helped'>Мы помогли</a></span></div>
+
+                {# {% if opened|length -%}<div class='active left'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>{% endif %}
+                {% if pmj|length -%}<div class='center'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>{% endif %}
+                {% if closed|length -%}<div class='right'><span><a href='#we-helped'>Мы помогли</a></span></div>{% endif %} #}
             </div>
         </section>
         {% if opened|length -%}
@@ -66,7 +70,7 @@
                                                     </div>
                                                     {# <div><a href='#'>История пожертвований</a></div> #}
                                                 </div>
-                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
+                                                <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
                                         {% endfor %}
 
@@ -156,7 +160,7 @@
                                                     </div>
                                                     {# <div><a href='#'>История пожертвований</a></div> #}
                                                 </div>
-                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
+                                                <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
                                         {% endfor %}
 
@@ -240,7 +244,7 @@
                                                     </div>
                                                     {# <div><a href='#'>История пожертвований</a></div> #}
                                                 </div>
-                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
+                                                <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
                                         {% endfor %}
 

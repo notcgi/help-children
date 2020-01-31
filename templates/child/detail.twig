@@ -116,28 +116,27 @@
                                 
                                 <div class="collected-resources ">
                                     <div class="collected-resources-left newbuttonwrapper">
+                                            {% if closed %} 
+                                        <div class="newmoneybutton orangebutton close">
+                                            Сбор на текущую<br>реабилитацию закрыт
+                                        </div>
+                                        <div class='thanks-img'>
+                                            <img src='/images/thanks.png'>
+                                        </div>
+                                            {% else %}
                                         <div class="newmoneybutton">Необходимо <br> 
                                         <span
                                             class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
                                         </div>
                                     
-                                    {# <div class="collected-resources__slider">
-                                        <div class="collected-resources__slider-filled"
-                                             style="width: {{ child.goalRatio * 100 }}%"></div>
-                                    </div> #}
                                     <div class="newmoneybutton orangebutton">
                                             Осталось собрать<br> <span>{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
+                                            {% endif %}
+
+
+                                        
                                 </div>
-                                {# CLOSE #}
-                                {# <div class="collected-resources-left newbuttonwrapper">
-                                        <div class="newmoneybutton orangebutton close">
-                                            Сбор на текущую<br>реабилитацию закрыт
-                                        </div>
-                                        <div class='thanks-img'>
-                                            <img src='../public/images/thanks.png'>
-                                        </div>
-                                    </div> #}
                                     <div class="newprogressbarwrapper">
                                         <p>Сбор средств:</p>
                                         <div class="collected-resources__slider">
@@ -151,8 +150,9 @@
                                     </div>
 
                                     <div class="hr-child"></div>
-                                    {# CLOSE #}
-                                    {# <h3 class="child-help-form__title">Я хочу помочь детям</h3> #}
+                                    {% if closed %} 
+                                    <h3 class="child-help-form__title">Я хочу помочь детям</h3> 
+                                    {% endif %}
                                     <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
                                         <label class="donate-sum-fieldgroup__label toggle-field">
                                             <input class="toggle-field__input" type="radio" name="sum" value="300"
@@ -198,7 +198,7 @@
                             <div class='cart-nav kid-profile'>
                                 <div class='active left'><span><a href='#letter'>Письмо мамы</a></span></div>
                                 <div class='center'><span><a href='#kid-news'>История ребенка</a></span></div>
-                                <div class='right'><span><a href='#needed'>Необходимо собрать</a></span></div>
+                                <div class='right {{ closed ? 'disabled' }} '><span><a href='#needed'>Необходимо собрать</a></span></div>
                             </div>
                         </section>
                         <div class="mothersletter displaytrue" id='letter'>
