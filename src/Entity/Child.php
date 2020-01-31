@@ -146,6 +146,18 @@ class Child
         return $this;
     }
 
+    public function getVideo(): string
+    {
+        return $this->body['video'] ?? '';
+    }
+
+    public function setVideo(string $video): self
+    {
+        $this->body['video'] = $video;
+
+        return $this;
+    }
+
     public function getRequisites(): string
     {
         return $this->body['requisites'] ?? '';
@@ -249,12 +261,14 @@ class Child
 
     public function isOpened(): bool
     {
+        // $trg=ORM->getRepository(ChTarget::class)->findByChild($child);
+        // return (end($trg)->getGoal - end($trg)->getCollected);
         return null === $this->goal || $this->goal > $this->collected;
     }
 
     public function getGoalRatio(): float
     {
-        return 0 === $this->goal ? 0 : $this->collected / $this->goal;
+        return 0 == $this->goal ? 0 : $this->collected / $this->goal;
     }
 
     /**

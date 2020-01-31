@@ -1,0 +1,109 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% block title %}Edit target {# {{ target.name }} #}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Редактирование:</h1>
+
+                {{ form_start(form) }}
+                {{ form_widget(form.id, {'value': target ? target.id}) }}
+                {{ form_widget(form.child, {'value': child.id}) }}
+                {# <div class="form-group">
+                    {{ form_label(form.name, 'Ребенок') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.name) }}</div>
+                    {{ form_widget(form.name, {'attr': {'class':'form-control', 'placeholder': 'Иван Иванов', 'value': target.name }}) }}
+                </div> #}
+                <div class="form-group">
+                    {{ form_label(form.rehabilitation, 'Тип цели') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.rehabilitation ) }}</div>
+                    {{ form_widget(form.rehabilitation , {'attr': {'class':'form-control', 'value': target.rehabilitation, "separator":"<br>  "}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.totime, 'Дата начала') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.totime) }}</div>
+                    {{ form_widget(form.totime, {'attr': {'class':'form-control', 'placeholder': 'Дата начала'}}) }}
+                </div>
+
+                {# <div class="form-group">
+                    <label>Изображения</label>
+                    <div>
+                        {% for img in target.images %}
+                            <img style="height: 150px; width: auto;" class="img-thumbnail" src="{{ asset('uploads/images/' ~ img) }}">
+                        {% endfor %}
+                    </div>
+                </div> #}
+                {#{{ dump(target.images[0]) }}#}
+                {# <div class="form-group">
+                    {{ form_label(form.diagnosis, 'Диагноз') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.diagnosis) }}</div>
+                    {{ form_widget(form.diagnosis, {'attr': {'class':'form-control', 'placeholder': 'Диагноз', 'value': target.diagnosis }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.comment, 'Коменнтарий') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.comment) }}</label>
+                    {{ form_widget(form.comment, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Коменнтарий', 'value': target.comment }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.requisites, 'Реквизиты') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.requisites) }}</label>
+                    {{ form_widget(form.requisites, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Введите реквизиты', 'value': target.requisites }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.contacts, 'Контакты') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.contacts) }}</label>
+                    {{ form_widget(form.contacts, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Введите контакты', 'value': target.contacts }}) }}
+                </div> #}
+                <div class="form-group">
+                    {{ form_label(form.collected, 'Собрано средств') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.collected) }}</div>
+                    {{ form_widget(form.collected, {'attr': {'class':'form-control', 'placeholder': 'Собрано средств', 'value': target ? target.collected }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.goal, 'Необходимо средств') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.goal) }}</div>
+                    {{ form_widget(form.goal, {'attr': {'class':'form-control', 'placeholder': 'Необходимо средств', 'value': target ? target.goal }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.name, 'Название') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.name) }}</div>
+                    {{ form_widget(form.name, {'attr': {'class':'form-control', 'placeholder': 'Название', 'value': target ? target.name }}) }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form_label(form.descr, 'Описание') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.descr) }}</label>
+                    {{ form_widget(form.descr, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Описание', 'value': target.descr }}) }}
+                </div>{# 
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Дата
+                        создания: {{ target.createdAt|date("Y-m-d h:i:s") }}</label>
+                </div>
+                {% if(target.deletedAt != null) %}
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect2">Дата
+                            удаления: {{ target.deletedAt|date("Y-m-d h:i:s") }} </label>
+                    </div>
+                {% endif %} #}
+
+
+                <div class="form-group">
+                    {{ form_label(form.attach, 'Изображение') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.attach) }}</div>
+                    {{ form_widget(form.attach, {'attr': {'class':'form-control', 'placeholder': 'Изображение' }}) }}
+
+                    {% for img in imgs %}
+                        <img src="/uploads/images/{{img}}" width="300px">
+                    {% endfor %}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

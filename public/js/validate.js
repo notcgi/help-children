@@ -1,11 +1,3 @@
-$.fn.scrollView = function () {
-    return this.each(function () {
-        $('html, body').animate({
-            scrollTop: $(this).offset().top-window.innerWidth*0.5
-        }, 1000);
-    });
-}
-
 function validate_registration() {    
     document.getElementById('firstNameError').style.display = 'none';
     document.getElementById('emailError').style.display = 'none';
@@ -295,7 +287,7 @@ function sendReminder() {
     }
     });
 
-    xhr.open("POST", "/donate/sendReminder");
+    xhr.open("POST", "https://xn--c1accbmwfjbh2bd3o.xn--p1ai/donate/sendReminder");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.setRequestHeader("Accept", "*/*");
     xhr.setRequestHeader("Cache-Control", "no-cache");                    
@@ -359,7 +351,7 @@ function validate_myAccount() {
         isValid = false;
     }
 
-    if (phoneInput.length < 10 || phoneInput.length > 13){        
+    if (phoneInput.length < 10 || phoneInput.length > 13) {        
         document.getElementById('phoneError').style.display = 'block';
         isValid = false;
     }
@@ -435,6 +427,7 @@ function validate_donate() {
         document.getElementById('checkboxError').style.display = 'block';
         isValid = false;
     }
+
     let firstNameInput = document.querySelector('#name').value;    
     let emailInput = document.querySelector('#email').value;
     let phoneInput = document.querySelector('#phone').value.replace(/\D/gi, '');
@@ -442,29 +435,21 @@ function validate_donate() {
     document.getElementById('firstNameError').style.display = 'none';    
     document.getElementById('emailError').style.display = 'none';    
     document.getElementById('phoneError').style.display = 'none';    
-    document.getElementById('emError').style.display = 'none';    
     
-    // if ((phoneInput.length < 10 || phoneInput.length > 13) && location.pathname!="/donate") {        
-    //     document.getElementById('phoneError').style.display = 'block';
-    //     $('#phoneError').scrollView();
-    //     isValid = false;
-    // }
+    if (firstNameInput === '') {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (phoneInput.length < 10 || phoneInput.length > 13) {        
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+    }
 
     let emailPattern = ".+@.+\..+";              
     if (!emailInput.match(emailPattern)) {        
         document.getElementById('emailError').style.display = 'block';
-        $('#emailError').scrollView();
         isValid = false;
-    }
-    if (firstNameInput === '') {
-        document.getElementById('firstNameError').style.display = 'block';
-        $('#firstNameError').scrollView();
-        isValid = false;
-    }
-    if (form.elements['payment-type'].value=='eq' && !document.querySelector('input[name="EMoneyType"]:checked')) {
-        document.getElementById('emError').style.display = 'block';
-        $('#emError').scrollView();
-        isValid = false;        
     }
     
         return isValid;    

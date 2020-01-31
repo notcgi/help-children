@@ -1,3 +1,5 @@
+{% set mnths = ['','января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'] %}
+{% set numb = ['', 'первую', "вторую", "третью", "четвёртую", "пятую", "шестую", " седьмую", "восьмую", "девятую", "десятую"] %}
 {% extends 'base_client_wrapper.twig' %}
 
 {% block title %}БФ “Помогите Детям” | {{ child.name }}{% endblock %}
@@ -10,8 +12,8 @@
             <div class="container child-container">
                 <a class="link-back link-back-mobile" id='children-link-back' href="{{ path('children_list') }}"><span
                         class="icon icon-arrow-angle-right"></span>К списку детей</a>
-                <h1 class="hero-medium__title">Дети</h1>
-                <p class="hero-small__subtitle">которым нужна Ваша помощь</p>
+                <h1 class="hero-medium__title">Долгосрочная опека</h1>
+                <p class="hero-small__subtitle"></p>
                 <a class="link-back link-back-desktop" id='children-link-back' href="{{ path('children_list') }}"><span
                         class="icon icon-arrow-angle-right"></span>К списку детей</a>
             </div>
@@ -21,8 +23,55 @@
             <div class="container child-container">
                 <div class="child-wrapper">
                     <div class="card-child-wrapper">
+
+                        <div class='previous-child'>
+                            <div class='skybox'></div>
+                            <div class='txt'>Предыдущий<br>ребенок</div>
+                            <div class='link'>
+                                <a href='#'><img src='/images/left-arrow.png'></a>
+                            </div>
+                        </div>
+                        <div class='next-child'>
+                            <div class='skybox'></div>
+                            <div class='txt'>Следующий<br>ребенок</div>
+                            <div class='link'>
+                                <a href='#'><img src='/images/right-arrow.png'></a>
+                            </div>
+                        </div>
+                        <div class='child-navigation'>
+                            <div class='previous-child-mobile'>
+                                <a href='#'>
+                                    <div class='link'><img src='/images/left-arrow.png'>
+                                    </div>
+                                </a>
+                                <div class='txt'>Предыдущий<br>ребенок</div>
+                            </div>
+                            <div class='next-child-mobile'>
+                                <div class='txt'>Следующий<br>ребенок</div>
+                                <a href='#'>
+                                    <div class='link'><img src='/images/right-arrow.png'>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
                         <div class="card-child">
                             <div class="card-child__col">
+
+                                {# TIMER #}
+                                {# <div class="card-child-time">
+                                    <p class="card-child-time-title">
+                                        Реабилитация <br> через:
+                                    </p>
+                                    <p class="card-child-time-days">
+                                        13 дней
+                                    </p>
+                                    <p class="card-child-time-hours">
+                                        12:13:12
+                                    </p>
+                                </div> #}
+
                                 <div class="card-child-photos">
                                     <div class="card-child-photos__main">
                                         <img class="img-responsive"
@@ -45,47 +94,311 @@
                             <div class="card-child__col card-child-description">
                                 <div class="card-child-name">{{ child.name }}</div>
                                 <div class="card-child-field">
-                                    <div class="card-child-field__title">Место рождения:</div>
+                                    {# <div class="card-child-field__title">Место рождения:</div> #}
                                     <div class="card-child-field__value">{{ child.city }}</div>
                                 </div>
-                                <div class="card-child-field">
+                                {# <div class="card-child-field">
                                     <div class="card-child-field__title">Возраст:</div>
                                     <div class="card-child-field__value">{{ child.age }} {{yo}}</div>
-                                </div>
+                                </div> #}
                                 <div class="card-child-field">
                                     <div class="card-child-field__title">Диагноз:</div>
                                     <div class="card-child-field__value card-child-field__value--full">
                                         {{ child.diagnosis }}
                                     </div>
                                 </div>
-                                <div class="card-child-field">
+                                {# <div class="card-child-field">
                                     <div class="card-child-field__title">Комментарий:</div>
                                     <div class="card-child-field__value card-child-field__value--full">
                                         {{ child.comment }}
                                     </div>
-                                </div>
-                                <div class="card-child-collected collected-resources">
-                                    <div class="collected-resources-left">
-                                        <span class="collected-resources-left__title">Необходимо собрать:</span>
+                                </div> #}
+                                
+                                <div class="collected-resources ">
+                                    <div class="collected-resources-left newbuttonwrapper">
+                                        <div class="newmoneybutton">Необходимо <br> 
                                         <span
                                             class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
-                                    </div>
-                                    <div class="collected-resources__slider">
+                                        </div>
+                                    
+                                    {# <div class="collected-resources__slider">
                                         <div class="collected-resources__slider-filled"
                                              style="width: {{ child.goalRatio * 100 }}%"></div>
+                                    </div> #}
+                                    <div class="newmoneybutton orangebutton">
+                                            Осталось собрать<br> <span>{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
-                                    <div class="collected-resources__sum">
-                                        <span class="collected-resources__sum-notice">Осталось собрать:</span>
-                                        <span
-                                            class="collected-resources__sum-value">{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
+                                </div>
+                                {# CLOSE #}
+                                {# <div class="collected-resources-left newbuttonwrapper">
+                                        <div class="newmoneybutton orangebutton close">
+                                            Сбор на текущую<br>реабилитацию закрыт
+                                        </div>
+                                        <div class='thanks-img'>
+                                            <img src='../public/images/thanks.png'>
+                                        </div>
+                                    </div> #}
+                                    <div class="newprogressbarwrapper">
+                                        <p>Сбор средств:</p>
+                                        <div class="collected-resources__slider">
+                                            {% for trg in targets %}
+                                            <div class='collected-resources'>
+                                                <div class="collected-resources__slider-filled" style="width: {{100*trg.collected/trg.goal}}%">
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-child"></div>
+                                    {# CLOSE #}
+                                    {# <h3 class="child-help-form__title">Я хочу помочь детям</h3> #}
+                                    <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
+                                        <label class="donate-sum-fieldgroup__label toggle-field">
+                                            <input class="toggle-field__input" type="radio" name="sum" value="300"
+                                                checked>
+                                            <span class="toggle-field__text">300 Р</span>
+                                        </label>
+                                        <label class="donate-sum-fieldgroup__label toggle-field">
+                                            <input class="toggle-field__input" type="radio" name="sum" value="500">
+                                            <span class="toggle-field__text">500 Р</span>
+                                        </label>
+                                        <label class="donate-sum-fieldgroup__label toggle-field">
+                                            <input class="donate-text-field" type="text" name="sum-other" value=""
+                                                placeholder="Другая сумма" autocomplete="off">
+                                        </label>
+                                        <button
+                                            class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit visible"
+                                            type="submit">
+                                            Пожертвовать
+                                        </button>
+                                    </div>
+                                    <div class="payment-methods">
+                                        <p class="payment-methods-text">Оплата с карт</p>
+                                        <img class="toggle-field__text-image" src="/images/Apple_Pay_mini.png"
+                                            width="20" height="20" style="margin-top: -4px;">
+                                        <img class="toggle-field__text-image "
+                                            src="/images/Google_Pay_mini.png" width="22" heiht="20">
+                                        <img class="toggle-field__text-image" src="/images/mastercard.png"
+                                            width="30" height="30">
+                                        <img class="toggle-field__text-image" src="/images/visa.png" width="40"
+                                            height="40">
+                                    </div>
+
+                                    <button
+                                        class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit bottom hidden"
+                                        type="submit">
+                                        Пожертвовать
+                                    </button>
+                                </div>
+</div>
+                        </div>
+                        <div class='hr-child'></div>
+                        <section class='cart-nav-container kid-profile'>
+                            <div class='cart-nav kid-profile'>
+                                <div class='active left'><span><a href='#letter'>Письмо мамы</a></span></div>
+                                <div class='center'><span><a href='#kid-news'>История ребенка</a></span></div>
+                                <div class='right'><span><a href='#needed'>Необходимо собрать</a></span></div>
+                            </div>
+                        </section>
+                        <div class="mothersletter displaytrue" id='letter'>
+                            <div class='letter-content'>
+                                <div class='left-half'>
+                                    {# <div class='title'>Комментарий</div> #}
+                                    <div class='msg'>
+                                        {{child.comment}}
+                                    </div>
+                                </div>
+                                <div class='right-half'>
+                                    <div class='img-block'>
+                                        <iframe width="560" height="315" src="{{child.video}}"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="helpmoney" id='needed'>
+                            <div class='helpmoney-flex-container'>
+                                <div class='left-half'>
+                                    <div class='swiper-container gallery-top'>
+                                        <div class='swiper-wrapper'>
+                                            {% for img in imgs %}
+                                            <div class='swiper-slide'>
+                                                <div class='img-block'>
+                                                    <img src='/uploads/images/{{img}}'>
+
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="swiper-container gallery-thumbs">
+                                        <div class="swiper-wrapper">
+                                        {% for img in imgs %}
+                                            <div class='swiper-slide'>
+                                                <img src='/uploads/images/{{img}}'>
+                                            </div>
+                                        {% endfor %}
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-half">
+                                    {# <div class='name'>Преобретение аппарата сВОШ</div> #}
+                                    <div class='name'>{{(targets|last).name}}</div>
+                                    
+                                    <div class='info'>Реабилитация от {{(targets|last).totime|date("j")}} {{mnths[(targets|last).totime|date("n")]}} {{(targets|last).totime|date("Y")}} года</div>
+                                    <div class="newmoneybutton bottom">
+                                        Необходимо<br> <span>{{(targets|last).goal}} руб.</span>
+                                    </div>
+                                    <div class='descr'>{{(targets|last).descr}}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="childnews" id='kid-news'>
+                            <div class='separator'></div>
+                            {% for news in targets %}
+                                <div class='childnews-row'>
+                                    <div class='left-half'>
+                                        {% if loop.index % 2 != 0 %}
+                                        <div class='childnews-item'>
+                                            <div class='childnews-content'>
+                                            <div class='childnews-number'>{{loop.index}}</div>
+                                            <div class='txt'>
+                                            <p class='childnews-item-date'>
+                                                {{news.totime|date("j")}} {{mnths[news.totime|date("n")]}} {{news.totime|date("Y")}} года
+                                            </p>
+                                            <p class='childnews-item-title'>
+                                                Открыт сбор на {{numb[loop.index]}} реабилитацию {{child.name}} на сумму {{news.goal}} руб.
+                                            </p>
+                                            </div>
+                                            </div>
+                                            <p class='childnews-item-desc'>
+                                                {{news.descr}}
+                                            </p>
+                                            <a href='#' class='childnews-item-link'>
+                                                Подробнее
+                                            </a>
+                                            {% if news.img %}<img src='/uploads/images/{{news.img}}' class='children-item-img'> {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class='center'>
+                                        <div>{{loop.index}}</div>
+                                    </div>
+
+                                    <div class='right-half'>
+                                        {% if loop.index % 2 == 0 %}
+                                        <div class='childnews-item'>
+                                            <div class='childnews-content'>
+                                            <div class='childnews-number'>{{loop.index}}</div>
+                                            <div class='txt'>
+                                            <p class='childnews-item-date'>
+                                                {{news.totime|date("j")}} {{mnths[news.totime|date("n")]}} {{news.totime|date("Y")}} года
+                                            </p>
+                                            <p class='childnews-item-title'>
+                                                Открыт сбор на {{numb[loop.index]}} реабилитацию {{child.name}} на сумму {{news.goal}} руб.
+                                            </p>
+                                            </div>
+                                            </div>
+                                            <p class='childnews-item-desc'>
+                                                {{news.descr}}
+                                            </p>
+                                            <a href='#' class='childnews-item-link'>
+                                                Подробнее
+                                            </a>
+                                            <img src='/uploads/images/{{news.img}}' class='children-item-img'>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {#<script>
+                                var content;
+                                for (var i = 0; i < 5; i++) {
+                                    console.log(i);
+                                    if (i % 2 == 0) {
+                                        content = "\
+                                        <div class='childnews-row'>\
+                                        <div class='left-half'>\
+                                            <div class='childnews-item'>\
+                                                <div class='childnews-content'>\
+                                                <div class='childnews-number'>" + (i + 1) + "</div>\
+                                                <div class='txt'>\
+                                                <p class='childnews-item-date'>\
+                                                    13 декабря 2019 года\
+                                                </p>\
+                                                <p class='childnews-item-title'>\
+                                                    Открыт сбор на первую реабилитацию Иванова Вани на сумму 23 400 руб.\
+                                                </p>\
+                                                </div>\
+                                                </div>\
+                                                <p class='childnews-item-desc'>\
+                                                    IPhone — серия смартфонов, разработанных корпорацией Apple.\
+                                                </p>\
+                                                <a href='#' class='childnews-item-link'>\
+                                                    Подробнее\
+                                                </a>\
+                                                <img src='../pacan4eg.png' class='children-item-img'>\
+                                            </div>\
+                                        </div>\
+\
+                                        <div class='center'>\
+                                            <div>" + (i + 1) + "</div>\
+                                        </div>\
+\
+                                        <div class='right-half'></div>\
+                                    </div>";
+                                    } else {
+                                        content = "\
+                                        <div class='childnews-row'>\
+                                        <div class='left-half'>\
+                                        </div>\
+\
+                                        <div class='center'>\
+                                            <div>" + (i + 1) + "</div>\
+                                        </div>\
+\
+                                        <div class='right-half'>\
+                                            <div class='childnews-item'>\
+                                                <div class='childnews-content'>\
+                                                <div class='childnews-number'>" + (i + 1) + "</div>\
+                                                <div class='txt'>\
+                                                <p class='childnews-item-date'>\
+                                                    13 декабря 2019 года\
+                                                </p>\
+                                                <p class='childnews-item-title'>\
+                                                    Открыт сбор на первую реабилитацию Иванова Вани на сумму 23 400 руб.\
+                                                </p>\
+                                                </div>\
+                                                </div>\
+                                                <p class='childnews-item-desc'>\
+                                                    IPhone — серия смартфонов, разработанных корпорацией Apple.\
+                                                </p>\
+                                                <a href='#' class='childnews-item-link'>\
+                                                    Подробнее\
+                                                </a>\
+                                                <img src='../Rectangle 37.png' class='children-item-img'>\
+                                            </div>\
+                                        </div>\
+                                    </div>";
+                                    }
+                                    $('.childnews').append(content);
+                                }
+                            </script>#}
+
+                        </div>
+                        <div class="hr-child"></div>
 
                         <form class="child-help-form" action="{{ path('donate') }}" method="POST">
                             <input type="hidden" name="child_id" value="{{ child.id }}">
-                            <h3 class="child-help-form__title">Помочь прямо сейчас</h3>
+                            {# CLOSE #}
+                            {# <h3 class="child-help-form__title">Помочь другим детям</h3> #}
+                            <h3 class="child-help-form__title">Помочь {{ child.name }}</h3>
                             <div class="child-help-form-row">
                                 <div
                                     class="child-help-form__col child-help-form__col-label ohf-col-label__notice-title">
@@ -112,7 +425,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    {# </div>
                     <div class="child-contacts">
                         <div class="contacts-details__row child-contacts__row">
                             <div class="contacts-details__row-name child-contacts-title">
@@ -130,9 +443,12 @@
                                 {{ child.contacts|raw }}
                             </div>
                         </div>
-                    </div>
+                    </div> #}
                 </div>
             </div>
+        </div>
         </section>
     </main>
+    <script src="/js/swiper.min.js"></script>
+
 {% endblock %}

@@ -1,1 +1,3 @@
-button.order_id-copy + span { display: none; }
+button.order_id-copy+span {
+    display: none;
+}

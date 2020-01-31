@@ -78,6 +78,10 @@ class EditChildTypes extends AbstractType
                 ]
             )
             ->add(
+                'video',
+                TextType::class
+            )
+            ->add(
                 'requisites',
                 TextareaType::class,
                 [
