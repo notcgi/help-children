@@ -15,9 +15,9 @@
         </section>
         <section class='cart-nav-container'>
             <div class='cart-nav kids-page'>
-                <div class='active left'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>
-                <div class='center'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>
-                <div class='right'><span><a href='#we-helped'>Мы помогли</a></span></div>
+                <div class='active left {{ (not opened|length) ? 'disabled' }}'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>
+                <div class='center {{ (not pmj|length) ? 'disabled' }}'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>
+                <div class='right {{ (not opened|length) ? 'disabled' }}'><span><a href='#we-helped'>Мы помогли</a></span></div>
 
                 {# {% if opened|length -%}<div class='active left'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>{% endif %}
                 {% if pmj|length -%}<div class='center'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>{% endif %}
