@@ -52,7 +52,7 @@ class ChildController extends AbstractController
         $opened = $closed = [];
 
         /** @var Child $child */
-        foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
+        foreach (array_reverse($this->getDoctrine()->getRepository(Child::class)->findAll()) as $child) {
             $child->isOpened() ? $opened[] = $child : $closed[] = $child;
         }
 
