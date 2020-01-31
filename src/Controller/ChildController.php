@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Child;
 use App\Entity\User;
+use App\Entity\ChTarget;
 use App\Form\AddChildTypes;
+use App\Form\ChTargetTypes;
 use App\Form\EditChildTypes;
 use App\Service\SendGridService;
 use App\Service\FileUploader;
@@ -31,6 +33,7 @@ class ChildController extends AbstractController
                 'Нет ребенка с id '.$id
             );
         }
+        $trg=$this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child);
         return $this->render(
             'child/detail.twig',
             [
@@ -38,7 +41,9 @@ class ChildController extends AbstractController
                 'form' => [
                     'payment-type' => 'visa'
                 ],
-                'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]]
+                'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]],
+                'targets' => $trg,
+                'imgs' => json_decode(end($trg)->getAttach())
             ]
         );
     }
@@ -53,7 +58,9 @@ class ChildController extends AbstractController
 
         /** @var Child $child */
         foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
-            $child->isOpened() ? $opened[] = $child : $closed[] = $child;
+            $chtrg=['child' => $child, 
+                'targets' => $this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child)];
+            $child->isOpened() ? $opened[] = $chtrg : $closed[] = $chtrg;
         }
 
         return $this->render(
@@ -62,7 +69,7 @@ class ChildController extends AbstractController
                 'opened' => $opened,
                 'closed' => $closed
             ]
-        );
+        );  
     }
 
     /**
@@ -110,7 +117,55 @@ class ChildController extends AbstractController
             'panel/child/edit.twig',
             [
                 'child' => $childData,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'targets' => $this->getDoctrine()->getRepository(ChTarget::class)->findByChild($childData)
+            ]
+        );
+    }
+    public function target(int $id, int $child, FileUploader $fileUploader, Request $request)
+    {
+        $childData = $this->getDoctrine()
+            ->getRepository(Child::class)
+            ->find($child);
+
+        if (!$childData) {
+            throw $this->createNotFoundException(
+                'Нет ребенка с id '.$child
+            );
+        }
+        $targ = $this->getDoctrine()
+            ->getRepository(ChTarget::class)
+            ->find($id);
+
+        if (!$targ) {
+                $targ = new ChTarget();
+        }
+
+        $form = $this->createForm(ChTargetTypes::class, $targ);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $images = $targ->getAttach();
+            $arrayImg = [];
+            // echo $images;
+            if (!is_string($images)) foreach ($images as $image) {
+                $arrayImg[] = $fileUploader->upload($image);
+            }
+
+            $targ->setAttach(json_encode($arrayImg));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($targ);
+            $entityManager->flush();
+            return $this->edit($child, $request);
+        }
+
+        return $this->render(
+            'panel/child/target.twig',
+            [
+                'target' => $targ,
+                'child' => $childData,
+                'form' => $form->createView(),
+                'imgs' => is_string($targ->getAttach()) ? json_decode($targ->getAttach()) : $targ->getAttach()
             ]
         );
     }
@@ -130,6 +185,17 @@ class ChildController extends AbstractController
                 'children' => $this->getDoctrine()->getRepository(Child::class)->findAll()
             ]
         );
+    }
+    public function deltrg(int $child, int $id, Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $trg = $entityManager->getRepository(ChTarget::class)->find($id);
+
+        if (null !== $trg) {
+            $entityManager->remove($trg);
+            $entityManager->flush();
+        }
+       return $this -> edit( $child, $request);
     }
 
 

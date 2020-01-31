@@ -17,6 +17,11 @@
                     {{ form_widget(form.name, {'attr': {'class':'form-control', 'placeholder': 'Иван Иванов', 'value': child.name }}) }}
                 </div>
                 <div class="form-group">
+                    {{ form_label(form.city, 'Город') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.city) }}</div>
+                    {{ form_widget(form.city, {'attr': {'class':'form-control', 'placeholder': 'Город', 'value': child.city }}) }}
+                </div>
+                <div class="form-group">
                     {{ form_label(form.birthdate, 'Дата рождения') }}
                     <div class="err_list form-text text-muted">{{ form_errors(form.birthdate) }}</div>
                     {{ form_widget(form.birthdate, {'attr': {'class':'form-control', 'placeholder': 'Дата рождения'}}) }}
@@ -36,9 +41,14 @@
                     {{ form_widget(form.diagnosis, {'attr': {'class':'form-control', 'placeholder': 'Диагноз', 'value': child.diagnosis }}) }}
                 </div>
                 <div class="form-group">
-                    {{ form_label(form.comment, 'Коменнтарий') }}
+                    {{ form_label(form.comment, 'Письмо матери') }}
                     <label for="exampleFormControlTextarea1">{{ form_errors(form.comment) }}</label>
-                    {{ form_widget(form.comment, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Коменнтарий', 'value': child.comment }}) }}
+                    {{ form_widget(form.comment, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Письмо матери', 'value': child.comment }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.video, 'Ссылка на видео') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.video) }}</label>
+                    {{ form_widget(form.video, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Ссылка на видео', 'value': child.video }}) }}
                 </div>
                 <div class="form-group">
                     {{ form_label(form.requisites, 'Реквизиты') }}
@@ -70,6 +80,19 @@
                             удаления: {{ child.deletedAt|date("Y-m-d h:i:s") }} </label>
                     </div>
                 {% endif %}
+                <table class="table">
+                    <tbody>
+                    {% for trg in targets %}
+                        <tr>
+                            <th scope="row">{{ trg.id }}</th>
+                            <td>{{ trg.name }}</td>
+                            <td><a href="/panel/child/{{ child.id }}/t{{ trg.id }}">Изменить</a></td>
+                            <td><a href="/panel/child/{{ child.id }}/t{{ trg.id }}/del">Удалить</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="/panel/child/{{ child.id }}/t9999999">Новая цель</a>
                 {{ form_end(form) }}
             </div>
         </div>

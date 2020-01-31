@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/css/style.bundle.css?v=0.0.4">
+    <link rel="stylesheet" href="/css/style.bundle.css">
     <link rel="stylesheet" href="/css/foopicker.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -40,42 +42,7 @@ fbq('track', 'PageView');
                     </div>
                 </div>
                 <div class="header-left">
-                    <span class="header__notice">Благотворительный фонд помощи детям с ДЦП</span>
-                    <nav class="header__navbar">
-                        <ul class="nav-links">
-                            <li class="nav-links__item">
-                                <a class="nav-links__item-link" href="{{ path('children_list') }}">Дети</a>
-                            </li>
-                            <li class="nav-links__item dropdown">
-                                <a class="nav-links__item-link dropdown-link" href="{{ path('main') }}#section-mission">О
-                                    Фонде</a>
-                                <div class="dropdown-content">
-                                    <ul class="nav-links-submenu dropdown-menu">                                        
-                                        <li class="nav-links-submenu__item">
-                                            <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
-                                        </li>
-                                        <li class="nav-links-submenu__item">
-                                            <a href="{{ path('docs') }}" class="nav-links-submenu__item-link">Документация</a>
-                                        </li>
-                                        <li class="nav-links-submenu__item">
-                                            <a href="{{ path('reports') }}"
-                                               class="nav-links-submenu__item-link">Отчеты</a>
-                                        </li>
-                                        <li class="nav-links-submenu__item">
-                                            <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
-                                        </li>
-                                        {# <li class="nav-links-submenu__item">
-                                        <a href="{{ path('sms') }}"
-                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
-                                        </li> #}
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-links__item">
-                                <a class="nav-links__item-link" href="{{ path('contacts') }}">Контакты</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <!--<span class="header__notice">Благотворительный фонд помощи детям с ДЦП</span>-->
                     <div class="header__user-menu">
                         <ul class="user-menu-links">
                             <li class="user-menu-links__item">
@@ -84,13 +51,69 @@ fbq('track', 'PageView');
                                 </span>
                                 <a class="user-menu-links__item-link" href="#">Поволжье</a>
                             </li>
+                        </ul>
+                    </div>
+                    <nav class="header__navbar">
+                        <ul class="nav-links">
+                            <li class="nav-links__item dropdown">
+                                <a class="nav-links__item-link dropdown-link" href="{{ path('children_list') }}">Дети</a>
+                                <div class="dropdown-content">
+                                    <ul class="nav-links-submenu dropdown-menu">
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Долгосрочная опека</a>
+                                        </li>
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Подарки, мечты,
+                                                желания</a>
+                                        </li>
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Мы помогли</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-links__item dropdown">
+                                <a class="nav-links__item-link dropdown-link" href="{{ path('main') }}#section-mission">О
+                                    Фонде</a>
+                                <div class="dropdown-content">
+                                    <ul class="nav-links-submenu dropdown-menu">
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
+                                        </li>
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('docs') }}" class="nav-links-submenu__item-link">Документация</a>
+                                        </li>
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('reports') }}" class="nav-links-submenu__item-link">Отчеты</a>
+                                        </li>
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('reports') }}">Отчеты</a>
+                            </li>
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('contacts') }}">Контакты</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="header__user-menu">
+                        <ul class="user-menu-links">
+                            <!--<li class="user-menu-links__item">
+                                <span class="user-menu-links__item-icon">
+                                    <span class="icon icon-placemark"></span>
+                                </span>
+                                <a class="user-menu-links__item-link" href="#">Поволжье</a>
+                            </li>-->
                             <li class="user-menu-links__item">
                                 <span class="user-menu-links__item-icon">
                                     <span class="icon icon-user"></span>
                                 </span>
-                                <a class="user-menu-links__item-link"
-                                   href="{{ path(is_granted('IS_AUTHENTICATED_FULLY') ? 'account_main' : 'app_login') }}">
-                                    Личный кабинет
+                                <a class="user-menu-links__item-link" href="{{ path(is_granted('IS_AUTHENTICATED_FULLY') ? 'account_main' : 'app_login') }}">
+                                    Вход в кабинет
                                 </a>
                             </li>
                         </ul>
@@ -98,19 +121,20 @@ fbq('track', 'PageView');
                     <div class="header__socialbar">
                         <ul class="socialbar-links">
                             <li class="socialbar-links__item">
-                                <a href="https://vk.com/pomogite.detyam" target="_blank" class="socialbar-links__item-link">
+                                <a href="https://vk.com/pomogite.detyam" target="_blank"
+                                    class="socialbar-links__item-link">
                                     <span class="icon icon-vk"></span>
                                 </a>
                             </li>
                             <li class="socialbar-links__item">
-                                <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/" target="_blank" class="socialbar-links__item-link">
+                                <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/"
+                                    target="_blank" class="socialbar-links__item-link">
                                     <span class="icon icon-facebook"></span>
                                 </a>
                             </li>
                             <li class="socialbar-links__item">
-                                <a href="https://www.instagram.com/pomogite.detyam/"
-                                   target="_blank"
-                                   class="socialbar-links__item-link">
+                                <a href="https://www.instagram.com/pomogite.detyam/" target="_blank"
+                                    class="socialbar-links__item-link">
                                     <span class="icon icon-instagram"></span>
                                 </a>
                             </li>
@@ -135,7 +159,8 @@ fbq('track', 'PageView');
                 <div class="header-mobile__center">
                     <div class="header-mobile__logo">
                         <a class="header-mobile__logo-link" href="/">
-                            <img class="header__logo-image img-responsive" src="/images/logo.png" alt="Помогите детям">
+                            <img class="header__logo-image img-responsive" src="/images/logo.png"
+                                alt="Помогите детям">
                         </a>
                     </div>
                     <span class="header-mobile__notice">Благотворительный фонд помощи детям с ДЦП</span>
@@ -149,30 +174,38 @@ fbq('track', 'PageView');
                         <ul class="nav-links">
                             <li class="nav-links__item">
                                 <a class="nav-links__item-link" href="{{ path('children_list') }}">Дети</a>
+                                <ul class="nav-links-submenu">
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Долгосрочная опека</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Подарки, мечты, желания</a>
+                                    </li>
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('children_list') }}#" class="nav-links-submenu__item-link">Мы помогли</a>
+                                    </li>
+                                </ul>
+                            </li>
                             </li>
                             <li class="nav-links__item">
                                 <a class="nav-links__item-link" href="{{ path('main') }}#section-mission">О Фонде</a>
-                                <ul class="nav-links-submenu">                                    
+                                <ul class="nav-links-submenu">
                                     <li class="nav-links-submenu__item">
-                                        <a href="{{ path('partners') }}"
-                                           class="nav-links-submenu__item-link">Партнёры</a>
+                                        <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
                                     </li>
                                     <li class="nav-links-submenu__item">
-                                        <a href="{{ path('docs') }}"
-                                           class="nav-links-submenu__item-link">Документация</a>
+                                        <a href="{{ path('docs') }}" class="nav-links-submenu__item-link">Документация</a>
                                     </li>
                                     <li class="nav-links-submenu__item">
                                         <a href="{{ path('reports') }}" class="nav-links-submenu__item-link">Отчеты</a>
                                     </li>
                                     <li class="nav-links-submenu__item">
-                                        <a href="{{ path('contacts') }}"
-                                           class="nav-links-submenu__item-link">Реквизиты</a>
+                                        <a href="{{ path('contacts') }}" class="nav-links-submenu__item-link">Реквизиты</a>
                                     </li>
-                                    {# <li class="nav-links-submenu__item">
-                                        <a href="{{ path('sms') }}"
-                                           class="nav-links-submenu__item-link">Оплата с помощью SMS</a>
-                                    </li>                                     #}
                                 </ul>
+                            </li>
+                            <li class="nav-links__item">
+                                <a class="nav-links__item-link" href="{{ path('reports') }}">Отчеты</a>
                             </li>
                             <li class="nav-links__item">
                                 <a class="nav-links__item-link" href="{{ path('contacts') }}">Контакты</a>
@@ -181,7 +214,7 @@ fbq('track', 'PageView');
                     </nav>
                     <div class="header__buttons header-mobile__help-buttons">
                         <a class="btn btn-light help-button need-help-button header-mobile__help-button"
-                           href="{{ path('help') }}">
+                            href="{{ path('help') }}">
                             <span class="icon icon-heart"></span>
                             <span>Нужна помощь</span>
                         </a>
@@ -192,18 +225,20 @@ fbq('track', 'PageView');
                     <div class="header__socialbar">
                         <ul class="socialbar-links">
                             <li class="socialbar-links__item">
-                                <a href="https://vk.com/pomogite.detyam" target="_blank" class="socialbar-links__item-link">
+                                <a href="https://vk.com/pomogite.detyam" target="_blank"
+                                    class="socialbar-links__item-link">
                                     <span class="icon icon-vk"></span>
                                 </a>
                             </li>
                             <li class="socialbar-links__item">
-                                <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/" target="_blank" class="socialbar-links__item-link">
+                                <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/"
+                                    target="_blank" class="socialbar-links__item-link">
                                     <span class="icon icon-facebook"></span>
                                 </a>
                             </li>
                             <li class="socialbar-links__item">
                                 <a href="https://www.instagram.com/pomogite.detyam/" target="_blank"
-                                   class="socialbar-links__item-link">
+                                    class="socialbar-links__item-link">
                                     <span class="icon icon-instagram"></span>
                                 </a>
                             </li>
@@ -243,7 +278,7 @@ fbq('track', 'PageView');
                         </div>
                         <div class="footer-contacts__email">
                             <a class="footer-contacts__email-link"
-                               href="mailto:fond.detyam@mail.ru">fond.detyam@mail.ru</a>
+                                href="mailto:fond.detyam@mail.ru">fond.detyam@mail.ru</a>
                         </div>
                         <p class="footer-terms">
                             Все права защищены.<br>
@@ -256,18 +291,19 @@ fbq('track', 'PageView');
                             <ul class="socialbar-links">
                                 <li class="socialbar-links__item">
                                     <a href="https://vk.com/pomogite.detyam" target="_blank"
-                                       class="socialbar-links__item-link">
+                                        class="socialbar-links__item-link">
                                         <span class="icon icon-vk-gray"></span>
                                     </a>
                                 </li>
                                 <li class="socialbar-links__item">
-                                    <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/" target="_blank" class="socialbar-links__item-link">
+                                    <a href="https://www.facebook.com/Благотворительный-фонд-Помогите-детям-297299794535021/"
+                                        target="_blank" class="socialbar-links__item-link">
                                         <span class="icon icon-facebook-gray"></span>
                                     </a>
                                 </li>
                                 <li class="socialbar-links__item">
                                     <a href="https://www.instagram.com/pomogite.detyam/" target="_blank"
-                                       class="socialbar-links__item-link">
+                                        class="socialbar-links__item-link">
                                         <span class="icon icon-instagram-gray"></span>
                                     </a>
                                 </li>
@@ -276,11 +312,18 @@ fbq('track', 'PageView');
                     </div>
                     <div class="footer-menu">
                         <div class="footer-menu__column">
-                            <div class="footer-menu-category">Программы помощи</div>
+                            <div class="footer-menu-category">Дети</div>
                             <nav class="footer-menu-nav">
                                 <ul class="footernav-links">
                                     <li class="footernav-links__item">
-                                        <a href="{{ path('children_list') }}" class="footernav-links__item-link">Долгосрочная опека</a>
+                                        <a href="{{ path('children_list') }}#" class="footernav-links__item-link">Долгосрочная опека</a>
+                                    </li>
+                                    <li class="footernav-links__item">
+                                        <a href="{{ path('children_list') }}#" class="footernav-links__item-link">Подарки, мечты,
+                                            желания</a>
+                                    </li>
+                                    <li class="footernav-links__item">
+                                        <a href="{{ path('children_list') }}#" class="footernav-links__item-link">Мы помогли</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -291,7 +334,7 @@ fbq('track', 'PageView');
                                 <ul class="footernav-links">
                                     <li class="footernav-links__item">
                                         <a href="{{ path('partners') }}" class="footernav-links__item-link">Партнеры</a>
-                                    </li>                                    
+                                    </li>
                                     <li class="footernav-links__item">
                                         <a href="{{ path('docs') }}" class="footernav-links__item-link">Документация</a>
                                     </li>
@@ -299,13 +342,8 @@ fbq('track', 'PageView');
                                         <a href="{{ path('reports') }}" class="footernav-links__item-link">Отчеты</a>
                                     </li>
                                     <li class="footernav-links__item">
-                                        <a href="{{ path('contacts') }}"
-                                           class="footernav-links__item-link">Реквизиты</a>
+                                        <a href="{{ path('contacts') }}" class="footernav-links__item-link">Реквизиты</a>
                                     </li>
-                                    {# <li class="footernav-links__item">
-                                        <a href="{{ path('sms') }}"
-                                           class="footernav-links__item-link">Оплата с помощью SMS</a>
-                                    </li> #}
                                 </ul>
                             </nav>
                         </div>
@@ -334,20 +372,26 @@ fbq('track', 'PageView');
                         <div class="footer-menu__column">
                             <div class="footer-menu-category">Реквизиты фонда</div>
                             <p class="mailing-address">
-                                Россия, Чувашская Республика,<br/>
-                                г. Новочебоксарск,<br/>
-                                ул. 10-й Пятилетки, владение 17И<br/>
-                                ОГРН 1132100001054<br/>
+                                Россия, Чувашская Республика,<br />
+                                г. Новочебоксарск,<br />
+                                ул. 10-й Пятилетки, владение 17И<br />
+                                ОГРН 1132100001054<br />
                                 ИНН/КПП 2124999727/212401001 </p>
-                           <p class="mailing-address"><a href="http://alfagenesis.ru" style="text-decoration: none;color: #8b9cae;"><br>Разработка и поддержка системы
-	<br> - студия "Альфа Генезис"</a></p><a href="http://alfagenesis.ru" target="_blank"><img class="img-responsive" src="/images/partners-alfagenesis.png" alt="Партнер Разработка интернет решений (сайтов) - студия ALFA GENESIS" width="150" style="opacity: 0.5;"></a>
+                            <p class="mailing-address"><a href="http://alfagenesis.ru"
+                                    style="text-decoration: none;color: #8b9cae;"><br>Разработка и поддержка системы
+                                    <br> - студия "Альфа Генезис"</a></p><a href="http://alfagenesis.ru"
+                                target="_blank"><img class="img-responsive"
+                                    src="/images/partners-alfagenesis.png"
+                                    alt="Партнер Разработка интернет решений (сайтов) - студия ALFA GENESIS" width="150"
+                                    style="opacity: 0.5;"></a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-    <script src="/js/bundle.js?v=0.0.4"></script>
+    <script src="/js/bundle.js"></script>
     <script src="/js/validate.js"></script>
     <script src="/js/foopicker.js"></script>
+    <script src="/js/script.js"></script>
 {% endblock %}

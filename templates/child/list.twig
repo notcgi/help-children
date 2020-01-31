@@ -1,3 +1,4 @@
+{% set numb = ['', 'первую', "вторую", "третью", "четвёртую", "пятую", "шестую", " седьмую", "восьмую", "девятую", "десятую"] %}
 {% extends 'base_client_wrapper.twig' %}
 
 {% block title %}БФ “Помогите Детям” | Дети{% endblock %}
@@ -5,41 +6,271 @@
 {% block keywords %}Дети{% endblock %}
 
 {% block content -%}
-    <main>
+
+  <main>
         <section class="section hero-small">
             <div class="container">
                 <h1 class="hero-small__title">Программы помощи</h1>
             </div>
         </section>
-
+        <section class='cart-nav-container'>
+            <div class='cart-nav kids-page'>
+                <div class='active left'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>
+                <div class='center'><span><a href='#pjm'>Подарки, желания, мечты</a></span></div>
+                <div class='right'><span><a href='#we-helped'>Мы помогли</a></span></div>
+            </div>
+        </section>
         {% if opened|length -%}
             <section class="section kids section-with-bghearts">
                 <div class="container container-pagecontent-padding">
                     <h2 class="section-title">Долгосрочная опека</h2>
-                    <p class="section-subtitle">Вы можете помочь этим детям</p>
+                    {# <p class="section-subtitle">Вы можете помочь этим детям</p> #}
                     <ul class="aid-list">
                         {% for child in opened -%}
+                            {% if (child.targets|last).rehabilitation %}
                             <li class="aid-list__item">
                                 <div class="aid-card">
-                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
+                                    {# таймер ребенка #}
+                            {#  <div class="card-child-time">
+                                <p class="card-child-time-title">
+                                    Реабилитация <br> через:
+                                </p>
+                                <p class="card-child-time-days">
+                                    13 дней
+                                </p>
+                                <p class="card-child-time-hours">
+                                    12:13:12
+                                </p>
+                            </div> #}
+                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.child.images[0]) }}" alt="{{ child.child.name }}"/>
                                     <div class="aid-card__description">
-                                        <p class="aid-card__description-name">{{ child.name }}</p>
-                                        <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
+                                        <p class="aid-card__description-name">{{ child.child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.child.diagnosis }}</p>
                                         <div class="aid-card__description-resources collected-resources">
-                                            <div class="collected-resources__slider">
-                                                <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
+                                             <div class='progressline-block'>
+                                        <!--
+                                        Блок "push-content" нужен для отображения всплывашки при наведении
+                                        на progress-bar
+                                    -->
+                                        <div class='push-content'></div>
+                                        <div class='progress-list'>
+                                        {% for trg in child.targets%}
+                                            <div class='progress-bar'>
+                                                <!--
+                                            Внутри каждого 'progress-bar' нужен блок 'txt'
+                                            именно в нем содержится контент всплывашки
+                                        -->
+                                                <div class='txt'>
+                                                    <div class='childname'>{{ child.child.name }}</div>
+                                                    <div class='info'>Пройдена {{numb[loop.index]}}  реабилитация на сумму {{trg.collected}} рублей
+                                                    </div>
+                                                    {# <div><a href='#'>История пожертвований</a></div> #}
+                                                </div>
+                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
-                                            <div class="collected-resources__sum">
-                                                <span class="collected-resources__sum-notice">Собрано:</span>
-                                                <span
-                                                    class="collected-resources__sum-value">{{ child.collected|number_format(0, '.', ' ') }} руб.</span>
-                                            </div>
+                                        {% endfor %}
+
+
+                                            {# OLD  
+                                                <div class="collected-resources__slider">
+                                                    <div class="collected-resources__slider-filled" style="width:{{ (child.child.goalRatio * 100)|number_format(0) }}%"></div>
+                                                </div>
+                                                <div class="collected-resources__sum">
+                                                    <span class="collected-resources__sum-notice">Собрано:</span>
+                                                    <span
+                                                        class="collected-resources__sum-value">{{ child.child.collected|number_format(0, '.', ' ') }} руб.</span> #}
                                         </div>
-                                        <p class="aid-card__description-more">
+                                    </div>
+                                        <p  style="display:none" class="aid-card__description-more">
                                             <a class="aid-card__description-more__link js-card-link"
-                                               href="{{ path('children_detail', {'id': child.id}) }}">Узнать
+                                               href="{{ path('children_detail', {'id': child.child.id}) }}">Узнать
                                                 подробнее</a>
                                         </p>
+                                    <div class='RaisedMoney'>
+                                        <div>Осталось собрать:</div>
+                                        <div class='money'>{{child.targets|last ? child.targets|last.goal-child.targets|last.collected}} руб.</div>
+                                    </div>
+                                    <div class='needed'>
+                                        <div>Необходимо:</div>
+                                        <div class='needed-name'><a href='#'>4-ая реабилитация в РЦ "Радуга"</a></div>
+                                    </div>
+                                    <div class='wantHelp'><button>Хочу помочь!</button></div>
+
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                        {%- endfor %}
+                    </ul>
+                </div>
+            </section>
+        {%- endif %}
+
+
+        {# ПОДАРКИ #}
+
+
+
+        {% if opened|length -%}
+            <section class="section kids">
+            <div class="container container-pagecontent-padding">
+                <h2 class="section-title" id='pjm'>Подарки, желания, мечты</h2>
+                <ul class="aid-list">
+                        {% for child in opened -%}
+                            {% if not (child.targets|last).rehabilitation %}
+                            <li class="aid-list__item">
+                                <div class="aid-card">
+                                    {# таймер ребенка #}
+                            {#  <div class="card-child-time">
+                                <p class="card-child-time-title">
+                                    Реабилитация <br> через:
+                                </p>
+                                <p class="card-child-time-days">
+                                    13 дней
+                                </p>
+                                <p class="card-child-time-hours">
+                                    12:13:12
+                                </p>
+                            </div> #}
+                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.child.images[0]) }}" alt="{{ child.child.name }}"/>
+                                    <div class="aid-card__description">
+                                        <p class="aid-card__description-name">{{ child.child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.child.diagnosis }}</p>
+                                        <div class="aid-card__description-resources collected-resources">
+                                             <div class='progressline-block'>
+                                        <!--
+                                        Блок "push-content" нужен для отображения всплывашки при наведении
+                                        на progress-bar
+                                    -->
+                                        <div class='push-content'></div>
+                                        <div class='progress-list'>
+                                        {% for trg in child.targets%}
+                                            <div class='progress-bar'>
+                                                <!--
+                                            Внутри каждого 'progress-bar' нужен блок 'txt'
+                                            именно в нем содержится контент всплывашки
+                                        -->
+                                                <div class='txt'>
+                                                    <div class='childname'>{{ child.child.name }}</div>
+                                                    <div class='info'>Пройдена {{trg.id}} реабилитация на сумму {{trg.collected}} рублей
+                                                    </div>
+                                                    {# <div><a href='#'>История пожертвований</a></div> #}
+                                                </div>
+                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
+                                            </div>
+                                        {% endfor %}
+
+
+                                            {# OLD  
+                                                <div class="collected-resources__slider">
+                                                    <div class="collected-resources__slider-filled" style="width:{{ (child.child.goalRatio * 100)|number_format(0) }}%"></div>
+                                                </div>
+                                                <div class="collected-resources__sum">
+                                                    <span class="collected-resources__sum-notice">Собрано:</span>
+                                                    <span
+                                                        class="collected-resources__sum-value">{{ child.child.collected|number_format(0, '.', ' ') }} руб.</span> #}
+                                            
+                                        </div>
+                                    </div>
+                                        <p  style="display:none" class="aid-card__description-more">
+                                            <a class="aid-card__description-more__link js-card-link"
+                                               href="{{ path('children_detail', {'id': child.child.id}) }}">Узнать
+                                                подробнее</a>
+                                        </p>
+                                    <div class='RaisedMoney'>
+                                        <div>Осталось собрать:</div>
+                                        <div class='money'>{{child.targets|last ? child.targets|last.goal-child.targets|last.collected}} руб.</div>
+                                    </div>
+                                    <div class='needed'>
+                                        <div>Необходимо:</div>
+                                        <div class='needed-name'><a href='#'>4-ая реабилитация в РЦ "Радуга"</a></div>
+                                    </div>
+                                    <div class='wantHelp'><button>Хочу помочь!</button></div>
+
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                        {%- endfor %}
+                    </ul>
+                </div>
+            </section>
+        {%- endif %}
+
+
+
+        {# ПОМОГЛИ #}
+
+
+        {% if closed|length -%}
+            <section class="section kids">
+            <div class="container container-pagecontent-padding">
+                <h2 class="section-title" id='we-helped'>Мы помогли</h2>
+                <ul class="aid-list">
+                        {% for child in closed -%}
+                            <li class="aid-list__item">
+                                <div class="aid-card">
+                                    {# таймер ребенка #}
+                            {#  <div class='notification care'>
+                                    <img src='/images/care 1.png'>
+                                    <div class='inProcess'>Проходит реабилитацию</div>
+                                </div> #}
+                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.child.images[0]) }}" alt="{{ child.child.name }}"/>
+                                    <div class="aid-card__description">
+                                        <p class="aid-card__description-name">{{ child.child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.child.diagnosis }}</p>
+                                        <div class="aid-card__description-resources collected-resources">
+                                             <div class='progressline-block'>
+                                        <!--
+                                        Блок "push-content" нужен для отображения всплывашки при наведении
+                                        на progress-bar
+                                    -->
+                                        <div class='push-content'></div>
+                                        <div class='progress-list'>
+                                           
+                                        {% for trg in child.targets%}
+                                            <div class='progress-bar'>
+                                                <!--
+                                            Внутри каждого 'progress-bar' нужен блок 'txt'
+                                            именно в нем содержится контент всплывашки
+                                        -->
+                                                <div class='txt'>
+                                                    <div class='childname'>{{ child.child.name }}</div>
+                                                    <div class='info'>Пройдена {{trg.id}} реабилитация на сумму {{trg.collected}} рублей
+                                                    </div>
+                                                    {# <div><a href='#'>История пожертвований</a></div> #}
+                                                </div>
+                                                <div class='progress-bar-done' style="width:{{100*trg.collected/trg.goal}}%"></div>
+                                            </div>
+                                        {% endfor %}
+
+
+                                            {# OLD  
+                                                <div class="collected-resources__slider">
+                                                    <div class="collected-resources__slider-filled" style="width:{{ (child.child.goalRatio * 100)|number_format(0) }}%"></div>
+                                                </div>
+                                                <div class="collected-resources__sum">
+                                                    <span class="collected-resources__sum-notice">Собрано:</span>
+                                                    <span
+                                                        class="collected-resources__sum-value">{{ child.child.collected|number_format(0, '.', ' ') }} руб.</span> #}
+                                            
+                                        </div>
+                                    </div>
+                                        <p style="display:none" class="aid-card__description-more">
+                                            <a class="aid-card__description-more__link js-card-link"
+                                               href="{{ path('children_detail', {'id': child.child.id}) }}">Узнать
+                                                подробнее</a>
+                                        </p>
+                                    {# <div class='RaisedMoney'>
+                                        <div>Осталось собрать:</div>
+                                        <div class='money'>9 000 руб.</div>
+                                    </div>
+                                    <div class='needed'>
+                                        <div>Необходимо:</div>
+                                        <div class='needed-name'><a href='#'>4-ая реабилитация в РЦ "Радуга"</a></div>
+                                    </div> #}
+                                    <div class='wantHelp closed'><button disabled>Сбор закрыт</button></div>
+
                                     </div>
                                 </div>
                             </li>
@@ -48,7 +279,7 @@
                 </div>
             </section>
         {%- endif %}
-
+{# 
         {% if closed|length -%}
             <section class="section kids">
                 <div class="container container-pagecontent-padding">
@@ -57,13 +288,13 @@
                         {% for child in closed -%}
                             <li class="aid-list__item">
                                 <div class="aid-card">
-                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="Фото {{ child.name }}"/>
+                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.child.images[0]) }}" alt="Фото {{ child.child.name }}"/>
                                     <div class="aid-card__description">
-                                        <p class="aid-card__description-name">{{ child.name }}</p>
-                                        <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
+                                        <p class="aid-card__description-name">{{ child.child.name }}</p>
+                                        <p class="aid-card__description-diagnosis">{{ child.child.diagnosis }}</p>
                                         <div class="aid-card__description-resources collected-resources">
                                             <div class="collected-resources__slider">
-                                                <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
+                                                <div class="collected-resources__slider-filled" style="width:{{ (child.child.goalRatio * 100)|number_format(0) }}%"></div>
                                             </div>
                                             <div class="collected-resources__sum">
                                                 <span class="collected-resources__sum-notice">Сбор средств закрыт</span>
@@ -71,7 +302,7 @@
                                         </div>
                                         <p class="aid-card__description-more">
                                             <a class="aid-card__description-more__link js-card-link"
-                                               href="{{ path('children_detail', {'id': child.id}) }}">Узнать
+                                               href="{{ path('children_detail', {'id': child.child.id}) }}">Узнать
                                                 подробнее</a>
                                         </p>
                                     </div>
@@ -81,11 +312,7 @@
                     </ul>
                 </div>
             </section>
-        {%- endif %}
-            <div class="container container--small">
-                <div class="donate-form-wrapper news-detail-donate-form-wrapper">
-                    {% include '/components/donate_form.twig' %}
-                </div>
-            </div>
+        {%- endif %} #}
+            
     </main>
 {%- endblock %}
