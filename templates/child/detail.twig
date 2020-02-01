@@ -153,6 +153,7 @@
                                     {% if closed %} 
                                     <h3 class="child-help-form__title">Я хочу помочь детям</h3> 
                                     {% endif %}
+                                    <div class='donate-form-row'>
                                     <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
                                         <label class="donate-sum-fieldgroup__label toggle-field">
                                             <input class="toggle-field__input" type="radio" name="sum" value="300"
@@ -173,6 +174,8 @@
                                             Пожертвовать
                                         </button>
                                     </div>
+                                </div>
+                                <div class='donate-form-row'>
                                     <div class="payment-methods">
                                         <p class="payment-methods-text">Оплата с карт</p>
                                         <img class="toggle-field__text-image" src="/images/Apple_Pay_mini.png"
@@ -184,7 +187,7 @@
                                         <img class="toggle-field__text-image" src="/images/visa.png" width="40"
                                             height="40">
                                     </div>
-
+                                </div>
                                     <button
                                         class="btn btn-dark btn--big child-help-form__submit js-child-help-form-button-submit bottom hidden"
                                         type="submit">

@@ -46,7 +46,7 @@
                                     12:13:12
                                 </p>
                             </div> #}
-                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
+                                    <img class="aid-card__photo" data-proportion-h="1" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
                                     <div class="aid-card__description">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
@@ -136,7 +136,7 @@
                                     12:13:12
                                 </p>
                             </div> #}
-                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
+                                    <img class="aid-card__photo" data-proportion-h="1" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
                                     <div class="aid-card__description">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
@@ -219,7 +219,7 @@
                                     <img src='/images/care 1.png'>
                                     <div class='inProcess'>Проходит реабилитацию</div>
                                 </div> #}
-                                    <img class="aid-card__photo" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
+                                    <img class="aid-card__photo" data-proportion-h="1" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
                                     <div class="aid-card__description">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
@@ -319,4 +319,21 @@
         {%- endif %} #}
             
     </main>
+    <script src='path/to/script/stickjaw.js'></script>
+<script>
+    var SJ_setiings = {
+                options: {
+                    hlw: true, // Height as width
+                    wlh: true, // Width as height
+                    hlt: true, // Width of the target element (target id is the same as for height)
+                    wlt: true, // Height of the target element (target id is the same as for width)
+                    alo: true, // All elements as one (height)
+                },
+                settings: {
+                    windowResize: true, 
+                    writeHystory: true 
+                }
+            }
+    var sj = new SJ(SJ_setiings);
+</script>
 {%- endblock %}
