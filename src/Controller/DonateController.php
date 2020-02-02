@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Child;
 use App\Entity\SendGridSchedule;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
@@ -608,8 +609,10 @@ class DonateController extends AbstractController
                 );
             }
         }
-
-        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user)]);
+        $child = $form['child_id'] ?  $this->getDoctrine()
+            ->getRepository(Child::class)
+            ->find($form['child_id']) : null;
+        return $this->render('donate/main.twig', ['form' => $form, 'formErrors' => $form_errors, 'auth_errors' => $auth_errors, 'log'=>isset($user),'child'=>$child]);
     }
 
     /**
