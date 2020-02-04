@@ -127,11 +127,11 @@
                                             {% else %}
                                         <div class="newmoneybutton">Необходимо <br>
                                         <span
-                                            class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
+                                            class="collected-resources-left__value">{{ (targets|last).goal|number_format(0, '.', ' ') }} руб.</span>
                                         </div>
 
                                     <div class="newmoneybutton orangebutton">
-                                            Осталось собрать<br> <span>{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
+                                            Осталось собрать<br> <span>{{ ((targets|last).Goal - (targets|last).collected)|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                             {% endif %}
 
