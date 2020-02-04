@@ -118,7 +118,7 @@
      display: flex;
      justify-content: center;
      align-items: center;
-     margin:0 auto;
+     margin: 0 auto;
  }
  
  .payment-methods-text {
@@ -194,7 +194,7 @@
      justify-content: space-between;
      background: #F6F6F6;
      border-radius: 50px;
-     height: 41px;
+     height: 35px;
      z-index: 5;
      margin-bottom: 50px;
  }
@@ -213,6 +213,7 @@
      font-size: 16px;
      color: #232323;
      cursor: pointer;
+     font-weight: 300
  }
  
  .cart-nav div.left {
@@ -667,7 +668,7 @@
      background: #E8E8E8;
      border-radius: 8px;
      margin-right: 3%;
-     flex-basis: 22%;
+     flex: 1;
      position: relative;
      flex-shrink: 0;
      margin-bottom: 10px;
@@ -772,7 +773,7 @@
  .aid-card .RaisedMoney .money {
      font-weight: bold;
      /* font-size: 22px; */
-     font-size:2.2rem;
+     font-size: 1.8rem;
      line-height: 26px;
      /* identical to box height */
      display: flex;
@@ -1328,6 +1329,30 @@
      object-fit: cover;
  }
  
+ .hr-child.hr-full {
+     width: calc(100% + 16rem);
+     left: -8rem;
+     position: relative;
+ }
+ 
+ .cart-nav-container.kid-profile {
+     padding-left: 0;
+     padding-right: 0;
+ }
+ 
+ .cart-nav-container.kid-profile .cart-nav.kid-profile {
+     width: 100%;
+     max-width: initial;
+ }
+ 
+ .donate-form-row__col.btn.btn-dark.already_have_acc {
+     border-radius: 40px;
+ }
+ 
+ .child-help-form.kid-page {
+     padding: 0;
+ }
+ 
  @media screen and (max-width:1440px) {
      .btn.btn-dark.btn--big.child-help-form__submit.js-child-help-form-button-submit.kid-cart {
          width: fit-content;
@@ -1717,6 +1742,7 @@
      .cart-nav div span {
          font-size: 12px !important;
          width: 80%;
+         font-weight: 300
      }
      .aid-card .wantHelp {
          margin-top: 30px;
@@ -1742,17 +1768,20 @@
          width: 95%;
      } */
  }
-  .childnews-item-desc {
-       text-overflow: ellipsis;
-       height:50px;
-       overflow:hidden;
-}
+ 
+ .childnews-item-desc {
+     text-overflow: ellipsis;
+     height: 50px;
+     overflow: hidden;
+ }
+ 
  .progressline-block .progress-bar .progress-bar-done.pmj {
      background: #E09B3D;
      border-radius: 8px;
      height: 8px;
  }
-  .progressline-block .progress-bar:hover .progress-bar-done.pmj {
-    background: #5D20B0;
-    cursor: pointer;
-}
+ 
+ .progressline-block .progress-bar:hover .progress-bar-done.pmj {
+     background: #5D20B0;
+     cursor: pointer;
+ }
