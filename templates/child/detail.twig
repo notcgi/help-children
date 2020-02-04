@@ -77,6 +77,7 @@
                                         <img class="img-responsive"
                                              src="{{ asset('uploads/images/' ~ child.images[0]) }}"
                                              alt="{{ child.name }}"
+                                             data-proportion-h="1"
                                              width="382">
                                     </div>
 
@@ -113,10 +114,10 @@
                                         {{ child.comment }}
                                     </div>
                                 </div> #}
-                                
+
                                 <div class="collected-resources ">
                                     <div class="collected-resources-left newbuttonwrapper">
-                                            {% if closed %} 
+                                            {% if closed %}
                                         <div class="newmoneybutton orangebutton close">
                                             Сбор на текущую<br>реабилитацию закрыт
                                         </div>
@@ -124,18 +125,18 @@
                                             <img src='/images/thanks.png'>
                                         </div>
                                             {% else %}
-                                        <div class="newmoneybutton">Необходимо <br> 
+                                        <div class="newmoneybutton">Необходимо <br>
                                         <span
                                             class="collected-resources-left__value">{{ child.goal|number_format(0, '.', ' ') }} руб.</span>
                                         </div>
-                                    
+
                                     <div class="newmoneybutton orangebutton">
                                             Осталось собрать<br> <span>{{ child.leftGoal|number_format(0, '.', ' ') }} руб.</span>
                                     </div>
                                             {% endif %}
 
 
-                                        
+
                                 </div>
                                     <div class="newprogressbarwrapper">
                                         <p>Сбор средств:</p>
@@ -150,9 +151,9 @@
                                     </div>
 
                                     <div class="hr-child"></div>
-                                    {% if closed %} 
-                                    <h3 class="child-help-form__title">Я хочу помочь детям</h3> 
-                                    {% endif %}<form class="child-help-form" action="{{ path('donate') }}" method="POST">
+                                    {% if closed %}
+                                    <h3 class="child-help-form__title">Я хочу помочь детям</h3>
+                                    {% endif %}<form class="child-help-form kid-page" action="{{ path('donate') }}" method="POST">
                             <input type="hidden" name="child_id" value="{{ child.id }}">
                                     <div class='donate-form-row'>
                                     <div class="donate-form-row__col donate-sum-fieldgroup toggle-fieldgroup">
@@ -194,11 +195,11 @@
                                         type="submit">
                                         Пожертвовать
                                     </button>
-                        </form> 
+                        </form>
                                 </div>
                             </div>
                         </div>
-                        <div class='hr-child'></div>
+                        <div class='hr-child hr-full'></div>
                         <section class='cart-nav-container kid-profile'>
                             <div class='cart-nav kid-profile'>
                                 <div class='active left'><span><a href='#letter'>Письмо мамы</a></span></div>
@@ -246,14 +247,14 @@
                                                 <img src='/uploads/images/{{img}}'>
                                             </div>
                                         {% endfor %}
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="right-half">
                                     {# <div class='name'>Преобретение аппарата сВОШ</div> #}
                                     <div class='name'>{{(targets|last).name}}</div>
-                                    
+
                                     <div class='info'>Реабилитация от {{(targets|last).totime|date("j")}} {{mnths[(targets|last).totime|date("n")]}} {{(targets|last).totime|date("Y")}} года</div>
                                     <div class="newmoneybutton bottom">
                                         Необходимо<br> <span>{{(targets|last).goal}} руб.</span>
@@ -397,7 +398,7 @@
                             </script>#}
 
                         </div>
-                        <div class="hr-child"></div>
+                        <div class="hr-child hr-full"></div>
 
                         <form class="child-help-form" action="{{ path('donate') }}" method="POST">
                             <input type="hidden" name="child_id" value="{{ child.id }}">
@@ -455,5 +456,22 @@
         </section>
     </main>
     <script src="/js/swiper.min.js"></script>
+    <script src="/js/stickjaw.js"></script>
+    <script>
+    var SJ_setiings = {
+                options: {
+                    hlw: true, // Height as width
+                    wlh: true, // Width as height
+                    hlt: true, // Width of the target element (target id is the same as for height)
+                    wlt: true, // Height of the target element (target id is the same as for width)
+                    alo: true, // All elements as one (height)
+                },
+                settings: {
+                    windowResize: true,
+                    writeHystory: true
+                }
+            }
+    var sj = new SJ(SJ_setiings);
+    </script>
 
 {% endblock %}

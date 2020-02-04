@@ -69,7 +69,7 @@
                                 <div class="ohf-col-label__notice">
                                     <div class="ohf-col-label__notice-title">Кто наш благотворитель?</div>
                                     <p class="ohf-col-label__notice-subtitle">
-                                        {%if not log%}<button type="button" class="donate-form-row__col btn btn-dark" onclick="location.href='/login?url=donate?payment-type='+document.querySelector('input[name=payment-type]:checked').value;">
+                                        {%if not log%}<button type="button" class="donate-form-row__col btn btn-dark already_have_acc" onclick="location.href='/login?url=donate?payment-type='+document.querySelector('input[name=payment-type]:checked').value;">
                                         <span>У меня уже<br>есть аккаунт</span>
                                     </button>{% endif%}</p>
                                 </div>
@@ -124,7 +124,7 @@
                                 <div class="ohf-col-input__row" style="line-height: 2">
                                     <p class='little-paragraph'>
                                         Чтобы внести пожертвование прямо сейчас отправьте SMS<br> на номер <strong style="background-color: #faedd8; padding: 10px; border-radius: 20px;">3443</strong> со словом <strong style="background-color: #faedd8; padding: 10px; border-radius: 20px;">ФОНДУ</strong> и через пробел укажите сумму пожертвования.
-                               
+
                                         <br><br>
                                         Например, <strong style="background-color: #faedd8; border-radius: 20px; padding: 10px;">ФОНДУ 400</strong>. В этом случае Вы пожертвуете 400 рублей. <br><br>Если отправите просто слово <strong style="background-color: #faedd8; border-radius: 20px; padding: 10px;">ФОНДУ</strong> без указания суммы, то с Вашего телефона спишется 100 рублей.
                                     </p>
@@ -308,7 +308,7 @@
                             </div>
                         </div>
 
-                        
+
                     </form>
                 </div>
             </div>
@@ -418,7 +418,7 @@
                     $('.ohf-col-input__row--start')[0].style.display = 'flex';
                     $('.donate-form-payment-systems__cards-onDonatPage')[0].style.display = 'inline';
                     $('.uni')[0].style.display = 'none';
-                    
+
                  }
             },
             radioSumChangeHandler = e => {
@@ -447,7 +447,7 @@
                     $('.ohf-col-input__row--start')[0].style.display = 'flex';
                     $('.donate-form-payment-systems__cards-onDonatPage')[0].style.display = 'inline';
                     $('.uni')[0].style.display = 'none';
-                    
+
                  }
         switch (0 | sum.value) {
             case 300: radioSums[0].checked = true; break;
