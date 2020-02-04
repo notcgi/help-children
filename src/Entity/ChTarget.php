@@ -56,6 +56,11 @@ class ChTarget
      */
     private $attach;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $allowclose;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +162,17 @@ class ChTarget
     public function setAttach($attach): self
     {
         $this->attach = $attach;
+
+        return $this;
+    }
+    public function getallowclose()
+    {
+        return [$this->allowclose ?? true];
+    }
+
+    public function setAllowClose($allowclose): self
+    {
+        $this->allowclose = $allowclose;
 
         return $this;
     }
