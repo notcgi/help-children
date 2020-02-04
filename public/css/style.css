@@ -1067,7 +1067,7 @@
      position: absolute;
      left: 50%;
      width: 1px;
-     height: 90%;
+     height: 80%;
      background: #F0F0F0;
      margin-top: 20px;
      z-index: 1;
@@ -1283,6 +1283,8 @@
      padding-top: 13px;
      margin-left: 0;
      width: 50%;
+     height: fit-content;
+     padding-bottom: 13px;
  }
  
  .newmoneybutton.bottom span {
