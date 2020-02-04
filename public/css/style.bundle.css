@@ -2747,7 +2747,7 @@ body {
 }
 
 .hero-medium.kid-page {
-    height: 230px;
+    height: 250px;
 }
 
 @media (max-width:992px) {
@@ -2831,7 +2831,7 @@ body {
 
 .dropdown-content {
     position: absolute;
-    top: 1.5rem;
+    top: 0.5rem;
     left: -25%;
     padding: 0;
     z-index: 10

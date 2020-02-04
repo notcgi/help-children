@@ -64,6 +64,7 @@
      border-radius: 50px;
      color: #232323;
      width: 50%;
+     font-weight: 300;
  }
  
  .newmoneybutton span {
@@ -75,7 +76,7 @@
  }
  
  .orangebutton {
-     padding-left: 82px;
+     padding-left: 78px;
      margin-left: 30px;
      background: linear-gradient(160deg, #FF9A00 7.19%, #F08E43 30.84%, #FF5829 86.99%);
      position: relative;
@@ -998,7 +999,7 @@
  
  .mothersletter .letter-content .right-half {
      width: 50%;
-     margin-top: 20px;
+     margin-top: 13px;
  }
  
  .mothersletter .letter-content .right-half .img-block iframe {
@@ -1111,6 +1112,7 @@
  .helpmoney .helpmoney-flex-container .right-half .newmoneybutton {
      max-width: 254px;
      margin: 30px 0;
+     font-weight: 300;
  }
  
  .swiper-wrapper {
@@ -1345,6 +1347,7 @@
  .cart-nav-container.kid-profile .cart-nav.kid-profile {
      width: 100%;
      max-width: initial;
+     height: 41px;
  }
  
  .donate-form-row__col.btn.btn-dark.already_have_acc {
