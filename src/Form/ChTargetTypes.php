@@ -67,6 +67,15 @@ class ChTargetTypes extends AbstractType
                     ])
                 ]
             ])
+            ->add(
+                'allowclose', ChoiceType::class, [
+                'choices' => [
+                    'Добавлять в закрытые' => 1
+                ],
+                "expanded" => true,
+                "multiple"=>true
+             ]
+            )
             ->add('rehabilitation', ChoiceType::class, [
                 'choices' => [
                     'Реабилитация' => 1,

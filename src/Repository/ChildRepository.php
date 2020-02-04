@@ -51,11 +51,11 @@ class ChildRepository extends ServiceEntityRepository
         SELECT * FROM children WHERE id in (SELECT m1.child
         FROM ch_target m1 LEFT JOIN ch_target m2
         ON (m1.child = m2.child AND m1.id < m2.id)
-        WHERE m2.id IS NULL and m1.collected >= m1.goal)
+        WHERE m2.id IS NULL and m1.collected >= m1.goal AND m1.allowclose=1)
         sql
 
         :<<<sql
-        SELECT * FROM children WHERE id in ( SELECT m1.child FROM ch_target m1 LEFT JOIN ch_target m2 ON (m1.child = m2.child AND m1.id < m2.id) WHERE m2.id IS NULL and m1.collected < m1.goal and m1.rehabilitation = :state)
+        SELECT * FROM children WHERE id in ( SELECT m1.child FROM ch_target m1 LEFT JOIN ch_target m2 ON (m1.child = m2.child AND m1.id < m2.id) WHERE ((m1.collected < m1.goal or (m1.collected >= m1.goal AND m1.allowclose=0)) and m2.id IS NULL  and m1.rehabilitation = :state))
         sql;
         $Q = $DB->prepare($sql);
         $Q->execute(['state' => $val[$state]]);
