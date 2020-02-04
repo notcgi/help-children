@@ -165,7 +165,7 @@ class ChTarget
 
         return $this;
     }
-    public function getallowclose()
+    public function getAllowClose()
     {
         return [$this->allowclose ?? true];
     }
