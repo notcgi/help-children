@@ -35,7 +35,7 @@ class ChildController extends AbstractController
         }
         $trg=$this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child);
         $ctarg=end($trg);
-        if ($ctarg->getCollected()>=$ctarg->getGoal()) $state='close';
+        if (($ctarg->getCollected()>=$ctarg->getGoal()) && ($ctarg->getAllowClose()[0])) $state='close';
         else $state= ($ctarg->getRehabilitation()) ? 'rehab' : 'pmj';
         $child_lst=$this->getDoctrine()->getRepository(Child::class)->getCurCh($state);
         $key=0;
