@@ -37,7 +37,45 @@
                                     {# таймер ребенка #}
                                     {% if (child.targets|last).allowclose == 0%}
                                     {% if date((child.targets|last).totime) > date( "now")%}
-                              <div class="card-child-time">
+
+                                    <div class='notification'>
+                                        <div>Реабилитация<br>через:</div>
+                                        <div class='days'><span id="{{child.id}}days"></span> дней</div>
+                                        <div class='time'><span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span></div>
+                                        <script type="text/javascript">
+                                            function updater(d, h, m, dlm) {
+                                            var baseTime = new Date( {{ (child.targets|last).totime|date("Y") }}, {{ (child.targets|last).totime|date("m") }}-1, {{ (child.targets|last).totime|date("d") }}, 14);
+
+                                            function update() {
+                                                var cur = new Date();
+                                                var diff = (baseTime - cur);
+                                                // var millis = diff % 1000;
+                                                // diff = Math.floor(diff/1000);
+                                                // var sec = diff % 60;
+                                                // if(sec < 10) sec = "0"+sec;
+                                                diff = Math.floor(diff/60 /1000);
+                                                var min = diff % 60;
+                                                if(min < 10) min = "0"+min;
+                                                diff = Math.floor(diff/60);
+                                                var hours = diff % 24;
+                                                var days = Math.floor(diff / 24);
+                                                d.innerHTML = days;
+                                                h.innerHTML = hours;
+                                                m.innerHTML = min;
+                                                dlm.innerHTML = dlm.innerHTML==':' ? " " : ":";
+                                                // s.innerHTML = Math.abs(sec);
+
+                                                setTimeout(update, 1000);
+                                            }
+                                            setTimeout(update, 0);
+                                            }
+                                            updater(document.getElementById("{{child.id}}days"),
+                                            document.getElementById("{{child.id}}hours"), document.getElementById("{{child.id}}minutes"),
+                                            document.getElementById("{{child.id}}delimiter"));
+                                        </script>
+                                    </div>
+                             <!-- Володя, эту парашу я изменил если что-->
+                              <!--<div class="card-child-time">
                                 <p class="card-child-time-title">
                                     Реабилитация <br> через:
                                 </p>
@@ -46,38 +84,8 @@
                                 </p>
                                 <p class="card-child-time-hours">
                                     <span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span>
-                                </p>
-                                <script type="text/javascript">
-                                function updater(d, h, m, dlm) {
-                                  var baseTime = new Date( {{ (child.targets|last).totime|date("Y") }}, {{ (child.targets|last).totime|date("m") }}-1, {{ (child.targets|last).totime|date("d") }}, 14);
-
-                                  function update() {
-                                    var cur = new Date();
-                                    var diff = (baseTime - cur);
-                                    // var millis = diff % 1000;
-                                    // diff = Math.floor(diff/1000);
-                                    // var sec = diff % 60;
-                                    // if(sec < 10) sec = "0"+sec;
-                                    diff = Math.floor(diff/60 /1000);
-                                    var min = diff % 60;
-                                    if(min < 10) min = "0"+min;
-                                    diff = Math.floor(diff/60);
-                                    var hours = diff % 24;
-                                    var days = Math.floor(diff / 24);
-                                    d.innerHTML = days;
-                                    h.innerHTML = hours;
-                                    m.innerHTML = min;
-                                    dlm.innerHTML = dlm.innerHTML==':' ? " " : ":";
-                                    // s.innerHTML = Math.abs(sec);
-                                  
-                                    setTimeout(update, 1000);
-                                  }
-                                  setTimeout(update, 0);
-                                }
-                                updater(document.getElementById("{{child.id}}days"),
-                                 document.getElementById("{{child.id}}hours"), document.getElementById("{{child.id}}minutes"),
-                                 document.getElementById("{{child.id}}delimiter"));</script>
-                            </div> 
+                                </p>-->
+                            <!--</div>-->
                         {% else %}
                             <div class='notification care'>
                                     <img src='/images/care 1.png'>
@@ -114,7 +122,7 @@
                                         {% endfor %}
 
 
-                                            {# OLD  
+                                            {# OLD
                                                 <div class="collected-resources__slider">
                                                     <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
                                                 </div>
@@ -166,47 +174,41 @@
                                     {# таймер ребенка #}
                                     {% if (child.targets|last).allowclose == 0%}
                                     {% if date((child.targets|last).totime) > date( "now")%}
-                              <div class="card-child-time">
-                                <p class="card-child-time-title">
-                                    Реабилитация <br> через:
-                                </p>
-                                <p class="card-child-time-days">
-                                     <span id="{{child.id}}days"></span> дней
-                                </p>
-                                <p class="card-child-time-hours">
-                                    <span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span>
-                                </p>
-                                <script type="text/javascript">
-                                function updater(d, h, m, dlm) {
-                                  var baseTime = new Date( {{ (child.targets|last).totime|date("Y") }}, {{ (child.targets|last).totime|date("m") }}-1, {{ (child.targets|last).totime|date("d") }}, 14);
+                                <div class='notification'>
+                                    <div>Реабилитация<br>через:</div>
+                                    <div class='days'><span id="{{child.id}}days"></span> дней</div>
+                                    <div class='time'><span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span></div>
+                                    <script type="text/javascript">
+                                    function updater(d, h, m, dlm) {
+                                    var baseTime = new Date( {{ (child.targets|last).totime|date("Y") }}, {{ (child.targets|last).totime|date("m") }}-1, {{ (child.targets|last).totime|date("d") }}, 14);
 
-                                  function update() {
-                                    var cur = new Date();
-                                    var diff = (baseTime - cur);
-                                    // var millis = diff % 1000;
-                                    // diff = Math.floor(diff/1000);
-                                    // var sec = diff % 60;
-                                    // if(sec < 10) sec = "0"+sec;
-                                    diff = Math.floor(diff/60 /1000);
-                                    var min = diff % 60;
-                                    if(min < 10) min = "0"+min;
-                                    diff = Math.floor(diff/60);
-                                    var hours = diff % 24;
-                                    var days = Math.floor(diff / 24);
-                                    d.innerHTML = days;
-                                    h.innerHTML = hours;
-                                    m.innerHTML = min;
-                                    dlm.innerHTML = dlm.innerHTML==':' ? " " : ":";
-                                    // s.innerHTML = Math.abs(sec);
-                                  
-                                    setTimeout(update, 1000);
-                                  }
-                                  setTimeout(update, 0);
-                                }
-                                updater(document.getElementById("{{child.id}}days"),
-                                 document.getElementById("{{child.id}}hours"), document.getElementById("{{child.id}}minutes"),
-                                 document.getElementById("{{child.id}}delimiter"));</script>
-                            </div> 
+                                    function update() {
+                                        var cur = new Date();
+                                        var diff = (baseTime - cur);
+                                        // var millis = diff % 1000;
+                                        // diff = Math.floor(diff/1000);
+                                        // var sec = diff % 60;
+                                        // if(sec < 10) sec = "0"+sec;
+                                        diff = Math.floor(diff/60 /1000);
+                                        var min = diff % 60;
+                                        if(min < 10) min = "0"+min;
+                                        diff = Math.floor(diff/60);
+                                        var hours = diff % 24;
+                                        var days = Math.floor(diff / 24);
+                                        d.innerHTML = days;
+                                        h.innerHTML = hours;
+                                        m.innerHTML = min;
+                                        dlm.innerHTML = dlm.innerHTML==':' ? " " : ":";
+                                        // s.innerHTML = Math.abs(sec);
+
+                                        setTimeout(update, 1000);
+                                    }
+                                    setTimeout(update, 0);
+                                    }
+                                    updater(document.getElementById("{{child.id}}days"),
+                                    document.getElementById("{{child.id}}hours"), document.getElementById("{{child.id}}minutes"),
+                                    document.getElementById("{{child.id}}delimiter"));</script>
+                                    </div>
                         {% else %}
                             <div class='notification care'>
                                     <img src='/images/care 1.png'>
@@ -243,7 +245,7 @@
                                         {% endfor %}
 
 
-                                            {# OLD  
+                                            {# OLD
                                                 <div class="collected-resources__slider">
                                                     <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
                                                 </div>
@@ -251,7 +253,7 @@
                                                     <span class="collected-resources__sum-notice">Собрано:</span>
                                                     <span
                                                         class="collected-resources__sum-value">{{ child.collected|number_format(0, '.', ' ') }} руб.</span> #}
-                                            
+
                                         </div>
                                     </div>
                                         <p  style="display:none" class="aid-card__description-more">
@@ -309,7 +311,7 @@
                                     -->
                                         <div class='push-content'></div>
                                         <div class='progress-list'>
-                                           
+
                                         {% for trg in child.targets%}
                                             <div class='progress-bar'>
                                                 <!--
@@ -327,7 +329,7 @@
                                         {% endfor %}
 
 
-                                            {# OLD  
+                                            {# OLD
                                                 <div class="collected-resources__slider">
                                                     <div class="collected-resources__slider-filled" style="width:{{ (child.goalRatio * 100)|number_format(0) }}%"></div>
                                                 </div>
@@ -335,7 +337,7 @@
                                                     <span class="collected-resources__sum-notice">Собрано:</span>
                                                     <span
                                                         class="collected-resources__sum-value">{{ child.collected|number_format(0, '.', ' ') }} руб.</span> #}
-                                            
+
                                         </div>
                                     </div>
                                         <p style="display:none" class="aid-card__description-more">
@@ -361,7 +363,7 @@
                 </div>
             </section>
         {%- endif %}
-{# 
+{#
         {% if closed|length -%}
             <section class="section kids">
                 <div class="container container-pagecontent-padding">
@@ -395,7 +397,7 @@
                 </div>
             </section>
         {%- endif %} #}
-            
+
     </main>
     <script src='/js/stickjaw.js'></script>
 <script>
@@ -408,8 +410,8 @@
                     alo: true, // All elements as one (height)
                 },
                 settings: {
-                    windowResize: true, 
-                    writeHystory: true 
+                    windowResize: true,
+                    writeHystory: true
                 }
             }
     var sj = new SJ(SJ_setiings);

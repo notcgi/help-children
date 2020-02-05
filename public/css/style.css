@@ -638,6 +638,38 @@
      color: #FFFFFF;
  }
  
+ @media screen and (max-width:1400px) {
+     .aid-card .notification {
+         width: 96px;
+         height: 96px;
+     }
+     .aid-card .notification {
+         width: 96px;
+         height: 96px;
+         font-size: 11px;
+         padding-top: 18px;
+     }
+     .aid-card .notification .days {
+         font-size: 16px;
+         line-height: 18px;
+         padding-top: 2px;
+     }
+     .aid-card .notification .time {
+         font-size: 13px;
+         line-height: 15px
+     }
+     .aid-card .notification.care {
+         padding-top: 7px;
+     }
+     .aid-card .notification.care div {
+         font-size: 10px;
+     }
+     .aid-card .notification.care img {
+         width: 40px;
+         height: 40px;
+     }
+ }
+ 
  .main-cart.kids-list .cart-content .kids-block .kids-flex-container .kid-cart .kid-info .name {
      font-weight: 500;
      font-size: 22px;
