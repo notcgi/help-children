@@ -37,10 +37,12 @@
                                     <div class='news-flex-block'>
                                         <div class='left-half'>
                                             <div class='img-block'>
-                                                <iframe width="560" height="315"
+                                                {% if n.video %}<iframe width="560" height="315"
                                                     src="{{n.video}}" frameborder="0"
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowfullscreen></iframe>
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
                                             </div>
                                         </div>
                                         <div class='right-half'>
@@ -78,10 +80,12 @@
                                     <div class='news-flex-block'>
                                         <div class='left-half'>
                                             <div class='img-block'>
-                                                <iframe width="560" height="315"
+                                                {% if n.video %}<iframe width="560" height="315"
                                                     src="{{n.video}}" frameborder="0"
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowfullscreen></iframe>
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
                                             </div>
                                         </div>
                                         <div class='right-half'>
@@ -113,10 +117,12 @@
                                     <div class='news-flex-block'>
                                         <div class='left-half'>
                                             <div class='img-block'>
-                                                <iframe width="560" height="315"
+                                                {% if n.video %}<iframe width="560" height="315"
                                                     src="{{n.video}}" frameborder="0"
                                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowfullscreen></iframe>
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
                                             </div>
                                         </div>
                                         <div class='right-half'>
