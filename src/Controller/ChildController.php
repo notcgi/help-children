@@ -95,7 +95,7 @@ class ChildController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(int $id, Request $request)
+    public function edit(int $id, FileUploader $fileUploader, Request $request)
     {
         $childData = $this->getDoctrine()
             ->getRepository(Child::class)
@@ -108,9 +108,19 @@ class ChildController extends AbstractController
         }
 
         $form = $this->createForm(EditChildTypes::class, $childData);
+        $oldimages = $childData->getImages();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $images = $childData->getImages();
+            $arrayImg = [];
+            if (!is_string($images)) foreach ($images as $image) {
+                $arrayImg[] = $fileUploader->upload($image);
+            }
+            if (!is_string($oldimages)) foreach ($oldimages as $image) {
+                $arrayImg[] = $image;
+            }
+            $childData->setImages($arrayImg); 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($childData);
             $entityManager->flush();
@@ -261,5 +271,14 @@ class ChildController extends AbstractController
                 'form' => $form->createView()
             ]
         );
+    }
+    public function delimg(int $id, $img, Request $request)
+    {
+        $n = $this->getDoctrine()->getRepository(Child::class)->find($id);
+        $nar=$n->getImages();
+        unset($nar[$img]);
+        $n->setImages($nar);
+        $this->getDoctrine()->getManager()->flush();
+       return $this -> list_panel();
     }
 }

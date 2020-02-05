@@ -106,11 +106,11 @@ class News
 
     public function getPhotos()
     {
-        return $this->photos ?? [];
+        return $this->photos ?? '[]';
     }
     public function getArPhotos()
     {
-        return json_decode($this->photos ?? []);
+        return json_decode( $this->photos ?? '[]');
     }
 
     public function setPhotos($photos): self

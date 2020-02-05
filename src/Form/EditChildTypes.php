@@ -13,7 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EditChildTypes extends AbstractType
 {
@@ -59,6 +61,24 @@ class EditChildTypes extends AbstractType
                     ]
                 ]
             )
+            ->add('images', FileType::class, [
+                'multiple' => true,
+                'required'=>false,
+                'constraints' => [
+                    new Assert\All(
+                        new Assert\File([
+                            'maxSize' => '5120k',
+                            'mimeTypes' => [
+                                'image/png',
+                                'image/jpeg',
+                                'image/jpg',
+                                'image/gif'
+                            ],
+                            'mimeTypesMessage' => 'Загружаемый файл должен быть изображением в формает PNG, JPG или GIF '
+                        ])
+                    )
+                ]
+            ])
             /*->add(
                 'images',
                 TextType::class,

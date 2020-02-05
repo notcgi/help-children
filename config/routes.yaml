@@ -80,6 +80,20 @@ p_news_delete:
     controller: App\Controller\NewsController::delete
     requirements:
         id: '\d+'
+p_news_img_delete:
+    path: /panel/news/{id}/img{img}
+    controller: App\Controller\NewsController::delimg
+    requirements:
+        id: '\d+'
+        img: '\d+'
+
+p_child_img_delete:
+    path: /panel/child/{id}/img{img}
+    controller: App\Controller\ChildController::delimg
+    requirements:
+        id: '\d+'
+        img: '\d+'
+
 
 partners:
     path: /partners

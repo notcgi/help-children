@@ -79,8 +79,8 @@
                                         <div class='recomend-news'>
                                             <div class='left-half'>
                                                 <div class='img-block'>
-                                                    <img  width="560" height="315" src="/uploads/images/{{nn.arphotos[0]}}" style="object-fit: cover;">
-                                                </div>
+                                                    {% if n.arphotos is not empty %}<img  width="560" height="315" src="/uploads/images/{{nn.arphotos[0]}}" style="object-fit: cover;">
+                                                </div>{% endif %}
                                             </div>
                                             <div class='right-half'>
                                                 <div class='date'>{{nn.createdAt|date('d.m.Y')}}</div>

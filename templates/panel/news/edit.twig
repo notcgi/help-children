@@ -36,8 +36,9 @@
                     <div class="err_list form-text text-muted">{{ form_errors(form.photos) }}</div>
                     {{ form_widget(form.photos, {'attr': {'class':'form-control', 'placeholder': 'Изображение' }}) }}
 
+                    Нажмите на изображение для удаления<br>
                     {% if imgs %}{% for img in imgs %}
-                        <img src="/uploads/images/{{img}}" width="300px">
+                        <img src="/uploads/images/{{img}}" width="300px" onclick="fetch('/panel/news/{{n.id}}/img{{loop.index0}}'); this.style.display='none'" style="cursor:pointer;">
                     {% endfor %}{% endif %}
                 </div>
                 <div class="form-group">

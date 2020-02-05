@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\News;
 use App\Entity\Child;
-// use App\Form\NewsTypes;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -144,14 +143,18 @@ class NewsController extends AbstractController
                     'class' => 'btn btn-primary'
                 ]
             ])->getForm();
+        $oldimages = $n->getArPhotos();
+            // echo json_encode($oldimages)."\n";
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $n->getPhotos();
-            echo json_encode($images);
             $arrayImg = [];
             if (!is_string($images)) foreach ($images as $image) {
                 $arrayImg[] = $fileUploader->upload($image);
+            }
+            if (!is_string($oldimages)) foreach ($oldimages as $image) {
+                $arrayImg[] = $image;
             }
 
             $n->setPhotos(json_encode($arrayImg));
@@ -180,6 +183,15 @@ class NewsController extends AbstractController
             $entityManager->remove($n);
             $entityManager->flush();
         }
+       return $this -> p_list();
+    }
+    public function delimg(int $id, $img, Request $request)
+    {
+        $n = $this->getDoctrine()->getRepository(News::class)->find($id);
+        $nar=$n->getArPhotos();
+        unset($nar[$img]);
+        $n->setPhotos(json_encode($nar));
+        $this->getDoctrine()->getManager()->flush();
        return $this -> p_list();
     }
 }
