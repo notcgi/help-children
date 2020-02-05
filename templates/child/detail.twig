@@ -62,7 +62,7 @@
                                     {# таймер ребенка #}
                                     {% if (targets|last).allowclose == 0%}
                                     {% if date((targets|last).totime) > date( "now")%}
-                              <div class="card-child-time">
+                              <!--<div class="card-child-time">
                                 <p class="card-child-time-title">
                                     Реабилитация <br> через:
                                 </p>
@@ -71,7 +71,11 @@
                                 </p>
                                 <p class="card-child-time-hours">
                                     <span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span>
-                                </p>
+                                </p>-->
+                                <div class='notification kid-profile'>
+                                    <div>Реабилитация<br>через:</div>
+                                    <div class='days'><span id="{{child.id}}days"></span> дней</div>
+                                    <div class='time'><span id="{{child.id}}hours"></span><span id="{{child.id}}delimiter">:</span><span id="{{child.id}}minutes"></span></div>
                                 <script type="text/javascript">
                                 function updater(d, h, m, dlm) {
                                   var baseTime = new Date( {{ (targets|last).totime|date("Y") }}, {{ (targets|last).totime|date("m") }}-1, {{ (targets|last).totime|date("d") }}, 14);
@@ -94,7 +98,7 @@
                                     m.innerHTML = min;
                                     dlm.innerHTML = dlm.innerHTML==':' ? " " : ":";
                                     // s.innerHTML = Math.abs(sec);
-                                  
+
                                     setTimeout(update, 1000);
                                   }
                                   setTimeout(update, 0);
@@ -102,9 +106,9 @@
                                 updater(document.getElementById("{{child.id}}days"),
                                  document.getElementById("{{child.id}}hours"), document.getElementById("{{child.id}}minutes"),
                                  document.getElementById("{{child.id}}delimiter"));</script>
-                            </div> 
+                            </div>
                         {% else %}
-                            <div class='notification care'>
+                            <div class='notification care kid-profile'>
                                     <img src='/images/care 1.png'>
                                     <div class='inProcess'>Проходит реабилитацию</div>
                                 </div>
