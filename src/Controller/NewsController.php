@@ -41,7 +41,10 @@ class NewsController extends AbstractController
      */
     public function list()
     {
-        return $this->render('news/list.twig');
+        return $this->render('news/list.twig',
+            [
+                'news' => $this->getDoctrine()->getRepository(News::class)->findAll()
+            ]);
     }
     /**
      * @return \Symfony\Component\HttpFoundation\Response
