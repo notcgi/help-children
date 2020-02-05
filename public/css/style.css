@@ -589,7 +589,8 @@
      padding-bottom: 115px;
  }
  
- .aid-card .notification {
+ .aid-card .notification,
+ .card-child__col .notification {
      width: 128px;
      height: 128px;
      font-size: 12px;
@@ -606,30 +607,35 @@
      padding-top: 25px;
  }
  
- .aid-card .notification>div {
+ .aid-card .notification>div,
+ .card-child__col .notification>div {
      width: 100px;
      text-align: Center;
  }
  
- .aid-card .notification .days {
+ .aid-card .notification .days,
+ .card-child__col .notification .days {
      font-size: 20px;
      line-height: 23px;
      color: #FFFFFF;
      padding-top: 10px;
  }
  
- .aid-card .notification .time {
+ .aid-card .notification .time,
+ .card-child__col .notification .time {
      font-size: 15px;
      line-height: 18px;
      color: #FFFFFF;
      padding-top: 5px;
  }
  
- .aid-card .notification.care {
+ .aid-card .notification.care,
+ .card-child__col .notification.care {
      padding-top: 15px;
  }
  
- .aid-card .notification.care div {
+ .aid-card .notification.care div,
+ .card-child__col .notification.care div {
      font-weight: 600;
      font-size: 14px;
      line-height: 14px;
@@ -639,32 +645,39 @@
  }
  
  @media screen and (max-width:1400px) {
-     .aid-card .notification {
+     .aid-card .notification,
+     .card-child__col .notification {
          width: 96px;
          height: 96px;
      }
-     .aid-card .notification {
+     .aid-card .notification,
+     .card-child__col .notification {
          width: 96px;
          height: 96px;
          font-size: 11px;
          padding-top: 18px;
      }
-     .aid-card .notification .days {
+     .aid-card .notification .days,
+     .card-child__col .notification .days {
          font-size: 16px;
          line-height: 18px;
          padding-top: 2px;
      }
-     .aid-card .notification .time {
+     .aid-card .notification .time,
+     .card-child__col .notification .time {
          font-size: 13px;
          line-height: 15px
      }
-     .aid-card .notification.care {
+     .aid-card .notification.care,
+     .card-child__col .notification.care {
          padding-top: 7px;
      }
-     .aid-card .notification.care div {
+     .aid-card .notification.care div,
+     .card-child__col .notification.care div {
          font-size: 10px;
      }
-     .aid-card .notification.care img {
+     .aid-card .notification.care img,
+     .card-child__col .notification.care img {
          width: 40px;
          height: 40px;
      }
@@ -1237,6 +1250,15 @@
      margin-left: 15px;
  }
  
+ @media screen and (max-width:1260px) {
+     .next-child .txt {
+         display: none
+     }
+     .previous-child .txt {
+         display: none
+     }
+ }
+ 
  .collected-resources .donate-form-row__col.donate-sum-fieldgroup.toggle-fieldgroup .js-child-help-form-button-submit {
      display: none;
  }
@@ -1594,12 +1616,12 @@
      .topmenu_section {
          display: none;
      }
-     {
+     /* {
          border-radius: 0;
          width: 100%;
          padding: 45px 3%;
          font-family: 'Roboto';
-     }
+     } */
      .news .news-flex-block {
          flex-direction: column;
      }
@@ -1748,27 +1770,32 @@
          margin-bottom: 15px;
          margin-left: 0;
      }
-     .aid-card .notification {
+     .aid-card .notification,
+     .card-child__col .notification {
          width: 90px;
          height: 90px;
          top: -30px;
          left: -15px;
          padding-top: 15px;
      }
-     .aid-card .notification>div {
+     .aid-card .notification>div,
+     .card-child__col .notification>div {
          font-size: 10px;
          width: 90%;
          padding-top: 0;
      }
-     .aid-card .notification .days {
+     .aid-card .notification .days,
+     .card-child__col .notification .days {
          font-size: 14px !important;
          padding-top: 0;
      }
-     .aid-card .notification .time {
+     .aid-card .notification .time,
+     .card-child__col .notification .time {
          padding-top: 0;
          font-size: 11px !important;
      }
-     .aid-card .notification img {
+     .aid-card .notification img,
+     .card-child__col .notification img {
          width: 30px;
          height: 30px;
      }
