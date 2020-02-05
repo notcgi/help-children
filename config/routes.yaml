@@ -57,13 +57,27 @@ news_list:
     path: /news
     controller: App\Controller\NewsController::list
 
-news_cards:
-    path: /news/cards
-    controller: App\Controller\NewsController::cards
+# news_cards:
+#     path: /news/cards
+#     controller: App\Controller\NewsController::cards
 
 news_detail:
     path: /news/{id}
     controller: App\Controller\NewsController::detail
+    requirements:
+        id: '\d+'
+p_news_list:
+    path: panel/news
+    controller: App\Controller\NewsController::p_list
+p_news_edit:
+    path: panel/news/{id}
+    controller: App\Controller\NewsController::p_edit
+    requirements:
+        id: '\d+'
+
+p_news_delete:
+    path: /panel/news/{id}/del
+    controller: App\Controller\NewsController::delete
     requirements:
         id: '\d+'
 
