@@ -1814,6 +1814,9 @@
          top: -10px !important;
          left: -20px !important;
      }
+     .card-child__col .notification.care.kid-profile {
+         padding-top: 3px;
+     }
  }
  
  @media screen and (max-width:400px) {
