@@ -65,17 +65,6 @@ class ChildController extends AbstractController
      */
     public function list()
     {
-        // $opened = $closed = [];
-
-        /** @var Child $child */
-        // echo json_encode($this->getDoctrine()->getRepository(Child::class)->getCurCh('rehab'));
-        // foreach ($this->getDoctrine()->getRepository(Child::class)->findAll() as $child) {
-        //     $chtrg=['child' => $child, 
-        //         'targets' => $this->getDoctrine()->getRepository(ChTarget::class)->findByChild($child)];
-        //     $child->isOpened() ? $opened[] = $chtrg : $closed[] = $chtrg;
-
-        // }
-
         return $this->render(
             'child/list.twig',
             [
