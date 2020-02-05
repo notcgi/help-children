@@ -707,10 +707,6 @@
      margin-bottom: 10px;
  }
  
- .progressline-block .progress-bar:nth-child(4n) {
-     margin-right: 0;
- }
- 
  .progressline-block .progress-bar .progress-bar-done {
      background: #5D20B0;
      border-radius: 8px;
