@@ -84,7 +84,7 @@
                             <!--</div>-->
                         {% else %}
                             <div class='notification care'>
-                                    <img src='/images/care 1.png'>
+                                    <img src='/images/care.svg'>
                                     <div class='inProcess'>Проходит реабилитацию</div>
                                 </div>
                                     {% endif %}
@@ -111,7 +111,7 @@
                                                     <div class='childname'>{{ child.name }}</div>
                                                     <div class='info'>Пройдена {{numb[loop.index]}}  реабилитация на сумму {{trg.collected}} рублей
                                                     </div>
-                                                    {# <div><a href='#'>История пожертвований</a></div> #}
+                                                    {# <div><a href='#'>Подробнее</a></div> #}
                                                 </div>
                                                 <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
@@ -207,7 +207,7 @@
                                     </div>
                         {% else %}
                             <div class='notification care'>
-                                    <img src='/images/care 1.png'>
+                                    <img src='/images/care.svg'>
                                     <div class='inProcess'>Проходит реабилитацию</div>
                                 </div>
                                     {% endif %}
