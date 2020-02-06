@@ -74,7 +74,7 @@ $(document).ready(function() {
         //$(this).addClass("active");
         var link = $(this).find('a').attr('href');
         $page.animate({
-            scrollTop: ($(link).offset().top - 250)
+            scrollTop: ($(link).offset().top - 200)
         }, 400);
     });
 
