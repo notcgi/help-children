@@ -736,6 +736,10 @@
  .progressline-block .progress-bar .txt {
      display: none;
  }
+
+ .collected-resources .txt {
+     display: none;
+ }
  /*.kid-cart .kid-info .progressline-block .progress-bar img {
     position: absolute;
     bottom: 10px;
