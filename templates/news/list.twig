@@ -1,89 +1,189 @@
 {% extends 'base_client_wrapper.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}БФ “Помогите Детям” | Новости{% endblock %}
 {% block desciption %}{% endblock %}
 {% block keywords %}{% endblock %}
 
 {% block content %}
     <main>
-        <section class="section hero-small">
-            <div class="container">
-                <h1 class="hero-small__title">Наши новости</h1>
-                <p class="hero-small__subtitle">Тут все наши новости</p>
+        <section class="section hero-medium">
+            <div class="container child-container">
+                <h1 class="hero-medium__title">Новости фонда</h1>
+                <p class="hero-small__subtitle">тут все наши новости</p>
             </div>
         </section>
-        <section class="section news section-with-bghearts">
-            <div class="container container--small">
-                <h2 class="news-title">Самые последние новости</h2>
-                <div class="news-list">
-                    <div class="news-list__item">
-                        <div class="news-list__item-content">
-                            <h3 class="news-list__item-content__title">Наша первая новость!</h3>
-                            <p class="news-list__item-content__text">
-                                Это первая новость на сайте! Это первая новость на сайте! Это первая новость на сайте!
-                                Это первая
-                                новость на сайте! Новости – это сообщения о каких-то событиях, которые происходят
-                                вокруг. На самом
-                                деле, мы окружены различным родом новостей. Это новости из жизни близких или родных.
-                                Новости районного
-                                значения. Рекомендуем регулярно пополнять инвестиционный портфель. Если не планируете
-                                пополнять, то
-                                лучше начинать инвестировать с 20 000 . Социальная помощь – одно из направлений нашей
-                                деятельности. На
-                                каждого ребенка создается индивидуальная программа помощи по его реабилитации и
-                                выздоровлению. </p>
-                            <time class="news-list__item-content__pubdate">12.12.2018</time>
+
+        <section class="section child section-with-bghearts">
+            <div class="container child-container">
+
+                <div class="child-wrapper">
+                    <div class="card-child-wrapper">
+                        <div class='cart-nav'>
+                            <div class='active left'><span>Все новости</span></div>
+                            <div class='center'><span>Новости детей</span></div>
+                            <div class='right'><span>Новости фонда</span></div>
                         </div>
-                        <div class="news-list__item-banner">
-                            <img class="img-responsive" src="/images/news-banner.png" alt="Конгресс"/>
+
+                        <div class='cart-content'>
+                            <!-- Все новости -->
+                            <div class='news-block all-news'>
+                                {% for n in news %}
+                                <div class='news'>
+                                    <div class='news-info'>
+                                        <a href=''>Новости {{ (n.child==-1) ? "фонда" : "детей"}}</a>
+                                        <span>{{n.createdAt|date('d.m.Y')}}</span>
+                                    </div>
+                                    <div class='news-name'>{{n.title}}</div>
+                                    <div class='news-flex-block'>
+                                        <div class='left-half'>
+                                            <div class='img-block'>
+                                                {% if n.video %}<iframe width="560" height="315"
+                                                    src="{{n.video}}" frameborder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class='right-half'>
+                                            <div class='text'>
+                                                {{n.descr[:600]}}...
+                                            </div>
+                                            <div class='link'>
+                                                <a href='{{ path('news_detail', {'id' : n.id}) }}'>Подробнее</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {# <div class='social-links'>
+                                        <div class='fb-link'>FB</div>
+                                        <div class='vk-link'>VK</div>
+                                        <div class='tg-link'>Telegram</div>
+                                        <div class='comment-link'>Комменты</div>
+                                    </div> #}
+                                </div>
+                                <div class='separator'></div>
+
+                                {% endfor %}
+                                
+                            </div>
+
+                            <!-- Новости детей -->
+                            <div class='news-block child-news' style='display:none;'>
+                                {% for n in news %}
+                                {% if (n.child>-1) %}
+                                <div class='news'>
+                                    <div class='news-info'>
+                                        <a href=''>Новости {{ (n.child==-1) ? "фонда" : "детей"}}</a>
+                                        <span>{{n.createdAt|date('d.m.Y')}}</span>
+                                    </div>
+                                    <div class='news-name'>{{n.title}}</div>
+                                    <div class='news-flex-block'>
+                                        <div class='left-half'>
+                                            <div class='img-block'>
+                                                {% if n.video %}<iframe width="560" height="315"
+                                                    src="{{n.video}}" frameborder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class='right-half'>
+                                            <div class='text'>
+                                                {{n.descr[:600]}}...
+                                            </div>
+                                            <div class='link'>
+                                                <a href='{{ path('news_detail', {'id' : n.id}) }}'>Подробнее</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='separator'></div>
+
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Новости фонда-->
+                            <div class='news-block fond-news' style='display:none;'>
+                                {% for n in news %}
+                                {% if (n.child==-1) %}
+                                <div class='news'>
+                                    <div class='news-info'>
+                                        <a href=''>Новости {{ (n.child==-1) ? "фонда" : "детей"}}</a>
+                                        <span>{{n.createdAt|date('d.m.Y')}}</span>
+                                    </div>
+                                    <div class='news-name'>{{n.title}}</div>
+                                    <div class='news-flex-block'>
+                                        <div class='left-half'>
+                                            <div class='img-block'>
+                                                {% if n.video %}<iframe width="560" height="315"
+                                                    src="{{n.video}}" frameborder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe> {% elseif n.arphotos %}
+                                                    <img  width="560" height="315" src="uploads/images/{{n.arphotos[0]}}" style="object-fit: cover;">
+                                                    {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class='right-half'>
+                                            <div class='text'>
+                                                {{n.descr[:600]}}...
+                                            </div>
+                                            <div class='link'>
+                                                <a href='{{ path('news_detail', {'id' : n.id}) }}'>Подробнее</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {# <div class='social-links'>
+                                        <div class='fb-link'>FB</div>
+                                        <div class='vk-link'>VK</div>
+                                        <div class='tg-link'>Telegram</div>
+                                        <div class='comment-link'>Комменты</div>
+                                    </div> #}
+                                </div>
+                                <div class='separator'></div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
+
                     </div>
-                    <div class="news-list__item">
-                        <div class="news-list__item-content">
-                            <h3 class="news-list__item-content__title">Наша первая новость!</h3>
-                            <p class="news-list__item-content__text">
-                                Это первая новость на сайте! Это первая новость на сайте! Это первая новость на сайте!
-                                Это первая
-                                новость на сайте! Новости – это сообщения о каких-то событиях, которые происходят
-                                вокруг. На самом
-                                деле, мы окружены различным родом новостей. Это новости из жизни близких или родных.
-                                Новости районного
-                                значения. Рекомендуем регулярно пополнять инвестиционный портфель. Если не планируете
-                                пополнять, то
-                                лучше начинать инвестировать с 20 000 . Социальная помощь – одно из направлений нашей
-                                деятельности. На
-                                каждого ребенка создается индивидуальная программа помощи по его реабилитации и
-                                выздоровлению. </p>
-                            <time class="news-list__item-content__pubdate">12.12.2018</time>
-                        </div>
-                        <div class="news-list__item-banner">
-                            <img class="img-responsive" src="/images/news-banner.png" alt="Конгресс"/>
-                        </div>
-                    </div>
-                    <div class="news-list__item">
-                        <div class="news-list__item-content">
-                            <h3 class="news-list__item-content__title">Наша первая новость!</h3>
-                            <p class="news-list__item-content__text">
-                                Это первая новость на сайте! Это первая новость на сайте! Это первая новость на сайте!
-                                Это первая
-                                новость на сайте! Новости – это сообщения о каких-то событиях, которые происходят
-                                вокруг. На самом
-                                деле, мы окружены различным родом новостей. Это новости из жизни близких или родных.
-                                Новости районного
-                                значения. Рекомендуем регулярно пополнять инвестиционный портфель. Если не планируете
-                                пополнять, то
-                                лучше начинать инвестировать с 20 000 . Социальная помощь – одно из направлений нашей
-                                деятельности. На
-                                каждого ребенка создается индивидуальная программа помощи по его реабилитации и
-                                выздоровлению. </p>
-                            <time class="news-list__item-content__pubdate">12.12.2018</time>
-                        </div>
-                        <div class="news-list__item-banner">
-                            <img class="img-responsive" src="/images/news-banner.png" alt="Конгресс">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </section>
+        <div class="container container--small">
+                <div class="donate-form-wrapper reports-donate-form-wrapper">
+                    {% include 'components/donate_form.twig' %}
+                </div>
+            </div>
+
+
+        <!-- Скрипт фильтра новостей-->
+        <script>
+            $(document).ready(function () {
+                $('.cart-nav>div').click(function () {
+                    $('.cart-nav>div').each(function () {
+                        $(this).removeClass('active');
+                    })
+                    $(this).addClass('active');
+
+                    $('.news-block').each(function () {
+                        $(this).css('display', 'none');
+                    });
+                    if ($(this).hasClass('left')) {
+                        $('.all-news').css('display', 'block');
+                    }
+                    if ($(this).hasClass('center')) {
+                        $('.child-news').css('display', 'block');
+                    }
+                    if ($(this).hasClass('right')) {
+                        $('.fond-news').css('display', 'block');
+                    }
+                });
+
+            });
+        </script>
     </main>
+
 {% endblock %}

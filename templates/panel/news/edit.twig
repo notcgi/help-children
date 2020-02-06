@@ -1,0 +1,61 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% block title %}Edit News {# {{ n.title }} #}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Новость:</h1>
+
+                {{ form_start(form) }}
+                {{ form_widget(form.id, {'value': n ? n.id}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.title, 'Название') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.title) }}</div>
+                    {{ form_widget(form.title, {'attr': {'class':'form-control', 'placeholder': 'Название', 'value': n ? n.title }}) }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form_label(form.descr, 'Описание') }}
+                    <label for="exampleFormControlTextarea1">{{ form_errors(form.descr) }}</label>
+                    {{ form_widget(form.descr, {'attr': {'class':'form-control', 'rows': 6, 'placeholder': 'Описание', 'value': n.descr }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.child, 'Тип цели') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.child ) }}</div>
+                    {{ form_widget(form.child , {'attr': {'class':'form-control', 'value': n.child, "separator":"<br>  "}}) }}
+                </div>
+                
+
+                <div class="form-group">
+                    {{ form_label(form.photos, 'Изображения') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.photos) }}</div>
+                    {{ form_widget(form.photos, {'attr': {'class':'form-control', 'placeholder': 'Изображение' }}) }}
+
+                    Нажмите на изображение для удаления<br>
+                    {% if imgs %}{% for img in imgs %}
+                        <img src="/uploads/images/{{img}}" width="300px" onclick="fetch('/panel/news/{{n.id}}/img{{loop.index0}}'); this.style.display='none'" style="cursor:pointer;">
+                    {% endfor %}{% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.video, 'Видео') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.video) }}</div>
+                    {{ form_widget(form.video, {'attr': {'class':'form-control', 'placeholder': 'Название', 'value': n ? n.video }}) }}
+                </div>
+                {% if(n.createdAt != null) %}
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Дата
+                        создания: {{ n.createdAt|date("d.m.Y") }}</label>
+                </div>
+                {% endif %} 
+
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

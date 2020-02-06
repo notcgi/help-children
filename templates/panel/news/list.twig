@@ -1,0 +1,38 @@
+{% extends 'base_panel_wrapper.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% include 'panel/menu.twig' %}
+        <div class="row" style="background-color: #f1f2f3; padding: 20px 40px;">
+            <div class="col-sm">
+                <h1>Новости:</h1>
+                <a class="btn btn-primary" href="{{ path('p_news_edit', {'id' : 99999999}) }}" role="button">+ Добавить новость</a>
+                <br><br>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Категория (?)</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Дата добавления</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for n in news %}
+                        <tr>
+                            <th scope="row">{{ n.id }}</th>
+                            <td>{{ n.category }}</td>
+                            <td>{{ n.title }}</td>
+                            <td>{{ n.CreatedAt|date('d.m.Y') }}</td>
+                            <td><a href="/panel/news/{{ n.id }}">Изменить</a></td>
+                            <td><a href="/panel/news/{{ n.id }}/del">Удалить</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
