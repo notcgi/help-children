@@ -113,4 +113,25 @@ $(document).ready(function() {
         $('.aid-card .push-content').hide();
     })
 
+    $('.collected-resources__slider .collected-resources').mouseenter(function() {
+        $('.newprogressbarwrapper .push-content').css('display', 'none');
+        $('.collected-resources__slider .collected-resources').each(function() {
+            $('.polygon').detach();
+        });
+
+        var progressHeight = $(this).position().top;
+        if (progressHeight > 0) {
+            $('.newprogressbarwrapper .push-content').css('top', (elemtop + progressHeight) + 'px');
+        } else {
+            $('.newprogressbarwrapper .push-content').css('top', '-15px');
+        }
+        var mess = $(this).closest(".newprogressbarwrapper").find('.push-content');
+        var txt = $(this).find('.txt').html();
+        mess.html(txt);
+        mess.stop().fadeTo(100, 1);
+        $(this).append('<div class="polygon"></div>');
+
+        $('.polygon').css('display', 'block');
+    })
+
 });
