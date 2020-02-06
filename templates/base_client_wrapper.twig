@@ -72,14 +72,14 @@ fbq('track', 'PageView');
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-links__item">
-                                <a class="nav-links__item-link" href="{{ path('reports') }}">Новости</a>
-                            </li>
                             <li class="nav-links__item dropdown">
                                 <a class="nav-links__item-link dropdown-link" href="{{ path('main') }}#section-mission">О
                                     Фонде</a>
                                 <div class="dropdown-content">
                                     <ul class="nav-links-submenu dropdown-menu">
+                                        <li class="nav-links-submenu__item">
+                                            <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Новости</a>
+                                        </li>
                                         <li class="nav-links-submenu__item">
                                             <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
                                         </li>
@@ -189,13 +189,13 @@ fbq('track', 'PageView');
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-links__item">
-                                <a class="nav-links__item-link" href="{{ path('reports') }}">Новости</a>
-                            </li>
                             </li>
                             <li class="nav-links__item">
                                 <a class="nav-links__item-link" href="{{ path('main') }}#section-mission">О Фонде</a>
                                 <ul class="nav-links-submenu">
+                                    <li class="nav-links-submenu__item">
+                                        <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Новости</a>
+                                    </li>
                                     <li class="nav-links-submenu__item">
                                         <a href="{{ path('partners') }}" class="nav-links-submenu__item-link">Партнёры</a>
                                     </li>
@@ -338,6 +338,9 @@ fbq('track', 'PageView');
                             <div class="footer-menu-category">О Фонде</div>
                             <nav class="footer-menu-nav">
                                 <ul class="footernav-links">
+                                    <li class="footernav-links__item">
+                                        <a href="{{ path('partners') }}" class="footernav-links__item-link">Новости</a>
+                                    </li>
                                     <li class="footernav-links__item">
                                         <a href="{{ path('partners') }}" class="footernav-links__item-link">Партнеры</a>
                                     </li>
