@@ -4838,12 +4838,19 @@ body {
 
 .aid-card__description {
     position: relative;
-    padding: 1rem 2.5rem 120px 2.5rem
+    padding: 1rem 2.5rem 120px 2.5rem;
+    height: 320px;
+}
+
+.aid-card__description.closed {
+    position: relative;
+    padding: 1rem 2.5rem 120px 2.5rem;
+    height: 250px;
 }
 
 @media screen and (max-width:768px) {
     .aid-card__description {
-        padding: 1rem 1rem 120px 1rem
+        padding: 1rem 1rem 120px 1rem;
     }
 }
 
