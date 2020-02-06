@@ -146,12 +146,12 @@ class Child
         return $this;
     }
 
-    public function getVideo(): string
+    public function getVideo()
     {
         return $this->body['video'] ?? '';
     }
 
-    public function setVideo(string $video): self
+    public function setVideo( $video): self
     {
         $this->body['video'] = $video;
 

@@ -49,7 +49,7 @@ class ChildController extends AbstractController
                 'form' => [
                     'payment-type' => 'visa'
                 ],
-                'yo'=>['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]],
+                'yo'=>$child->getAge() . ' ' . ['год', 'года', 'лет'][ (($child->getAge())%100>4 && ($child->getAge())%100<20)? 2: [2, 0, 1, 1, 1, 2][min($child->getAge()%10, 5)]],
                 'targets' => $trg,
                 'imgs' => json_decode(end($trg)->getAttach()),
                 'prevnext'=>[($key==0) ? $child_lst[(count($child_lst)-1)]['id'] :  $child_lst[($key-1) % (count($child_lst)-1)]['id'],$child_lst[($key+1) % (count($child_lst))]['id']],
