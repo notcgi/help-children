@@ -2816,7 +2816,7 @@ body {
 }
 
 .dropdown:hover .dropdown-content {
-    padding-top: 3.5rem
+    padding-top: 2rem
 }
 
 .dropdown:hover .dropdown-menu {
@@ -2835,7 +2835,6 @@ body {
     left: -25%;
     padding: 0;
     z-index: 10;
-    padding-top: 2.5rem
 }
 
 .dropdown:first-child .dropdown-content {
@@ -2858,7 +2857,7 @@ body {
     content: "";
     display: block;
     position: absolute;
-    top: calc(3.5rem - 10px);
+    top: calc(2rem - 10px);
     left: 41%;
     width: 0;
     height: 0;
