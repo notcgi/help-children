@@ -4861,7 +4861,8 @@ body {
 
 .aid-card__description-diagnosis {
     font-size: 1.4rem;
-    font-weight: 300
+    font-weight: 300;
+    margin-bottom: 0;
 }
 
 @media (max-width:992px) {
@@ -5898,14 +5899,16 @@ body {
     margin-bottom: .5rem;
     margin-right: 1rem;
     font-weight: 300;
-    color: #9f9f9f
+    color: #9f9f9f;
+    font-family: Roboto;
 }
 
 .card-child-field__value {
     font-family: Roboto;
     font-weight: 300;
     font-size: 1.4rem;
-    color: #4e4e4e
+    /* color: #4e4e4e */
+    color: #000000;
 }
 
 .card-child-field__value--full {
