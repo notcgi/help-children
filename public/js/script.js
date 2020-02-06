@@ -6,17 +6,17 @@ $(document).ready(function() {
 
     $(window).scroll(function() {
         if ($("#dolgosrochnaya-opeka").length && $("#pjm").length && $("#we-helped").length) {
-            if ($(window).scrollTop() >= $("#dolgosrochnaya-opeka").offset().top - 150 && $(window).scrollTop() < $("#pjm").offset().top - 150) {
+            if ($(window).scrollTop() >= $("#dolgosrochnaya-opeka").offset().top - 250 && $(window).scrollTop() < $("#pjm").offset().top - 250) {
                 $('.cart-nav>div').each(function() {
                     $(this).removeClass("active");
                 })
                 $('.cart-nav>div:first-child').addClass("active");
-            } else if ($(window).scrollTop() >= $("#pjm").offset().top - 150 && $(window).scrollTop() < $("#we-helped").offset().top - 150) {
+            } else if ($(window).scrollTop() >= $("#pjm").offset().top - 250 && $(window).scrollTop() < $("#we-helped").offset().top - 250) {
                 $('.cart-nav>div').each(function() {
                     $(this).removeClass("active");
                 })
                 $('.cart-nav>div:nth-child(2)').addClass("active");
-            } else if ($(window).scrollTop() >= $("#we-helped").offset().top - 150) {
+            } else if ($(window).scrollTop() >= $("#we-helped").offset().top - 250) {
                 $('.cart-nav>div').each(function() {
                     $(this).removeClass("active");
                 })
@@ -74,7 +74,7 @@ $(document).ready(function() {
         //$(this).addClass("active");
         var link = $(this).find('a').attr('href');
         $page.animate({
-            scrollTop: ($(link).offset().top - 200)
+            scrollTop: ($(link).offset().top - 180)
         }, 400);
     });
 
