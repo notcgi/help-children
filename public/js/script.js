@@ -87,6 +87,10 @@ $(document).ready(function() {
 
 
     $('.progressline-block .progress-bar').mouseenter(function() {
+        $('.progress-bar').each(function() {
+            $(this).removeClass('opened');
+        })
+        $(this).addClass('opened');
         $('.progressline-block .progress-bar').each(function() {
             $('.polygon').detach();
         });
@@ -107,16 +111,18 @@ $(document).ready(function() {
     })
 
     $('.progressline-block').mouseleave(function() {
-        if ($('.push-content').mouseenter()) {
-
-        } else {
-
-        }
+        $('.progress-bar').each(function() {
+            $(this).removeClass('opened');
+        })
         $('.polygon').css('display', 'none');
         $('.push-content').hide();
     });
 
     $('.collected-resources__slider .collected-resources').mouseenter(function() {
+        $('.collected-resources').each(function() {
+            $(this).removeClass('opened');
+        });
+        $(this).addClass('opened');
         $('.collected-resources__slider .collected-resources').each(function() {
             $('.polygon').detach();
         });
@@ -137,6 +143,9 @@ $(document).ready(function() {
     })
 
     $('.newprogressbarwrapper').mouseleave(function() {
+        $('.collected-resources').each(function() {
+            $(this).removeClass('opened');
+        });
         $('.polygon').css('display', 'none');
         $('.newprogressbarwrapper .push-content').hide();
 

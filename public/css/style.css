@@ -997,6 +997,7 @@
      border-radius: 50px;
      margin-right: 10px;
      position: relative;
+     cursor: pointer;
  }
 
  div.card-child__col.card-child-description>div.collected-resources {
@@ -1878,4 +1879,22 @@
  .progressline-block .progress-bar:hover .progress-bar-done.pmj {
      background: #5D20B0;
      cursor: pointer;
+ }
+
+ .progressline-block .progress-bar.opened .progress-bar-done {
+     background: #E09B3D;
+ }
+
+ .progressline-block .progress-bar.opened .progress-bar-done.pmj {
+     background: #5D20B0;
+     border-radius: 8px;
+     height: 8px;
+ }
+
+ .collected-resources__slider .collected-resources.opened .collected-resources__slider-filled {
+     background: #E09B3D;
+ }
+
+ .collected-resources__slider .collected-resources.pmj.opened .collected-resources__slider-filled {
+     background: #5D20B0;
  }
