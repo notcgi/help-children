@@ -2831,7 +2831,7 @@ body {
 
 .dropdown-content {
     position: absolute;
-    top: 0.5rem;
+    top: 1.5rem;
     left: -25%;
     padding: 0;
     z-index: 10;
