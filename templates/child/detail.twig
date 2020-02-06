@@ -197,8 +197,16 @@
                                 <div class="newprogressbarwrapper">
                                     <p>Сбор средств:</p>
                                     <div class="collected-resources__slider">
+                                        <div class='push-content'></div>
                                         {% for trg in targets %}
                                         <div class='collected-resources'>
+                                            <!-- -->
+                                            <div class='txt'>
+                                                    <div class='childname'>{{ child.name }}</div>
+                                                    <div class='info'>Пройдена {{numb[loop.index]}}  реабилитация на сумму {{trg.collected}} рублей
+                                                    </div>
+                                                    <div><a href='#'>История пожертвований</a></div>
+                                                </div>
                                             <div class="collected-resources__slider-filled"
                                                 style="width: {{100*trg.collected/trg.goal}}%">
                                             </div>
