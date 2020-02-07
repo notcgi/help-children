@@ -90,8 +90,7 @@
                                 </div>
                                     {% endif %}
                                     {% endif %}
-                                    <!--<img class="aid-card__photo" data-proportion-h="0.7" src="{{ asset('uploads/images/' ~ child.images|first) }}" alt="{{ child.name }}"/>-->
-                                    <img class="aid-card__photo" data-proportion-h="0.7" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
+                                    <img class="aid-card__photo" data-proportion-h="0.7" src="{{ asset('uploads/images/' ~ child.images|first) }}" alt="{{ child.name }}"/>
                                     <div class="aid-card__description">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
