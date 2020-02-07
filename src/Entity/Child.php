@@ -124,12 +124,12 @@ class Child
 
     public function getImages(): array
     {
-        return $this->body['img'] ?? [];
+        return (array) $this->body['img'] ?? [];
     }
 
     public function setImages(array $images): self
     {
-        $this->body['img'] = $images;
+        $this->body['img'] = (array) $images;
 
         return $this;
     }

@@ -169,7 +169,7 @@ class ChildController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($targ);
             $entityManager->flush();
-            return $this->edit($child, $request);
+            return $this->edit($child, $fileUploader, $request);
         }
 
         return $this->render(
