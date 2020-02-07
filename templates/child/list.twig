@@ -13,7 +13,7 @@
                 <h1 class="hero-small__title">Программы помощи</h1>
             </div>
         </section>
-        <div class='anchor' id='kids_dolgosrochnaya-opeka'></div>
+        <div class='anchor' id='kids_dolgosrochnaya-opeka' style='top:150px;'></div>
         <section class='cart-nav-container'>
             <div class='cart-nav kids-page'>
                 <div class='active left {{ (not opened|length) ? 'disabled' }}'><span><a href='#dolgosrochnaya-opeka'>Долгосрочная опека</a></span></div>
@@ -151,7 +151,7 @@
                         {%- endfor %}
                     </ul>
                 </div>
-                <div class='anchor' id='kids_pjm'></div>
+                <div class='anchor' id='kids_pjm' style='bottom:170px;'></div>
             </section>
         {%- endif %}
 
@@ -276,7 +276,7 @@
                         {%- endfor %}
                     </ul>
                 </div>
-                <div class='anchor' id='kids_we_helped'></div>
+                <div class='anchor' id='kids_we_helped' style='bottom:170px;'></div>
             </section>
         {%- endif %}
 
@@ -299,7 +299,7 @@
                                     <div class='inProcess'>Проходит реабилитацию</div>
                                 </div> #}
                                     <img class="aid-card__photo" data-proportion-h="1" src="{{ asset('uploads/images/' ~ child.images[0]) }}" alt="{{ child.name }}"/>
-                                    <div class="aid-card__description">
+                                    <div class="aid-card__description closed">
                                         <p class="aid-card__description-name">{{ child.name }}</p>
                                         <p class="aid-card__description-diagnosis">{{ child.diagnosis }}</p>
                                         <div class="aid-card__description-resources collected-resources">

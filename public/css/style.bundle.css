@@ -4765,7 +4765,8 @@ body {
 }
 
 .kids {
-    padding-bottom: 75px
+    padding-bottom: 75px;
+    position: relative;
 }
 
 .aid-list {
@@ -4812,7 +4813,9 @@ body {
     -webkit-transition: all .3s linear;
     transition: all .3s linear;
     cursor: pointer;
-    position: relative
+    position: relative;
+    -webkit-box-shadow: 0 0 12px rgba(142, 53, 36, .07);
+    box-shadow: 0 0 12px rgba(142, 53, 36, .07)
 }
 
 @media (max-width:768px) {
@@ -4837,12 +4840,19 @@ body {
 
 .aid-card__description {
     position: relative;
-    padding: 1rem 2.5rem 120px 2.5rem
+    padding: 1rem 2.5rem 120px 2.5rem;
+    height: 320px;
+}
+
+.aid-card__description.closed {
+    position: relative;
+    padding: 1rem 2.5rem 120px 2.5rem;
+    height: 250px;
 }
 
 @media screen and (max-width:768px) {
     .aid-card__description {
-        padding: 1rem 1rem 120px 1rem
+        padding: 1rem 1rem 120px 1rem;
     }
 }
 
