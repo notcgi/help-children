@@ -382,7 +382,7 @@
                     </div>
                     <div class="childnews" id='kid-news'>
                         <div class='separator'></div>
-                        {% for news in targets %}
+                        {% for news in news_lst %}
                         <div class='childnews-row'>
                             <div class='left-half'>
                                 {% if loop.index % 2 != 0 %}
@@ -391,12 +391,11 @@
                                         <div class='childnews-number'>{{loop.index}}</div>
                                         <div class='txt'>
                                             <p class='childnews-item-date'>
-                                                {{news.totime|date("j")}} {{mnths[news.totime|date("n")]}}
-                                                {{news.totime|date("Y")}} года
+                                                {{news.createdat|date("j")}} {{mnths[news.createdat|date("n")]}}
+                                                {{news.createdat|date("Y")}} года
                                             </p>
                                             <p class='childnews-item-title'>
-                                                Открыт сбор на {{numb[loop.index]}} реабилитацию {{child.name}} на сумму
-                                                {{news.goal}} руб.
+                                                {{news.title}}
                                             </p>
                                         </div>
                                     </div>
@@ -406,7 +405,7 @@
                                     <a href='#' class='childnews-item-link'>
                                         Подробнее
                                     </a>
-                                    {% if news.img %}<img src='/uploads/images/{{news.img}}' class='children-item-img'>
+                                    {% if news.arphotos.0 %}<img src='/uploads/images/{{news.arphotos.0}}' class='children-item-img'>
                                     {% endif %}
                                 </div>
                                 {% endif %}
@@ -423,12 +422,11 @@
                                         <div class='childnews-number'>{{loop.index}}</div>
                                         <div class='txt'>
                                             <p class='childnews-item-date'>
-                                                {{news.totime|date("j")}} {{mnths[news.totime|date("n")]}}
-                                                {{news.totime|date("Y")}} года
+                                                {{news.createdat|date("j")}} {{mnths[news.createdat|date("n")]}}
+                                                {{news.createdat|date("Y")}} года
                                             </p>
                                             <p class='childnews-item-title'>
-                                                Открыт сбор на {{numb[loop.index]}} реабилитацию {{child.name}} на сумму
-                                                {{news.goal}} руб.
+                                                {{news.title}}
                                             </p>
                                         </div>
                                     </div>
@@ -438,7 +436,7 @@
                                     <a href='#' class='childnews-item-link'>
                                         Подробнее
                                     </a>
-                                    <img src='/uploads/images/{{news.img}}' class='children-item-img'>
+                                    {% if news.arphotos.0 %}<img src='/uploads/images/{{news.arphotos.0}}' class='children-item-img'>{% endif %}
                                 </div>
                                 {% endif %}
                             </div>

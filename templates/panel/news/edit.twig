@@ -46,12 +46,17 @@
                     <div class="err_list form-text text-muted">{{ form_errors(form.video) }}</div>
                     {{ form_widget(form.video, {'attr': {'class':'form-control', 'placeholder': 'Название', 'value': n ? n.video }}) }}
                 </div>
-                {% if(n.createdAt != null) %}
+                {# {% if(n.createdAt != null) %}
                 <div class="form-group">
                     <label for="exampleFormControlSelect2">Дата
                         создания: {{ n.createdAt|date("d.m.Y") }}</label>
                 </div>
-                {% endif %} 
+                {% endif %}  #}
+                <div class="form-group">
+                    {{ form_label(form.createdAt, 'Дата') }}
+                    <div class="err_list form-text text-muted">{{ form_errors(form.createdAt) }}</div>
+                    {{ form_widget(form.createdAt, {'attr': {'class':'form-control', 'placeholder': 'Дата'}}) }}
+                </div>
 
 
                 {{ form_end(form) }}
