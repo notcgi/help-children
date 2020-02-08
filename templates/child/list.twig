@@ -110,8 +110,7 @@
                                         -->
                                                 <div class='txt'>
                                                     <div class='childname'>{{ child.name }}</div>
-                                                    <div class='info'>Пройдена {{numb[loop.index]}}  реабилитация на сумму {{trg.collected}} рублей
-                                                    </div>
+                                                    <div class='info'>{{trg.name}}</div>
                                                     {# <div><a href='#'>Подробнее</a></div> #}
                                                 </div>
                                                 <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
@@ -234,9 +233,8 @@
                                         -->
                                                 <div class='txt'>
                                                     <div class='childname'>{{ child.name }}</div>
-                                                    <div class='info'>Пройдена {{trg.id}} реабилитация на сумму {{trg.collected}} рублей
-                                                    </div>
-                                                    {# <div><a href='#'>История пожертвований</a></div> #}
+                                                    <div class='info'>{{trg.name}}</div>
+                                                    <a href='#'>История пожертвований</a></div> #}
                                                 </div>
                                                 <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>
                                             </div>
@@ -319,8 +317,7 @@
                                         -->
                                                 <div class='txt'>
                                                     <div class='childname'>{{ child.name }}</div>
-                                                    <div class='info'>Пройдена {{trg.id}} реабилитация на сумму {{trg.collected}} рублей
-                                                    </div>
+                                                    <div class='info'>{{trg.name}}</div>
                                                     {# <div><a href='#'>История пожертвований</a></div> #}
                                                 </div>
                                                 <div class='progress-bar-done {{ (not trg.rehabilitation) ? 'pmj'}}' style="width:{{100*trg.collected/trg.goal}}%"></div>

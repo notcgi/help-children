@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Child;
+use App\Entity\ChTarget;
 use App\Entity\SendGridSchedule;
 use App\Event\FirstRequestSuccessEvent;
 use App\Event\RequestSuccessEvent;
@@ -106,6 +107,10 @@ class DonateController extends AbstractController
             $EM  = $this->getDoctrine()->getManager();
             $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
             if (!$req) return new Response('order not found', 404);
+            if ($req->getStatus()==2) return new Response(json_encode(["code"=>'ok']), Response::HTTP_OK, ['content-type' => 'text/html']);
+            $targ = $EM->getRepository(ChTarget::class)->findByChild($req->getChild());
+            $targ=end($targ);
+            if ($targ) $targ->setCollected($targ->getCollected()+$req->getSum());
             $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
             $ti = array();
             foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
@@ -122,6 +127,10 @@ class DonateController extends AbstractController
             $EM  = $this->getDoctrine()->getManager();
             $req = $EM->getRepository(\App\Entity\Request::class)->find($id);
             if (!$req) return new Response('order not found', 404);
+            if ($req->getStatus()==2) return new Response('Already confirmed', 200);
+            $targ = $EM->getRepository(ChTarget::class)->findByChild($req->getChild());
+            $targ=end($targ);
+            if ($targ) $targ->setCollected($targ->getCollected()+$req->getSum());
             $children = $EM->getRepository(\App\Entity\Child::class)->getOpened();
             $ti = array();
             foreach ($children as $child) $ti[] = '('.$child->getId().','.$req->getId().','.$req->getSum().')';
@@ -131,7 +140,7 @@ class DonateController extends AbstractController
             $this->referralHistory($req);
             $EM->persist($req);
             $EM->flush();
-            return $this->redirectToRoute('thanks');
+            return ($targ) ? $this->redirectToRoute('children_detail', ['id'=> $req->getChild()->getId()]): $this->redirectToRoute('thanks');
         }
 
         #help https://symfony.com/doc/current/components/http_foundation.html
@@ -595,6 +604,7 @@ class DonateController extends AbstractController
                 $req->setSum($form['sum'])
                     ->setRecurent($form['recurent'])
                     ->setUser($user)
+                    ->setChild($entityManager->getRepository(\App\Entity\Child::class)->findOneById($child_id))
                     ->setJson($form)
                     ->setOrder_id('');
                 $entityManager->persist($req);
@@ -604,7 +614,8 @@ class DonateController extends AbstractController
                     'donate/paymentForm.twig',
                     [
                         'fields' => $unitellerService->getFromData($req, $request->request->get('EMoneyType', '0')),
-                        'pm' => ['type' => $form['payment-type']]
+                        'pm' => ['type' => $form['payment-type']],
+                        'child_id'=>$form['child_id']
                     ]
                 );
             }
